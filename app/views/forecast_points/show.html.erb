@@ -1,0 +1,64 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Longitude:</strong>
+  <%= @forecast_point.latlon.x %>
+</p>
+
+<p>
+  <strong>Latitude:</strong>
+  <%= @forecast_point.latlon.y %>
+</p>
+
+<p>
+  <strong>Publish date:</strong>
+  <%= @forecast_point.publish_date %>
+</p>
+
+<p>
+  <strong>Forecast date:</strong>
+  <%= @forecast_point.forecast_date %>
+</p>
+
+<p>
+  <strong>Pm25:</strong>
+  <%= @forecast_point.pm25 %>
+</p>
+
+<p>
+  <strong>Pm10:</strong>
+  <%= @forecast_point.pm10 %>
+</p>
+
+<p>
+  <strong>So2:</strong>
+  <%= @forecast_point.SO2 %>
+</p>
+
+<p>
+  <strong>Co:</strong>
+  <%= @forecast_point.CO %>
+</p>
+
+<p>
+  <strong>No2:</strong>
+  <%= @forecast_point.NO2 %>
+</p>
+
+<p>
+  <strong>O3:</strong>
+  <%= @forecast_point.O3 %>
+</p>
+
+<p>
+  <strong>Aqi:</strong>
+  <%= @forecast_point.AQI %>
+</p>
+
+<p>
+  <strong>Vis:</strong>
+  <%= @forecast_point.VIS %>
+</p>
+
+<%= link_to 'Edit', edit_forecast_point_path(@forecast_point) %> |
+<%= link_to 'Back', forecast_points_path %>

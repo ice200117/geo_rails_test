@@ -1,0 +1,36 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require codemirror
+ *= require codemirror/themes/night
+ *= require_tree .
+ *= require_self
+ */
+
+// "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+body { padding-top: 50px; }
+
+.footer {
+  border-top: 1px solid #c5c5c5;
+  min-height: 200px;
+  margin: 3em 0;
+  padding-top: 3em;
+  padding-bottom: 3em;
+  background: #f8f5f0;
+}
+
+.welcome-index .navbar {
+  #background: transparent;
+}

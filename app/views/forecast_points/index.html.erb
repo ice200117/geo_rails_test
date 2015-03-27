@@ -1,0 +1,48 @@
+<h1>Listing forecast_points</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Longitude</th>
+      <th>Latitude</th>
+      <th>Publish date</th>
+      <th>Forecast date</th>
+      <th>Pm25</th>
+      <th>Pm10</th>
+      <th>So2</th>
+      <th>Co</th>
+      <th>No2</th>
+      <th>O3</th>
+      <th>Aqi</th>
+      <th>Vis</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%  @forecast_points.each do |forecast_point| %>
+      <tr>
+        <td><%= forecast_point.latlon.x %></td>
+        <td><%= forecast_point.latlon.y %></td>
+        <td><%= forecast_point.publish_date %></td>
+        <td><%= forecast_point.forecast_date %></td>
+        <td><%= forecast_point.pm25 %></td>
+        <td><%= forecast_point.pm10 %></td>
+        <td><%= forecast_point.SO2 %></td>
+        <td><%= forecast_point.CO %></td>
+        <td><%= forecast_point.NO2 %></td>
+        <td><%= forecast_point.O3 %></td>
+        <td><%= forecast_point.AQI %></td>
+        <td><%= forecast_point.VIS %></td>
+        <td><%= link_to 'Show', forecast_point %></td>
+        <td><%= link_to 'Edit', edit_forecast_point_path(forecast_point) %></td>
+        <td><%= link_to 'Destroy', forecast_point, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @forecast_points, :previous_label=>'上一页', :next_label=>'下一页' %>
+
+<br>
+
+<%= link_to 'New Forecast point', new_forecast_point_path %>

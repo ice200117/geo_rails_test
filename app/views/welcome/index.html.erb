@@ -1,0 +1,55 @@
+<!--
+<h1 data-ih="thanks">请点击该文本</h1>
+<a href="#" data-background-color="#990000">Paint it red</a>
+<a href="#" data-background-color="#009900" data-text-color="#FFFFFF">Paint it green</a>
+<a href="#" data-background-color="#000099" data-text-color="#FFFFFF">Paint it blue</a>
+-->
+
+
+<div class="home-banner"> </div>
+<div class="jumbotron">
+
+  <div class="container">
+    <h3> groub by longitude </h3>
+    <!-- Single button -->
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        AQI <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><%= link_to "AQI", root_path %></li>
+        <li><a href="#">Another action</a></li>
+        <li><a href="#">Something else here</a></li>
+        <li class="divider"></li>
+        <li><a href="#">Separated link</a></li>
+      </ul>
+    </div>
+
+    <!--
+    <div #line_chart ForecastPoint.group(:latlon).group_by_day(:forecast_date).average(:AQI), discrete: true />
+    -->
+
+    <div id="map" class="col-xs-12" style='width:100%;height:600px;border:1px solid gray'>
+      
+    </div>
+  </div>
+
+  <h1>Hello, world!</h1>
+  <p>...</p>
+  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+
+      <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+  <div class="container">
+      <div id="main"  style="height:400px" class="col-xs-12"></div>
+      <div id="main2" style="height:800px" class="col-xs-12"></div>
+  </div>
+</div>
+
+
+<h1>Hello, World!</h1>
+<p> It's <%= Time.now %></p>
+
+<script>
+  $('.home-banner').backstretch("<%= image_url 'hero.jpg' %>");
+</script>
+<script src="assets/index_welcome.js"></script>

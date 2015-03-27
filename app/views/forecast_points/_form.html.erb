@@ -1,0 +1,65 @@
+<%= form_for(@forecast_point) do |f| %>
+  <% if @forecast_point.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@forecast_point.errors.count, "error") %> prohibited this forecast_point from being saved:</h2>
+
+      <ul>
+      <% @forecast_point.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :longitude%><br>
+    <%= f.text_field :longitude %>
+  </div>
+  <div class="field">
+    <%= f.label :latitude%><br>
+    <%= f.text_field :latitude %>
+  </div>
+  <div class="field">
+    <%= f.label :publish_date %><br>
+    <%= f.datetime_select :publish_date %>
+  </div>
+  <div class="field">
+    <%= f.label :forecast_date %><br>
+    <%= f.datetime_select :forecast_date %>
+  </div>
+  <div class="field">
+    <%= f.label :pm25 %><br>
+    <%= f.text_field :pm25 %>
+  </div>
+  <div class="field">
+    <%= f.label :pm10 %><br>
+    <%= f.text_field :pm10 %>
+  </div>
+  <div class="field">
+    <%= f.label :SO2 %><br>
+    <%= f.text_field :SO2 %>
+  </div>
+  <div class="field">
+    <%= f.label :CO %><br>
+    <%= f.text_field :CO %>
+  </div>
+  <div class="field">
+    <%= f.label :NO2 %><br>
+    <%= f.text_field :NO2 %>
+  </div>
+  <div class="field">
+    <%= f.label :O3 %><br>
+    <%= f.text_field :O3 %>
+  </div>
+  <div class="field">
+    <%= f.label :AQI %><br>
+    <%= f.text_field :AQI %>
+  </div>
+  <div class="field">
+    <%= f.label :VIS %><br>
+    <%= f.text_field :VIS %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

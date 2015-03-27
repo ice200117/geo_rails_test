@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  longitude: 1.5
+  latitude: 1.5
+  publish_date: 2015-03-08 10:26:11
+  forecast_date: 2015-03-08 10:26:11
+  pm25: 1.5
+  pm10: 1.5
+  SO2: 1.5
+  CO: 1.5
+  NO2: 1.5
+  O3: 1.5
+  AQI: 1.5
+  VIS: 1.5
+
+two:
+  longitude: 1.5
+  latitude: 1.5
+  publish_date: 2015-03-08 10:26:11
+  forecast_date: 2015-03-08 10:26:11
+  pm25: 1.5
+  pm10: 1.5
+  SO2: 1.5
+  CO: 1.5
+  NO2: 1.5
+  O3: 1.5
+  AQI: 1.5
+  VIS: 1.5
