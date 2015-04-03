@@ -25,5 +25,3 @@
 //= require vendor/echarts/echarts
 //= require vendor/BMap/BMap
 //= require welcome
-
-

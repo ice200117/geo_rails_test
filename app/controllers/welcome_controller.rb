@@ -69,29 +69,19 @@ class WelcomeController < ApplicationController
   end
 
   def map
-    fpc = ForecastPoint.new
-    date =Time.new.strftime("%Y%m%d") 
-    ps = fpc.lookup(date)
 
-    ps.each { |p| puts p }
-
-    #p1 = ps[0][:aqi]
-    #p2 = ps[5][:aqi]
-    #p3 = ps[10][:aqi]
-    #p4 = ps[15][:aqi]
-    #lf = (p1+p2+p3+p4)/4.0
-    #puts lf
-    data = { "北京" => 140, 
-             "天津" => 120,
-             "河北" => 790,
-             "武清区" => 500,
-    }
-    data['廊坊市'] = 120
     respond_to do |format|
-      format.html   {}
       format.js   {}
+      format.html   {}
       format.json {
-        render json: data
+      achf = Hash.new
+      ac = City.pluck(:city_name, :city_name_pinyin)
+      h = HourlyCityForecastAirQuality.new
+      ac.each do |c|
+        ch = h.city_forecast(c[1]) 
+        achf[c[0]] = ch[:forecast_data].first[:AQI]  if ch
+      end
+        render json: achf
       }
     end
   end

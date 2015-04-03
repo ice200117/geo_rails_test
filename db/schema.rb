@@ -11,11 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150317083543) do
+ActiveRecord::Schema.define(version: 20150403033734) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "cities", force: true do |t|
+    t.string  "city_name"
+    t.string  "city_name_pinyin"
+    t.integer "post_number"
+    t.float   "latitude"
+    t.spatial "lonlat",           limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.float   "longitude"
+  end
 
   create_table "counties", force: true do |t|
     t.string   "name"
@@ -45,6 +54,24 @@ ActiveRecord::Schema.define(version: 20150317083543) do
     t.spatial  "latlon",        limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.float    "longitude"
     t.float    "latitude"
+  end
+
+  create_table "hourly_city_forecast_air_qualities", force: true do |t|
+    t.integer  "city_id"
+    t.datetime "publish_datetime"
+    t.datetime "forecast_datetime"
+    t.float    "AQI"
+    t.string   "main_pol"
+    t.integer  "grade"
+    t.float    "pm25"
+    t.float    "pm10"
+    t.float    "SO2"
+    t.float    "CO"
+    t.float    "NO2"
+    t.float    "O3"
+    t.float    "VIS"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "locations", force: true do |t|

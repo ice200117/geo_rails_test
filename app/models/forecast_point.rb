@@ -2,7 +2,7 @@ class ForecastPoint < ActiveRecord::Base
   before_save       :setLonLat
 
   set_rgeo_factory_for_column(:latlon,
-    RGeo::Geographic.spherical_factory(:srid => 4326))
+                              RGeo::Geographic.spherical_factory(:srid => 4326))
 
   def setLonLat
     self.latlon = "POINT(#{longitude} #{latitude})"
@@ -10,7 +10,7 @@ class ForecastPoint < ActiveRecord::Base
 
   def nearest_latlon(lon, lat)
     #ps = ForecastPoint.where("ST_Distance(latlon, "+
-                   #"'POINT(#{lon} #{lat})') < 150000")
+    #"'POINT(#{lon} #{lat})') < 150000")
   end
 
   def lookup(date)
@@ -35,26 +35,31 @@ class ForecastPoint < ActiveRecord::Base
     ]
 
     fps = ForecastPoint.all
-    ps.each {|p|
-      ql = []
+    ps.each do |p|
+      h = Hash.new
+      h[:name] = p[:name]
+      h[:lon] = p[:lon]
+      h[:lat] = p[:lat]
+      h[:forecast] = []
       lon = p[:lon]
       lat = p[:lat]
-      fps.each { |fp|
+      fps.each do |fp|
         if lon > fp.longitude-0.05 && lon < fp.longitude+0.05 \
           && lat >fp.latitude-0.05 && lat < fp.latitude+0.05
-          ql << fp
+          h[:forecast] << {aqi: fp.AQI, publish_date: fp.publish_date.strftime("%Y-%m-%d %H:%M:%S"), forecast_date: fp.forecast_date.strftime("%Y-%m-%d %H:%M:%S")}
         end
-      }
-      ql.each { |q|
-        if date != "" 
-          if date == q.publish_date.strftime("%Y%m%d")
-            o << {name: p[:name], lon: q.longitude, lat: q.latitude, aqi: q.AQI, publish_date: q.publish_date.strftime("%Y-%m-%d %H:%M:%S"), forecast_date: q.forecast_date.strftime("%Y-%m-%d %H:%M:%S")}
-          end
-        else
-          o << {name: p[:name], lon: q.longitude, lat: q.latitude, aqi: q.AQI, publish_date: q.publish_date.strftime("%Y-%m-%d %H:%M:%S"), forecast_date: q.forecast_date.strftime("%Y-%m-%d %H:%M:%S")}
-        end
-      }   
-    }
+      end
+      #ql.each { |q|
+      #if date != nil
+      #if date == q.publish_date.strftime("%Y%m%d")
+      #o << {name: p[:name], lon: q.longitude, lat: q.latitude, aqi: q.AQI, publish_date: q.publish_date.strftime("%Y-%m-%d %H:%M:%S"), forecast_date: q.forecast_date.strftime("%Y-%m-%d %H:%M:%S")}
+      #end
+      #else
+      #o << {name: p[:name], lon: q.longitude, lat: q.latitude, aqi: q.AQI, publish_date: q.publish_date.strftime("%Y-%m-%d %H:%M:%S"), forecast_date: q.forecast_date.strftime("%Y-%m-%d %H:%M:%S")}
+      #end
+      #}   
+      o << h
+    end
     o
   end
 end

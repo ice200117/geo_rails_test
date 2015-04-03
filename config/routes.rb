@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  get 'counties/lookup'
+  #get 'counties/lookup'
+  get 'querys/aqis_by_city' => 'querys#aqis_by_city'
+  get 'querys' => 'querys#cities'
+  get 'querys/all_cities' => 'querys#all_cities'
 
   #get '/forecast_points/lookup' => 'forecast_points#lookup'
   #resources :forecast_points
@@ -12,9 +15,10 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   # You can have the root of your site routed with "root"
-   root 'welcome#index'
-   get '/about' => 'welcome#about'
-   get '/show' => 'welcome#show'
+   #root 'welcome#index'
+   root 'welcome#map'
+   #get '/about' => 'welcome#about'
+   #get '/show' => 'welcome#show'
    get '/map' => 'welcome#map'
    get '/visits_by_day' => 'welcome#visits_by_day', as: :visits_by_day_welcome
   # Example of regular route:
