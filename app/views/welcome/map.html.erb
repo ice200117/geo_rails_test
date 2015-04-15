@@ -1,7 +1,12 @@
 <div class="container">
-  <div id="map3" style="height:600px" class="col-xs-12"></div>
+  <div id="map3" style="height:430px" class="col-xs-6"></div>
+  <div id='map4' style="height:430px" class="col-xs-6"> </div>
 </div>
 <!--
 <script src="assets/map_welcome.js"></script>
 -->
-<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+<script>
+  <% strnow = Time.now.strftime('%Y%m%d') %>
+  $('#map4').backstretch("<%= image_url 'china_fc/'+strnow+'/Hourly/Animate_CUACE_25km_AQI_'+strnow+'.gif', alt: 'China forecast' %>");
+</script>
+<%= javascript_include_tag 'map_welcome', 'data-turbolinks-track' => true %>
