@@ -45,24 +45,28 @@ strtime = Time.new.strftime("%Y%m%d")+'08'
 puts strtime
 
 #test
-strtime = '2015040308'
+strtime = '2015041108'
 #puts strtime
 
-path = '/mnt/share/txt/'
+#path = "/mnt/share/station/#{strtime[0,8]}/"
+path = "/mnt/share/station/"
 
 cs = City.all
 cs.each do |c|
-  #if c.city_name_pinyin.rstrip.eql?('langfangshi')
-  py = c.city_name_pinyin.rstrip
+  puts c.city_name_pinyin
+  if c.city_name_pinyin.rstrip.eql?('langfangshi')
+    py = c.city_name_pinyin.strip
+    #fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
 
-  fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
-  puts fn
-  f = File.open(path+fn) if File::exists?(path+fn) 
-  next unless f
-  f.readlines[2..-1].each do |line| 
-    parse_line(line, c)
+    #fn = "XJ_ENVAQFC_langfangshi_2015041108_00000-07200.TXT"
+    fn = "XJ_ENVAQFC_0052_HEBE_Langfang_2015041220_00000-07200.TXT"
+    puts fn+" successful!"
+    f = File.open(path+fn) if File::exists?(path+fn) 
+    next unless f
+    f.readlines[2..-1].each do |line| 
+      parse_line(line, c)
+    end
+    f.close
   end
-  f.close
-  #end
 end
 

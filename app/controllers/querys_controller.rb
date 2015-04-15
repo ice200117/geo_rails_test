@@ -24,6 +24,4 @@ class QuerysController < ApplicationController
     render json: achf
   end
 
-  def all_cities_for_map
-  end
 end

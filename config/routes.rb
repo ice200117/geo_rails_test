@@ -20,6 +20,7 @@ Rails.application.routes.draw do
    #get '/about' => 'welcome#about'
    #get '/show' => 'welcome#show'
    get '/map' => 'welcome#map'
+   get '/bar' => 'welcome#bar'
    get '/visits_by_day' => 'welcome#visits_by_day', as: :visits_by_day_welcome
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

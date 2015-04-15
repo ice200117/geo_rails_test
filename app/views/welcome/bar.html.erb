@@ -1,0 +1,11 @@
+<div class="col-xs-12">
+  <%= column_chart HourlyCityForecastAirQuality.group(:publish_datetime).group_by_hour(:forecast_datetime, format: "%HZ\n %d%b").average(:AQI), height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"},subtitle:{text:"2015-04-12_21:00       +  120h"}}  %>
+</div>
+<div class="col-xs-12">
+  <%= column_chart HourlyCityForecastAirQuality.group(:publish_datetime).group_by_day(:forecast_datetime, format: "%HZ\n %d%b").average(:AQI), height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"},subtitle:{text:"2015-04-12_21:00       +  120h"}}  %>
+</div>
+<div class="col-xs-12">
+<h3 style="text-align:center">Station_Langfang_PM2.5(ug/m3)      CUACE (CAMS)</h3>
+<h3 style="text-align:center">2015-04-11_21:00      +  120h</h3>
+<%= column_chart HourlyCityForecastAirQuality.group(:city_id).group_by_hour(:forecast_datetime, format: "%HZ\n %d%b").average(:PM25), height: "600px"  %>
+</div>

@@ -78,6 +78,16 @@ myChart.on(ecConfig.EVENT.MAP_SELECTED, function (param){
   myChart.setOption(option, true);
 });
 option = {
+  timeline:{
+    data:['2002-01-01','2003-01-01','2004-01-01'],
+    label : {
+      formatter : function(s) {
+        return s.slice(0, 4);
+      }
+    },
+    autoPlay : true,
+    playInterval : 1000 
+  },
   title: {
     text : '全国34个省市自治区',
     subtext : 'china （滚轮或点击切换）'
@@ -482,6 +492,10 @@ $.ajax({ url: "map.json" }).done(function(json) {
       {name: name, value: aqi}
       );
   });
+  option.timeline.data.push('2002')
+  option.timeline.data.push('2003')
+  option.timeline.data.push('2004')
+  option.timeline.data.push('2005')
   myChart.setOption(option);
 });
 myChart.setOption(option);

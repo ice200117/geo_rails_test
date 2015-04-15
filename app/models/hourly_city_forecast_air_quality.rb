@@ -9,7 +9,7 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
     return nil unless c
     chs = c.hourly_city_forecast_air_qualities
     ac = chs.order(publish_datetime: :desc).take(120)
-    puts ac.first
+    #puts ac.first
     return nil unless ac.first
     cf[:city_name] = c.city_name
     cf[:publish_datetime] = ac.first.publish_datetime.strftime('%Y-%m-%d_%H')

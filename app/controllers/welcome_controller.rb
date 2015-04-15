@@ -79,7 +79,8 @@ class WelcomeController < ApplicationController
       h = HourlyCityForecastAirQuality.new
       ac.each do |c|
         ch = h.city_forecast(c[1]) 
-        achf[c[0]] = ch[:forecast_data].first[:AQI]  if ch
+        puts ch
+        achf[c[0]] = ch[:forecast_data].first[:AQI]  if ch && ch[:forecast_data].first
       end
         render json: achf
       }
