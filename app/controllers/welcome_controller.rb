@@ -74,14 +74,12 @@ class WelcomeController < ApplicationController
       format.js   {}
       format.html   {}
       format.json {
-      achf = Hash.new
-      ac = City.pluck(:city_name, :city_name_pinyin)
-      h = HourlyCityForecastAirQuality.new
-      ac.each do |c|
-        ch = h.city_forecast(c[1]) 
-        puts ch
-        achf[c[0]] = ch[:forecast_data].first[:AQI]  if ch && ch[:forecast_data].first
-      end
+        achf = Hash.new
+        cs = City.includes(:hourly_city_forecast_air_qualities)
+        cs.each do |c|
+          ch = c.hourly_city_forecast_air_qualities.last(120)[0]
+          achf[c.city_name] = ch.AQI  if ch
+        end
         render json: achf
       }
     end
@@ -97,6 +95,31 @@ class WelcomeController < ApplicationController
     end
     respond_to do |format|
       format.js   {}
+      format.json {
+        render json: @chart
+      }
+    end
+  end
+
+  def bar
+    params[:c] ? (id =  params[:c][:city_id]) : (id = City.find_by city_name_pinyin: 'langfangshi')
+    c = City.find(id)
+    if params[:start_date] && params[:end_date]
+      sd = Time.local(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
+      ed = Time.local(params[:end_date][:year].to_i, params[:end_date][:month].to_i, params[:end_date][:day].to_i,23)
+      return 'error: start date can not later than end date!' if sd > ed
+      hss = c.hourly_city_forecast_air_qualities.last(120)
+      hs = []
+      hss.each {|h| hs << h if h.forecast_datetime >= sd && h.forecast_datetime <= ed }
+    else
+      hs = c.hourly_city_forecast_air_qualities.last(120)
+    end
+    #@chart = [{name: c.city_name, data: hs.group_by_hour(:forecast_datetime).average("AQI")}]
+    @chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime.strftime("%Y%m%d%H"),  h.AQI]} }]
+    #@chart = c.hourly_city_forecast_air_qualities.group_by_hour(:forecast_datetime).average("AQI")
+    respond_to do |format|
+      format.js   { }
+      format.html { }
       format.json {
         render json: @chart
       }

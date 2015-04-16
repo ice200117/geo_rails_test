@@ -64,3 +64,4 @@ gem 'will_paginate', '~> 3.0.6'
 gem 'bootstrap-will_paginate'
 
 gem 'codemirror-rails'
+gem 'simple_form', '~> 3.1.0'
