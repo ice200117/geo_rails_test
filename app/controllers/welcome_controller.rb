@@ -75,7 +75,7 @@ class WelcomeController < ApplicationController
       format.html   {}
       format.json {
         achf = Hash.new
-        cs = City.includes(:hourly_city_forecast_air_qualities)
+        cs = City.all
         cs.each do |c|
           ch = c.hourly_city_forecast_air_qualities.last(120)[0]
           achf[c.city_name] = ch.AQI  if ch
