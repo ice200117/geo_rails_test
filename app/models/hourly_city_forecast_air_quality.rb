@@ -7,14 +7,13 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
     puts pinyin
     c = City.find_by city_name_pinyin: pinyin
     return nil unless c
-    chs = c.hourly_city_forecast_air_qualities
-    ac = chs.order(publish_datetime: :desc).take(120)
+    ac = c.hourly_city_forecast_air_qualities.last(120)
     #puts ac.first
     return nil unless ac.first
     cf[:city_name] = c.city_name
     cf[:publish_datetime] = ac.first.publish_datetime.strftime('%Y-%m-%d_%H')
     ac.each do |ch|
-      if ch.forecast_datetime > Time.new
+      if ch.forecast_datetime > Time.now
         hf << {forecast_datetime: ch.forecast_datetime.strftime('%Y-%m-%d_%H'), 
                AQI: ch.AQI, 
                main_pol: ch.main_pol, 

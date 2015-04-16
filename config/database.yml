@@ -84,6 +84,6 @@ test:
 #
 production:
   <<: *default
-  database: geo_rails_test_production
+  database: geo_rails_test_development
   #username: geo_rails_test
   #password: <%= ENV['GEO_RAILS_TEST_DATABASE_PASSWORD'] %>
