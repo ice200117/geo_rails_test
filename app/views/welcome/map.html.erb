@@ -6,7 +6,7 @@
 <script src="assets/map_welcome.js"></script>
 -->
 <script>
-  <% strnow = Time.now.strftime('%Y%m%d') %>
+  <% strnow = (Time.now - 60*60*24).strftime('%Y%m%d') %>
   $('#map4').backstretch("<%= image_url 'china_fc/'+strnow+'/Hourly/Animate_CUACE_25km_AQI_'+strnow+'.gif', alt: 'China forecast' %>");
 </script>
 <%= javascript_include_tag 'map_welcome', 'data-turbolinks-track' => true %>

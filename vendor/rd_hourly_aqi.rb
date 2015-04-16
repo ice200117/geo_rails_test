@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-hs = HourlyCityForecastAirQuality.all
-hs.each { |h| h.destroy }
+#hs = HourlyCityForecastAirQuality.all
+#hs.each { |h| h.destroy }
 
 
 def parse_line(line, c)
@@ -42,14 +42,21 @@ end
 
 #strtime = Time.mktime(Time.new.strftime("%Y%m%d")+'08')
 strtime = Time.new.strftime("%Y%m%d")+'08'
-puts strtime
+#puts strtime
 
 #test
+<<<<<<< Updated upstream
 strtime = '2015041108'
 #puts strtime
 
 #path = "/mnt/share/station/#{strtime[0,8]}/"
 path = "/mnt/share/station/"
+=======
+#strtime = '2015040808'
+#puts strtime
+
+path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
+>>>>>>> Stashed changes
 
 cs = City.all
 cs.each do |c|
