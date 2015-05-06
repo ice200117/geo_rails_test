@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'querys/aqis_by_city' => 'querys#aqis_by_city'
   get 'querys' => 'querys#cities'
   get 'querys/all_cities' => 'querys#all_cities2'
+  get 'querys/adj' => 'querys#adj'
 
   #get '/forecast_points/lookup' => 'forecast_points#lookup'
   #resources :forecast_points
@@ -10,6 +11,8 @@ Rails.application.routes.draw do
   resources :forecast_points do
     get 'lookup', :on => :collection
   end
+
+  mount ChinaCity::Engine => '/china_city'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,4 +1,43 @@
 class QuerysController < ApplicationController
+  include NumRu
+  @@alt = true
+
+  def adj
+    if params[:var]
+      varnames = [params[:var]]
+    else
+      varnames = ["CO_120", "NOX_120", "SO2_120"]
+    end
+    #puts varnames
+    if @@alt
+      @@alt = false
+      puts 'langfang'
+      path = '/mnt/share/Temp/BackupADJ/'
+    else
+      @@alt = true
+      puts 'baoding'
+      path = '/mnt/share/Temp/BackupADJ_baoding/'
+    end
+    nt = Time.now
+    i = 0
+    begin
+      #puts i
+      strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
+      ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
+      i = i + 1
+    end until File::exists?(ncfile)
+
+    #puts ncfile
+    file = NetCDF.open(ncfile)
+    dataArr = Hash.new
+    varnames.each do |var|
+      data = file.var(var).get
+      dataArr[var] = data[0..-1,0..-1,0,0].to_a
+    end
+
+    render json: dataArr
+
+  end
 
   def aqis_by_city
     pinyin = params[:city]

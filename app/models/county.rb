@@ -52,5 +52,5 @@ class County < ActiveRecord::Base
     ewkb = EWKB.generate(FACTORY.project(geom))
     where("ST_Intersects(boundary, ST_GeomFromEWKB(E'\\\\x#{ewkb}'))")
   end
-  
+
 end

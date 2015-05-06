@@ -5,6 +5,7 @@ require 'rgeo'
 require 'iconv'
 require 'active_record/connection_adapters/postgis_adapter/railtie'
 require 'will_paginate'
+require 'numru/netcdf'
 #require 'will_paginate/active_record'  # or data_mapper/sequel
 
 # Require the gems listed in Gemfile, including any gems
@@ -28,7 +29,7 @@ module GeoRailsTest
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     #config.active_record.raise_in_transactional_callbacks = true
-    
+
     config.assets.precompile += ["codemirror*", "codemirror/**/*"]
   end
 end

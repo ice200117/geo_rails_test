@@ -1,4 +1,23 @@
 <div class="container">
+
+  <% post = '370211' %>
+  <div class="city-group">
+    <select id="province" class="city-select">
+      <option value="">--省份--</option>
+      <%= options_for_select(ChinaCity.list, post[0,2]+'0000') %>
+    </select>
+    <select id="city" class="city-select">
+      <option value="">--城市--</option>
+      <%= options_for_select(ChinaCity.list(post[0,2]+'0000'), post[0,4]+'00') %>
+    </select>
+    <select id="town" class="city-select">
+      <option value="">--地区--</option>
+      <%= options_for_select(ChinaCity.list(post[0,4]+'0000'), post) %>
+    </select>
+  </div>
+
+
+
   <%= form_tag(bar_welcome_path, method: "get", html: { class: 'form-inline' }, remote: true) do %>
     <%= label_tag(:d, "城市：") %>
     <%= collection_select(:c, :city_id, City.all, :id, :city_name) %>
@@ -10,11 +29,12 @@
   <% end %>
 
   <div id="line_chart1">
-    <%= line_chart bar_welcome_path,  height: "400px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"}}%>
+    <%= column_chart bar_welcome_path,  height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"}}%>
   </div>
 
   <div class="col-xs-12">
-    <%= column_chart HourlyCityForecastAirQuality.group(:publish_datetime).group_by_hour(:forecast_datetime, format: "%HZ\n %d%b").average(:AQI), height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"},subtitle:{text:"2015-04-12_21:00       +  120h"}}  %>
+    <%= column_chart HourlyCityForecastAirQuality.group(:publish_datetime).group_by_day(:forecast_datetime, format: "%HZ\n %d%b").average(:AQI), height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"},subtitle:{text:"2015-04-12_21:00       +  120h"}}  %>
   </div>
 
 </div>
+

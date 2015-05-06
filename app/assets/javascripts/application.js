@@ -25,3 +25,4 @@
 //= require vendor/echarts/echarts
 //= require vendor/BMap/BMap
 //= require welcome
+//= require 'china_city/jquery.china_city'

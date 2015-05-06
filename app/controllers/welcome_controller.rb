@@ -115,11 +115,11 @@ class WelcomeController < ApplicationController
       hs = c.hourly_city_forecast_air_qualities.last(120)
     end
     #@chart = [{name: c.city_name, data: hs.group_by_hour(:forecast_datetime).average("AQI")}]
-    @chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime.strftime("%Y%m%d%H"),  h.AQI]} }]
+    @chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime.strftime("%H\n %d%b"),  h.AQI]} }]
     #@chart = c.hourly_city_forecast_air_qualities.group_by_hour(:forecast_datetime).average("AQI")
     respond_to do |format|
-      format.js   { }
       format.html { }
+      format.js   { }
       format.json {
         render json: @chart
       }
