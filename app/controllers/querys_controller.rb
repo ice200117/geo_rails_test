@@ -1,5 +1,7 @@
 class QuerysController < ApplicationController
   include NumRu
+  protect_from_forgery :except => :adj
+
   @@alt = true
 
   def adj
@@ -9,15 +11,16 @@ class QuerysController < ApplicationController
       varnames = ["CO_120", "NOX_120", "SO2_120"]
     end
     #puts varnames
-    if @@alt
-      @@alt = false
-      puts 'langfang'
-      path = '/mnt/share/Temp/BackupADJ/'
-    else
-      @@alt = true
-      puts 'baoding'
-      path = '/mnt/share/Temp/BackupADJ_baoding/'
-    end
+    path = '/mnt/share/Temp/BackupADJ/'
+    #if @@alt
+    #  @@alt = false
+    #  puts 'langfang'
+    #  path = '/mnt/share/Temp/BackupADJ/'
+    #else
+    #  @@alt = true
+    #  puts 'baoding'
+    #  path = '/mnt/share/Temp/BackupADJ_baoding/'
+    #end
     nt = Time.now
     i = 0
     begin
@@ -29,13 +32,20 @@ class QuerysController < ApplicationController
 
     #puts ncfile
     file = NetCDF.open(ncfile)
-    dataArr = Hash.new
+    @dataArr = Hash.new
     varnames.each do |var|
       data = file.var(var).get
-      dataArr[var] = data[0..-1,0..-1,0,0].to_a
+      @dataArr[var] = data[0..-1,0..-1,0,0].to_a
     end
-
-    render json: dataArr
+    #render json: @dataArr.to_json
+    respond_to do |format|
+      format.html { render json: @dataArr}
+      if params[:callback]
+        format.js { render :json => @dataArr.to_json, :callback => params[:callback] }
+      else
+        format.json { render json: @dataArr}
+      end
+    end
 
   end
 
