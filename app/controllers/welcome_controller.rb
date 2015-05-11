@@ -125,5 +125,9 @@ class WelcomeController < ApplicationController
       }
     end
   end
+
+  def pinggu
+  end
+
 end
 

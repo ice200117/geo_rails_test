@@ -7,6 +7,7 @@ include NumRu
 
 def read_adj (ncfile, city_file, var_name)
   file = NetCDF.open(ncfile)
+  
 
   # Get longitude
   var = file.var(var_name)

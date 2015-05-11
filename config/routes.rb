@@ -19,8 +19,10 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
   # You can have the root of your site routed with "root"
    #root 'welcome#index'
-   root 'welcome#map'
-   #get '/about' => 'welcome#about'
+   #root 'welcome#map'
+   root 'welcome#pinggu'
+   get '/case' => 'welcome#case'
+   get '/about' => 'welcome#about'
    #get '/show' => 'welcome#show'
    get '/map' => 'welcome#map'
    get '/bar' => 'welcome#bar', as: :bar_welcome
