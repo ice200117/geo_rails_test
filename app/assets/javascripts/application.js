@@ -24,5 +24,12 @@
 //= require vendor/esl
 //= require vendor/echarts/echarts
 //= require vendor/BMap/BMap
-//= require welcome
 //= require 'china_city/jquery.china_city'
+
+
+$(document).on("page:change", function() {
+  var page;
+  page = $("body").attr("class");
+  $(".nav li").removeClass("active");
+  return $("#"+page).addClass("active");
+});

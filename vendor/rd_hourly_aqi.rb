@@ -52,16 +52,16 @@ path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
 cs = City.all
 cs.each do |c|
   puts c.city_name_pinyin
-  if c.city_name_pinyin.rstrip.eql?('langfangshi')
-    py = c.city_name_pinyin.strip
-    fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
-    puts fn+" successful!"
-    f = File.open(path+fn) if File::exists?(path+fn) 
-    next unless f
-    f.readlines[2..-1].each do |line| 
-      parse_line(line, c)
-    end
-    f.close
+  #if c.city_name_pinyin.rstrip.eql?('langfangshi')
+  py = c.city_name_pinyin.strip
+  fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
+  puts fn+" successful!"
+  f = File.open(path+fn) if File::exists?(path+fn) 
+  next unless f
+  f.readlines[2..-1].each do |line| 
+    parse_line(line, c)
   end
+  f.close
+  #end
 end
 
