@@ -23,9 +23,11 @@ Rails.application.routes.draw do
    root 'welcome#pinggu'
    get '/case' => 'welcome#case'
    get '/about' => 'welcome#about'
+   get '/rank1503' => 'welcome#rank1503'
    #get '/show' => 'welcome#show'
    get '/map' => 'welcome#map'
    get '/bar' => 'welcome#bar', as: :bar_welcome
+   get '/pinggu' => 'welcome#pinggu', as: :pinggu_welcome
    get '/visits_by_day' => 'welcome#visits_by_day', as: :visits_by_day_welcome
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

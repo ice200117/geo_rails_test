@@ -1,4 +1,161 @@
+<div class="home-banner"> </div>
 <div class="container">
-  <h1>减排一览</h1>
-  
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 >
+        <strong>2015年3月环境总站74城市排名</strong>
+      </h3>
+    </div>
+    <div class="panel-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th > 排名 </th>
+            <th > 省份 </th>
+            <th > 城市 </th>
+            <th > 综合指数 </th>
+            <th > 倒数排名 </th>
+            <th > 上月倒数排名 </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="">
+            <td align="left">74 </td>
+            <td align="left">河北</td>
+            <td align="left">保定</td>
+            <td align="left">10.36 </td>
+            <td align="left" >1 -</td>
+            <td align="left" >1 </td>
+          </tr>
+          <tr class="">
+            <td align="left">73 </td>
+            <td align="left">河北</td>
+            <td align="left">唐山</td>
+            <td align="left">9.83 </td>
+            <td align="left" >2 <%= image_tag 'arrow_up.jpg'%></td>
+            <td align="left" >9</td>
+          </tr>
+          <tr class="">
+            <td align="left">72 </td>
+            <td align="left">河北</td>
+            <td align="left">邢台</td>
+            <td align="left">9.64 </td>
+            <td align="left" >3 <%= image_tag 'arrow_down.jpg'%></td>
+            <td align="left" >2 </td>
+          </tr>
+          <tr class="">
+            <td align="left">71 </td>
+            <td align="left">河南</td>
+            <td align="left">郑州</td>
+            <td align="left">9.29 </td>
+            <td align="left" >4 <%= image_tag 'arrow_up.jpg'%></td>
+            <td align="left" >6 </td>
+          </tr>
+          <tr class="">
+            <td align="left">70 </td>
+            <td align="left">河北</td>
+            <td align="left">石家庄</td>
+            <td align="left">8.85 </td>
+            <td align="left" >5 <%= image_tag 'arrow_up.jpg'%></td>
+            <td align="left" >8 </td>
+          </tr>
+          <tr class="">
+            <td align="left">69 </td>
+            <td align="left">山东</td>
+            <td align="left">济南</td>
+            <td align="left">8.82 </td>
+            <td align="left" >6 <%= image_tag 'arrow_up.jpg'%></td>
+            <td align="left" >11 </td>
+          </tr>
+          <tr class="">
+            <td align="left">68 </td>
+            <td align="left">河北</td>
+            <td align="left">衡水</td>
+            <td align="left">8.43 </td>
+            <td align="left" >7 -</td>
+            <td align="left" >7 </td>
+          </tr>
+          <tr class="">
+            <td align="left">67 </td>
+            <td align="left">河北</td>
+            <td align="left">邯郸</td>
+            <td align="left">7.94 </td>
+            <td align="left" >8 <%= image_tag 'arrow_up.jpg'%></td>
+            <td align="left" >10 </td>
+          </tr>
+          <tr class="">
+            <td align="left">66 </td>
+            <td align="left">河北</td>
+            <td align="left">廊坊</td>
+            <td align="left">7.78 </td>
+            <td align="left" >9 <%= image_tag 'arrow_up.jpg'%></td>
+            <td align="left" >14 </td>
+          </tr>
+          <tr class="">
+            <td align="left">65 </td>
+            <td align="left">辽宁</td>
+            <td align="left">沈阳</td>
+            <td align="left">7.61 </td>
+            <td align="left" >10 <%= image_tag 'arrow_down.jpg'%></td>
+            <td align="left" >3 </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel-footer">
+      <a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a>
+    </div>
+  </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 >
+        <strong>河北省各地级市的县区日均值排名</strong>
+      </h3>
+      <span class="label">更新时间: <%= Time.now.strftime("%Y-%m-%d %H:00:00") %></span> 
+    </div>
+    <div class="panel-body">
+
+  <%= form_tag(pinggu_welcome_path, method: "get", html: { class: 'form-inline' }, remote: true) do %>
+
+  <div class="city-group">
+    <div class="col-xs-2">
+    <select id="city" class="city-select form-control" name='city_post'>
+      <%= options_for_select(ChinaCity.list(@post[0,2]+'0000'), @post[0,4]+'00') %>
+    </select>
+    </div>
+    <div class="col-xs-10">
+    </div>
+    </div>
+    <button id="subbtn" type="submit" class="btn btn-default" >确认</button>
+  <% end %>
+
+  <table class="table table-striped">
+        <thead>
+          <tr>
+            <th > 区县 </th>
+            <th > AQI </th>
+            <th > 昨日AQI </th>
+            <th > 倒数排名 </th>
+            <th > 昨日倒数排名 </th>
+          </tr>
+        </thead>
+        <tbody id='city_rank'>
+          <% @county_data.each do |data| %>
+            <tr>
+              <td><%= data[:title]%></td>
+              <td><%= data[:aqi] %> <% (data[:aqi]>data[:yesterday_aqi]) ? (img='arrow_up.jpg') : (img='arrow_down.jpg') %> <%= (data[:aqi]==data[:yesterday_aqi]) ? '-':(image_tag img) %> </td>
+              <td><%= data[:yesterday_aqi]%></td>
+              <td><%= data[:r_rank] %> <% (data[:r_rank]<data[:yesterday_r_rank]) ? (img='arrow_up.jpg') : (img='arrow_down.jpg') %> <%= (data[:r_rank]==data[:yesterday_r_rank]) ? '-':(image_tag img)%> </td>
+              <td><%= data[:yesterday_r_rank]%></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+
+  </div>
+  </div>
 </div>
+<script>
+  $('.home-banner').backstretch("<%= image_url '3.png' %>");
+</script>
