@@ -165,6 +165,7 @@ class WelcomeController < ApplicationController
 
     # forecast data
     aqis = []
+    pri_pol = []
     c = City.find_by_post_number(@post)
     ch = c.hourly_city_forecast_air_qualities.last(120).group_by_day(&:forecast_datetime)
     ch.each do |time,fds|
@@ -177,6 +178,7 @@ class WelcomeController < ApplicationController
           sum << fd.AQI
         end
         aqis << [sum.min, sum.max]
+        pri_pol << fds[0].main_pol
       end
     end
     p aqis
@@ -203,7 +205,7 @@ class WelcomeController < ApplicationController
 
     # table lev
     #aqis = [[20,40],[30,80],[80,100],[40,120],[110,400]]
-    pri_pol = ['pm2.5','pm2.5','pm2.5','pm10','O3']
+    #pri_pol = ['pm2.5','pm2.5','pm2.5','pm10','O3']
     lev_arr = []
     lev_han_arr= []
     aqis.each do |aqi|
