@@ -11,7 +11,7 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
+#gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -21,6 +21,8 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
+
+gem 'sprockets-rails'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -45,8 +47,8 @@ end
 gem 'highcharts-rails', '~> 4.0.4.1'
 
 gem 'bootstrap-sass', '~> 3.3.3'
+gem 'autoprefixer-rails'
 
-gem 'sprockets-rails'
 
 gem 'jquery-migrate-rails', '~> 1.2.1'
 
@@ -63,8 +65,10 @@ gem 'iconv', '~> 1.0.4'
 gem 'will_paginate', '~> 3.0.6'
 gem 'bootstrap-will_paginate'
 
-gem 'codemirror-rails'
+#gem 'codemirror-rails'
 gem 'simple_form', '~> 3.1.0'
 gem 'china_city', '~> 0.0.4'
 
 gem 'ruby-netcdf', '~> 0.7.1.1'
+gem 'httparty', '~> 0.13.4'
+gem 'multipart-post', '~> 2.0.0'

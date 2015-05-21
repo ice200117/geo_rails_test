@@ -19,8 +19,6 @@
 //= require highcharts
 //= require highcharts/highcharts-more
 //= require chartkick
-//= require codemirror
-//= require codemirror/modes/ruby
 //= require vendor/esl
 //= require vendor/echarts/echarts
 //= require vendor/BMap/BMap

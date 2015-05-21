@@ -1,4 +1,6 @@
 class WelcomeController < ApplicationController
+  
+
   def index
 
     #data_table = GoogleVisualr::DataTable.new
@@ -128,7 +130,58 @@ class WelcomeController < ApplicationController
 
   def pinggu
     @post = params[:city_post] if params[:city_post]
-    puts @post if @post 
+    @post = '130600' if @post==nil || @post==''
+    @city_name = ChinaCity.get(@post)
+    @province_name = ChinaCity.get(@post[0,2]+'0000')
+
+    case @province_name
+    when '北京市'
+      @city_name = @province_name
+    when '上海市'
+      @city_name = @province_name
+    when '天津市'
+      @city_name = @province_name
+    when '重庆市'
+      @city_name = @province_name
+    end
+
+    # monitor data
+    md = hb_real
+    md[:cities].each do |c|
+      if @city_name.include? c['city']
+        p @city_name, c['city']
+        @aqi = c['aqi']
+        @pm2_5 = c['pm2_5']
+        @pm10 = c['pm10']
+        @so2 = c['so2']
+        @no2 = c['no2']
+        @o3 = c['o3']
+        @co = c['co']
+      end
+    end
+
+    
+
+
+    # forecast data
+    aqis = []
+    c = City.find_by_post_number(@post)
+    ch = c.hourly_city_forecast_air_qualities.last(120).group_by_day(&:forecast_datetime)
+    ch.each do |time,fds|
+      t = Time.now
+      puts time
+      #if time > Time.local(t.year,t.month,t.day)
+      if time >= Time.local(2015,4,24)
+        sum = []
+        fds.each do |fd|
+          sum << fd.AQI
+        end
+        aqis << [sum.min, sum.max]
+      end
+    end
+    p aqis
+
+    # test data
     @county_data = [{title:'安次区',aqi:191,yesterday_aqi:179,r_rank:1,yesterday_r_rank:2}, 
     {title:'广阳区', aqi:182,yesterday_aqi:186,r_rank:2,yesterday_r_rank:1}, 
     {title:'廊坊开发区', aqi:140,yesterday_aqi:177,r_rank:3,yesterday_r_rank:3}, 
@@ -141,7 +194,68 @@ class WelcomeController < ApplicationController
     {title:'霸州市', aqi:92,yesterday_aqi:92,r_rank:10,yesterday_r_rank:11}, 
     {title:'三河市', aqi:91,yesterday_aqi:160,r_rank:11,yesterday_r_rank:5}]
 
-    @post = '131000' unless @post
+    lev_hs = {"you"=>"优", "yellow"=>"良", "qingdu"=>"轻度", "zhong"=>"中度","zhongdu"=>"重度", "yanzhong"=>"严重"}
+
+    #ban lev
+    #@aqi = 120
+    @lev = get_lev(@aqi)
+    @lev_han = lev_hs[@lev]
+
+    # table lev
+    #aqis = [[20,40],[30,80],[80,100],[40,120],[110,400]]
+    pri_pol = ['pm2.5','pm2.5','pm2.5','pm10','O3']
+    lev_arr = []
+    lev_han_arr= []
+    aqis.each do |aqi|
+      lev_arr << {start:get_lev(aqi[0]),end:get_lev(aqi[1])}
+      lev_han_arr << {start:lev_hs[get_lev(aqi[0])],end:lev_hs[get_lev(aqi[1])]}
+    end
+
+
+    week_hs = ["星期日", "星期一","星期二","星期三","星期四","星期五","星期六"]
+
+    t = (Time.now + 60*60*24*3).strftime('%w').to_i
+    t1 = (Time.now + 60*60*24*4).strftime('%w').to_i
+    td = ['今天','明天','后天',week_hs[t], week_hs[t1]]
+
+    @day_fdata = []
+    lev_arr.each_with_index do |lev,i|
+      @day_fdata << {w:td[i], start:lev[:start], end:lev[:end], start_han:lev_han_arr[i][:start], end_han:lev_han_arr[i][:end],pol:pri_pol[i]}
+    end
+    puts @day_fdata
+
+    puts @post
   end
+
+  def get_lev(a)
+
+    if (0 .. 50) === a
+      lev = 'you'
+    elsif (50 .. 100) === a
+      lev = 'yellow'
+    elsif (100 .. 150) === a
+      lev = 'qingdu'
+    elsif (150 .. 200) === a
+      lev = 'zhong'
+    elsif (200 .. 300) === a
+      lev = 'zhongdu'
+    elsif (300 .. 500) === a
+      lev = 'yanzhong'
+    end
+  end
+
+  def china_rank 
+    response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret=CHINARANK&type=HOUR&key='+Digest::MD5.hexdigest('CHINARANKHOUR'))
+    JSON.parse(response.body)
+  end
+
+  def hb_real
+     d = china_rank
+     hs = Hash.new
+     hs[:time] = Time.local(d['time'])
+     hs[:cities] =  d['rows']
+     hs
+  end
+
 end
 
