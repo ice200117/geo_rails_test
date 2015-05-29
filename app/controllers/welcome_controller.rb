@@ -171,8 +171,8 @@ class WelcomeController < ApplicationController
     ch.each do |time,fds|
       t = Time.now
       puts time
-      #if time > Time.local(t.year,t.month,t.day)
-      if time >= Time.local(2015,4,24)
+      if time > Time.local(t.year,t.month,t.day)
+      #if time >= Time.local(2015,4,24)
         sum = []
         fds.each do |fd|
           sum << fd.AQI

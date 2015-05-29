@@ -125,7 +125,8 @@
       </h3>
     </div>
     <div class="panel-body">
-        <%= image_tag 'Animate_CUACE_25km_AQI_20150509.gif', class:'col-xs-8' %>
+  	<% strnow1 = (Time.now).strftime('%Y%m%d') %>
+        <%= image_tag 'china_fc09/'+strnow1+'/Hourly/Animate_CUACE_09km_AQI_'+strnow1+'.gif', class:'col-xs-8' %>
       <div class="col-xs-4">
         <div> <%=@city_name%>未来五天趋势预报</div>
         <table class="table table-striped">
