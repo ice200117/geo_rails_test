@@ -251,6 +251,13 @@ class WelcomeController < ApplicationController
     JSON.parse(response.body)
   end
 
+  def jjj_history_data(datestr)
+    option = {secret:'JINGJINJIDATA',type:'DAY',date:datestr,key:Digest::MD5.hexdigest('JINGJINJIDATA'+'DAY'+datestr) }
+    response = HTTParty.post('http://www.izhenqi.cn/api/getdata_history.php', :body => option)
+    JSON.parse(response.body)
+  end
+
+
   def hb_real
      d = china_rank
      hs = Hash.new
