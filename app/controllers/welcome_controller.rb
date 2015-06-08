@@ -170,7 +170,6 @@ class WelcomeController < ApplicationController
     ch = c.hourly_city_forecast_air_qualities.last(120).group_by_day(&:forecast_datetime)
     ch.each do |time,fds|
       t = Time.now
-      puts time
       if time > Time.local(t.year,t.month,t.day)
       #if time >= Time.local(2015,4,24)
         sum = []
@@ -224,9 +223,7 @@ class WelcomeController < ApplicationController
     lev_arr.each_with_index do |lev,i|
       @day_fdata << {w:td[i], start:lev[:start], end:lev[:end], start_han:lev_han_arr[i][:start], end_han:lev_han_arr[i][:end],pol:pri_pol[i]}
     end
-    puts @day_fdata
 
-    puts @post
   end
 
   def get_lev(a)
