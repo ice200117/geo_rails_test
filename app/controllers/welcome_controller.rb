@@ -1,4 +1,5 @@
 class WelcomeController < ApplicationController
+  include NumRu
   
 
   def index
@@ -154,6 +155,7 @@ class WelcomeController < ApplicationController
 
     # monitor data
     md = hb_real
+    @rt = md[:time]
     md[:cities].each do |c|
       if @city_name.include? c['city']
         p @city_name, c['city']
@@ -188,6 +190,12 @@ class WelcomeController < ApplicationController
       end
     end
     p aqis
+
+    # adj data
+    @adj_per = adj_percent("SO2_120")
+    @factor = 'SO2'
+    p @adj_per
+    
 
     # test data
     @county_data = [{title:'安次区',aqi:191,yesterday_aqi:179,r_rank:1,yesterday_r_rank:2}, 
@@ -293,10 +301,103 @@ class WelcomeController < ApplicationController
 
   def get_data_to_pinggu
     @lfdatabyhour=get_rank_json('lfdata','LANGFANGRANK','HOUR','')
-
-    
   end
 
+  CITY_LIST = [
+    "public/adj/baoding.txt",
+    "public/adj/beijing.txt",
+    "public/adj/cangzhou.txt",
+    "public/adj/chengde.txt",
+    "public/adj/handan.txt",
+    "public/adj/hengshui.txt",
+    "public/adj/langfang.txt",
+    "public/adj/qinhuangdao.txt",
+    "public/adj/shijiazhuang.txt",
+    "public/adj/tangshan.txt",
+    "public/adj/tianjin.txt",
+    "public/adj/xingtai.txt",
+    "public/adj/zhangjiakou.txt" ]
+  CL = [
+    "保定",
+    "北京",
+    "沧州",
+    "承德",
+    "邯郸",
+    "衡水",
+    "廊坊",
+    "秦皇岛",
+    "石家庄",
+    "唐山",
+    "天津",
+    "邢台",
+    "张家口" ]
+  def adj_percent(type="")
+    nt = Time.now
+    i = 0
+    path = 'public/images/ftproot/Temp/BackupADJ_baoding/'
+    begin
+      #puts i
+      strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
+      ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
+      i = i + 1
+      break if i>30
+    end until File::exists?(ncfile)
+    
+    #ncfile = 'public/adj/CUACE_09km_adj_2015-06-08.nc'
+
+    if type==""
+      var_list = ["CO_120", "NOX_120", "SO2_120"]
+    else
+      var_list = [type]
+    end
+    adj_per = {}
+    var_list.each { |var_name|
+      pl = (cal_var ncfile, var_name)
+      puts var_name
+      pl.sort.reverse.each { |p|
+        print CL[pl.index(p)], "   ", p, "\n"
+        adj_per[CL[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
+      }
+    }
+    adj_per
+  end
+
+  def cal_var ( ncfile, var_name )
+    pl = Array.new
+    CITY_LIST.each { |city_file|
+      pl << (read_adj ncfile, city_file, var_name)
+    }
+    return pl
+  end
+
+  def read_adj (ncfile, city_file, var_name)
+    file = NetCDF.open(ncfile)
+
+    # Get longitude
+    var = file.var(var_name)
+    data = var.get
+    #puts data.shape
+    
+    x = Array.new
+    y = Array.new
+    #puts city_file
+    lines = IO.readlines(city_file)
+    num_points = lines.length - 1
+    #lines.each { |line|
+    for i in 1..lines.length-1
+      as = lines[i].split(pattern=' ') 
+      x << as[0].to_i - 1
+      y << as[1].to_i - 1
+    end
+    #}
+
+    sum_per = 0.0
+    for i in 0..num_points-1
+      #puts data[x[i],y[i],0,0]
+      sum_per += data[x[i],y[i],0,0]
+    end
+    return sum_per
+  end
 
 end
 

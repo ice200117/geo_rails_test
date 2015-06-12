@@ -57,7 +57,7 @@
                 </li>
                 <li  class="haze-value-bar">
                 <!-- 污染类型 -->
-                <span class="haze-type">AQI&nbsp;&nbsp;&nbsp;&nbsp;<%=Time.now.strftime('%H')%>时更新</span>
+                <span class="haze-type">AQI&nbsp;&nbsp;&nbsp;&nbsp;<%=@rt.strftime('%H')%>时更新</span>
                 <!-- 污染类型 end-->
                 </li>
               </ul> 
@@ -133,8 +133,18 @@
 
       <div class="tab-content">
         <div class="tab-pane" contenteditable="true" id="panel-437763">
-          <% strnow1 = (Time.now).strftime('%Y%m%d') %>
-          <%= image_tag 'china_fc09/'+strnow1+'/Hourly/Animate_CUACE_09km_AQI_'+strnow1+'.gif', class:'col-xs-8' %>
+          <%
+      nt = Time.now
+      i = 0
+      path = '/mnt/share/Products/Web/Forecast/CUACE/'
+      begin
+        strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
+        file = path + strtime + '/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif'
+        i = i + 1
+        break if i == 7 
+      end until File::exists?(file)
+          %>
+          <%= image_tag 'china_fc09/'+strtime+'/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif', class:'col-xs-8' %>
           <div class="col-xs-4">
             <div> <%=@city_name%>未来五天趋势预报</div>
             <table class="table table-striped">
@@ -162,11 +172,21 @@
 
         <div class="tab-pane active" contenteditable="true" id="panel-55716">
           <div class="zc-map-labels col-xs-12 row" >
-            <% strnow1 = (Time.now).strftime('%Y%m%d') %>
-            <% strnow2 = (Time.now).strftime('%Y-%m-%d') %>
-            <a href="javascript:void(0);" class="active change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>'>SO2</a>
-            <a href="javascript:void(0);" class="change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_CO_120_"+strnow2+".png", class:"col-xs-12"%>'>CO</a>
-            <a href="javascript:void(0);" class="change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_NOX_120_"+strnow2+".png", class:"col-xs-12"%>'>Nox</a>
+          <%
+      nt = Time.now
+      i = 0
+      path = '/mnt/share/Products/Web/ADJ/'
+      begin
+        strnow1 = (nt-60*60*24*i).strftime('%Y%m%d') 
+        strnow2 = (nt-60*60*24*i).strftime("%Y-%m-%d")
+        file = path + strnow1 + '/CUACE_09km_adj_SO2_120_'+strnow2+'.png'
+        i = i + 1
+        break if i == 7 
+      end until File::exists?(file)
+          %>
+            <a href="javascript:void(0);" class="active change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='SO2'>SO2</a>
+            <a href="javascript:void(0);" class="change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_CO_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='CO'>CO</a>
+            <a href="javascript:void(0);" class="change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_NOX_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='NOX'>Nox</a>
             <!--
     <a href="javascript:void(0);" class="active change" data-val='<%= image_tag "ftproot/Products/Web/ADJ/"+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>'>SO2</a>
     <a href="javascript:void(0);" class="change" data-val='<%= image_tag "ftproot/Products/Web/ADJ/"+strnow1+"/CUACE_09km_adj_CO_120_"+strnow2+".png", class:"col-xs-12"%>'>CO</a>
@@ -177,8 +197,10 @@
           <div class="yuanzhuizong col-xs-8">
           </div>
           <div class="col-xs-4">
-            <div> <%=@city_name%>未来五天污染的来源贡献比</div>
-            <%= pie_chart({"北京市" => 40, "保定市" => 60}, width:"350px", height:"200px", class:"container") %>
+            <div> <%=@city_name%><span id="factor"><%=@factor%></span>因子未来五天污染的来源贡献比</div>
+            <div id='adj_chart'>
+            <%= pie_chart(@adj_per, width:"350px", height:"200px") %>
+            </div>
             <table class="table table-striped">
               <tr>
                 <th>序号</th>
@@ -187,17 +209,14 @@
                 <!--<th>综合指数</th>-->
               </tr>
 
-              <% @day_fdata.each do |row| %>
+              <% i = 0 %>
+            <% @adj_per.each{ |key,value| %>
                 <tr>
-                <td><%=row[:w]%></td>
-                <td>
-                  <span class="<%=row[:start]%>" style='width:40px;color:#fff;'><%=row[:start_han]%></span>
-                  ~
-                  <span class="<%=row[:end]%>" style='width:40px;color:#fff;'><%=row[:end_han]%></span>
-                </td>
-                <td><%=row[:pol]%></td>
-              </tr>
-            <% end %>
+                <td><%=i = i+1 %></td>
+                <td><%=key %> </td>
+                <td><%=value%></td>
+                </tr>
+            <% } %>
             </table>
           </div>
         </div>
@@ -747,15 +766,27 @@ $(function(){
       return;
       }
       $(this).addClass("active").siblings().removeClass("active");
+      $("#factor").html($(this).data("type"))
       change($(this).data("val"));
+      
       });
     });
 function change(type){
   $('.yuanzhuizong').html(type);
 }
 
-<% strnow1 = (Time.now).strftime('%Y%m%d') %>
-<% strnow2 = (Time.now).strftime('%Y-%m-%d') %>
+<%
+    nt = Time.now
+i = 0
+path = '/mnt/share/Products/Web/ADJ/'
+begin
+  strnow1 = (nt-60*60*24*i).strftime('%Y%m%d') 
+  strnow2 = (nt-60*60*24*i).strftime("%Y-%m-%d")
+  file = path + strnow1 + '/CUACE_09km_adj_SO2_120_'+strnow2+'.png'
+  i = i + 1
+  break if i == 7 
+end until File::exists?(file)
+%>
 change('<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>');
 </script>
 
