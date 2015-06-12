@@ -138,7 +138,7 @@
       i = 0
       path = '/mnt/share/Products/Web/Forecast/CUACE/'
       begin
-        strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
+        strtime = (nt-60*60*24*i).strftime("%Y%m%d")
         file = path + strtime + '/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif'
         i = i + 1
         break if i == 7 
@@ -184,14 +184,14 @@
         break if i == 7 
       end until File::exists?(file)
           %>
+            <!--
             <a href="javascript:void(0);" class="active change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='SO2'>SO2</a>
             <a href="javascript:void(0);" class="change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_CO_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='CO'>CO</a>
             <a href="javascript:void(0);" class="change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_NOX_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='NOX'>Nox</a>
-            <!--
-    <a href="javascript:void(0);" class="active change" data-val='<%= image_tag "ftproot/Products/Web/ADJ/"+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>'>SO2</a>
-    <a href="javascript:void(0);" class="change" data-val='<%= image_tag "ftproot/Products/Web/ADJ/"+strnow1+"/CUACE_09km_adj_CO_120_"+strnow2+".png", class:"col-xs-12"%>'>CO</a>
-    <a href="javascript:void(0);" class="change" data-val='<%= image_tag "ftproot/Products/Web/ADJ/"+strnow1+"/CUACE_09km_adj_NOX_120_"+strnow2+".png", class:"col-xs-12"%>'>Nox</a>
     -->
+    <a href="javascript:void(0);" class="active change" data-val='<%= image_tag "ftproot/Products/Web/ADJ/"+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='SO2'>SO2</a>
+    <a href="javascript:void(0);" class="change" data-val='<%= image_tag "ftproot/Products/Web/ADJ/"+strnow1+"/CUACE_09km_adj_CO_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='CO'>CO</a>
+    <a href="javascript:void(0);" class="change" data-val='<%= image_tag "ftproot/Products/Web/ADJ/"+strnow1+"/CUACE_09km_adj_NOX_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='NOX'>Nox</a>
           </div>
           <div class="row">
           <div class="yuanzhuizong col-xs-8">
@@ -787,6 +787,7 @@ begin
   break if i == 7 
 end until File::exists?(file)
 %>
-change('<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>');
+//change('<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>');
+change('<%= image_tag "ftproot/Products/Web/ADJ/"+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
 </script>
 

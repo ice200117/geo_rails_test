@@ -273,7 +273,7 @@ class WelcomeController < ApplicationController
   def hb_real
      d = china_rank
      hs = Hash.new
-     hs[:time] = Time.local(d['time'])
+     hs[:time] = (d['time']).to_time
      hs[:cities] =  d['rows']
      hs
   end
@@ -340,7 +340,7 @@ class WelcomeController < ApplicationController
       strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
       ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
       i = i + 1
-      break if i>30
+      return {} if i>30
     end until File::exists?(ncfile)
     
     #ncfile = 'public/adj/CUACE_09km_adj_2015-06-08.nc'
