@@ -129,6 +129,13 @@ class WelcomeController < ApplicationController
   end
 
   def pinggu
+
+    @lfdatabyhour=get_rank_json('rankdata','LANGFANGRANK','HOUR','')
+    @lfdatabyday=get_rank_json('rankdata','LANGFANGRANK','DAY','')
+    @chinadata=get_rank_json('rankdata','CHINARANK','DAY','')
+    @hebeidatabyhour=get_rank_json('rankdata','HEBEIRANK','HOUR','');
+    @hebeidatabyday=get_rank_json('rankdata','HEBEIRANK','DAY','');
+
     @post = params[:city_post] if params[:city_post]
     @post = '130600' if @post==nil || @post==''
     @city_name = ChinaCity.get(@post)
@@ -262,6 +269,34 @@ class WelcomeController < ApplicationController
      hs[:cities] =  d['rows']
      hs
   end
+
+  def get_rank_json(webUrl,secretstr,typestr,datestr)
+    if webUrl == 'zq'
+      response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+secretstr+'&type='+typestr+'&key='+Digest::MD5.hexdigest(secretstr+typestr))
+    elsif webUrl == 'lfdatabyhistory'
+      option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
+      response = HTTParty.post('http://www.izhenqi.cn/api/getdata_history.php', :body => option)
+    elsif webUrl == 'rankdata'
+      option = {secret:secretstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+typestr) }
+      response = HTTParty.post('http://www.izhenqi.cn/api/getrank.php', :body => option)
+    elsif webUrl == 'lfdatabymonth'
+      option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
+      response = HTTParty.post('http://www.izhenqi.cn/api/getrank_month.php', :body => option)
+    end
+    json_data=JSON.parse(response.body)
+    hs = Hash.new
+    puts  json_data['time']
+    hs[:time] =json_data['time']
+    hs[:cities] = json_data['rows']
+    hs
+  end
+
+  def get_data_to_pinggu
+    @lfdatabyhour=get_rank_json('lfdata','LANGFANGRANK','HOUR','')
+
+    
+  end
+
 
 end
 
