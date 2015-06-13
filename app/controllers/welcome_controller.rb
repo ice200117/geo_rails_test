@@ -192,7 +192,8 @@ class WelcomeController < ApplicationController
     p aqis
 
     # adj data
-    @adj_per = adj_percent("SO2_120")
+    @city_adj = 'ADJ_baoding/'
+    @adj_per = adj_percent("SO2_120", @city_adj)
     @factor = 'SO2'
     p @adj_per
     
@@ -258,11 +259,6 @@ class WelcomeController < ApplicationController
     end
   end
 
-  def china_rank 
-    response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret=CHINARANK&type=HOUR&key='+Digest::MD5.hexdigest('CHINARANKHOUR'))
-    JSON.parse(response.body)
-  end
-
   def jjj_history_data(datestr)
     option = {secret:'JINGJINJIDATA',type:'DAY',date:datestr,key:Digest::MD5.hexdigest('JINGJINJIDATA'+'DAY'+datestr) }
     response = HTTParty.post('http://www.izhenqi.cn/api/getdata_history.php', :body => option)
@@ -271,31 +267,40 @@ class WelcomeController < ApplicationController
 
 
   def hb_real
-     d = china_rank
-     hs = Hash.new
-     hs[:time] = (d['time']).to_time
-     hs[:cities] =  d['rows']
-     hs
+    hs = Hash.new
+    begin
+      response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret=CHINARANK&type=HOUR&key='+Digest::MD5.hexdigest('CHINARANKHOUR'))
+      d = JSON.parse(response.body)
+      hs[:time] = (d['time']).to_time
+      hs[:cities] =  d['rows']
+    rescue
+      puts 'Can not get data from izhenqi, please check network!'
+    end
+    hs
   end
 
   def get_rank_json(webUrl,secretstr,typestr,datestr)
-    if webUrl == 'zq'
-      response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+secretstr+'&type='+typestr+'&key='+Digest::MD5.hexdigest(secretstr+typestr))
-    elsif webUrl == 'lfdatabyhistory'
-      option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
-      response = HTTParty.post('http://www.izhenqi.cn/api/getdata_history.php', :body => option)
-    elsif webUrl == 'rankdata'
-      option = {secret:secretstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+typestr) }
-      response = HTTParty.post('http://www.izhenqi.cn/api/getrank.php', :body => option)
-    elsif webUrl == 'lfdatabymonth'
-      option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
-      response = HTTParty.post('http://www.izhenqi.cn/api/getrank_month.php', :body => option)
-    end
-    json_data=JSON.parse(response.body)
     hs = Hash.new
-    puts  json_data['time']
-    hs[:time] =json_data['time']
-    hs[:cities] = json_data['rows']
+    begin
+      if webUrl == 'zq'
+        response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+secretstr+'&type='+typestr+'&key='+Digest::MD5.hexdigest(secretstr+typestr))
+      elsif webUrl == 'lfdatabyhistory'
+        option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
+        response = HTTParty.post('http://www.izhenqi.cn/api/getdata_history.php', :body => option)
+      elsif webUrl == 'rankdata'
+        option = {secret:secretstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+typestr) }
+        response = HTTParty.post('http://www.izhenqi.cn/api/getrank.php', :body => option)
+      elsif webUrl == 'lfdatabymonth'
+        option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
+        response = HTTParty.post('http://www.izhenqi.cn/api/getrank_month.php', :body => option)
+      end
+      json_data=JSON.parse(response.body)
+      puts  json_data['time']
+      hs[:time] =json_data['time']
+      hs[:cities] = json_data['rows']
+    rescue
+      puts 'Can not get data from izhenqi, please check network!'
+    end 
     hs
   end
 
@@ -331,10 +336,10 @@ class WelcomeController < ApplicationController
     "天津",
     "邢台",
     "张家口" ]
-  def adj_percent(type="")
+  def adj_percent(type="", city='ADJ_baoding')
     nt = Time.now
     i = 0
-    path = 'public/images/ftproot/Temp/BackupADJ_baoding/'
+    path = 'public/images/ftproot/Temp/Backup'+city+'/'
     begin
       #puts i
       strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")

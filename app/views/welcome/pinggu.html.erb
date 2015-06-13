@@ -175,7 +175,7 @@
           <%
       nt = Time.now
       i = 0
-      path = '/mnt/share/Products/Web/ADJ/'
+      path = '/mnt/share/Products/Web/'+@city_adj
       begin
         strnow1 = (nt-60*60*24*i).strftime('%Y%m%d') 
         strnow2 = (nt-60*60*24*i).strftime("%Y-%m-%d")
@@ -189,9 +189,9 @@
             <a href="javascript:void(0);" class="change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_CO_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='CO'>CO</a>
             <a href="javascript:void(0);" class="change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_NOX_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='NOX'>Nox</a>
     -->
-    <a href="javascript:void(0);" class="active change" data-val='<%= image_tag "ftproot/Products/Web/ADJ/"+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='SO2'>SO2</a>
-    <a href="javascript:void(0);" class="change" data-val='<%= image_tag "ftproot/Products/Web/ADJ/"+strnow1+"/CUACE_09km_adj_CO_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='CO'>CO</a>
-    <a href="javascript:void(0);" class="change" data-val='<%= image_tag "ftproot/Products/Web/ADJ/"+strnow1+"/CUACE_09km_adj_NOX_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='NOX'>Nox</a>
+    <a href="javascript:void(0);" class="active change" data-val='<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='SO2'>SO2</a>
+    <a href="javascript:void(0);" class="change" data-val='<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_CO_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='CO'>CO</a>
+    <a href="javascript:void(0);" class="change" data-val='<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_NOX_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='NOX'>Nox</a>
           </div>
           <div class="row">
           <div class="yuanzhuizong col-xs-8">
@@ -778,7 +778,7 @@ function change(type){
 <%
     nt = Time.now
 i = 0
-path = '/mnt/share/Products/Web/ADJ/'
+path = '/mnt/share/Products/Web/'+@city_adj
 begin
   strnow1 = (nt-60*60*24*i).strftime('%Y%m%d') 
   strnow2 = (nt-60*60*24*i).strftime("%Y-%m-%d")
@@ -788,6 +788,6 @@ begin
 end until File::exists?(file)
 %>
 //change('<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>');
-change('<%= image_tag "ftproot/Products/Web/ADJ/"+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
+change('<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
 </script>
 
