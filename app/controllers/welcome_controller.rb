@@ -193,7 +193,7 @@ class WelcomeController < ApplicationController
 
     # adj data
     case @post
-    when 130600 
+    when '130600'
       @city_adj = 'ADJ_baoding/'
     else
       @city_adj = 'ADJ/'
