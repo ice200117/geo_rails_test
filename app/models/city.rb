@@ -1,6 +1,7 @@
 class City < ActiveRecord::Base
   before_save       :setLonLat
   has_many :hourly_city_forecast_air_qualities
+  validates_uniqueness_of :post_number
 
   set_rgeo_factory_for_column(:lonlat,
     RGeo::Geographic.spherical_factory(:srid => 4326))
