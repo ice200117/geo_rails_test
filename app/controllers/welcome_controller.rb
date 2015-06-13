@@ -192,7 +192,12 @@ class WelcomeController < ApplicationController
     p aqis
 
     # adj data
-    @city_adj = 'ADJ_baoding/'
+    case @post
+    when 130600 
+      @city_adj = 'ADJ_baoding/'
+    else
+      @city_adj = 'ADJ/'
+    end
     @adj_per = adj_percent("SO2_120", @city_adj)
     @factor = 'SO2'
     p @adj_per

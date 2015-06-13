@@ -10,9 +10,9 @@
       <option value="">--城市--</option>
       <%= options_for_select(ChinaCity.list(post[0,2]+'0000'), post[0,4]+'00') %>
     </select>
-    <select id="town" class="city-select">
+    <select id="district" class="city-select">
       <option value="">--地区--</option>
-      <%= options_for_select(ChinaCity.list(post[0,4]+'0000'), post) %>
+      <%= options_for_select(ChinaCity.list(post[0,4]+'00'), post) %>
     </select>
   </div>
 
