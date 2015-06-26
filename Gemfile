@@ -53,7 +53,6 @@ gem 'highcharts-rails', '~> 4.0.4.1'
 gem 'bootstrap-sass', '~> 3.3.3'
 gem 'autoprefixer-rails'
 
-
 gem 'jquery-migrate-rails', '~> 1.2.1'
 
 gem 'groupdate'

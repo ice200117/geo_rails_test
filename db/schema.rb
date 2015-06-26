@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150403033734) do
+ActiveRecord::Schema.define(version: 20150625140959) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,29 @@ ActiveRecord::Schema.define(version: 20150403033734) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.spatial  "boundary",   limit: {:srid=>0, :type=>"multi_polygon"}
+  end
+
+  create_table "day_cities", force: true do |t|
+    t.integer  "city_id"
+    t.float    "SO2"
+    t.float    "NO2"
+    t.float    "CO"
+    t.float    "O3"
+    t.float    "pm10"
+    t.float    "pm25"
+    t.float    "zonghezhishu"
+    t.float    "AQI"
+    t.integer  "level"
+    t.string   "main_pol"
+    t.float    "SO2_change_rate"
+    t.float    "NO2_change_rate"
+    t.float    "CO_change_rate"
+    t.float    "O3_change_rate"
+    t.float    "pm10_change_rate"
+    t.float    "pm25_change_rate"
+    t.float    "zongheindex_change_rate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "forecast_points", force: true do |t|

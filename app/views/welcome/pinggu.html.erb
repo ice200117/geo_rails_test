@@ -413,10 +413,26 @@
 								<th>CO(mg/m3)</th>
 								<th>O3(ug/m3)</th>
 								<th>PM10(ug/m3)</th>
-								<th>PM2.5(ug/m3)</th>
-								<th>综合指数</th>
-							</tr>
-						</thead>
+                <th>PM2.5(ug/m3)</th>
+                <th>综合指数</th>
+              </tr>
+            </thead>
+            <tbody>
+            <% @lfdatabyday[:cities].each do |data|%>
+              <tr>
+              <td><%= data['rank'] %></td>
+              <td><%= data['city'] %></td>
+              <td><%= data['so2'] %></td>
+              <td><%= data['no2'] %></td>
+              <td><%= data['co'] %></td>
+              <td><%= data['o3'] %></td>
+              <td><%= data['pm10'] %></td>
+              <td><%= data['pm2_5'] %></td>
+              <td><%= data['aqi'] %></td>
+            </tr>
+          <% end %>
+            </tbody>
+
 					</table>	
 				</div>		
 				<div class="tab-pane fade" id="yue">
