@@ -562,13 +562,13 @@
       <div class="col-xs-12">
         <div class="tab-title">
           <ul class="nav nav-tabs">
-            <li class="active"><a href="#ri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li> 
-            <li><a href="#yue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
-            <li><a href="#nian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
+            <li class="active"><a href="#jjjri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li> 
+            <li><a href="#jjjyue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
+            <li><a href="#jjjnian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
           </ul>
         </div>
       <div class="tab-content">
-        <div class="tab-pane fade in active" id="ri">
+        <div class="tab-pane fade in active" id="jjjri">
           <table class="table">
             <thead>
               <tr>
@@ -583,9 +583,31 @@
                 <th>综合指数</th>
               </tr>
             </thead>
+			<tbody>
+			   <% 
+                  i=0
+                  @jjjzonghezhishubyday[:cities].each do |data|
+                    i+=1
+                    if i == 13
+                      break
+                    end
+                %>
+              <tr>
+                <th><%= data['rank'] %></th>
+                <th><%= data['city'] %></th>
+                <th><%= data['so2'] %></th>
+                <th><%= data['no2'] %></th>
+                <th><%= data['co'] %></th>
+                <th><%= data['o3'] %></th>
+                <th><%= data['pm10'] %></th>
+                <th><%= data['pm2_5'] %></th>
+                <th><%= data['aqi'] %></th>
+              </tr>
+			  <% end %>
+            </tbody>
           </table>  
         </div>    
-        <div class="tab-pane fade" id="yue">
+        <div class="tab-pane fade" id="jjjyue">
           <table class="table">
             <thead>
               <tr>
@@ -602,7 +624,7 @@
             </thead>
           </table>
         </div>
-        <div class="tab-pane fade" id="nian">
+        <div class="tab-pane fade" id="jjjnian">
           <table class="table">
             <thead>
               <tr>
@@ -712,13 +734,14 @@
       <div class="col-xs-12">
         <div class="tab-title">
           <ul class="nav nav-tabs">
-            <li class="active"><a href="#ri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li> 
-            <li><a href="#yue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
-            <li><a href="#nian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
+            <li class="active"><a href="#sfri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li> 
+            <li><a href="#sfyue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
+            <li><a href="#sfnian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
           </ul>
         </div>
       <div class="tab-content">
-        <div class="tab-pane fade in active" id="ri">
+        <div class="tab-pane fade in active" id="sfri">
+		
           <table class="table">
             <thead>
               <tr>
@@ -730,12 +753,36 @@
                 <th>O3(ug/m3)</th>
                 <th>PM10(ug/m3)</th>
                 <th>PM2.5(ug/m3)</th>
-                <th>综合指数</th>
+                <th>AQI</th>
               </tr>
             </thead>
-          </table>  
+            <tbody>
+			   <% 
+                  i=0
+                  @sfcitiesrankbyday[:cities].each do |data|
+                    i+=1
+                    if i == 20
+                      break
+                    end
+                %>
+              <tr>
+                <th><%= data['rank'] %></th>
+                <th><%= data['city'] %></th>
+                <th><%= data['so2'] %></th>
+                <th><%= data['no2'] %></th>
+                <th><%= data['co'] %></th>
+                <th><%= data['o3'] %></th>
+                <th><%= data['pm10'] %></th>
+                <th><%= data['pm2_5'] %></th>
+                <th><%= data['aqi'] %></th>
+              </tr>
+			  <% end %>
+            </tbody>
+          </table> 
+				  
         </div>    
-        <div class="tab-pane fade" id="yue">
+        <div class="tab-pane fade" id="sfyue">
+		
           <table class="table">
             <thead>
               <tr>
@@ -750,6 +797,28 @@
                 <th>综合指数</th>
               </tr>
             </thead>
+			<tbody>
+			   <% 
+                  i=0
+                  @sfcitiesrankbymonth[:cities].each do |data|
+                    i+=1
+                    if i == 20
+                      break
+                    end
+                %>
+              <tr>
+                <th><%= data['rank'] %></th>
+                <th><%= data['city'] %></th>
+                <th><%= data['so2'] %></th>
+                <th><%= data['no2'] %></th>
+                <th><%= data['co_95'] %></th>
+                <th><%= data['o3_90'] %></th>
+                <th><%= data['pm10'] %></th>
+                <th><%= data['pm2_5'] %></th>
+                <th><%= data['complexindex'] %></th>
+              </tr>
+			  <% end %>
+            </tbody>
           </table>
         </div>
         <div class="tab-pane fade" id="nian">
@@ -767,6 +836,28 @@
                 <th>综合指数</th>
               </tr>
             </thead>
+			<tbody>
+			   <% 
+                  i=0
+                  @sfcitiesrankbyyear[:cities].each do |data|
+                    i+=1
+                    if i == 20
+                      break
+                    end
+                %>
+              <tr>
+                <th><%= data['rank'] %></th>
+                <th><%= data['city'] %></th>
+                <th><%= data['so2'] %></th>
+                <th><%= data['no2'] %></th>
+                <th><%= data['co_95'] %></th>
+                <th><%= data['o3_90'] %></th>
+                <th><%= data['pm10'] %></th>
+                <th><%= data['pm2_5'] %></th>
+                <th><%= data['complexindex'] %></th>
+              </tr>
+			  <% end %>
+            </tbody>
           </table>
         </div>
       </div>

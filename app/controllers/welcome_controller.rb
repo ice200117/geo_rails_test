@@ -131,12 +131,17 @@ class WelcomeController < ApplicationController
 
   def pinggu
 
+	d = DateTime.now
+	d -= 1
     @lfdatabyhour=get_rank_json('rankdata','LANGFANGRANK','HOUR','')
     @lfdatabyday=get_rank_json('rankdata','LANGFANGRANK','DAY','')
     @chinadata=get_rank_json('rankdata','CHINARANK','DAY','')
     @hebeidatabyhour=get_rank_json('rankdata','HEBEIRANK','HOUR','');
     @hebeidatabyday=get_rank_json('rankdata','HEBEIRANK','DAY','');
-
+    @sfcitiesrankbyday=get_rank_json('zq','CHINARANK','DAY','')
+	@sfcitiesrankbymonth=get_rank_json('sfcitiesrankbymonthoryear','CHINARANK','MONTH','')
+	@sfcitiesrankbyyear=get_rank_json('sfcitiesrankbymonthoryear','CHINARANK','YEAR','')
+	@jjjzonghezhishubyday=get_rank_json('lfdatabyhistory','JINGJINJIDATA','DAY',d.strftime('%Y-%m-%d'))
     @post = params[:city_post] if params[:city_post]
     @post = '130600' if @post==nil || @post==''
     @city_name = ChinaCity.get(@post)
@@ -298,6 +303,9 @@ class WelcomeController < ApplicationController
       elsif webUrl == 'lfdatabymonth'
         option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
         response = HTTParty.post('http://www.izhenqi.cn/api/getrank_month.php', :body => option)
+	elsif webUrl == 'sfcitiesrankbymonthoryear'
+      option = {secret:secretstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+typestr) }
+      response = HTTParty.post('http://www.izhenqi.cn/api/getrank_forecast.php', :body => option)
       end
       json_data=JSON.parse(response.body)
       puts  json_data['time']
