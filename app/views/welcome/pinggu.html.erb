@@ -134,17 +134,17 @@
       <div class="tab-content">
         <div class="tab-pane" contenteditable="true" id="panel-437763">
           <%
-      nt = Time.now
-      i = 0
-      path = '/mnt/share/Products/Web/Forecast/CUACE/'
-      begin
-        strtime = (nt-60*60*24*i).strftime("%Y%m%d")
-        file = path + strtime + '/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif'
-        i = i + 1
-        break if i == 7 
-      end until File::exists?(file)
-          %>
-          <%= image_tag 'china_fc09/'+strtime+'/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif', class:'col-xs-8' %>
+              nt = Time.now
+          i = 0
+          path = '/mnt/share/Products/Web/Forecast/CUACE/'
+          begin
+            strtime = (nt-60*60*24*i).strftime("%Y%m%d")
+            file = path + strtime + '/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif'
+            i = i + 1
+            break if i == 7 
+          end until File::exists?(file)
+        %>
+        <%= image_tag 'china_fc09/'+strtime+'/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif', class:'col-xs-8' %>
           <div class="col-xs-4">
             <div> <%=@city_name%>未来五天趋势预报</div>
             <table class="table table-striped">
@@ -172,54 +172,54 @@
 
         <div class="tab-pane active" contenteditable="true" id="panel-55716">
           <div class="zc-map-labels col-xs-12 row" >
-          <%
-      nt = Time.now
-      i = 0
-      path = '/mnt/share/Products/Web/'+@city_adj
-      begin
-        strnow1 = (nt-60*60*24*i).strftime('%Y%m%d') 
-        strnow2 = (nt-60*60*24*i).strftime("%Y-%m-%d")
-        file = path + strnow1 + '/CUACE_09km_adj_SO2_120_'+strnow2+'.png'
-        i = i + 1
-        break if i == 7 
-      end until File::exists?(file)
+            <%
+                nt = Time.now
+            i = 0
+            path = '/mnt/share/Products/Web/'+@city_adj
+            begin
+              strnow1 = (nt-60*60*24*i).strftime('%Y%m%d') 
+              strnow2 = (nt-60*60*24*i).strftime("%Y-%m-%d")
+              file = path + strnow1 + '/CUACE_09km_adj_SO2_120_'+strnow2+'.png'
+              i = i + 1
+              break if i == 7 
+            end until File::exists?(file)
           %>
-            <!--
+          <!--
             <a href="javascript:void(0);" class="active change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='SO2'>SO2</a>
             <a href="javascript:void(0);" class="change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_CO_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='CO'>CO</a>
             <a href="javascript:void(0);" class="change" data-val='<%= image_tag strnow1+"/CUACE_09km_adj_NOX_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='NOX'>Nox</a>
     -->
-    <a href="javascript:void(0);" class="active change" data-val='<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='SO2'>SO2</a>
-    <a href="javascript:void(0);" class="change" data-val='<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_CO_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='CO'>CO</a>
-    <a href="javascript:void(0);" class="change" data-val='<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_NOX_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='NOX'>Nox</a>
+            <a href="javascript:void(0);" class="active change" data-val='<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='SO2'>SO2</a>
+            <a href="javascript:void(0);" class="change" data-val='<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_CO_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='CO'>CO</a>
+            <a href="javascript:void(0);" class="change" data-val='<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_NOX_120_"+strnow2+".png", class:"col-xs-12"%>' data-type='NOX'>Nox</a>
           </div>
           <div class="row">
-          <div class="yuanzhuizong col-xs-8">
-          </div>
-          <div class="col-xs-4">
-            <div> <%=@city_name%><span id="factor"><%=@factor%></span>因子未来五天污染的来源贡献比</div>
-            <div id='adj_chart'>
-            <%= pie_chart(@adj_per, width:"350px", height:"200px") %>
+            <div class="yuanzhuizong col-xs-8">
             </div>
-            <table class="table table-striped">
-              <tr>
-                <th>序号</th>
-                <th>城市</th>
-                <th>贡献比</th>
-                <!--<th>综合指数</th>-->
-              </tr>
-
-              <% i = 0 %>
-            <% @adj_per.each{ |key,value| %>
+            <div class="col-xs-4">
+              <div> <%=@city_name%><span id="factor"><%=@factor%></span>因子未来五天污染的来源贡献比</div>
+              <div id='adj_chart'>
+                <%= pie_chart(@adj_per, width:"350px", height:"200px") %>
+              </div>
+              <table class="table table-striped">
                 <tr>
-                <td><%=i = i+1 %></td>
-                <td><%=key %> </td>
-                <td><%=value%></td>
+                  <th>序号</th>
+                  <th>城市</th>
+                  <th>贡献比</th>
+                  <!--<th>综合指数</th>-->
                 </tr>
-            <% } %>
-            </table>
+
+                <% i = 0 %>
+                <% @adj_per.each{ |key,value| %>
+                  <tr>
+                  <td><%=i = i+1 %></td>
+                  <td><%=key %> </td>
+                  <td><%=value%></td>
+                </tr>
+              <% } %>
+              </table>
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
@@ -235,119 +235,67 @@
     </h3>
   </div>
   <div class="panel-body">
-		<div class="row">
-			<div class="col-xs-8">
-				<div class="row">
-					<div class="col-xs-6">
-						<table class="table table-striped">
-							<caption>廊坊市各区县小时排名&nbsp&nbsp<%= @lfdatabyhour[:time]%></caption>
-							<thead>
-								<tr>
-									<th>排名</th>
-									<th>县(市区)</th>
-									<th>AQI</th>
-									<th>级别</th>
-									<th>首要污染物</th>
-								</tr>
-							</thead>
-							<tbody>
-                <% @lfdatabyhour[:cities].each do |data| %>
-  							 	<tr>
-  									<td><%= data['rank']%></td>
-  									<td><%= data['city']%></td>
-  									<td><%= data['aqi']%></td>
-  									<td><%= data['quality']%></td>
-  									<td><%= data['main_pollutant']%></td>
-  								</tr>
-                <% end %>
-							</tbody>
-						</table>
-					</div>
-					<div class="col-xs-6">
-						<table class="table table-striped">
-							<caption>廊坊市各区县空气质量日均排名&nbsp&nbsp<%= @lfdatabyday[:time]%></caption>
-							<thead>
-								<tr>
-									<th>排名</th>
-									<th>县(市区)</th>
-									<th>AQI</th>
-									<th>级别</th>
-									<th>首要污染物</th>
-								</tr>
-  						</thead>
-							<tbody>
-                <% @lfdatabyday[:cities].each do |data|%>
-  								<tr>
-  									<td><%= data['rank']%></td>
-                    <td><%= data['city']%></td>
-                    <td><%= data['aqi']%></td>
-                    <td><%= data['quality']%></td>
-                    <td><%= data['main_pollutant']%></td>
-  								</tr>
-                <% end %>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-6">
-						<table class="table table-striped">
-							<caption>省内城市小时排名&nbsp&nbsp<%= @hebeidatabyhour[:time] %></caption>
-							<thead>
-								<tr>
-									<th>排名</th>
-									<th>城市</th>
-									<th>AQI</th>
-									<th>级别</th>
-									<th>首要污染物</th>
-								</tr>
-							</thead>
-							<tbody>
-                <% @hebeidatabyhour[:cities].each do |data| %>
-  								<tr>
-  									<td><%= data['rank'] %></td>
-  									<td><%= data['city'] %></td>
-  									<td><%= data['aqi'] %></td>
-  									<td><%= data['quality'] %></td>
-  									<td><%= data['main_pollutant'] %></td>
-  								</tr>
-                <% end %>
-							</tbody>
-						</table>
-					</div>
-					<div class="col-xs-6">
-						<table class="table table-striped">
-							<caption>省内城市日均排名&nbsp&nbsp<%= @hebeidatabyday[:time] %></caption>
-							<thead>
-								<tr>
-									<th>排名</th>
-									<th>城市</th>
-									<th>AQI</th>
-									<th>级别</th>
-									<th>首要污染物</th>
-								</tr>
-							</thead>
-							<tbody>
-                <% @hebeidatabyday[:cities].each do |data| %>
-                  <tr>
-                    <td><%= data['rank'] %></td>
-                    <td><%= data['city'] %></td>
-                    <td><%= data['aqi'] %></td>
-                    <td><%= data['quality'] %></td>
-                    <td><%= data['main_pollutant'] %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-4">
+    <div class="row">
+      <div class="col-xs-8">
+        <div class="row">
+          <div class="col-xs-6">
             <table class="table table-striped">
-              <caption>全国74城市空气质量日均排名<%= @chinadata[:time] %></caption>
+              <caption>廊坊市各区县小时排名&nbsp&nbsp<%= @lfdatabyhour[:time]%></caption>
               <thead>
                 <tr>
-                  <th>倒数排名</th>
+                  <th>排名</th>
+                  <th>县(市区)</th>
+                  <th>AQI</th>
+                  <th>级别</th>
+                  <th>首要污染物</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% @lfdatabyhour[:cities].each do |data| %>
+                <tr>
+                <td><%= data['rank']%></td>
+                <td><%= data['city']%></td>
+                <td><%= data['aqi']%></td>
+                <td><%= data['quality']%></td>
+                <td><%= data['main_pollutant']%></td>
+              </tr>
+            <% end %>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-xs-6">
+            <table class="table table-striped">
+              <caption>廊坊市各区县空气质量日均排名&nbsp&nbsp<%= @lfdatabyday[:time]%></caption>
+              <thead>
+                <tr>
+                  <th>排名</th>
+                  <th>县(市区)</th>
+                  <th>AQI</th>
+                  <th>级别</th>
+                  <th>首要污染物</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% @lfdatabyday[:cities].each do |data|%>
+                <tr>
+                <td><%= data['rank']%></td>
+                <td><%= data['city']%></td>
+                <td><%= data['aqi']%></td>
+                <td><%= data['quality']%></td>
+                <td><%= data['main_pollutant']%></td>
+              </tr>
+            <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <table class="table table-striped">
+              <caption>省内城市小时排名&nbsp&nbsp<%= @hebeidatabyhour[:time] %></caption>
+              <thead>
+                <tr>
+                  <th>排名</th>
                   <th>城市</th>
                   <th>AQI</th>
                   <th>级别</th>
@@ -355,517 +303,569 @@
                 </tr>
               </thead>
               <tbody>
-                <% 
-                  i=0
-                  @chinadata[:cities].reverse.each do |data|
-                    puts data
-                    i+=1
-                    if i == 25
-                      break
-                    end
-                %>
-                  <tr>
-                    <td><%= 75-data['rank'] %></td>
-                    <td><%= data['city'] %></td>
-                    <td><%= data['aqi'] %></td>
-                    <td><%= data['quality'] %></td>
-                    <td><%= data['main_pollutant'] %></td>
-                  </tr>
-                <% end %>
+              <% @hebeidatabyhour[:cities].each do |data| %>
+                <tr>
+                <td><%= data['rank'] %></td>
+                <td><%= data['city'] %></td>
+                <td><%= data['aqi'] %></td>
+                <td><%= data['quality'] %></td>
+                <td><%= data['main_pollutant'] %></td>
+              </tr>
+            <% end %>
               </tbody>
             </table>
-      </div>
-		</div>
-		</div>
-  
-  <div class="panel-footer">
-    <a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a>
-  </div>
-</div>
-
-
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 >
-      <strong>各县市区污染物浓度及空气质量综合指数</strong>
-    </h3>
-    <span class="label">更新时间: <%= Time.now.strftime("%Y-%m-%d %H:00:00") %></span> 
-  </div>
-  <div class="panel-body">
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="tab-title">
-					<ul class="nav nav-tabs">
-						<li class="active"><a href="#ri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li>	
-						<li><a href="#yue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
-						<li><a href="#nian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
-					</ul>
-				</div>
-			<div class="tab-content">
-				<div class="tab-pane fade in active" id="ri">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>排名</th>
-								<th>县(市区)</th>
-								<th>SO2(ug/m3)</th>
-								<th>NO2(ug/m3)</th>
-								<th>CO(mg/m3)</th>
-								<th>O3(ug/m3)</th>
-								<th>PM10(ug/m3)</th>
-                <th>PM2.5(ug/m3)</th>
-                <th>综合指数</th>
+          </div>
+          <div class="col-xs-6">
+            <table class="table table-striped">
+              <caption>省内城市日均排名&nbsp&nbsp<%= @hebeidatabyday[:time] %></caption>
+              <thead>
+                <tr>
+                  <th>排名</th>
+                  <th>城市</th>
+                  <th>AQI</th>
+                  <th>级别</th>
+                  <th>首要污染物</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% @hebeidatabyday[:cities].each do |data| %>
+                <tr>
+                <td><%= data['rank'] %></td>
+                <td><%= data['city'] %></td>
+                <td><%= data['aqi'] %></td>
+                <td><%= data['quality'] %></td>
+                <td><%= data['main_pollutant'] %></td>
               </tr>
-            </thead>
-            <tbody>
-            <% @lfdatabyday[:cities].each do |data|%>
-              <tr>
-              <td><%= data['rank'] %></td>
+            <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <table class="table table-striped">
+          <caption>全国74城市空气质量日均排名<%= @chinadata[:time] %></caption>
+          <thead>
+            <tr>
+              <th>倒数排名</th>
+              <th>城市</th>
+              <th>AQI</th>
+              <th>级别</th>
+              <th>首要污染物</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% 
+              i=0
+          @chinadata[:cities].reverse.each do |data|
+            puts data
+            i+=1
+            if i == 25
+              break
+            end
+          %>
+          <tr>
+              <td><%= 75-data['rank'] %></td>
               <td><%= data['city'] %></td>
-              <td><%= data['so2'] %></td>
-              <td><%= data['no2'] %></td>
-              <td><%= data['co'] %></td>
-              <td><%= data['o3'] %></td>
-              <td><%= data['pm10'] %></td>
-              <td><%= data['pm2_5'] %></td>
               <td><%= data['aqi'] %></td>
+              <td><%= data['quality'] %></td>
+              <td><%= data['main_pollutant'] %></td>
             </tr>
           <% end %>
             </tbody>
-
-					</table>	
-				</div>		
-				<div class="tab-pane fade" id="yue">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>排名</th>
-								<th>县(市区)</th>
-								<th>SO2(ug/m3)</th>
-								<th>NO2(ug/m3)</th>
-								<th>CO(mg/m3)</th>
-								<th>O3(ug/m3)</th>
-								<th>PM10(ug/m3)</th>
-								<th>PM2.5(ug/m3)</th>
-								<th>综合指数</th>
-							</tr>
-						</thead>
-					</table>
-				</div>
-				<div class="tab-pane fade" id="nian">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>排名</th>
-								<th>县(市区)</th>
-								<th>SO2(ug/m3)</th>
-								<th>NO2(ug/m3)</th>
-								<th>CO(mg/m3)</th>
-								<th>O3(ug/m3)</th>
-								<th>PM10(ug/m3)</th>
-								<th>PM2.5(ug/m3)</th>
-								<th>综合指数</th>
-							</tr>
-						</thead>
-					</table>
-				</div>
-			</div>
-			</div>
-		</div>
-  </div>
-</div>
-
-<div class="panel panel-primary">
-<div class="panel-heading">
-  <h3 >
-    <strong>各县市区污染物及空气质量综合指数同期变化率</strong>
-  </h3>
-  <span class="label">更新时间: <%= Time.now.strftime("%Y-%m-%d %H:00:00") %></span> 
-</div>
-<div class="panel-body">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="tab-title">
-        <ul class="nav nav-tabs">
-          <li class="active"><a href="#ri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li>	
-          <li><a href="#yue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
-          <li><a href="#nian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
-        </ul>
-      </div>
-      <div class="tab-content">
-        <div class="tab-pane fade in active" id="ri">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>排名</th>
-                <th>县(市区)</th>
-                <th>SO2(ug/m3)</th>
-                <th>NO2(ug/m3)</th>
-                <th>CO(mg/m3)</th>
-                <th>O3(ug/m3)</th>
-                <th>PM10(ug/m3)</th>
-                <th>PM2.5(ug/m3)</th>
-                <th>综合指数</th>
-              </tr>
-            </thead>
-          </table>	
-        </div>		
-        <div class="tab-pane fade" id="yue">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>排名</th>
-                <th>县(市区)</th>
-                <th>SO2(ug/m3)</th>
-                <th>NO2(ug/m3)</th>
-                <th>CO(mg/m3)</th>
-                <th>O3(ug/m3)</th>
-                <th>PM10(ug/m3)</th>
-                <th>PM2.5(ug/m3)</th>
-                <th>综合指数</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <div class="tab-pane fade" id="nian">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>排名</th>
-                <th>县(市区)</th>
-                <th>SO2(ug/m3)</th>
-                <th>NO2(ug/m3)</th>
-                <th>CO(mg/m3)</th>
-                <th>O3(ug/m3)</th>
-                <th>PM10(ug/m3)</th>
-                <th>PM2.5(ug/m3)</th>
-                <th>综合指数</th>
-              </tr>
-            </thead>
           </table>
         </div>
       </div>
     </div>
-  </div>
-</div>
-</div>
 
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 >
-      <strong>京津冀城市污染物浓度及空气质量综合指数</strong>
-    </h3>
-    <span class="label">更新时间: <%= Time.now.strftime("%Y-%m-%d %H:00:00") %></span> 
+    <div class="panel-footer">
+      <a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a>
+    </div>
   </div>
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="tab-title">
-          <ul class="nav nav-tabs">
-            <li class="active"><a href="#jjjri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li> 
-            <li><a href="#jjjyue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
-            <li><a href="#jjjnian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
-          </ul>
+
+
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 >
+        <strong>各县市区污染物浓度及空气质量综合指数</strong>
+      </h3>
+      <span class="label">更新时间: <%= Time.now.strftime("%Y-%m-%d %H:00:00") %></span> 
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="tab-title">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#ri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li>	
+              <li><a href="#yue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
+              <li><a href="#nian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
+            </ul>
+          </div>
+          <div class="tab-content">
+            <div class="tab-pane fade in active" id="ri">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>排名</th>
+                    <th>县(市区)</th>
+                    <th>SO2(ug/m3)</th>
+                    <th>NO2(ug/m3)</th>
+                    <th>CO(mg/m3)</th>
+                    <th>O3(ug/m3)</th>
+                    <th>PM10(ug/m3)</th>
+                    <th>PM2.5(ug/m3)</th>
+                    <th>综合指数</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <% @lfdatabyday[:cities].each do |data|%>
+                  <tr>
+                  <td><%= data['rank'] %></td>
+                  <td><%= data['city'] %></td>
+                  <td><%= data['so2'] %></td>
+                  <td><%= data['no2'] %></td>
+                  <td><%= data['co'] %></td>
+                  <td><%= data['o3'] %></td>
+                  <td><%= data['pm10'] %></td>
+                  <td><%= data['pm2_5'] %></td>
+                  <td><%= data['aqi'] %></td>
+                </tr>
+              <% end %>
+                </tbody>
+
+              </table>	
+            </div>		
+            <div class="tab-pane fade" id="yue">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>排名</th>
+                    <th>县(市区)</th>
+                    <th>SO2(ug/m3)</th>
+                    <th>NO2(ug/m3)</th>
+                    <th>CO(mg/m3)</th>
+                    <th>O3(ug/m3)</th>
+                    <th>PM10(ug/m3)</th>
+                    <th>PM2.5(ug/m3)</th>
+                    <th>综合指数</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="tab-pane fade" id="nian">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>排名</th>
+                    <th>县(市区)</th>
+                    <th>SO2(ug/m3)</th>
+                    <th>NO2(ug/m3)</th>
+                    <th>CO(mg/m3)</th>
+                    <th>O3(ug/m3)</th>
+                    <th>PM10(ug/m3)</th>
+                    <th>PM2.5(ug/m3)</th>
+                    <th>综合指数</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
         </div>
-      <div class="tab-content">
-        <div class="tab-pane fade in active" id="jjjri">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>排名</th>
-                <th>县(市区)</th>
-                <th>SO2(ug/m3)</th>
-                <th>NO2(ug/m3)</th>
-                <th>CO(mg/m3)</th>
-                <th>O3(ug/m3)</th>
-                <th>PM10(ug/m3)</th>
-                <th>PM2.5(ug/m3)</th>
-                <th>综合指数</th>
-              </tr>
-            </thead>
-			<tbody>
-			   <% 
-                  i=0
-                  @jjjzonghezhishubyday[:cities].each do |data|
-                    i+=1
-                    if i == 13
-                      break
-                    end
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 >
+        <strong>各县市区污染物及空气质量综合指数同期变化率</strong>
+      </h3>
+      <span class="label">更新时间: <%= Time.now.strftime("%Y-%m-%d %H:00:00") %></span> 
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="tab-title">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#ri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li>	
+              <li><a href="#yue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
+              <li><a href="#nian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
+            </ul>
+          </div>
+          <div class="tab-content">
+            <div class="tab-pane fade in active" id="ri">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>排名</th>
+                    <th>县(市区)</th>
+                    <th>SO2(ug/m3)</th>
+                    <th>NO2(ug/m3)</th>
+                    <th>CO(mg/m3)</th>
+                    <th>O3(ug/m3)</th>
+                    <th>PM10(ug/m3)</th>
+                    <th>PM2.5(ug/m3)</th>
+                    <th>综合指数</th>
+                  </tr>
+                </thead>
+              </table>	
+            </div>		
+            <div class="tab-pane fade" id="yue">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>排名</th>
+                    <th>县(市区)</th>
+                    <th>SO2(ug/m3)</th>
+                    <th>NO2(ug/m3)</th>
+                    <th>CO(mg/m3)</th>
+                    <th>O3(ug/m3)</th>
+                    <th>PM10(ug/m3)</th>
+                    <th>PM2.5(ug/m3)</th>
+                    <th>综合指数</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="tab-pane fade" id="nian">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>排名</th>
+                    <th>县(市区)</th>
+                    <th>SO2(ug/m3)</th>
+                    <th>NO2(ug/m3)</th>
+                    <th>CO(mg/m3)</th>
+                    <th>O3(ug/m3)</th>
+                    <th>PM10(ug/m3)</th>
+                    <th>PM2.5(ug/m3)</th>
+                    <th>综合指数</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 >
+        <strong>京津冀城市污染物浓度及空气质量综合指数</strong>
+      </h3>
+      <span class="label">更新时间: <%= Time.now.strftime("%Y-%m-%d %H:00:00") %></span> 
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="tab-title">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#jjjri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li> 
+              <li><a href="#jjjyue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
+              <li><a href="#jjjnian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
+            </ul>
+          </div>
+          <div class="tab-content">
+            <div class="tab-pane fade in active" id="jjjri">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>排名</th>
+                    <th>县(市区)</th>
+                    <th>SO2(ug/m3)</th>
+                    <th>NO2(ug/m3)</th>
+                    <th>CO(mg/m3)</th>
+                    <th>O3(ug/m3)</th>
+                    <th>PM10(ug/m3)</th>
+                    <th>PM2.5(ug/m3)</th>
+                    <th>综合指数</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <% 
+                    i=0
+                @jjjzonghezhishubyday[:cities].each do |data|
+                  i+=1
+                  if i == 13
+                    break
+                  end
                 %>
-              <tr>
-                <th><%= data['rank'] %></th>
-                <th><%= data['city'] %></th>
-                <th><%= data['so2'] %></th>
-                <th><%= data['no2'] %></th>
-                <th><%= data['co'] %></th>
-                <th><%= data['o3'] %></th>
-                <th><%= data['pm10'] %></th>
-                <th><%= data['pm2_5'] %></th>
-                <th><%= data['aqi'] %></th>
-              </tr>
-			  <% end %>
-            </tbody>
-          </table>  
-        </div>    
-        <div class="tab-pane fade" id="jjjyue">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>排名</th>
-                <th>县(市区)</th>
-                <th>SO2(ug/m3)</th>
-                <th>NO2(ug/m3)</th>
-                <th>CO(mg/m3)</th>
-                <th>O3(ug/m3)</th>
-                <th>PM10(ug/m3)</th>
-                <th>PM2.5(ug/m3)</th>
-                <th>综合指数</th>
-              </tr>
-            </thead>
-          </table>
+                <tr>
+                    <th><%= data['rank'] %></th>
+                    <th><%= data['city'] %></th>
+                    <th><%= data['so2'] %></th>
+                    <th><%= data['no2'] %></th>
+                    <th><%= data['co'] %></th>
+                    <th><%= data['o3'] %></th>
+                    <th><%= data['pm10'] %></th>
+                    <th><%= data['pm2_5'] %></th>
+                    <th><%= data['aqi'] %></th>
+                  </tr>
+                <% end %>
+                  </tbody>
+                </table>  
+              </div>    
+              <div class="tab-pane fade" id="jjjyue">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>排名</th>
+                      <th>县(市区)</th>
+                      <th>SO2(ug/m3)</th>
+                      <th>NO2(ug/m3)</th>
+                      <th>CO(mg/m3)</th>
+                      <th>O3(ug/m3)</th>
+                      <th>PM10(ug/m3)</th>
+                      <th>PM2.5(ug/m3)</th>
+                      <th>综合指数</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <div class="tab-pane fade" id="jjjnian">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>排名</th>
+                      <th>县(市区)</th>
+                      <th>SO2(ug/m3)</th>
+                      <th>NO2(ug/m3)</th>
+                      <th>CO(mg/m3)</th>
+                      <th>O3(ug/m3)</th>
+                      <th>PM10(ug/m3)</th>
+                      <th>PM2.5(ug/m3)</th>
+                      <th>综合指数</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="tab-pane fade" id="jjjnian">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>排名</th>
-                <th>县(市区)</th>
-                <th>SO2(ug/m3)</th>
-                <th>NO2(ug/m3)</th>
-                <th>CO(mg/m3)</th>
-                <th>O3(ug/m3)</th>
-                <th>PM10(ug/m3)</th>
-                <th>PM2.5(ug/m3)</th>
-                <th>综合指数</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-      </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 >
-      <strong>京津冀城市污染物及空气质量综合指数同期变化率</strong>
-    </h3>
-    <span class="label">更新时间: <%= Time.now.strftime("%Y-%m-%d %H:00:00") %></span> 
-  </div>
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="tab-title">
-          <ul class="nav nav-tabs">
-            <li class="active"><a href="#ri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li> 
-            <li><a href="#yue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
-            <li><a href="#nian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
-          </ul>
-        </div>
-      <div class="tab-content">
-        <div class="tab-pane fade in active" id="ri">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>排名</th>
-                <th>县(市区)</th>
-                <th>SO2(ug/m3)</th>
-                <th>NO2(ug/m3)</th>
-                <th>CO(mg/m3)</th>
-                <th>O3(ug/m3)</th>
-                <th>PM10(ug/m3)</th>
-                <th>PM2.5(ug/m3)</th>
-                <th>综合指数</th>
-              </tr>
-            </thead>
-          </table>  
-        </div>    
-        <div class="tab-pane fade" id="yue">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>排名</th>
-                <th>县(市区)</th>
-                <th>SO2(ug/m3)</th>
-                <th>NO2(ug/m3)</th>
-                <th>CO(mg/m3)</th>
-                <th>O3(ug/m3)</th>
-                <th>PM10(ug/m3)</th>
-                <th>PM2.5(ug/m3)</th>
-                <th>综合指数</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <div class="tab-pane fade" id="nian">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>排名</th>
-                <th>县(市区)</th>
-                <th>SO2(ug/m3)</th>
-                <th>NO2(ug/m3)</th>
-                <th>CO(mg/m3)</th>
-                <th>O3(ug/m3)</th>
-                <th>PM10(ug/m3)</th>
-                <th>PM2.5(ug/m3)</th>
-                <th>综合指数</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 >
+          <strong>京津冀城市污染物及空气质量综合指数同期变化率</strong>
+        </h3>
+        <span class="label">更新时间: <%= Time.now.strftime("%Y-%m-%d %H:00:00") %></span> 
       </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="tab-title">
+              <ul class="nav nav-tabs">
+                <li class="active"><a href="#ri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li> 
+                <li><a href="#yue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
+                <li><a href="#nian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
+              </ul>
+            </div>
+            <div class="tab-content">
+              <div class="tab-pane fade in active" id="ri">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>排名</th>
+                      <th>县(市区)</th>
+                      <th>SO2(ug/m3)</th>
+                      <th>NO2(ug/m3)</th>
+                      <th>CO(mg/m3)</th>
+                      <th>O3(ug/m3)</th>
+                      <th>PM10(ug/m3)</th>
+                      <th>PM2.5(ug/m3)</th>
+                      <th>综合指数</th>
+                    </tr>
+                  </thead>
+                </table>  
+              </div>    
+              <div class="tab-pane fade" id="yue">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>排名</th>
+                      <th>县(市区)</th>
+                      <th>SO2(ug/m3)</th>
+                      <th>NO2(ug/m3)</th>
+                      <th>CO(mg/m3)</th>
+                      <th>O3(ug/m3)</th>
+                      <th>PM10(ug/m3)</th>
+                      <th>PM2.5(ug/m3)</th>
+                      <th>综合指数</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <div class="tab-pane fade" id="nian">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>排名</th>
+                      <th>县(市区)</th>
+                      <th>SO2(ug/m3)</th>
+                      <th>NO2(ug/m3)</th>
+                      <th>CO(mg/m3)</th>
+                      <th>O3(ug/m3)</th>
+                      <th>PM10(ug/m3)</th>
+                      <th>PM2.5(ug/m3)</th>
+                      <th>综合指数</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 >
-      <strong>74城市空气质量综合指数排名</strong>
-    </h3>
-    <span class="label">更新时间: <%= Time.now.strftime("%Y-%m-%d %H:00:00") %></span> 
-  </div>
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="tab-title">
-          <ul class="nav nav-tabs">
-            <li class="active"><a href="#sfri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li> 
-            <li><a href="#sfyue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
-            <li><a href="#sfnian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
-          </ul>
-        </div>
-      <div class="tab-content">
-        <div class="tab-pane fade in active" id="sfri">
-		
-          <table class="table">
-            <thead>
-              <tr>
-                <th>排名</th>
-                <th>县(市区)</th>
-                <th>SO2(ug/m3)</th>
-                <th>NO2(ug/m3)</th>
-                <th>CO(mg/m3)</th>
-                <th>O3(ug/m3)</th>
-                <th>PM10(ug/m3)</th>
-                <th>PM2.5(ug/m3)</th>
-                <th>AQI</th>
-              </tr>
-            </thead>
-            <tbody>
-			   <% 
-                  i=0
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 >
+          <strong>74城市空气质量综合指数排名</strong>
+        </h3>
+        <span class="label">更新时间: <%= Time.now.strftime("%Y-%m-%d %H:00:00") %></span> 
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="tab-title">
+              <ul class="nav nav-tabs">
+                <li class="active"><a href="#sfri" data-toggle="tab"><strong>同期变化率(日)</strong></a></li> 
+                <li><a href="#sfyue" data-toggle="tab"><strong>同期变化率(月)</strong></a></li>
+                <li><a href="#sfnian" data-toggle="tab"><strong>同期变化率(年)</strong></a></li>
+              </ul>
+            </div>
+            <div class="tab-content">
+              <div class="tab-pane fade in active" id="sfri">
+
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>排名</th>
+                      <th>县(市区)</th>
+                      <th>SO2(ug/m3)</th>
+                      <th>NO2(ug/m3)</th>
+                      <th>CO(mg/m3)</th>
+                      <th>O3(ug/m3)</th>
+                      <th>PM10(ug/m3)</th>
+                      <th>PM2.5(ug/m3)</th>
+                      <th>AQI</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <% 
+                      i=0
                   @sfcitiesrankbyday[:cities].each do |data|
                     i+=1
                     if i == 20
                       break
                     end
-                %>
-              <tr>
-                <th><%= data['rank'] %></th>
-                <th><%= data['city'] %></th>
-                <th><%= data['so2'] %></th>
-                <th><%= data['no2'] %></th>
-                <th><%= data['co'] %></th>
-                <th><%= data['o3'] %></th>
-                <th><%= data['pm10'] %></th>
-                <th><%= data['pm2_5'] %></th>
-                <th><%= data['aqi'] %></th>
-              </tr>
-			  <% end %>
-            </tbody>
-          </table> 
-				  
-        </div>    
-        <div class="tab-pane fade" id="sfyue">
-		
-          <table class="table">
-            <thead>
-              <tr>
-                <th>排名</th>
-                <th>县(市区)</th>
-                <th>SO2(ug/m3)</th>
-                <th>NO2(ug/m3)</th>
-                <th>CO(mg/m3)</th>
-                <th>O3(ug/m3)</th>
-                <th>PM10(ug/m3)</th>
-                <th>PM2.5(ug/m3)</th>
-                <th>综合指数</th>
-              </tr>
-            </thead>
-			<tbody>
-			   <% 
-                  i=0
-                  @sfcitiesrankbymonth[:cities].each do |data|
-                    i+=1
-                    if i == 20
-                      break
-                    end
-                %>
-              <tr>
-                <th><%= data['rank'] %></th>
-                <th><%= data['city'] %></th>
-                <th><%= data['so2'] %></th>
-                <th><%= data['no2'] %></th>
-                <th><%= data['co_95'] %></th>
-                <th><%= data['o3_90'] %></th>
-                <th><%= data['pm10'] %></th>
-                <th><%= data['pm2_5'] %></th>
-                <th><%= data['complexindex'] %></th>
-              </tr>
-			  <% end %>
-            </tbody>
-          </table>
-        </div>
-        <div class="tab-pane fade" id="nian">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>排名</th>
-                <th>县(市区)</th>
-                <th>SO2(ug/m3)</th>
-                <th>NO2(ug/m3)</th>
-                <th>CO(mg/m3)</th>
-                <th>O3(ug/m3)</th>
-                <th>PM10(ug/m3)</th>
-                <th>PM2.5(ug/m3)</th>
-                <th>综合指数</th>
-              </tr>
-            </thead>
-			<tbody>
-			   <% 
-                  i=0
-                  @sfcitiesrankbyyear[:cities].each do |data|
-                    i+=1
-                    if i == 20
-                      break
-                    end
-                %>
-              <tr>
-                <th><%= data['rank'] %></th>
-                <th><%= data['city'] %></th>
-                <th><%= data['so2'] %></th>
-                <th><%= data['no2'] %></th>
-                <th><%= data['co_95'] %></th>
-                <th><%= data['o3_90'] %></th>
-                <th><%= data['pm10'] %></th>
-                <th><%= data['pm2_5'] %></th>
-                <th><%= data['complexindex'] %></th>
-              </tr>
-			  <% end %>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      </div>
-    </div>
-  </div>
-</div>
-<script>
+                  %>
+                  <tr>
+                      <th><%= data['rank'] %></th>
+                      <th><%= data['city'] %></th>
+                      <th><%= data['so2'] %></th>
+                      <th><%= data['no2'] %></th>
+                      <th><%= data['co'] %></th>
+                      <th><%= data['o3'] %></th>
+                      <th><%= data['pm10'] %></th>
+                      <th><%= data['pm2_5'] %></th>
+                      <th><%= data['aqi'] %></th>
+                    </tr>
+                  <% end %>
+                    </tbody>
+                  </table> 
+
+                </div>    
+                <div class="tab-pane fade" id="sfyue">
+
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>排名</th>
+                        <th>县(市区)</th>
+                        <th>SO2(ug/m3)</th>
+                        <th>NO2(ug/m3)</th>
+                        <th>CO(mg/m3)</th>
+                        <th>O3(ug/m3)</th>
+                        <th>PM10(ug/m3)</th>
+                        <th>PM2.5(ug/m3)</th>
+                        <th>综合指数</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <% 
+                        i=0
+                    @sfcitiesrankbymonth[:cities].each do |data|
+                      i+=1
+                      if i == 20
+                        break
+                      end
+                    %>
+                    <tr>
+                        <th><%= data['rank'] %></th>
+                        <th><%= data['city'] %></th>
+                        <th><%= data['so2'] %></th>
+                        <th><%= data['no2'] %></th>
+                        <th><%= data['co_95'] %></th>
+                        <th><%= data['o3_90'] %></th>
+                        <th><%= data['pm10'] %></th>
+                        <th><%= data['pm2_5'] %></th>
+                        <th><%= data['complexindex'] %></th>
+                      </tr>
+                    <% end %>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="tab-pane fade" id="sfnian">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>排名</th>
+                          <th>县(市区)</th>
+                          <th>SO2(ug/m3)</th>
+                          <th>NO2(ug/m3)</th>
+                          <th>CO(mg/m3)</th>
+                          <th>O3(ug/m3)</th>
+                          <th>PM10(ug/m3)</th>
+                          <th>PM2.5(ug/m3)</th>
+                          <th>综合指数</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <% 
+                          i=0
+                      @sfcitiesrankbyyear[:cities].each do |data|
+                        i+=1
+                        if i == 20
+                          break
+                        end
+                      %>
+                      <tr>
+                          <th><%= data['rank'] %></th>
+                          <th><%= data['city'] %></th>
+                          <th><%= data['so2'] %></th>
+                          <th><%= data['no2'] %></th>
+                          <th><%= data['co_95'] %></th>
+                          <th><%= data['o3_90'] %></th>
+                          <th><%= data['pm10'] %></th>
+                          <th><%= data['pm2_5'] %></th>
+                          <th><%= data['complexindex'] %></th>
+                        </tr>
+                      <% end %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
 $('.home-banner').backstretch("<%= image_url 'top.png' %>");
 $(function(){
     $(".change").click(function(){
@@ -875,7 +875,7 @@ $(function(){
       $(this).addClass("active").siblings().removeClass("active");
       $("#factor").html($(this).data("type"))
       change($(this).data("val"));
-      
+
       });
     });
 function change(type){
@@ -896,5 +896,5 @@ end until File::exists?(file)
 %>
 //change('<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>');
 change('<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
-</script>
+          </script>
 
