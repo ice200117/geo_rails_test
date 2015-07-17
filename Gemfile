@@ -74,5 +74,6 @@ gem 'china_city', '~> 0.0.4'
 
 gem 'ruby-netcdf', '~> 0.7.1.1'
 gem 'httparty', '~> 0.13.4'
+gem 'rb-readline'
 gem 'multipart-post', '~> 2.0.0'
 

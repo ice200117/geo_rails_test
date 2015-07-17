@@ -181,6 +181,7 @@ class WelcomeController < ApplicationController
     aqis = []
     pri_pol = []
     c = City.find_by_post_number(@post)
+    puts @post, c
     ch = c.hourly_city_forecast_air_qualities.last(120).group_by_day(&:forecast_datetime)
     ch.each do |time,fds|
       t = Time.now
@@ -203,8 +204,13 @@ class WelcomeController < ApplicationController
     else
       @city_adj = 'ADJ/'
     end
-    @adj_per = adj_percent("SO2_120", @city_adj)
-    @factor = 'SO2'
+	
+	@factor='SO2'
+    @adj_per1 = adj_percent('SO2_120', @city_adj)
+	@adj_per2 = adj_percent('NOX_120', @city_adj)
+	@adj_per3 = adj_percent('CO_120', @city_adj)
+    #@adj_per = {'保定' =>  54.34, '北京' => 12.25}
+    #@factor = 'SO2'
     p @adj_per
     
 
