@@ -4,6 +4,59 @@ class QuerysController < ApplicationController
 
   @@alt = true
 
+
+  def adj_5days
+    if params[:var]
+      varnames = [params[:var]]
+    else
+      varnames = ["CO_120", "NOX_120", "SO2_120",
+       "CO_96", "NOX_96", "SO2_96" , 
+       "CO_72", "NOX_72", "SO2_72" , 
+       "CO_48", "NOX_48", "SO2_48" ,
+       "CO_24", "NOX_24", "SO2_24" ]
+    end
+    #puts varnames
+    path = '/mnt/share/Temp/BackupADJ/'
+    #if @@alt
+    #  @@alt = false
+    #  puts 'langfang'
+    #  path = '/mnt/share/Temp/BackupADJ/'
+    #else
+    #  @@alt = true
+    #  puts 'baoding'
+    #  path = '/mnt/share/Temp/BackupADJ_baoding/'
+    #end
+    nt = Time.now
+    i = 0
+    begin
+      #puts i
+      strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
+      ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
+      i = i + 1
+    end until File::exists?(ncfile)
+
+    #puts ncfile
+    file = NetCDF.open(ncfile)
+    @dataArr = Hash.new
+    varnames.each do |var|
+      data = file.var(var).get
+      @dataArr[var] = data[0..-1,0..-1,0,0].to_a
+    end
+    #render json: @dataArr.to_json
+    ret_data = Hash.new
+    ret_data[:time]= strtime 
+    ret_data[:data]= @dataArr 
+    respond_to do |format|
+      format.html { render json: ret_data}
+      if params[:callback]
+        format.js { render :json => ret_data.to_json, :callback => params[:callback] }
+      else
+        format.json { render json: ret_data}
+      end
+    end
+
+  end
+
   def adj
     if params[:var]
       varnames = [params[:var]]

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'querys' => 'querys#cities'
   get 'querys/all_cities' => 'querys#all_cities2'
   get 'querys/adj' => 'querys#adj'
+  get 'querys/adj_5days' => 'querys#adj_5days'
 
   #get '/forecast_points/lookup' => 'forecast_points#lookup'
   #resources :forecast_points
