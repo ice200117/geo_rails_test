@@ -43,7 +43,9 @@ def cal_var ( ncfile, var_name )
   return pl
 end
 
-ncfile = "tmp/CUACE_09km_adj_2015-04-22.nc"
+#path = "/vagrant/geo_rails_test/public/images/ftproot/Temp/ADJ/"
+path = "/vagrant/geo_rails_test/public/images/ftproot/Temp/"
+ncfile = path + "CUACE_09km_adj_2015-07-21.nc"
   CITY_LIST = [
   "MeteoInfo/baoding.txt",
   "MeteoInfo/beijing.txt",
