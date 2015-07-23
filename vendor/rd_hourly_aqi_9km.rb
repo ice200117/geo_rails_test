@@ -50,6 +50,9 @@ strtime = Time.new.strftime("%Y%m%d")+'20'
 
 path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 
+#cs = Array.new
+#cs << City.find_by_city_name_pinyin('langfangshi')
+#cs << City.find_by_city_name_pinyin('huzhoushi')
 cs = City.all
 cs.each do |c|
   #puts c.city_name_pinyin
@@ -60,7 +63,7 @@ cs.each do |c|
   f = File.open(path+fn) if File::exists?(path+fn) 
   next unless f
   f.readlines[2..-1].each do |line| 
-    parse_line(line, c)
+  parse_line(line, c)
   end
   f.close
   puts fn+" successful!"
