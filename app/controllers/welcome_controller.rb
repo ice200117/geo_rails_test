@@ -1,6 +1,6 @@
 class WelcomeController < ApplicationController
   include NumRu
-  
+
 
   def index
 
@@ -131,130 +131,131 @@ class WelcomeController < ApplicationController
 
   def pinggu
 
-	d = DateTime.now
-	d -= 1
-	dd=d-1
+    d = DateTime.now
+    d -= 1
+    dd=d-1
+
     @lfdatabyhour=get_rank_json('rankdata','LANGFANGRANK','HOUR','')
     @lfdatabyday=get_rank_json('rankdata','LANGFANGRANK','DAY','')
     @chinadata=get_rank_json('rankdata','CHINARANK','DAY','')
     @hebeidatabyhour=get_rank_json('rankdata','HEBEIRANK','HOUR','');
     @hebeidatabyday=get_rank_json('rankdata','HEBEIRANK','DAY','');
     @sfcitiesrankbyday=get_rank_json('zq','CHINARANK','DAY','')
-	@sfcitiesrankbymonth=get_rank_json('sfcitiesrankbymonthoryear','CHINARANK','MONTH','')
-	@sfcitiesrankbyyear=get_rank_json('sfcitiesrankbymonthoryear','CHINARANK','YEAR','')
-	#@jjjzonghezhishubyday=get_rank_json('lfdatabyhistory','JINGJINJIDATA','DAY',d.strftime('%Y-%m-%d'))
-	
-	
-	#廊坊各县市区污染物浓度(同期变化率)（日报）查询
-	#@lfgqxdatabyday=get_rank_json('lfgqxbyday','','',dd.strftime('%Y-%m-%d'))
-	#lfgqxbyday=TempLfDay.where("data_real_time>=? AND data_real_time<=?",Time.now.beginning_of_day,Time.now.end_of_day).order('zonghezhishu asc')
-	lfgqxbyday=TempLfDay.last(4).sort_by{|templfday| templfday.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
-	cityname=Array.new
-	i=1
-	lfgqxbyday.each do |c|
-		if i==1 
-			@lf_day_data_real_time=c.data_real_time
-			end
-		ccc=City.find(c.city_id) if c.city_id!=nil
-		cityname[i]=ccc.city_name if c.city_id!=nil
-		i+=1
-		#c[:cityname] =ccc.city_name if c.city_id!=nil
-	end
-	@lfgqxdatabyday=lfgqxbyday
-	@citynamehs=cityname
-	
-	
-	#廊坊各县市区污染物浓度(同期变化率)（月报）查询
-	lfgqxbymonth=TempLfMonth.last(4).sort_by{|templfmonth| templfmonth.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
-	cityname1=Array.new
-	i=1
-	lfgqxbymonth.each do |c|
-		if i==1 
-			@lf_month_data_real_time=c.data_real_time
-			end
-		ccc=City.find(c.city_id) if c.city_id!=nil
-		cityname1[i]=ccc.city_name if c.city_id!=nil
-		i+=1
-		#c[:cityname] =ccc.city_name if c.city_id!=nil
-	end
-	@lfgqxdatabymonth=lfgqxbymonth
-	@citynamehs1=cityname1
-	
-	
-	#廊坊各县市区污染物浓度(同期变化率)（年报）查询
-	lfgqxbyyear=TempLfYear.last(4).sort_by{|templfyear| templfyear.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
-	cityname2=Array.new
-	i=1
-	lfgqxbyyear.each do |c|
-		if i==1 
-			@lf_year_data_real_time=c.data_real_time
-			end
-		ccc=City.find(c.city_id) if c.city_id!=nil
-		cityname2[i]=ccc.city_name if c.city_id!=nil
-		i+=1
-		#c[:cityname] =ccc.city_name if c.city_id!=nil
-	end
-	@lfgqxdatabyyear=lfgqxbyyear
-	@citynamehs2=cityname2
-	
-	
-	
-	
-	
-	#京津冀城市污染物浓度(同期变化率)（日报）查询
-	jjjcsbyday=TempJjjDay.last(4).sort_by{|tempjjjday| tempjjjday.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
-	cityname3=Array.new
-	i=1
-	jjjcsbyday.each do |c|
-		if i==1 
-			@jjj_day_data_real_time=c.data_real_time
-			end
-		ccc=City.find(c.city_id) if c.city_id!=nil
-		cityname3[i]=ccc.city_name if c.city_id!=nil
-		i+=1
-		#c[:cityname] =ccc.city_name if c.city_id!=nil
-	end
-	@jjjcsdatabyday=jjjcsbyday
-	@citynamehs3=cityname3
-	
-	
-	#京津冀城市污染物浓度(同期变化率)（月报）查询
-	jjjcsbymonth=TempJjjMonth.last(4).sort_by{|tempjjjmonth| tempjjjmonth.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
-	cityname4=Array.new
-	i=1
-	jjjcsbymonth.each do |c|
-		if i==1 
-			@jjj_month_data_real_time=c.data_real_time
-			end
-		ccc=City.find(c.city_id) if c.city_id!=nil
-		cityname4[i]=ccc.city_name if c.city_id!=nil
-		i+=1
-		#c[:cityname] =ccc.city_name if c.city_id!=nil
-	end
-	@jjjcsdatabymonth=jjjcsbymonth
-	@citynamehs4=cityname4
-	
-	
-	#京津冀城市污染物浓度(同期变化率)（年报）查询
-	jjjcsbyyear=TempJjjYear.last(4).sort_by{|tempjjjyear| tempjjjyear.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
-	cityname5=Array.new
-	i=1
-	jjjcsbyyear.each do |c|
-		if i==1 
-			@jjj_year_data_real_time=c.data_real_time
-			end
-		ccc=City.find(c.city_id) if c.city_id!=nil
-		cityname5[i]=ccc.city_name if c.city_id!=nil
-		i+=1
-		#c[:cityname] =ccc.city_name if c.city_id!=nil
-	end
-	@jjjcsdatabyyear=jjjcsbyyear
-	@citynamehs5=cityname5
-	
-	
-	
-	
-	
+    @sfcitiesrankbymonth=get_rank_json('sfcitiesrankbymonthoryear','CHINARANK','MONTH','')
+    @sfcitiesrankbyyear=get_rank_json('sfcitiesrankbymonthoryear','CHINARANK','YEAR','')
+    #@jjjzonghezhishubyday=get_rank_json('lfdatabyhistory','JINGJINJIDATA','DAY',d.strftime('%Y-%m-%d'))
+
+
+    #廊坊各县市区污染物浓度(同期变化率)（日报）查询
+    #@lfgqxdatabyday=get_rank_json('lfgqxbyday','','',dd.strftime('%Y-%m-%d'))
+    #lfgqxbyday=TempLfDay.where("data_real_time>=? AND data_real_time<=?",Time.now.beginning_of_day,Time.now.end_of_day).order('zonghezhishu asc')
+    lfgqxbyday=TempLfDay.last(4).sort_by{|templfday| templfday.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
+    cityname=Array.new
+    i=1
+    lfgqxbyday.each do |c|
+      if i==1 
+        @lf_day_data_real_time=c.data_real_time
+      end
+      ccc=City.find(c.city_id) if c.city_id!=nil
+      cityname[i]=ccc.city_name if c.city_id!=nil
+      i+=1
+      #c[:cityname] =ccc.city_name if c.city_id!=nil
+    end
+    @lfgqxdatabyday=lfgqxbyday
+    @citynamehs=cityname
+
+
+    #廊坊各县市区污染物浓度(同期变化率)（月报）查询
+    lfgqxbymonth=TempLfMonth.last(4).sort_by{|templfmonth| templfmonth.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
+    cityname1=Array.new
+    i=1
+    lfgqxbymonth.each do |c|
+      if i==1 
+        @lf_month_data_real_time=c.data_real_time
+      end
+      ccc=City.find(c.city_id) if c.city_id!=nil
+      cityname1[i]=ccc.city_name if c.city_id!=nil
+      i+=1
+      #c[:cityname] =ccc.city_name if c.city_id!=nil
+    end
+    @lfgqxdatabymonth=lfgqxbymonth
+    @citynamehs1=cityname1
+
+
+    #廊坊各县市区污染物浓度(同期变化率)（年报）查询
+    lfgqxbyyear=TempLfYear.last(4).sort_by{|templfyear| templfyear.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
+    cityname2=Array.new
+    i=1
+    lfgqxbyyear.each do |c|
+      if i==1 
+        @lf_year_data_real_time=c.data_real_time
+      end
+      ccc=City.find(c.city_id) if c.city_id!=nil
+      cityname2[i]=ccc.city_name if c.city_id!=nil
+      i+=1
+      #c[:cityname] =ccc.city_name if c.city_id!=nil
+    end
+    @lfgqxdatabyyear=lfgqxbyyear
+    @citynamehs2=cityname2
+
+
+
+
+
+    #京津冀城市污染物浓度(同期变化率)（日报）查询
+    jjjcsbyday=TempJjjDay.last(4).sort_by{|tempjjjday| tempjjjday.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
+    cityname3=Array.new
+    i=1
+    jjjcsbyday.each do |c|
+      if i==1 
+        @jjj_day_data_real_time=c.data_real_time
+      end
+      ccc=City.find(c.city_id) if c.city_id!=nil
+      cityname3[i]=ccc.city_name if c.city_id!=nil
+      i+=1
+      #c[:cityname] =ccc.city_name if c.city_id!=nil
+    end
+    @jjjcsdatabyday=jjjcsbyday
+    @citynamehs3=cityname3
+
+
+    #京津冀城市污染物浓度(同期变化率)（月报）查询
+    jjjcsbymonth=TempJjjMonth.last(4).sort_by{|tempjjjmonth| tempjjjmonth.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
+    cityname4=Array.new
+    i=1
+    jjjcsbymonth.each do |c|
+      if i==1 
+        @jjj_month_data_real_time=c.data_real_time
+      end
+      ccc=City.find(c.city_id) if c.city_id!=nil
+      cityname4[i]=ccc.city_name if c.city_id!=nil
+      i+=1
+      #c[:cityname] =ccc.city_name if c.city_id!=nil
+    end
+    @jjjcsdatabymonth=jjjcsbymonth
+    @citynamehs4=cityname4
+
+
+    #京津冀城市污染物浓度(同期变化率)（年报）查询
+    jjjcsbyyear=TempJjjYear.last(4).sort_by{|tempjjjyear| tempjjjyear.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
+    cityname5=Array.new
+    i=1
+    jjjcsbyyear.each do |c|
+      if i==1 
+        @jjj_year_data_real_time=c.data_real_time
+      end
+      ccc=City.find(c.city_id) if c.city_id!=nil
+      cityname5[i]=ccc.city_name if c.city_id!=nil
+      i+=1
+      #c[:cityname] =ccc.city_name if c.city_id!=nil
+    end
+    @jjjcsdatabyyear=jjjcsbyyear
+    @citynamehs5=cityname5
+
+
+
+
+
     @post = params[:city_post] if params[:city_post]
     @post = '130600' if @post==nil || @post==''
     @city_name = ChinaCity.get(@post)
@@ -287,7 +288,7 @@ class WelcomeController < ApplicationController
       end
     end
 
-    
+
 
 
     # forecast data
@@ -298,7 +299,7 @@ class WelcomeController < ApplicationController
     ch.each do |time,fds|
       t = Time.now
       if time > Time.local(t.year,t.month,t.day)
-      #if time >= Time.local(2015,4,24)
+        #if time >= Time.local(2015,4,24)
         sum = []
         fds.each do |fd|
           sum << fd.AQI
@@ -316,28 +317,28 @@ class WelcomeController < ApplicationController
     else
       @city_adj = 'ADJ/'
     end
-	
-	@factor='SO2'
+
+    @factor='SO2'
     @adj_per1 = adj_percent('SO2_120', @city_adj)
-	@adj_per2 = adj_percent('NOX_120', @city_adj)
-	@adj_per3 = adj_percent('CO_120', @city_adj)
+    @adj_per2 = adj_percent('NOX_120', @city_adj)
+    @adj_per3 = adj_percent('CO_120', @city_adj)
     #@adj_per = {'保定' =>  54.34, '北京' => 12.25}
     #@factor = 'SO2'
     p @adj_per
-    
+
 
     # test data
     @county_data = [{title:'安次区',aqi:191,yesterday_aqi:179,r_rank:1,yesterday_r_rank:2}, 
-    {title:'广阳区', aqi:182,yesterday_aqi:186,r_rank:2,yesterday_r_rank:1}, 
-    {title:'廊坊开发区', aqi:140,yesterday_aqi:177,r_rank:3,yesterday_r_rank:3}, 
-    {title:'固安县', aqi:134,yesterday_aqi:151,r_rank:4,yesterday_r_rank:6}, 
-    {title:'永清县', aqi:112,yesterday_aqi:136,r_rank:5,yesterday_r_rank:7}, 
-    {title:'香河县', aqi:110,yesterday_aqi:168,r_rank:6,yesterday_r_rank:4}, 
-    {title:'大城县', aqi:101,yesterday_aqi:97,r_rank:7,yesterday_r_rank:10}, 
-    {title:'文安县', aqi:97,yesterday_aqi:119,r_rank:8,yesterday_r_rank:9}, 
-    {title:'大厂', aqi:96,yesterday_aqi:132,r_rank:9,yesterday_r_rank:8}, 
-    {title:'霸州市', aqi:92,yesterday_aqi:92,r_rank:10,yesterday_r_rank:11}, 
-    {title:'三河市', aqi:91,yesterday_aqi:160,r_rank:11,yesterday_r_rank:5}]
+                    {title:'广阳区', aqi:182,yesterday_aqi:186,r_rank:2,yesterday_r_rank:1}, 
+                    {title:'廊坊开发区', aqi:140,yesterday_aqi:177,r_rank:3,yesterday_r_rank:3}, 
+                    {title:'固安县', aqi:134,yesterday_aqi:151,r_rank:4,yesterday_r_rank:6}, 
+                    {title:'永清县', aqi:112,yesterday_aqi:136,r_rank:5,yesterday_r_rank:7}, 
+                    {title:'香河县', aqi:110,yesterday_aqi:168,r_rank:6,yesterday_r_rank:4}, 
+                    {title:'大城县', aqi:101,yesterday_aqi:97,r_rank:7,yesterday_r_rank:10}, 
+                    {title:'文安县', aqi:97,yesterday_aqi:119,r_rank:8,yesterday_r_rank:9}, 
+                    {title:'大厂', aqi:96,yesterday_aqi:132,r_rank:9,yesterday_r_rank:8}, 
+                    {title:'霸州市', aqi:92,yesterday_aqi:92,r_rank:10,yesterday_r_rank:11}, 
+                    {title:'三河市', aqi:91,yesterday_aqi:160,r_rank:11,yesterday_r_rank:5}]
 
     lev_hs = {"you"=>"优", "yellow"=>"良", "qingdu"=>"轻度", "zhong"=>"中度","zhongdu"=>"重度", "yanzhong"=>"严重"}
 
@@ -412,7 +413,7 @@ class WelcomeController < ApplicationController
     begin
       if webUrl == 'zq'
         response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+secretstr+'&type='+typestr+'&key='+Digest::MD5.hexdigest(secretstr+typestr))		
-		elsif webUrl == 'lfgqxbyday'
+      elsif webUrl == 'lfgqxbyday'
         response = HTTParty.get('http://115.28.227.231:8082/api/data/day-qxday?date='+datestr)
       elsif webUrl == 'lfdatabyhistory'
         option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
@@ -423,14 +424,17 @@ class WelcomeController < ApplicationController
       elsif webUrl == 'lfdatabymonth'
         option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
         response = HTTParty.post('http://www.izhenqi.cn/api/getrank_month.php', :body => option)
-	elsif webUrl == 'sfcitiesrankbymonthoryear'
-      option = {secret:secretstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+typestr) }
-      response = HTTParty.post('http://www.izhenqi.cn/api/getrank_forecast.php', :body => option)
+      elsif webUrl == 'sfcitiesrankbymonthoryear'
+        option = {secret:secretstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+typestr) }
+        response = HTTParty.post('http://www.izhenqi.cn/api/getrank_forecast.php', :body => option)
       end
-      json_data=JSON.parse(response.body)
-      puts  json_data['time']
-      hs[:time] =json_data['time']
-      hs[:cities] = json_data['rows']
+      #json_data=JSON.parse(response.body)
+      response.body.sub(/{.*}/) { |match| 
+        json_data=JSON.parse(match) 
+        puts  json_data['time']
+        hs[:time] =json_data['time']
+        hs[:cities] = json_data['rows']
+      }
     rescue
       puts 'Can not get data from izhenqi, please check network!'
     end 
@@ -477,11 +481,11 @@ class WelcomeController < ApplicationController
       #puts i
       #strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
       #ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
-	  ncfile='public\images\CUACE_09km_adj_2015-06-27.nc'
+      ncfile='public\images\CUACE_09km_adj_2015-06-27.nc'
       i = i + 1
       return {} if i>30
     end until File::exists?(ncfile)
-    
+
     #ncfile = 'public/adj/CUACE_09km_adj_2015-06-08.nc'
 
     if type==""
@@ -516,7 +520,7 @@ class WelcomeController < ApplicationController
     var = file.var(var_name)
     data = var.get
     #puts data.shape
-    
+
     x = Array.new
     y = Array.new
     #puts city_file
