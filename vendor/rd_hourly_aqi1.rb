@@ -44,10 +44,11 @@ end
 strtime = Time.new.strftime("%Y%m%d")+'08'
 #puts strtime
 
-strtime = '2015072108'
+strtime = '2015072408'
 #puts strtime
 
 path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
+#path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 puts path
 
 cs = City.all
