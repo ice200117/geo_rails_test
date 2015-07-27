@@ -133,6 +133,7 @@ class WelcomeController < ApplicationController
 
 	d = DateTime.now
 	d -= 1
+	dd=d-1
     @lfdatabyhour=get_rank_json('rankdata','LANGFANGRANK','HOUR','')
     @lfdatabyday=get_rank_json('rankdata','LANGFANGRANK','DAY','')
     @chinadata=get_rank_json('rankdata','CHINARANK','DAY','')
@@ -141,7 +142,119 @@ class WelcomeController < ApplicationController
     @sfcitiesrankbyday=get_rank_json('zq','CHINARANK','DAY','')
 	@sfcitiesrankbymonth=get_rank_json('sfcitiesrankbymonthoryear','CHINARANK','MONTH','')
 	@sfcitiesrankbyyear=get_rank_json('sfcitiesrankbymonthoryear','CHINARANK','YEAR','')
-	@jjjzonghezhishubyday=get_rank_json('lfdatabyhistory','JINGJINJIDATA','DAY',d.strftime('%Y-%m-%d'))
+	#@jjjzonghezhishubyday=get_rank_json('lfdatabyhistory','JINGJINJIDATA','DAY',d.strftime('%Y-%m-%d'))
+	
+	
+	#廊坊各县市区污染物浓度(同期变化率)（日报）查询
+	#@lfgqxdatabyday=get_rank_json('lfgqxbyday','','',dd.strftime('%Y-%m-%d'))
+	#lfgqxbyday=TempLfDay.where("data_real_time>=? AND data_real_time<=?",Time.now.beginning_of_day,Time.now.end_of_day).order('zonghezhishu asc')
+	lfgqxbyday=TempLfDay.last(4).sort_by{|templfday| templfday.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
+	cityname=Array.new
+	i=1
+	lfgqxbyday.each do |c|
+		if i==1 
+			@lf_day_data_real_time=c.data_real_time
+			end
+		ccc=City.find(c.city_id) if c.city_id!=nil
+		cityname[i]=ccc.city_name if c.city_id!=nil
+		i+=1
+		#c[:cityname] =ccc.city_name if c.city_id!=nil
+	end
+	@lfgqxdatabyday=lfgqxbyday
+	@citynamehs=cityname
+	
+	
+	#廊坊各县市区污染物浓度(同期变化率)（月报）查询
+	lfgqxbymonth=TempLfMonth.last(4).sort_by{|templfmonth| templfmonth.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
+	cityname1=Array.new
+	i=1
+	lfgqxbymonth.each do |c|
+		if i==1 
+			@lf_month_data_real_time=c.data_real_time
+			end
+		ccc=City.find(c.city_id) if c.city_id!=nil
+		cityname1[i]=ccc.city_name if c.city_id!=nil
+		i+=1
+		#c[:cityname] =ccc.city_name if c.city_id!=nil
+	end
+	@lfgqxdatabymonth=lfgqxbymonth
+	@citynamehs1=cityname1
+	
+	
+	#廊坊各县市区污染物浓度(同期变化率)（年报）查询
+	lfgqxbyyear=TempLfYear.last(4).sort_by{|templfyear| templfyear.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
+	cityname2=Array.new
+	i=1
+	lfgqxbyyear.each do |c|
+		if i==1 
+			@lf_year_data_real_time=c.data_real_time
+			end
+		ccc=City.find(c.city_id) if c.city_id!=nil
+		cityname2[i]=ccc.city_name if c.city_id!=nil
+		i+=1
+		#c[:cityname] =ccc.city_name if c.city_id!=nil
+	end
+	@lfgqxdatabyyear=lfgqxbyyear
+	@citynamehs2=cityname2
+	
+	
+	
+	
+	
+	#京津冀城市污染物浓度(同期变化率)（日报）查询
+	jjjcsbyday=TempJjjDay.last(4).sort_by{|tempjjjday| tempjjjday.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
+	cityname3=Array.new
+	i=1
+	jjjcsbyday.each do |c|
+		if i==1 
+			@jjj_day_data_real_time=c.data_real_time
+			end
+		ccc=City.find(c.city_id) if c.city_id!=nil
+		cityname3[i]=ccc.city_name if c.city_id!=nil
+		i+=1
+		#c[:cityname] =ccc.city_name if c.city_id!=nil
+	end
+	@jjjcsdatabyday=jjjcsbyday
+	@citynamehs3=cityname3
+	
+	
+	#京津冀城市污染物浓度(同期变化率)（月报）查询
+	jjjcsbymonth=TempJjjMonth.last(4).sort_by{|tempjjjmonth| tempjjjmonth.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
+	cityname4=Array.new
+	i=1
+	jjjcsbymonth.each do |c|
+		if i==1 
+			@jjj_month_data_real_time=c.data_real_time
+			end
+		ccc=City.find(c.city_id) if c.city_id!=nil
+		cityname4[i]=ccc.city_name if c.city_id!=nil
+		i+=1
+		#c[:cityname] =ccc.city_name if c.city_id!=nil
+	end
+	@jjjcsdatabymonth=jjjcsbymonth
+	@citynamehs4=cityname4
+	
+	
+	#京津冀城市污染物浓度(同期变化率)（年报）查询
+	jjjcsbyyear=TempJjjYear.last(4).sort_by{|tempjjjyear| tempjjjyear.zonghezhishu}#如果有些记录的综合指数列为nil则会拿nil与float进行比较排序，sort_by会报错
+	cityname5=Array.new
+	i=1
+	jjjcsbyyear.each do |c|
+		if i==1 
+			@jjj_year_data_real_time=c.data_real_time
+			end
+		ccc=City.find(c.city_id) if c.city_id!=nil
+		cityname5[i]=ccc.city_name if c.city_id!=nil
+		i+=1
+		#c[:cityname] =ccc.city_name if c.city_id!=nil
+	end
+	@jjjcsdatabyyear=jjjcsbyyear
+	@citynamehs5=cityname5
+	
+	
+	
+	
+	
     @post = params[:city_post] if params[:city_post]
     @post = '130600' if @post==nil || @post==''
     @city_name = ChinaCity.get(@post)
@@ -181,7 +294,6 @@ class WelcomeController < ApplicationController
     aqis = []
     pri_pol = []
     c = City.find_by_post_number(@post)
-    puts @post, c
     ch = c.hourly_city_forecast_air_qualities.last(120).group_by_day(&:forecast_datetime)
     ch.each do |time,fds|
       t = Time.now
@@ -299,7 +411,9 @@ class WelcomeController < ApplicationController
     hs = Hash.new
     begin
       if webUrl == 'zq'
-        response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+secretstr+'&type='+typestr+'&key='+Digest::MD5.hexdigest(secretstr+typestr))
+        response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+secretstr+'&type='+typestr+'&key='+Digest::MD5.hexdigest(secretstr+typestr))		
+		elsif webUrl == 'lfgqxbyday'
+        response = HTTParty.get('http://115.28.227.231:8082/api/data/day-qxday?date='+datestr)
       elsif webUrl == 'lfdatabyhistory'
         option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
         response = HTTParty.post('http://www.izhenqi.cn/api/getdata_history.php', :body => option)
@@ -361,8 +475,9 @@ class WelcomeController < ApplicationController
     path = 'public/images/ftproot/Temp/Backup'+city+'/'
     begin
       #puts i
-      strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
-      ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
+      #strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
+      #ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
+	  ncfile='public\images\CUACE_09km_adj_2015-06-27.nc'
       i = i + 1
       return {} if i>30
     end until File::exists?(ncfile)

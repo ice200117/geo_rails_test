@@ -77,3 +77,4 @@ gem 'httparty', '~> 0.13.4'
 gem 'rb-readline'
 gem 'multipart-post', '~> 2.0.0'
 
+gem 'whenever'

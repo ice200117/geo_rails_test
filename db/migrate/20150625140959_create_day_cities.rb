@@ -11,14 +11,14 @@ class CreateDayCities < ActiveRecord::Migration
       t.float "zonghezhishu"
       t.float "AQI"
       t.integer "level"
-	    t.string   "main_pol"
-	    t.float		"SO2_change_rate"
-	    t.float		"NO2_change_rate"
-	    t.float		"CO_change_rate"
-	    t.float		"O3_change_rate"
-	    t.float		"pm10_change_rate"
-	    t.float		"pm25_change_rate"
-	    t.float		"zongheindex_change_rate"
+	  t.string   "main_pol"
+	  t.float		"SO2_change_rate"
+	  t.float		"NO2_change_rate"
+	  t.float		"CO_change_rate"
+	  t.float		"O3_change_rate"
+	  t.float		"pm10_change_rate"
+	  t.float		"pm25_change_rate"
+	  t.float		"zongheindex_change_rate"
       t.timestamps
     end
   end
