@@ -44,17 +44,37 @@ end
 strtime = Time.new.strftime("%Y%m%d")+'08'
 #puts strtime
 
-strtime = '2015072408'
-#puts strtime
+strtime = '2015072808'
+puts strtime
 
 path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
 #path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
-puts path
+
+# Read hua bei city, do not read data of these city.
+firstline = true
+hb_city = Array.new
+IO.foreach("vendor/station_hb.EXT") do |line| 
+  if firstline
+  firstline = false
+  next
+  end
+  post_number = line[1,7]
+  latitude = line[8,8]
+  longitude = line[16,8]
+  city_name_pinyin = line[25,18].strip
+  hb_city << city_name_pinyin
+  #  city_name  = line[46..-4].strip
+end
 
 cs = City.all
 cs.each do |c|
   puts c.city_name_pinyin
   py = c.city_name_pinyin.strip
+
+  if hb_city.include?(py) 
+    next
+  end
+
   fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
   puts fn
   f = File.open(path+fn) if File::exists?(path+fn) 
