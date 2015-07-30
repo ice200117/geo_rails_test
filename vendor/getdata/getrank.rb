@@ -136,7 +136,8 @@ end
 #typestr:数据类型  
 #datestr：日期  格式(YYYY-MM-DD)
 def get_rank_json(web_flag,secretstr,typestr,datestr)
-	if datestr != ''
+
+	if datestr!=''
 		datestr=datestr.strftime("%Y-%m-%d")
 	end
 	hs = Hash.new
@@ -213,7 +214,7 @@ def main_get
 		puts 'Get temp_lf_days error!'	
 	else
 		temp=get_db_data(flag,'last','')
-		if hs[:total]!='0' && hs[:time].to_time>time.beginning_of_day 
+		if hs[:total]!='0' && hs[:time]>time.beginning_of_day 
 			save_db(hs,flag)
 		end
 	end
@@ -226,7 +227,7 @@ def main_get
 		puts 'Get temp_lf_months error!'	
 	else
 		temp=get_db_data('temp_lf_days','last','')
-		if hs[:total]!='0' && hs[:time].to_time>time.beginning_of_day 
+		if hs[:total]!='0' && hs[:time]>time.beginning_of_day 
 			save_db(hs,flag)	
 		elsif (Time.now.end_of_day-Time.now)<60*60
 			while hs[:total] == '0'
@@ -289,26 +290,24 @@ end
 #保存数据到day_city
 def save_db(hs,flag) 
 	hs[:cities].each do |t|
-		if t['city'] == '市辖区'
-			t['city']='廊坊开发区'
-		elsif t['city']=='大厂回族自治县'
-			t['city']='大厂'	
-		end
 		city_array = City.where("city_name like ?",t['city']+'_')
 		if city_array.length==0
 			city_array=City.where("city_name = ?",t['city'])
 		end
 		city=city_array[0]
-		puts t['city']
 		day_city=get_db_data(flag,'new','')	
 		day_city.city_id=city.id
+		case flag
+		when 'temp_lf_months','temp_lf_years'
+			t=Hash.new
+			t=get_avg_data(flag,city.id,hs[:time])
+		end
 		day_city.SO2=t['so2']
 		day_city.NO2=t['no2']
-		day_city.CO=t['co_95']
-		day_city.O3=t['o3_90']
+		day_city.CO=t['co']
+		day_city.O3=t['o3']
 		day_city.pm10=t['pm10']
 		day_city.pm25=t['pm2_5']
-		day_city.zonghezhishu=t['complexindex']
 		if !t['aqi'].nil?
 			day_city.AQI=t['aqi']
 		end
@@ -319,6 +318,9 @@ def save_db(hs,flag)
 			day_city.main_pol=t['main_pollutant']
 		end
 		day_city.data_real_time=hs[:time].to_time
+		day_city.save
+		day_city=get_db_data(flag,'last','')
+		day_city.zonghezhishu=get_zonghezhishu(flag)
 		day_city.save
 		puts '=================='+hs[:time]+'=Save OK!==============================='
 		if flag!='temp_lf_hours'
@@ -436,14 +438,14 @@ def get_avg_data(flag,id,time)
 
 	hs
 end
-def get_zonghezhishu(flag,id)
+
 	#计算综合指数 需要6项指标的数据
 	#先将当天的数据存储到数据库，再调用综合指数计算方法
 	#年平均二级标准SO2:60,NO2:40,PM10:70,PM2.5:35
 	#二级标准:CO 24小时平均4,O3日最大8小时平均160
 	#参数
 	#id=城市id
-	zonghezhishu_value=''
+def get_zonghezhishu(flag)
 	dayCity=get_db_data(flag,'last','')
 	zonghezhishu_value=dayCity.SO2.to_f/60+dayCity.NO2.to_f/40+dayCity.pm10.to_f/70+dayCity.pm25.to_f/35+dayCity.CO.to_f/4+dayCity.O3.to_f/160
 	zonghezhishu_value
@@ -463,7 +465,7 @@ def get_change_rate(flag,id,time)
 		stime+=60*60*24
 		etime+=60*60*24
 		sql_str=Hash.new
-		sql_str[:data_real_time]=stime.years_ago(1)..etime.years_ago(1)
+		sql_str[:created_at]=stime.years_ago(1)..etime.years_ago(1)
 		sql_str[:city_id]=id
 		last_years_data=get_db_data(flag,'where',sql_str)
 		if stime.years_ago(1)>=Time.now.beginning_of_year
