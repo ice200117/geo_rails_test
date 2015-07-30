@@ -136,14 +136,16 @@ end
 #typestr:数据类型  
 #datestr：日期  格式(YYYY-MM-DD)
 def get_rank_json(web_flag,secretstr,typestr,datestr)
-	datestr=datestr.strftime("%Y-%m-%d")
+	if datestr != ''
+		datestr=datestr.strftime("%Y-%m-%d")
+	end
 	hs = Hash.new
 	begin
 		if web_flag == 'shishi_china_rank_data'
 			#真气网74城市实时/日排名
 			#secretstr:CHINARANK
 			#type:HOUR(实时)，DAY(日)
-			response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+secretstr+'&type='+typestr+'&key='+digest::md5.hexdigest(secretstr+typestr))
+			response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+secretstr+'&type='+typestr+'&key='+Digest::MD5.hexdigest(secretstr+typestr))
 		elsif web_flag == 'china_history_data' 
 			#74城市和京津冀历史日接口
 			option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr)}
@@ -202,234 +204,102 @@ end
 def main_get
 	hs=Hash.new
 	oneday=60*60*24
-
+	time=Time.now.yesterday
 	#廊坊日数据
-	stime=Time.now.years_ago(1).beginning_of_year
-	etime=Time.now.yesterday
-	while stime<=etime
-		hs=get_rank_json('lf_history_data','','',stime)  
-		stime+=oneday
-		flag='temp_lf_days'
-		if hs==false
-			puts 'Get temp_lf_days error!'	
-		else
-			if hs[:total]!='0'
+	flag='temp_lf_days'
+	hs=get_rank_json('shishi_rank_data','LANGFANGRANK','DAY','')  
+	flag='temp_lf_days'
+	if hs==false
+		puts 'Get temp_lf_days error!'	
+	else
+		temp=get_db_data(flag,'last','')
+		if hs[:total]!='0' && hs[:time].to_time>time.beginning_of_day 
+			save_db(hs,flag)
+		end
+	end
+
+	#廊坊月数据
+	flag='temp_lf_months'
+	hs=get_rank_json('shishi_rank_data','LANGFANGRANK','DAY','')
+	flag='temp_lf_months'
+	if hs==false 
+		puts 'Get temp_lf_months error!'	
+	else
+		temp=get_db_data('temp_lf_days','last','')
+		if hs[:total]!='0' && hs[:time].to_time>time.beginning_of_day 
+			save_db(hs,flag)	
+		elsif (Time.now.end_of_day-Time.now)<60*60
+			while hs[:total] == '0'
+				hs=get_rank_json('lf_history_data','','',time.yesterday)
+				hs[:time]=time
 				save_db(hs,flag)
 			end
 		end
 	end
-	#廊坊月数据
-	stime = Time.now.beginning_of_year
-	etime = Time.now.yesterday
-	flag='temp_lf_months'
-	while stime <= etime 
-		hs=get_rank_json('lf_history_data','','',stime)
-		flag='temp_lf_months'
-		if hs==false 
-			puts 'Get temp_lf_months error!'	
-		else
-			if hs[:total]!='0'
-				save_db(hs,flag)	
-			else
-				while hs[:total]==0
-					temp_one+=60*60*24	
-					hs=get_rank_json('lf_history_data','','',stime-temp_one)
-					hs[:time]=stime	
-					save_db(hs,flag)
-				end
-			end
-		end
-		stime+=oneday
-	end
-
 	#廊坊年数据
-	stime=Time.now.years_ago(1).beginning_of_year
-	etime=Time.now.yesterday
 	flag='temp_lf_years'
-	while stime<=etime
-		hs=get_rank_json('lf_history_data','','',stime)
-		if hs==false
-			puts 'Get temp_lf_years error!'
-		else
-			if hs[:total]!='0'
-				save_db(hs,flag)	
-			else
-				while hs[:total]==0
-					temp_one+=60*60*24	
-					hs=get_rank_json('lf_history_data','','',stime-temp_one)
-					hs[:time]=stime	
-					save_db(hs,flag)
-				end
+	hs=get_rank_json('shishi_rank_data','LANGFANGRANK','DAY','')
+	if hs==false
+		puts 'Get temp_lf_years error!'
+	else
+		if hs[:total]!='0' && hs[:time]>time.beginning_of_day
+			save_db(hs,flag)	
+		elsif (Time.now.end_of_day-Time.now)<60*60
+			while hs[:total]=='0'
+				hs=get_rank_json('lf_history_data','','',time.yesterday)
+				hs[:time]=time
+				save_db(hs,flag)
 			end
 		end
-		stime+=oneday
 	end
 
 	#京津冀日数据
-	stime=Time.now.years_ago(1).beginning_of_year
-	etime=Time.now.yesterday
 	flag='temp_jjj_days'
-	while stime<=etime
-		(0..5).each	do |t|
-			hs=get_rank_json('sfcitiesrankbymonthoryear','CHINARANK','MONTH','')
-			if hs != false
-				break
-			end
+	time=Time.now.yesterday
+	(0..5).each	do |t|
+		hs=get_rank_json('china_history_data','JINGJINJIDATA','DAY',time)
+		if hs != false
+			break
 		end
-		if hs==false
-			puts 'Get temp_jjj_months error!'
-		else
-			if hs[:total]!='0'
-				save_db(hs,flag)	
-			else
-				while hs[:total]=='0'
-					temp_one=60*60*24
-					hs=get_rank_json('sfcitiesrankbymonthoryear','CHINARANK','MONTH','')
-					hs[:time]=stime	
-					save_db(hs,flag)	
-				end
-			end
-		end
-		stime+=oneday
 	end
-	#京津冀月数据
-	stime=Time.now.years_ago(1).beginning_of_year
-	etime=Time.now.yesterday
-	flag='temp_jjj_months'
-	while stime<=etime
-		(0..5).each	do |t|
-			hs=get_rank_json('sfcitiesrankbymonthoryear','CHINARANK','MONTH','')
-			if hs != false
-				break
-			end
+	if hs==false
+		puts 'Get temp_jjj_months error!'
+	else
+		if hs[:total]!='0' && hs[:time]>time.beginning_of_day
+			save_db(hs,flag)	
 		end
-		if hs==false
-			puts 'Get temp_jjj_months error!'
-		else
-			if hs[:total]!='0'
-				save_db(hs,flag)	
-			else
-				while hs[:total]=='0'
-					temp_one=60*60*24
-					hs=get_rank_json('sfcitiesrankbymonthoryear','CHINARANK','MONTH','')
-					hs[:time]=stime	
-					save_db(hs,flag)	
-				end
-			end
-		end
-		stime+=oneday
-	end
-	#京津冀年数据
-	stime=Time.now.years_ago(1).beginning_of_year
-	etime=Time.now.yesterday
-	flag='temp_jjj_years'
-	while stime<=etime
-		(0..5).each	do |t|
-			hs=get_rank_json('china_history_data','JINGJINJIDATA','DAY',stime)
-			if hs != false
-				break
-			end
-		end
-		if hs==false
-			puts 'Get temp_jjj_years error!'
-		else
-			if hs[:total]!='0'
-				save_db(hs,flag)	
-			else
-				while hs[:total]=='0'
-					temp_one=60*60*24
-					hs=get_rank_json('china_history_data','JINGJINJIDATA','DAY',stime)
-					hs[:time]=stime	
-					save_db(hs,flag)	
-				end
-			end
-		end
-		stime+=oneday
 	end
 	#74城市日数据
-	stime=Time.now.years_ago(1).beginning_of_year
-	etime=Time.now.yesterday
 	flag='temp_sfcities_days'
-	while stime<=etime
-		(0..5).each	do |t|
-			hs=get_rank_json('china_history_data','CHINADATA','DAY',stime)
-			if hs != false
-				break
-			end
+	(0..5).each	do |t|
+		hs=get_rank_json('shishi_china_rank_data','CHINARANK','DAY','')
+		if hs != false
+			break
 		end
-		if hs==false
-			puts 'Get temp_sfcities_days error!'
-		else
-			if hs[:total]
-				save_db(hs,flag)
-			end
-		end
-		stime+=oneday
 	end
-	#74城市月数据
-	stime=Time.now.years_ago(1).beginning_of_year
-	etime=Time.now.yesterday
-	flag='temp_sfcities_months'
-	while stime<=etime
-		(0..5).each	do |t|
-			hs=get_rank_json('china_history_data','CHINADATA','DAY',stime)
-			if hs != false
-				break
-			end
+	if hs==false
+		puts 'Get temp_sfcities_days error!'
+	else
+		if hs[:total]!='0' && hs[:time]>time.beginning_of_day
+			save_db(hs,flag)
 		end
-		if hs==false
-			puts 'Get temp_sfcities_months error!'
-		else
-			if hs[:total]!='0'
-				save_db(hs,flag)	
-			else
-				while hs[:total]=='0'
-					temp_one=60*60*24
-					hs=get_rank_json('china_history_data','CHINADATA','DAY',stime)
-					hs[:time]=stime	
-					save_db(hs,flag)	
-				end
-			end
-		end
-		stime+=oneday
-	end
-	#74城市年数据
-	stime=Time.now.years_ago(1).beginning_of_year
-	etime=Time.yesterday
-	flag='temp_sfcities_years'
-	while stime<=etime
-		(0..5).each	do |t|
-			hs=get_rank_json('china_history_data','CHINADATA','DAY',stime)
-			if hs != false
-				break
-			end
-		end
-		if hs==false
-			puts 'Get temp_sfcities_years error!'
-		else 
-			if hs[:total]!='0'
-				save_db(hs,flag)	
-			else
-				while hs[:total]=='0'
-					temp_one=60*60*24
-					hs=get_rank_json('china_history_data','CHINADATA','DAY',stime)
-					hs[:time]=stime	
-					save_db(hs,flag)	
-				end
-			end
-		end
-		stime+=oneday
 	end
 end 
 
 #保存数据到day_city
 def save_db(hs,flag) 
 	hs[:cities].each do |t|
+		if t['city'] == '市辖区'
+			t['city']='廊坊开发区'
+		elsif t['city']=='大厂回族自治县'
+			t['city']='大厂'	
+		end
 		city_array = City.where("city_name like ?",t['city']+'_')
 		if city_array.length==0
 			city_array=City.where("city_name = ?",t['city'])
 		end
 		city=city_array[0]
+		puts t['city']
 		day_city=get_db_data(flag,'new','')	
 		day_city.city_id=city.id
 		day_city.SO2=t['so2']
@@ -448,7 +318,7 @@ def save_db(hs,flag)
 		if !t['main_pollutant'].nil?
 			day_city.main_pol=t['main_pollutant']
 		end
-		day_city.created_at=hs[:time].to_time
+		day_city.data_real_time=hs[:time].to_time
 		day_city.save
 		puts '=================='+hs[:time]+'=Save OK!==============================='
 		if flag!='temp_lf_hours'
@@ -593,7 +463,7 @@ def get_change_rate(flag,id,time)
 		stime+=60*60*24
 		etime+=60*60*24
 		sql_str=Hash.new
-		sql_str[:created_at]=stime.years_ago(1)..etime.years_ago(1)
+		sql_str[:data_real_time]=stime.years_ago(1)..etime.years_ago(1)
 		sql_str[:city_id]=id
 		last_years_data=get_db_data(flag,'where',sql_str)
 		if stime.years_ago(1)>=Time.now.beginning_of_year

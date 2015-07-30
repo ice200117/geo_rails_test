@@ -19,7 +19,7 @@
 every 1.hours do
 	flag=false
 	while flag
-		command "cd /vagrant/geo_rails_test/vendor/getdata && rails r gethourdata.rb"
+		command "cd /vagrant/geo_rails_test/vendor/getdata && rails r gethourdata.rb -e production"
 		t=TempLfHour.last
 		if t.between?(Time.now.beginning_of_hour - 60*60,Time.now.end_of_hour - 60*60) 
 			flag=true
