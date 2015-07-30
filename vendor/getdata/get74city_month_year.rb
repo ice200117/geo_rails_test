@@ -193,7 +193,7 @@ end
 def main_get
 	hs=Hash.new
 	oneday=60*60*24
-
+	time=Time.now.yesterday
 	#京津冀月数据
 	flag='temp_jjj_months'
 	(0..5).each	do |t|
@@ -205,7 +205,7 @@ def main_get
 	if hs==false
 		puts 'Get temp_jjj_months error!'
 	else
-		if hs[:total]!='0'
+		if hs[:total]!='0' 
 			save_db(hs,flag)	
 		end
 	end
@@ -220,11 +220,11 @@ def main_get
 	if hs==false
 		puts 'Get temp_jjj_years error!'
 	else
-		if hs[:total]!='0'
+		if hs[:total]!='0'  
 			save_db(hs,flag)	
 		end
 	end
-		
+
 	#74城市月数据
 
 	flag='temp_sfcities_months'
@@ -252,7 +252,8 @@ def main_get
 	if hs==false
 		puts 'Get temp_sfcities_years error!'
 	else 
-		if hs[:total]!='0'
+		temp=get_db_data(flag,'last','')
+		if hs[:total]!='0'		
 			save_db(hs,flag)	
 		end
 	end

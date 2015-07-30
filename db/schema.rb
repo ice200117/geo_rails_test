@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20150724091156) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+  enable_extension "postgis_topology"
 
   create_table "cities", force: true do |t|
     t.string  "city_name"
@@ -93,6 +94,21 @@ ActiveRecord::Schema.define(version: 20150724091156) do
     t.float    "NO2"
     t.float    "O3"
     t.float    "VIS"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "lf_shishi_data", force: true do |t|
+    t.integer  "city_id"
+    t.float    "SO2"
+    t.float    "NO2"
+    t.float    "CO"
+    t.float    "O3"
+    t.float    "pm10"
+    t.float    "pm25"
+    t.float    "AQI"
+    t.integer  "level"
+    t.string   "main_pol"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -290,6 +306,9 @@ ActiveRecord::Schema.define(version: 20150724091156) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "data_real_time"
+  end
+
+  create_table "temp_lves", force: true do |t|
   end
 
   create_table "temp_sfcities_days", force: true do |t|

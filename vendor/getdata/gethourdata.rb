@@ -189,6 +189,7 @@ def get_rank_json(web_flag,secretstr,typestr,datestr)
 			response  = HTTParty.get('http://115.28.227.231:8082/api/data/day-qxday?date='+datestr)
 		end
 		json_data=JSON.parse(response.body)
+		puts response.body
 		puts json_data
 		if web_flag == 'lf_history_data'
 			hs[:time] = json_data['date']
@@ -218,7 +219,7 @@ def main_get
 	if hs==false
 		puts 'Get temp_lf_hours error!'
 	else
-		if hs[:total]!='0'
+		if hs[:total]!='0' && hs[:time]>(Time.now-60*60).beginning_of_hour 
 			save_db(hs,flag)	
 		end	
 	end
@@ -232,9 +233,9 @@ def main_get
 		end
 	end
 	if hs==false
-		puts 'Get temp_lf_hours error!'
+		puts 'Get temp_hb_hours error!'
 	else
-		if hs[:total]!='0'
+		if hs[:total]!='0' && hs[:time]>(Time.now-60*60).beginning_of_hour 
 			save_db(hs,flag)	
 		end	
 	end
@@ -248,9 +249,9 @@ def main_get
 		end
 	end
 	if hs==false
-		puts 'Get temp_lf_hours error!'
+		puts 'Get temp_74_hours error!'
 	else
-		if hs[:total]!='0'
+		if hs[:total]!='0' && hs[:time]>(Time.now-60*60).beginning_of_hour 
 			save_db(hs,flag)	
 		end	
 	end
