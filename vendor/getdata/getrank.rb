@@ -1,4 +1,5 @@
-require './common.rb'
+require_relative './common.rb'
+
 def main_get
 	hs=Hash.new
 	oneday=60*60*24
@@ -124,6 +125,9 @@ def save_db(hs,flag)
 			day_city=get_db_data(flag,'last','')
 			if hs[:time].to_time.year.to_i>2014.to_i&&flag!='temp_sfcities_days'&&flag!='temp_sfcities_months'&&flag!='temp_sfcities_years' 
 				change_rate=get_change_rate(flag,city.id,hs[:time])
+				if change_rate == false
+					next
+				end
 				day_city.SO2_change_rate=change_rate[:SO2]
 				day_city.NO2_change_rate=change_rate[:NO2]
 				day_city.CO_change_rate=change_rate[:CO]

@@ -109,6 +109,9 @@ def save_db(hs,flag)
 		day_city=get_db_data(flag,'last','')
 		if flag!='temp_sfcities_months' && flag!='temp_sfcities_years' 
 			change_rate=get_change_rate(flag,city.id,Time.now)
+			if change_rate == false
+				next
+			end
 			day_city.SO2_change_rate=change_rate[:SO2]
 			day_city.NO2_change_rate=change_rate[:NO2]
 			day_city.CO_change_rate=change_rate[:CO]

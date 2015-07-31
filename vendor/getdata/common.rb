@@ -201,72 +201,12 @@ def lf_history_data_column_name_modify(hs)
 	data_array
 end
 
-#计算同期对比
-def get_change_rate(flag,id,time)
-	stime=time.to_time.beginning_of_day
-	etime=time.to_time.end_of_day
-	sql_str=Hash.new
-	sql_str[:data_real_time]=stime.years_ago(1)..etime.years_ago(1)
-	sql_str[:city_id]=id
-	last_years_data=get_db_data(flag,'where',sql_str)
-
-	#如何同期没有数据，循环加一天，查找数据	
-	hs=Hash.new
-	while last_years_data.length==0
-		stime+=60*60*24
-		etime+=60*60*24
-		sql_str=Hash.new
-		sql_str[:data_real_time]=stime.years_ago(1)..etime.years_ago(1)
-		sql_str[:city_id]=id
-		last_years_data=get_db_data(flag,'where',sql_str)
-		if stime.years_ago(1)>=Time.now.beginning_of_year
-			hs[:SO2]=0
-			hs[:NO2]=0
-			hs[:pm10]=0
-			hs[:pm25]=0
-			hs[:CO]=0
-			hs[:O3]=0
-			hs[:zhs]=0
-			hs
-			return
-		end
-		puts 'get_change_rate while'
-	end
-	last_years=last_years_data[0]
-
-	now_years=get_db_data(flag,'last','')
-
-	hs=Hash.new
-	if !now_years.SO2.nil? && !last_years.SO2.nil?
-		hs[:SO2]=(now_years.SO2-last_years.SO2)/last_years.SO2
-	end
-	if !now_years.NO2.nil? && !last_years.NO2.nil?
-		hs[:NO2]=(now_years.NO2-last_years.NO2)/last_years.NO2
-	end
-	if !now_years.pm10.nil? && !last_years.pm10.nil?
-		hs[:pm10]=(now_years.pm10-last_years.pm10)/last_years.pm10
-	end
-	if !now_years.pm25.nil? && !last_years.pm25.nil?
-		hs[:pm25]=(now_years.pm25-last_years.pm25)/last_years.pm25
-	end
-	if !now_years.CO.nil? && !last_years.CO.nil?
-		hs[:CO]=(now_years.CO-last_years.CO)/last_years.CO
-	end
-	if !now_years.O3.nil? && !last_years.O3.nil?
-		hs[:O3]=(now_years.O3-last_years.O3)/last_years.O3
-	end
-	if !now_years.zonghezhishu.nil? && !last_years.zonghezhishu.nil?
-		hs[:zhzs]=(now_years.zonghezhishu-last_years.zonghezhishu)/last_years.zonghezhishu
-	end
-	hs
-end
-
-	#计算综合指数 需要6项指标的数据
-	#先将当天的数据存储到数据库，再调用综合指数计算方法
-	#年平均二级标准SO2:60,NO2:40,PM10:70,PM2.5:35
-	#二级标准:CO 24小时平均4,O3日最大8小时平均160
-	#参数
-	#id=城市id
+#计算综合指数 需要6项指标的数据
+#先将当天的数据存储到数据库，再调用综合指数计算方法
+#年平均二级标准SO2:60,NO2:40,PM10:70,PM2.5:35
+#二级标准:CO 24小时平均4,O3日最大8小时平均160
+#参数
+#id=城市id
 def get_zonghezhishu(flag)
 	dayCity=get_db_data(flag,'last','')
 	zonghezhishu_value=dayCity.SO2.to_f/60+dayCity.NO2.to_f/40+dayCity.pm10.to_f/70+dayCity.pm25.to_f/35+dayCity.CO.to_f/4+dayCity.O3.to_f/160
@@ -337,6 +277,9 @@ def get_avg_data(flag,id,time)
 	avg_co=0.to_f
 	avg_o3=0.to_f
 	end_number=so2_array.length
+	if end_number==0
+		return false
+	end
 	(0..end_number-1).each do |i|
 		avg_so2 += so2_array [i]
 		avg_no2 += no2_array[i]
@@ -371,5 +314,44 @@ def get_avg_data(flag,id,time)
 	hs['co']=avg_co
 	hs['o3']=avg_o3
 
+	hs
+end
+
+#计算同期对比
+def get_change_rate(flag,id,time)
+	sql_str=Hash.new
+	sql_str[:data_real_time]=time.years_ago(1).beginning_of_day..time.years_ago(1).end_of_day
+	sql_str[:city_id]=id
+
+	last_years_data=get_db_data(flag,'where',sql_str)	
+	if last_years_data.length == 0
+		return false
+	end
+	last_years=last_years_data[0]
+
+	now_years=get_db_data(flag,'last','')
+
+	hs=Hash.new
+	if !now_years.SO2.nil? && !last_years.SO2.nil?
+		hs[:SO2]=(now_years.SO2-last_years.SO2)/last_years.SO2
+	end
+	if !now_years.NO2.nil? && !last_years.NO2.nil?
+		hs[:NO2]=(now_years.NO2-last_years.NO2)/last_years.NO2
+	end
+	if !now_years.pm10.nil? && !last_years.pm10.nil?
+		hs[:pm10]=(now_years.pm10-last_years.pm10)/last_years.pm10
+	end
+	if !now_years.pm25.nil? && !last_years.pm25.nil?
+		hs[:pm25]=(now_years.pm25-last_years.pm25)/last_years.pm25
+	end
+	if !now_years.CO.nil? && !last_years.CO.nil?
+		hs[:CO]=(now_years.CO-last_years.CO)/last_years.CO
+	end
+	if !now_years.O3.nil? && !last_years.O3.nil?
+		hs[:O3]=(now_years.O3-last_years.O3)/last_years.O3
+	end
+	if !now_years.zonghezhishu.nil? && !last_years.zonghezhishu.nil?
+		hs[:zhzs]=(now_years.zonghezhishu-last_years.zonghezhishu)/last_years.zonghezhishu
+	end
 	hs
 end
