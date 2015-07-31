@@ -490,9 +490,9 @@ class WelcomeController < ApplicationController
     path = 'public/images/ftproot/Temp/Backup'+city+'/'
     begin
       #puts i
-      #strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
-      #ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
-      ncfile='public\images\CUACE_09km_adj_2015-06-27.nc'
+      strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
+      ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
+      #ncfile='public\images\CUACE_09km_adj_2015-06-27.nc'
       i = i + 1
       return {} if i>30
     end until File::exists?(ncfile)
