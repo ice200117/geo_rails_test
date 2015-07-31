@@ -17,13 +17,13 @@
 default: &default
   adapter: postgis
   schema_search_path: "public,postgis"
-  su_username: pguser
+  su_username: postgres
   encoding: unicode
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
-  username: pguser
-  password: pguser
+  username: geo_rails_test
+  password: geo_rails_test
 
 development:
   <<: *default
@@ -84,6 +84,6 @@ test:
 #
 production:
   <<: *default
-  database: geo_rails_test_development
+  database: geo_rails_test_production
   #username: geo_rails_test
   #password: <%= ENV['GEO_RAILS_TEST_DATABASE_PASSWORD'] %>
