@@ -480,13 +480,13 @@
               <tr>
               <td><%= i%></td>
               <td><%=@citynamehs[i] %></td>
-              <td><%= row[:SO2]==nil ? '——' : row[:SO2].to_i %></td>
-              <td><%= row[:NO2]==nil ? '——' : row[:NO2].to_i %></td>
-              <td><%= row[:CO]==nil ? '——' : row[:CO].to_f.round(1) %></td>
-              <td><%= row[:O3]==nil ? '——' : row[:O3].to_i %></td>
-              <td><%= row[:pm10]==nil ? '——' : row[:pm10].to_i %></td>
-              <td><%= row[:pm25]==nil ? '——' : row[:pm25].to_i %></td>
-              <td><%= row[:zonghezhishu]==10000 ? '——' : row[:zonghezhishu].to_f.round(2) %></td>
+              <td><%= row[:SO2]==nil ? '——' : row[:SO2].round %></td>
+              <td><%= row[:NO2]==nil ? '——' : row[:NO2].round %></td>
+              <td><%= row[:CO]==nil ? '——' : row[:CO].round(1) %></td>
+              <td><%= row[:O3]==nil ? '——' : row[:O3].round %></td>
+              <td><%= row[:pm10]==nil ? '——' : row[:pm10].round %></td>
+              <td><%= row[:pm25]==nil ? '——' : row[:pm25].round %></td>
+              <td><%= row[:zonghezhishu]==10000 ? '——' : row[:zonghezhishu].round(2) %></td>
             </tr>
           <% end %>
             </tbody>
@@ -525,13 +525,13 @@
 							<tr>
 								<td><%= i%></td>
 								<td><%=@citynamehs1[i] %></td>
-								<td><%= row[:SO2]==nil ? '——' : row[:SO2].to_i %></td>
-								<td><%= row[:NO2]==nil ? '——' : row[:NO2].to_i %></td>
-								<td><%= row[:CO]==nil ? '——' : row[:CO].to_f.round(1) %></td>
-								<td><%= row[:O3]==nil ? '——' : row[:O3].to_i %></td>
-								<td><%= row[:pm10]==nil ? '——' : row[:pm10].to_i %></td>
-								<td><%= row[:pm25]==nil ? '——' : row[:pm25].to_i %></td>
-								<td><%= row[:zonghezhishu]==nil ? '——' : row[:zonghezhishu].to_f.round(2) %></td>
+								<td><%= row[:SO2]==nil ? '——' : row[:SO2].round %></td>
+								<td><%= row[:NO2]==nil ? '——' : row[:NO2].round %></td>
+								<td><%= row[:CO]==nil ? '——' : row[:CO].round(1) %></td>
+								<td><%= row[:O3]==nil ? '——' : row[:O3].round %></td>
+								<td><%= row[:pm10]==nil ? '——' : row[:pm10].round %></td>
+								<td><%= row[:pm25]==nil ? '——' : row[:pm25].round %></td>
+								<td><%= row[:zonghezhishu]==10000 ? '——' : row[:zonghezhishu].round(2) %></td>
 							</tr>
 							<% end %>
 						</tbody>
@@ -570,13 +570,13 @@
 							<tr>
 								<td><%= i%></td>
 								<td><%=@citynamehs2[i] %></td>
-								<td><%= row[:SO2]==nil ? '——' : row[:SO2].to_i %></td>
-								<td><%= row[:NO2]==nil ? '——' : row[:NO2].to_i %></td>
-								<td><%= row[:CO]==nil ? '——' : row[:CO].to_f.round(1) %></td>
-								<td><%= row[:O3]==nil ? '——' : row[:O3].to_i %></td>
-								<td><%= row[:pm10]==nil ? '——' : row[:pm10].to_i %></td>
-								<td><%= row[:pm25]==nil ? '——' : row[:pm25].to_i %></td>
-								<td><%= row[:zonghezhishu]==10000 ? '——' : row[:zonghezhishu].to_f.round(2) %></td>
+								<td><%= row[:SO2]==nil ? '——' : row[:SO2].round %></td>
+								<td><%= row[:NO2]==nil ? '——' : row[:NO2].round %></td>
+								<td><%= row[:CO]==nil ? '——' : row[:CO].round(1) %></td>
+								<td><%= row[:O3]==nil ? '——' : row[:O3].round %></td>
+								<td><%= row[:pm10]==nil ? '——' : row[:pm10].round %></td>
+								<td><%= row[:pm25]==nil ? '——' : row[:pm25].round %></td>
+								<td><%= row[:zonghezhishu]==10000 ? '——' : row[:zonghezhishu].round(2) %></td>
 							</tr>
 							<% end %>
 						</tbody>
@@ -644,14 +644,14 @@
 							<tr>
 								<td><%= i-1%></td>
 								<td><%=cityname[i-1] %></td>
-								<td><%= row[:SO2_change_rate]==nil ? '——' : ((row[:SO2_change_rate]*100).abs.to_s + '%') %><%=row[:SO2_change_rate]!=nil ? (row[:SO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:NO2_change_rate]==nil ? '——' : ((row[:NO2_change_rate]*100).abs.to_s + '%') %>
+								<td><%= row[:SO2_change_rate]==nil ? '——' : ((row[:SO2_change_rate].round(4)*100).abs.to_s + '%') %><%=row[:SO2_change_rate]!=nil ? (row[:SO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:NO2_change_rate]==nil ? '——' : ((row[:NO2_change_rate].round(4)*100).abs.to_s + '%') %>
                   <%= row[:NO2_change_rate]!=nil ? (row[:NO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:CO_change_rate]==nil ? '——' : ((row[:CO_change_rate]*100).abs.to_s + '%') %><%= row[:CO_change_rate]!=nil ? (row[:CO_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:O3_change_rate]==nil ? '——' : ((row[:O3_change_rate]*100).abs.to_s + '%') %><%= row[:O3_change_rate]!=nil ? (row[:O3_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:pm10_change_rate]==nil ? '——' : ((row[:pm10_change_rate]*100).abs.to_s + '%') %><%= row[:pm10_change_rate]!=nil ? (row[:pm10_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:pm25_change_rate]==nil ? '——' : ((row[:pm25_change_rate]*100).abs.to_s + '%') %><%= row[:pm25_change_rate]!=nil ? (row[:pm25_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:zongheindex_change_rate]==10000 ? '——' : ((row[:zongheindex_change_rate]*100).abs.to_s + '%') %><%= row[:zongheindex_change_rate]!=10000 ? (row[:zongheindex_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:CO_change_rate]==nil ? '——' : ((row[:CO_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:CO_change_rate]!=nil ? (row[:CO_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:O3_change_rate]==nil ? '——' : ((row[:O3_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:O3_change_rate]!=nil ? (row[:O3_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:pm10_change_rate]==nil ? '——' : ((row[:pm10_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:pm10_change_rate]!=nil ? (row[:pm10_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:pm25_change_rate]==nil ? '——' : ((row[:pm25_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:pm25_change_rate]!=nil ? (row[:pm25_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:zongheindex_change_rate]==10000 ? '——' : ((row[:zongheindex_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:zongheindex_change_rate]!=10000 ? (row[:zongheindex_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
 							</tr>
 							<% end %>
 						</tbody>
@@ -696,13 +696,13 @@
 							<tr>
 								<td><%= i-1%></td>
 								<td><%=cityname1[i-1] %></td>
-								<td><%= row[:SO2_change_rate]==nil ? '——' : ((row[:SO2_change_rate]*100).abs.to_s + '%') %><%= row[:SO2_change_rate]!=nil ? (row[:SO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:NO2_change_rate]==nil ? '——' : ((row[:NO2_change_rate]*100).abs.to_s + '%') %><%= row[:NO2_change_rate]!=nil ? (row[:NO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:CO_change_rate]==nil ? '——' : ((row[:CO_change_rate]*100).abs.to_s + '%') %><%= row[:CO_change_rate]!=nil ? (row[:CO_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:O3_change_rate]==nil ? '——' : ((row[:O3_change_rate]*100).abs.to_s + '%') %><%= row[:O3_change_rate]!=nil ? (row[:O3_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:pm10_change_rate]==nil ? '——' : ((row[:pm10_change_rate]*100).abs.to_s + '%') %><%= row[:pm10_change_rate]!=nil ? (row[:pm10_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:pm25_change_rate]==nil ? '——' : ((row[:pm25_change_rate]*100).abs.to_s + '%') %><%= row[:pm25_change_rate]!=nil ? (row[:pm25_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:zongheindex_change_rate]==10000 ? '——' : ((row[:zongheindex_change_rate]*100).abs.to_s + '%') %><%= row[:zongheindex_change_rate]!=10000 ? (row[:zongheindex_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:SO2_change_rate]==nil ? '——' : ((row[:SO2_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:SO2_change_rate]!=nil ? (row[:SO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:NO2_change_rate]==nil ? '——' : ((row[:NO2_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:NO2_change_rate]!=nil ? (row[:NO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:CO_change_rate]==nil ? '——' : ((row[:CO_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:CO_change_rate]!=nil ? (row[:CO_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:O3_change_rate]==nil ? '——' : ((row[:O3_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:O3_change_rate]!=nil ? (row[:O3_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:pm10_change_rate]==nil ? '——' : ((row[:pm10_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:pm10_change_rate]!=nil ? (row[:pm10_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:pm25_change_rate]==nil ? '——' : ((row[:pm25_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:pm25_change_rate]!=nil ? (row[:pm25_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:zongheindex_change_rate]==10000 ? '——' : ((row[:zongheindex_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:zongheindex_change_rate]!=10000 ? (row[:zongheindex_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
 							</tr>
 							<% end %>
 						</tbody>
@@ -747,13 +747,13 @@
 							<tr>
 								<td><%= i-1%></td>
 								<td><%=cityname2[i-1] %></td>
-								<td><%= row[:SO2_change_rate]==nil ? '——' : ((row[:SO2_change_rate]*100).abs.to_s + '%') %><%= row[:SO2_change_rate]!=nil ? (row[:SO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:NO2_change_rate]==nil ? '——' : ((row[:NO2_change_rate]*100).abs.to_s + '%') %><%= row[:NO2_change_rate]!=nil ? (row[:NO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:CO_change_rate]==nil ? '——' : ((row[:CO_change_rate]*100).abs.to_s + '%') %><%= row[:CO_change_rate]!=nil ? (row[:CO_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:O3_change_rate]==nil ? '——' : ((row[:O3_change_rate]*100).abs.to_s + '%') %><%= row[:O3_change_rate]!=nil ? (row[:O3_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:pm10_change_rate]==nil ? '——' : ((row[:pm10_change_rate]*100).abs.to_s + '%') %><%= row[:pm10_change_rate]!=nil ? (row[:pm10_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:pm25_change_rate]==nil ? '——' : ((row[:pm25_change_rate]*100).abs.to_s + '%') %><%= row[:pm25_change_rate]!=nil ? (row[:pm25_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:zongheindex_change_rate]==10000 ? '——' : ((row[:zongheindex_change_rate]*100).abs.to_s + '%') %><%= row[:zongheindex_change_rate]!=10000 ? (row[:zongheindex_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:SO2_change_rate]==nil ? '——' : ((row[:SO2_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:SO2_change_rate]!=nil ? (row[:SO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:NO2_change_rate]==nil ? '——' : ((row[:NO2_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:NO2_change_rate]!=nil ? (row[:NO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:CO_change_rate]==nil ? '——' : ((row[:CO_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:CO_change_rate]!=nil ? (row[:CO_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:O3_change_rate]==nil ? '——' : ((row[:O3_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:O3_change_rate]!=nil ? (row[:O3_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:pm10_change_rate]==nil ? '——' : ((row[:pm10_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:pm10_change_rate]!=nil ? (row[:pm10_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:pm25_change_rate]==nil ? '——' : ((row[:pm25_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:pm25_change_rate]!=nil ? (row[:pm25_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:zongheindex_change_rate]==10000 ? '——' : ((row[:zongheindex_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:zongheindex_change_rate]!=10000 ? (row[:zongheindex_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
 							</tr>
 							<% end %>
 						</tbody>
@@ -815,13 +815,13 @@
 							<tr>
 								<td><%= i%></td>
 								<td><%=@citynamehs3[i] %></td>
-								<td><%= row[:SO2]==nil ? '——' : row[:SO2] %></td>
-								<td><%= row[:NO2]==nil ? '——' : row[:NO2] %></td>
-								<td><%= row[:CO]==nil ? '——' : row[:CO] %></td>
-								<td><%= row[:O3]==nil ? '——' : row[:O3] %></td>
-								<td><%= row[:pm10]==nil ? '——' : row[:pm10] %></td>
-								<td><%= row[:pm25]==nil ? '——' : row[:pm25] %></td>
-								<td><%= row[:zonghezhishu]==10000 ? '——' : row[:zonghezhishu] %></td>
+								<td><%= row[:SO2]==nil ? '——' : row[:SO2].round %></td>
+								<td><%= row[:NO2]==nil ? '——' : row[:NO2].round %></td>
+								<td><%= row[:CO]==nil ? '——' : row[:CO].round(1) %></td>
+								<td><%= row[:O3]==nil ? '——' : row[:O3].round %></td>
+								<td><%= row[:pm10]==nil ? '——' : row[:pm10].round %></td>
+								<td><%= row[:pm25]==nil ? '——' : row[:pm25].round %></td>
+								<td><%= row[:zonghezhishu]==10000 ? '——' : row[:zonghezhishu].round(2) %></td>
 							</tr>
 							<% end %>
 						</tbody>
@@ -860,13 +860,13 @@
 							<tr>
 								<td><%= i%></td>
 								<td><%=@citynamehs4[i] %></td>
-								<td><%= row[:SO2]==nil ? '——' : row[:SO2] %></td>
-								<td><%= row[:NO2]==nil ? '——' : row[:NO2] %></td>
-								<td><%= row[:CO]==nil ? '——' : row[:CO] %></td>
-								<td><%= row[:O3]==nil ? '——' : row[:O3] %></td>
-								<td><%= row[:pm10]==nil ? '——' : row[:pm10] %></td>
-								<td><%= row[:pm25]==nil ? '——' : row[:pm25] %></td>
-								<td><%= row[:zonghezhishu]==10000 ? '——' : row[:zonghezhishu] %></td>
+								<td><%= row[:SO2]==nil ? '——' : row[:SO2].round %></td>
+								<td><%= row[:NO2]==nil ? '——' : row[:NO2].round %></td>
+								<td><%= row[:CO]==nil ? '——' : row[:CO].round(1) %></td>
+								<td><%= row[:O3]==nil ? '——' : row[:O3].round %></td>
+								<td><%= row[:pm10]==nil ? '——' : row[:pm10].round %></td>
+								<td><%= row[:pm25]==nil ? '——' : row[:pm25].round %></td>
+								<td><%= row[:zonghezhishu]==10000 ? '——' : row[:zonghezhishu].round(2) %></td>
 							</tr>
 							<% end %>
 						</tbody>
@@ -905,13 +905,13 @@
 							<tr>
 								<td><%= i%></td>
 								<td><%=@citynamehs5[i] %></td>
-								<td><%= row[:SO2]==nil ? '——' : row[:SO2] %></td>
-								<td><%= row[:NO2]==nil ? '——' : row[:NO2] %></td>
-								<td><%= row[:CO]==nil ? '——' : row[:CO] %></td>
-								<td><%= row[:O3]==nil ? '——' : row[:O3] %></td>
-								<td><%= row[:pm10]==nil ? '——' : row[:pm10] %></td>
-								<td><%= row[:pm25]==nil ? '——' : row[:pm25] %></td>
-								<td><%= row[:zonghezhishu]==10000 ? '——' : row[:zonghezhishu] %></td>
+								<td><%= row[:SO2]==nil ? '——' : row[:SO2].round %></td>
+								<td><%= row[:NO2]==nil ? '——' : row[:NO2].round %></td>
+								<td><%= row[:CO]==nil ? '——' : row[:CO].round(1) %></td>
+								<td><%= row[:O3]==nil ? '——' : row[:O3].round %></td>
+								<td><%= row[:pm10]==nil ? '——' : row[:pm10].round %></td>
+								<td><%= row[:pm25]==nil ? '——' : row[:pm25].round %></td>
+								<td><%= row[:zonghezhishu]==10000 ? '——' : row[:zonghezhishu].round(2) %></td>
 							</tr>
 							<% end %>
 						</tbody>
@@ -979,13 +979,13 @@
 							<tr>
 								<td><%= i-1%></td>
 								<td><%=cityname3[i-1] %></td>
-								<td><%= row[:SO2_change_rate]==nil ? '——' : ((row[:SO2_change_rate]*100).abs.to_s + '%') %><%= row[:SO2_change_rate]!=nil ? (row[:SO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:NO2_change_rate]==nil ? '——' : ((row[:NO2_change_rate]*100).abs.to_s + '%') %><%= row[:NO2_change_rate]!=nil ? (row[:NO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:CO_change_rate]==nil ? '——' : ((row[:CO_change_rate]*100).abs.to_s + '%') %><%= row[:CO_change_rate]!=nil ? (row[:CO_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:O3_change_rate]==nil ? '——' : ((row[:O3_change_rate]*100).abs.to_s + '%') %><%= row[:O3_change_rate]!=nil ? (row[:O3_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:pm10_change_rate]==nil ? '——' : ((row[:pm10_change_rate]*100).abs.to_s + '%') %><%= row[:pm10_change_rate]!=nil ? (row[:pm10_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:pm25_change_rate]==nil ? '——' : ((row[:pm25_change_rate]*100).abs.to_s + '%') %><%= row[:pm25_change_rate]!=nil ? (row[:pm25_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:zongheindex_change_rate]==10000 ? '——' : ((row[:zongheindex_change_rate]*100).abs.to_s + '%') %><%= row[:zongheindex_change_rate]!=10000 ? (row[:zongheindex_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:SO2_change_rate]==nil ? '——' : ((row[:SO2_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:SO2_change_rate]!=nil ? (row[:SO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:NO2_change_rate]==nil ? '——' : ((row[:NO2_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:NO2_change_rate]!=nil ? (row[:NO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:CO_change_rate]==nil ? '——' : ((row[:CO_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:CO_change_rate]!=nil ? (row[:CO_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:O3_change_rate]==nil ? '——' : ((row[:O3_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:O3_change_rate]!=nil ? (row[:O3_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:pm10_change_rate]==nil ? '——' : ((row[:pm10_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:pm10_change_rate]!=nil ? (row[:pm10_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:pm25_change_rate]==nil ? '——' : ((row[:pm25_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:pm25_change_rate]!=nil ? (row[:pm25_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:zongheindex_change_rate]==10000 ? '——' : ((row[:zongheindex_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:zongheindex_change_rate]!=10000 ? (row[:zongheindex_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
 							</tr>
 							<% end %>
 						</tbody>
@@ -1030,13 +1030,13 @@
 							<tr>
 								<td><%= i-1%></td>
 								<td><%=cityname4[i-1] %></td>
-								<td><%= row[:SO2_change_rate]==nil ? '——' : ((row[:SO2_change_rate]*100).abs.to_s + '%') %><%= row[:SO2_change_rate]!=nil ? (row[:SO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:NO2_change_rate]==nil ? '——' : ((row[:NO2_change_rate]*100).abs.to_s + '%') %><%= row[:NO2_change_rate]!=nil ? (row[:NO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:CO_change_rate]==nil ? '——' : ((row[:CO_change_rate]*100).abs.to_s + '%') %><%= row[:CO_change_rate]!=nil ? (row[:CO_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:O3_change_rate]==nil ? '——' : ((row[:O3_change_rate]*100).abs.to_s + '%') %><%= row[:O3_change_rate]!=nil ? (row[:O3_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:pm10_change_rate]==nil ? '——' : ((row[:pm10_change_rate]*100).abs.to_s + '%') %><%= row[:pm10_change_rate]!=nil ? (row[:pm10_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:pm25_change_rate]==nil ? '——' : ((row[:pm25_change_rate]*100).abs.to_s + '%') %><%= row[:pm25_change_rate]!=nil ? (row[:pm25_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:zongheindex_change_rate]==10000 ? '——' : ((row[:zongheindex_change_rate]*100).abs.to_s + '%') %><%= row[:zongheindex_change_rate]!=10000 ? (row[:zongheindex_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:SO2_change_rate]==nil ? '——' : ((row[:SO2_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:SO2_change_rate]!=nil ? (row[:SO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:NO2_change_rate]==nil ? '——' : ((row[:NO2_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:NO2_change_rate]!=nil ? (row[:NO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:CO_change_rate]==nil ? '——' : ((row[:CO_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:CO_change_rate]!=nil ? (row[:CO_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:O3_change_rate]==nil ? '——' : ((row[:O3_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:O3_change_rate]!=nil ? (row[:O3_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:pm10_change_rate]==nil ? '——' : ((row[:pm10_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:pm10_change_rate]!=nil ? (row[:pm10_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:pm25_change_rate]==nil ? '——' : ((row[:pm25_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:pm25_change_rate]!=nil ? (row[:pm25_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:zongheindex_change_rate]==10000 ? '——' : ((row[:zongheindex_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:zongheindex_change_rate]!=10000 ? (row[:zongheindex_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
 							</tr>
 							<% end %>
 						</tbody>
@@ -1081,13 +1081,13 @@
 							<tr>
 								<td><%= i-1%></td>
 								<td><%=cityname5[i-1] %></td>
-								<td><%= row[:SO2_change_rate]==nil ? '——' : ((row[:SO2_change_rate]*100).abs.to_s + '%') %><%= row[:SO2_change_rate]!=nil ? (row[:SO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:NO2_change_rate]==nil ? '——' : ((row[:NO2_change_rate]*100).abs.to_s + '%') %><%= row[:NO2_change_rate]!=nil ? (row[:NO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:CO_change_rate]==nil ? '——' : ((row[:CO_change_rate]*100).abs.to_s + '%') %><%= row[:CO_change_rate]!=nil ? (row[:CO_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:O3_change_rate]==nil ? '——' : ((row[:O3_change_rate]*100).abs.to_s + '%') %><%= row[:O3_change_rate]!=nil ? (row[:O3_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:pm10_change_rate]==nil ? '——' : ((row[:pm10_change_rate]*100).abs.to_s + '%') %><%= row[:pm10_change_rate]!=nil ? (row[:pm10_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:pm25_change_rate]==nil ? '——' : ((row[:pm25_change_rate]*100).abs.to_s + '%') %><%= row[:pm25_change_rate]!=nil ? (row[:pm25_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
-								<td><%= row[:zongheindex_change_rate]==10000 ? '——' : ((row[:zongheindex_change_rate]*100).abs.to_s + '%') %><%= row[:zongheindex_change_rate]!=10000 ? (row[:zongheindex_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:SO2_change_rate]==nil ? '——' : ((row[:SO2_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:SO2_change_rate]!=nil ? (row[:SO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:NO2_change_rate]==nil ? '——' : ((row[:NO2_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:NO2_change_rate]!=nil ? (row[:NO2_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:CO_change_rate]==nil ? '——' : ((row[:CO_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:CO_change_rate]!=nil ? (row[:CO_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:O3_change_rate]==nil ? '——' : ((row[:O3_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:O3_change_rate]!=nil ? (row[:O3_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:pm10_change_rate]==nil ? '——' : ((row[:pm10_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:pm10_change_rate]!=nil ? (row[:pm10_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:pm25_change_rate]==nil ? '——' : ((row[:pm25_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:pm25_change_rate]!=nil ? (row[:pm25_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
+								<td><%= row[:zongheindex_change_rate]==10000 ? '——' : ((row[:zongheindex_change_rate].round(4)*100).abs.to_s + '%') %><%= row[:zongheindex_change_rate]!=10000 ? (row[:zongheindex_change_rate]>0 ? (image_tag "arrow_up.jpg") : (image_tag "arrow_down.jpg")) : nil %></td>
 							</tr>
 							<% end %>
 						</tbody>
@@ -1120,12 +1120,11 @@
         <span>更新时间: 
           <%= @sfcitiesrankbyday[:time] %>
         </span> 
-
           <table class="table">
             <thead>
               <tr>
                 <th>排名</th>
-                <th>城市</th>
+                <th>县(市区)</th>
                 <th>SO2(ug/m3)</th>
                 <th>NO2(ug/m3)</th>
                 <th>CO(mg/m3)</th>
@@ -1149,8 +1148,8 @@
                 <th><%= data['city'] %></th>
                 <th><%= data['so2'] %></th>
                 <th><%= data['no2'] %></th>
-                <th><%= data['co_95'] %></th>
-                <th><%= data['o3_90'] %></th>
+                <th><%= data['co'] %></th>
+                <th><%= data['o3'] %></th>
                 <th><%= data['pm10'] %></th>
                 <th><%= data['pm2_5'] %></th>
                 <th><%= data['aqi'] %></th>
@@ -1168,7 +1167,7 @@
             <thead>
               <tr>
                 <th>排名</th>
-                <th>城市</th>
+                <th>县(市区)</th>
                 <th>SO2(ug/m3)</th>
                 <th>NO2(ug/m3)</th>
                 <th>CO(mg/m3)</th>
@@ -1210,7 +1209,7 @@
             <thead>
               <tr>
                 <th>排名</th>
-                <th>城市</th>
+                <th>县(市区)</th>
                 <th>SO2(ug/m3)</th>
                 <th>NO2(ug/m3)</th>
                 <th>CO(mg/m3)</th>
