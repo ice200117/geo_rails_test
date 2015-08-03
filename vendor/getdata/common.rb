@@ -1,3 +1,4 @@
+require_relative './common.rb'
 #数据库二次封装
 def get_db_data(table_name,table_operation,table_operation_string)
 	tabledata=Object.new
@@ -168,7 +169,7 @@ def get_rank_json(web_flag,secretstr,typestr,datestr)
 		json_data=JSON.parse(response.body)
 		if web_flag == 'lf_history_data'
 			hs[:time] = json_data['date']
-			hs[:cities]=lf_hdistory_data_column_name_modify(json_data['rows'])
+			hs[:cities] = lf_history_data_column_name_modify(json_data['rows'])
 		else 
 			hs[:time] =json_data['time']
 			hs[:cities] = json_data['rows']
@@ -249,53 +250,40 @@ def get_avg_data(flag,id,time)
 		daycity=get_db_data(flag,'where',sql_str)	
 		if daycity.length>0
 			day_city=daycity[0]
-			if !day_city.SO2.nil?
+			if !day_city.SO2.nil? && day_city.SO2!=0
 				so2_array<<day_city.SO2
 			end
-			if !day_city.NO2.nil?
+			if !day_city.NO2.nil? && day_city.NO2!=0
 				no2_array<<day_city.NO2
 			end
-			if !day_city.pm10.nil?
+			if !day_city.pm10.nil? && day_city.pm10!=0
 				pm10_array<<day_city.pm10
 			end
-			if !day_city.pm25.nil?
+			if !day_city.pm25.nil? && day_city.pm25!=0
 				pm25_array<<day_city.pm25
 			end
-			if !day_city.CO.nil?
+			if !day_city.CO.nil? && day_city.CO!=0
 				co_array<<day_city.CO
 			end
-			if !day_city.O3.nil?
+			if !day_city.O3.nil? && day_city!=0
 				o3_array<<day_city.O3
 			end
 		end
 		first_day=temp_day
 	end
-	avg_so2=0.to_f
-	avg_no2=0.to_f
-	avg_pm10=0.to_f
-	avg_pm25=0.to_f
-	avg_co=0.to_f
-	avg_o3=0.to_f
-	end_number=so2_array.length
-	if end_number==0
-		return false
+	def avg(array)
+		n = 0
+		array.each 	do |i|
+			n += i	
+		end
+		if array.length==0
+			n=0
+		else
+			n = n/array.length
+		end
+		n
 	end
-	(0..end_number-1).each do |i|
-		avg_so2 += so2_array [i]
-		avg_no2 += no2_array[i]
-		avg_pm10 += pm10_array[i].to_f
-		avg_pm25 += pm25_array[i].to_f
-		avg_co+=co_array[i].to_f
-		avg_o3+=o3_array[i].to_f
-	end
-	#计算月均值
-	avg_so2/=end_number
-	avg_no2/=end_number
-	avg_pm10/=end_number
-	avg_pm25/=end_number
-	avg_co/=end_number
-	avg_o3/=end_number
-
+	
 	#co o3百分位数计算
 	co_array = co_array.sort_by{|x| x.to_f}
 	o3_array = o3_array.sort_by{|x| x.to_f}
@@ -303,14 +291,14 @@ def get_avg_data(flag,id,time)
 	co_index=(co_array.length()*0.95).floor
 	o3_index=(o3_array.length()*0.9).floor
 
-	avg_co=co_array[co_index+1].to_f/4
-	avg_o3=o3_array[o3_index+1].to_f/160
+	avg_co=co_array[co_index].to_f/4
+	avg_o3=o3_array[o3_index].to_f/160
 
 	hs=Hash.new
-	hs['so2']=avg_so2
-	hs['no2']=avg_no2
-	hs['pm10']=avg_pm10
-	hs['pm2_5']=avg_pm25
+	hs['so2']=avg(so2_array)
+	hs['no2']=avg(no2_array)
+	hs['pm10']=avg(pm10_array)
+	hs['pm2_5']=avg(pm25_array)
 	hs['co']=avg_co
 	hs['o3']=avg_o3
 
