@@ -1,4 +1,4 @@
-require './common.rb'
+require_relative './common.rb'
 
 def main_get
 	hs=Hash.new
@@ -61,13 +61,13 @@ def save_db(hs,flag)
 		elsif t['city']=='大厂回族自治县'
 			t['city']='大厂'
 		end
-		puts t['city'] 
 		city_array = City.where("city_name like ?",t['city']+'_')
 		if city_array.length==0
 			city_array=City.where("city_name = ?",t['city'])
 		end
 		city=city_array[0]
 		day_city=get_db_data(flag,'new','')	
+		puts flag 
 		day_city.city_id=city.id
 		day_city.SO2=t['so2']
 		day_city.NO2=t['no2']

@@ -17,11 +17,11 @@
 #   runner "AnotherModel.prune_old_records"
 # end
 every "20 */1 * * * " do
-	command "cd /vagrant/geo_rails_test/vendor/getdata && rails r gethourdata.rb -e production"
+	command "rails r /vagrant/geo_rails_test/vendor/getdata/gethourdata.rb -e production"
 end
 every 1.days,:at=>'1:00 am' do
-	command "cd /vagrant/geo_rails_test/vendor/getdata && rails r getrancd /vagrant/geo_rails_test/vendor/getdata && rails r getrank.rb -e production"
+	command "rails r /vagrant/geo_rails_test/vendor/getdata/getrank.rb -e production"
 end
 every 1.days,:at=>'1:30 am' do
-	command "cd /vagrant/geo_rails_test/vendor/getdata && rails r getrancd /vagrant/geo_rails_test/vendor/getdata && rails r get74city_month_year.rb -e production"
+	command "rails r /vagrant/geo_rails_test/vendor/getdata/get74city_month_year.rb -e production"
 end

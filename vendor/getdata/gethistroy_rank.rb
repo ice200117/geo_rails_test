@@ -81,7 +81,6 @@ def main_get
 	end
 	#京津冀日数据
 	stime=Time.now.years_ago(1).beginning_of_year
-	stime=Time.now.beginning_of_year
 	etime=Time.now.yesterday.end_of_day
 	flag='temp_jjj_days'
 	while stime<etime
@@ -270,7 +269,7 @@ def save_db(hs,flag)
 		day_city=get_db_data(flag,'last','')
 		day_city.zonghezhishu=get_zonghezhishu(flag)
 		day_city.save
-		puts '=================='+hs[:time]+'=Save OK!==============================='
+		puts '==========='+flag+'='+hs[:time]+'=Save OK!=========='
 		day_city=get_db_data(flag,'last','')
 		if hs[:time].to_time.year.to_i>2014.to_i&&flag!='temp_sfcities_days'&&flag!='temp_sfcities_months'&&flag!='temp_sfcities_years' 
 			change_rate=get_change_rate(flag,city.id,day_city.data_real_time)

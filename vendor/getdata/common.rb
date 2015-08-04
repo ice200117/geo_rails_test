@@ -284,15 +284,14 @@ def get_avg_data(flag,id,time)
 		n
 	end
 	
-	#co o3百分位数计算
-	co_array = co_array.sort_by{|x| x.to_f}
-	o3_array = o3_array.sort_by{|x| x.to_f}
-
-	co_index=(co_array.length()*0.95).floor
-	o3_index=(o3_array.length()*0.9).floor
-
-	avg_co=co_array[co_index].to_f/4
-	avg_o3=o3_array[o3_index].to_f/160
+	def percentile(array,num)
+		#co o3百分位数计
+		array = array.sort
+		ind=array.length*num.floor
+		ind == ind.to_i ? (array[ind].to_f+array[ind+1].to_f)/2 : array[ind]
+	end
+	avg_co=percentile(co_array,0.95).to_f
+	avg_o3=percentile(o3_array,0.9).to_f
 
 	hs=Hash.new
 	hs['so2']=avg(so2_array)
@@ -307,9 +306,12 @@ end
 
 #计算同期对比
 def get_change_rate(flag,id,time)
-	sql_str=Hash.new
-	sql_str[:data_real_time]=time.years_ago(1).beginning_of_day..time.years_ago(1).end_of_day
-	sql_str[:city_id]=id
+
+	sql_str=Array.new
+	sql_str<<'data_real_time >= ? AND data_real_time <= ? AND city_id = ?'
+	sql_str<<time.to_time.years_ago(1).beginning_of_day
+	sql_str<<time.to_time.years_ago(1).end_of_day
+	sql_str<<id
 
 	last_years_data=get_db_data(flag,'where',sql_str)	
 	if last_years_data.length == 0
