@@ -103,7 +103,7 @@ def save_db(hs,flag)
 		day_city.SO2=t['so2']
 		day_city.NO2=t['no2']
 		day_city.CO=t['co']
-		day_city.O3=t['o3']
+		t['o3'] == 0 ? day_city.O3 = t['o3_8h'] : day_city.O3 = t['o3']
 		day_city.pm10=t['pm10']
 		day_city.pm25=t['pm2_5']
 		if !t['aqi'].nil?

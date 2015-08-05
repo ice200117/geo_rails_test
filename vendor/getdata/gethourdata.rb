@@ -67,12 +67,11 @@ def save_db(hs,flag)
 		end
 		city=city_array[0]
 		day_city=get_db_data(flag,'new','')	
-		puts flag 
 		day_city.city_id=city.id
 		day_city.SO2=t['so2']
 		day_city.NO2=t['no2']
 		day_city.CO=t['co']
-		day_city.O3=t['o3']
+		day_city.O3=t['o3_8h']
 		day_city.pm10=t['pm10']
 		day_city.pm25=t['pm2_5']
 		day_city.AQI=t['aqi']
