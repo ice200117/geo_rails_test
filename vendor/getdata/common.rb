@@ -58,6 +58,17 @@ def get_db_data(table_name,table_operation,table_operation_string)
 		when 'where'
 			tabledata=TempLfYear.where(table_operation_string)
 		end
+	when 'temp_hb_hours'
+		case table_operation
+		when 'new'
+			tabledata=TempHbHour.new	
+		when 'all'
+			tabledata=TempHbHour.all
+		when 'last'
+			tabledata=TempHbHour.last
+		when 'where'
+			tabledata=TempHbHour.where(table_operation_string)
+		end
 	when 'temp_jjj_days'
 		case table_operation
 		when 'new'
@@ -91,6 +102,17 @@ def get_db_data(table_name,table_operation,table_operation_string)
 			tabledata=TempJjjYear.last	
 		when 'where'
 			tabledata=TempJjjYear.where(table_operation_string)
+		end
+	when 'temp_sfcities_hours'
+		case table_operation
+		when 'new'
+			tabledata=TempSfcitiesHour.new
+		when 'all'
+			tabledata=TempSfcitiesHour.all
+		when 'last'
+			tabledata=TempSfcitiesHour.last
+		when 'where'
+			tabledata=TempSfcitiesHour.where(table_operation_string)
 		end
 	when 'temp_sfcities_days'
 		case table_operation
