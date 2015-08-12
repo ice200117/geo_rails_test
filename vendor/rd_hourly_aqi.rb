@@ -73,9 +73,9 @@ cs.each do |c|
   #if c.city_name_pinyin.rstrip.eql?('langfangshi')
   py = c.city_name_pinyin.strip
 
-  if hb_city.include?(py) 
-    next
-  end
+  next if hb_city.include?(py)
+
+  c.hourly_city_forecast_air_qualities.order(publish_datetime: :desc).limit(120).where("forecast_datetime > ?", Time.now)
 
   fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
   f = File.open(path+fn) if File::exists?(path+fn) 

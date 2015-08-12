@@ -50,6 +50,22 @@ puts strtime
 
 path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 
+# Read hua bei city, do not read data of these city.
+firstline = true
+hb_city = Array.new
+IO.foreach("vendor/station_hb.EXT") do |line| 
+  if firstline
+  firstline = false
+  next
+  end
+  post_number = line[1,7]
+  latitude = line[8,8]
+  longitude = line[16,8]
+  city_name_pinyin = line[25,18].strip
+  hb_city << city_name_pinyin
+  #  city_name  = line[46..-4].strip
+end
+
 #cs = Array.new
 #cs << City.find_by_city_name_pinyin('langfangshi')
 #cs << City.find_by_city_name_pinyin('huzhoushi')
@@ -60,6 +76,7 @@ cs.each do |c|
   py = c.city_name_pinyin.strip
   fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
   puts fn
+  next unless hb_city.include?(py)
   f = File.open(path+fn) if File::exists?(path+fn) 
   next unless f
   f.readlines[2..-1].each do |line| 

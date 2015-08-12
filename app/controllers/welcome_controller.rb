@@ -61,6 +61,7 @@ class WelcomeController < ApplicationController
     #data_table.set_cell(2, 2, 'Airport'   )
     #data_table.set_cell(3, 0, 37.4422   )
     #data_table.set_cell(3, 1, -122.1731 )
+
     #data_table.set_cell(3, 2, 'Shopping'  )
 
     #opts   = { :showTip => true }

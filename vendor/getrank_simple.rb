@@ -2,7 +2,7 @@
 def post_rank_json(secretstr,typestr,datestr='')
   begin
     if datestr.length > 0
-    option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
+    option = {secret:secretstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+typestr) }
     response = HTTParty.post('http://www.izhenqi.cn/api/getrank.php', :body => option)
     else
     option = {secret:secretstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+typestr) }
@@ -33,7 +33,9 @@ def get_rank_json(date)
 end
 
 #post_rank_json('','LANGFANGRANK','DAY')
-post_rank_json('CHINARANK','DAY')
+#post_rank_json('CHINARANK','DAY', 'new')
+post_rank_json('LANGFANGRANK','DAY', 'new')
+post_rank_json('LANGFANGRANK','HOUR', 'new')
 #post_rank_json('','HEBEIRANK','DAY')
 
 #oneday = 60*60*24

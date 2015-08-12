@@ -1,7 +1,7 @@
 #def post_rank_json(webUrl,secretstr,typestr,datestr)
-def post_rank_json(secretstr,typestr,datestr)
+def post_rank_json(typestr,datestr)
   begin
-    option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
+    option = {type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
     response = HTTParty.post('http://www.izhenqi.cn/api/getrank.php', :body => option)
     json_data=JSON.parse(response.body)
     puts json_data
@@ -341,5 +341,5 @@ def get_year_zonghezhishu(id)
 	return zonghezhishu_value
 end
 #start
-main_get
+#main_get
 #002号错误，计算综合指数时未在数据库中查找到数据
