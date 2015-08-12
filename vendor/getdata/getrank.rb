@@ -6,13 +6,15 @@ def main_get
 	time=Time.now.yesterday
 	#廊坊日数据
 	flag='temp_lf_days'
-	hs=get_rank_json('shishi_rank_data','LANGFANGRANK','DAY','')  
-	flag='temp_lf_days'
+	(0..5).each do |t|
+		hs=get_rank_json('shishi_rank_data','LANGFANGRANK','DAY','')  
+		break if hs!=false
+	end
 	if hs==false
 		puts 'Get temp_lf_days error!'	
 	else
 		temp=get_db_data(flag,'last','')
-		if hs[:total]!='0' && hs[:time]>time.beginning_of_day 
+		if hs[:total]!='0' && hs[:time].to_time>temp.data_real_time
 			save_db(hs,flag)
 		end
 	end
@@ -20,12 +22,11 @@ def main_get
 	#廊坊月数据
 	flag='temp_lf_months'
 	hs=get_rank_json('shishi_rank_data','LANGFANGRANK','DAY','')
-	flag='temp_lf_months'
 	if hs==false 
 		puts 'Get temp_lf_months error!'	
 	else
 		temp=get_db_data('temp_lf_days','last','')
-		if hs[:total]!='0' && hs[:time]>time.beginning_of_day 
+		if hs[:total]!='0' && hs[:time].to_time>temp.data_real_time 
 			save_db(hs,flag)	
 		elsif (Time.now.end_of_day-Time.now)<60*60
 			while hs[:total] == '0'
@@ -41,7 +42,7 @@ def main_get
 	if hs==false
 		puts 'Get temp_lf_years error!'
 	else
-		if hs[:total]!='0' && hs[:time]>time.beginning_of_day
+		if hs[:total]!='0'
 			save_db(hs,flag)	
 		elsif (Time.now.end_of_day-Time.now)<60*60
 			while hs[:total]=='0'
@@ -64,7 +65,8 @@ def main_get
 	if hs==false
 		puts 'Get temp_jjj_months error!'
 	else
-		if hs[:total]!='0' && hs[:time]>time.beginning_of_day
+		temp=get_db_data(flag,'last','')
+		if hs[:total]!='0' && hs[:time].to_time>temp.data_real_time
 			save_db(hs,flag)	
 		end
 	end
@@ -79,7 +81,8 @@ def main_get
 	if hs==false
 		puts 'Get temp_sfcities_days error!'
 	else
-		if hs[:total]!='0' && hs[:time]>time.beginning_of_day
+		temp=get_db_data(flag,'last','')
+		if hs[:total]!='0' && hs[:time].to_time>temp.data_real_time
 			save_db(hs,flag)
 		end
 	end
@@ -88,6 +91,12 @@ end
 #保存数据到day_city
 def save_db(hs,flag) 
 	hs[:cities].each do |t|
+		if t['city']=='市辖区'
+			t['city']='廊坊开发区'
+		elsif t['city']=='大厂回族自治县'
+			t['city']='大厂'
+		end
+
 		city_array = City.where("city_name like ?",t['city']+'_')
 		if city_array.length==0
 			city_array=City.where("city_name = ?",t['city'])
