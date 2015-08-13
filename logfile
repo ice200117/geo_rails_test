@@ -6,3 +6,5 @@ LOG:  redirecting log output to logging collector process
 HINT:  Future log output will appear in directory "pg_log".
 FATAL:  lock file "postmaster.pid" already exists
 HINT:  Is another postmaster (PID 16359) running in data directory "/home/lice/pgsql/data"?
+LOG:  redirecting log output to logging collector process
+HINT:  Future log output will appear in directory "pg_log".

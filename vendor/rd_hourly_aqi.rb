@@ -75,7 +75,6 @@ cs.each do |c|
 
   next if hb_city.include?(py)
 
-  c.hourly_city_forecast_air_qualities.order(publish_datetime: :desc).limit(120).where("forecast_datetime > ?", Time.now)
 
   fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
   f = File.open(path+fn) if File::exists?(path+fn) 
