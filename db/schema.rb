@@ -11,11 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150724091156) do
+ActiveRecord::Schema.define(version: 20150817055844) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+  enable_extension "postgis_topology"
 
   create_table "cities", force: true do |t|
     t.string  "city_name"
@@ -113,8 +114,8 @@ ActiveRecord::Schema.define(version: 20150724091156) do
     t.float    "pm10"
     t.float    "pm25"
     t.float    "AQI"
-    t.string   "quality"
-    t.string   "main_pollutant"
+    t.string   "level"
+    t.string   "main_pol"
     t.string   "weather"
     t.string   "temp"
     t.string   "humi"
@@ -232,8 +233,8 @@ ActiveRecord::Schema.define(version: 20150724091156) do
     t.float    "pm10"
     t.float    "pm25"
     t.float    "AQI"
-    t.string   "quality"
-    t.string   "main_pollutant"
+    t.string   "level"
+    t.string   "main_pol"
     t.string   "weather"
     t.string   "temp"
     t.string   "humi"
@@ -325,8 +326,8 @@ ActiveRecord::Schema.define(version: 20150724091156) do
     t.float    "pm10"
     t.float    "pm25"
     t.float    "AQI"
-    t.string   "quality"
-    t.string   "main_pollutant"
+    t.string   "level"
+    t.string   "main_pol"
     t.string   "weather"
     t.string   "temp"
     t.string   "humi"

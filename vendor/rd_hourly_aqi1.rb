@@ -74,6 +74,7 @@ cs.each do |c|
   if hb_city.include?(py) 
     next
   end
+#  next unless py=="taiyuanshi"
 
   fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
   puts fn
