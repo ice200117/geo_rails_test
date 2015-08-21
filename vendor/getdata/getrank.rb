@@ -12,11 +12,12 @@ def main_get
 	end
 	if hs==false
 		puts 'Get temp_lf_days error!'	
-	else
+	elsif hs[:total]!=0
+		byebug
 		temp=get_db_data(flag,'last','')
-		if hs[:total]!='0' && hs[:time].to_time>temp.data_real_time
+		if hs[:time].to_time>temp.data_real_time
 			save_db(hs,flag)
-		end
+		end 
 	end
 
 	#廊坊月数据
@@ -24,16 +25,14 @@ def main_get
 	hs=get_rank_json('shishi_rank_data','LANGFANGRANK','DAY','')
 	if hs==false 
 		puts 'Get temp_lf_months error!'	
-	else
+	elsif hs[:total]!=0
 		temp=get_db_data('temp_lf_days','last','')
-		if hs[:total]!='0'
-			save_db(hs,flag)	
-		elsif (Time.now.end_of_day-Time.now)<60*60
-			while hs[:total] == '0'
-				hs=get_rank_json('lf_history_data','','',time.yesterday)
-				hs[:time]=time
-				save_db(hs,flag)
-			end
+		save_db(hs,flag)	
+	elsif (Time.now.end_of_day-Time.now)<60*60
+		while hs[:total] == '0'
+			hs=get_rank_json('lf_history_data','','',time.yesterday)
+			hs[:time]=time
+			save_db(hs,flag)
 		end
 	end
 	#廊坊年数据
@@ -41,47 +40,45 @@ def main_get
 	hs=get_rank_json('shishi_rank_data','LANGFANGRANK','DAY','')
 	if hs==false
 		puts 'Get temp_lf_years error!'
-	else
-		if hs[:total]!='0'
-			save_db(hs,flag)	
-		elsif (Time.now.end_of_day-Time.now)<60*60
-			while hs[:total]=='0'
-				hs=get_rank_json('lf_history_data','','',time.yesterday)
-				hs[:time]=time
-				save_db(hs,flag)
-			end
-		end
-	end
-
-	#京津冀日数据
-	flag='temp_jjj_days'
-	time=Time.now.yesterday
-	(0..5).each	do |t|
-		hs=get_rank_json('china_history_data','JINGJINJIDATA','DAY',time)
-		break if hs!=false
-	end
-	if hs==false
-		puts 'Get temp_jjj_months error!'
-	else
-		temp=get_db_data(flag,'last','')
-		if hs[:total]!='0' && hs[:time].to_time>temp.data_real_time
-			save_db(hs,flag)	
-		end
-	end
-	#74城市日数据
-	flag='temp_sfcities_days'
-	(0..5).each	do |t|
-		hs=get_rank_json('shishi_china_rank_data','CHINARANK','DAY','')
-		break if hs!=false
-	end
-	if hs==false
-		puts 'Get temp_sfcities_days error!'
-	else
-		temp=get_db_data(flag,'last','')
-		if hs[:total]!='0' && hs[:time].to_time>temp.data_real_time
+	elsif hs[:total]!='0'
+		save_db(hs,flag)	
+	elsif (Time.now.end_of_day-Time.now)<60*60
+		while hs[:total]=='0'
+			hs=get_rank_json('lf_history_data','','',time.yesterday)
+			hs[:time]=time
 			save_db(hs,flag)
 		end
 	end
+
+#	#京津冀日数据
+#	flag='temp_jjj_days'
+#	time=Time.now.yesterday
+#	(0..5).each	do |t|
+#		hs=get_rank_json('china_history_data','JINGJINJIDATA','DAY',time)
+#		break if hs!=false
+#	end
+#	if hs==false
+#		puts 'Get temp_jjj_months error!'
+#	elsif hs[:total]!='0'
+#		temp=get_db_data(flag,'last','')
+#		if hs[:time].to_time>temp.data_real_time
+#			save_db(hs,flag)	
+#		end
+#	end
+#	#74城市日数据
+#	flag='temp_sfcities_days'
+#	(0..5).each	do |t|
+#		hs=get_rank_json('shishi_china_rank_data','CHINARANK','DAY','')
+#		break if hs!=false
+#	end
+#	if hs==false
+#		puts 'Get temp_sfcities_days error!'
+#	elsif hs[:total]!='0'
+#		temp=get_db_data(flag,'last','')
+#		if hs[:time].to_time>temp.data_real_time
+#			save_db(hs,flag)
+#		end
+#	end
 end 
 
 #保存数据到day_city

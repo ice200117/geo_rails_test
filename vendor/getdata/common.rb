@@ -246,8 +246,6 @@ def get_avg_data(flag,id,time)
 	co_array=Array.new
 	o3_array=Array.new
 
-
-
 	#遍历当月从1号到当天，获取数据
 	first_day=time.to_time.beginning_of_month
 	this_day=time.to_time.end_of_day
@@ -293,25 +291,6 @@ def get_avg_data(flag,id,time)
 		end
 		first_day=temp_day
 	end
-	def avg(array)
-		n = 0
-		array.each 	do |i|
-			n += i	
-		end
-		if array.length==0
-			n=0
-		else
-			n = n/array.length
-		end
-		n
-	end
-	
-	def percentile(array,num)
-		#co o3百分位数计
-		array = array.sort
-		ind=array.length*num.floor
-		ind == ind.to_i ? (array[ind].to_f+array[ind+1].to_f)/2 : array[ind]
-	end
 	avg_co=percentile(co_array,0.95).to_f
 	avg_o3=percentile(o3_array,0.9).to_f
 
@@ -322,8 +301,20 @@ def get_avg_data(flag,id,time)
 	hs['pm2_5']=avg(pm25_array)
 	hs['co']=avg_co
 	hs['o3']=avg_o3
-
 	hs
+end
+#计算平均值
+def avg(array)
+	sum = 0
+	array.each{|x| sum+=x}
+	sum/array.length if array.length!=0
+end
+#百分位计算
+def percentile(array,num)
+	#co o3百分位数计
+	array = array.sort
+	ind=array.length*num
+	(ind.is_a?Float) ? array[ind.floor].to_f : (array[ind].to_f+array[ind+1].to_f)/2
 end
 
 #计算同期对比

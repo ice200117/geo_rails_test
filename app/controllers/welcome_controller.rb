@@ -2,7 +2,6 @@ class WelcomeController < ApplicationController
 	include NumRu
 
 	def index
-
 		#data_table = GoogleVisualr::DataTable.new
 		#data_table.new_column('string', 'Country')
 		#data_table.new_column('number', 'Popularity')
@@ -60,13 +59,10 @@ class WelcomeController < ApplicationController
 		#data_table.set_cell(2, 2, 'Airport'   )
 		#data_table.set_cell(3, 0, 37.4422   )
 		#data_table.set_cell(3, 1, -122.1731 )
-
 		#data_table.set_cell(3, 2, 'Shopping'  )
-
 		#opts   = { :showTip => true }
 		#@chart = GoogleVisualr::Interactive::Map.new(data_table, opts)
 	end
-
 	def show
 		# @visits = Visit.all
 	end 
@@ -86,7 +82,6 @@ class WelcomeController < ApplicationController
 			}
 		end
 	end
-
 	def visits_by_day
 		id =  params[:city_id]
 		visits = Visit.all
@@ -102,7 +97,6 @@ class WelcomeController < ApplicationController
 			}
 		end
 	end
-
 	def bar
 		params[:c] ? (id =  params[:c][:city_id]) : (id = City.find_by city_name_pinyin: 'langfangshi')
 		c = City.find(id)
@@ -127,7 +121,6 @@ class WelcomeController < ApplicationController
 			}
 		end
 	end
-
 	def pinggu
 		#廊坊数据
 		@lfdatabyhour=change_data_type(TempLfHour.last(11)) 
@@ -294,7 +287,85 @@ class WelcomeController < ApplicationController
 		re_hs[:cities]=data_ary
 		re_hs
 	end
+	#1.三组按钮组间关系：根据三组按钮之间的关系确定编程顺序，先通过判断按天还是按小时从而确定查询天表还是小时表
+	#然后，通过第二组按钮最近一天、最近一周等等确定startdate和enddate今儿去卡记录数
+	#最后，通过第一组按钮确定要显示的字段。
+	#2.三组按钮组内关系：第一组：“综合”显示AQI和其他的一堆，“AQI”只显示AQI，“PM2.5”~“湿度”这些显示AQI和本身
+	#第二组和第三组：如果选中“最近一天”则无论是按天还是按小时均按小时显示曲线图，如果选中“最近一周”、“最近一月”、“最近一年”则按天与按小时显示的图不同
+	def chartway
+		citybd=City.find_by city_name: '保定市'
+		startdate=Time.local(params[:starttime][0,4].to_i,params[:starttime][5,2].to_i,params[:starttime][8,2].to_i)
+		enddate=Time.local(params[:endtime][0,4].to_i,params[:endtime][5,2].to_i,params[:endtime][8,2].to_i,23)
+		if  params[:starttime]==params[:endtime] 
+			startdate=Time.local(params[:starttime][0,4].to_i,params[:starttime][5,2].to_i,params[:starttime][8,2].to_i,10)
+			enddate=Time.local(params[:endtime][0,4].to_i,params[:endtime][5,2].to_i,params[:endtime][8,2].to_i,21)
+			querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,citybd.id)
+		elsif params[:exact]=='eh'
+			querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,citybd.id) 
+		else
+			querydata=TempSfcitiesDay.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,citybd.id)
+		end  
+		if params[:type]=='zonghe'
+			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'PM2.5(μg/m3)',data: querydata.map{ |data| data.pm25}},{name: 'PM10(μg/m3)',data: querydata.map{ |data| data.pm10}},{name: 'SO2(μg/m3)',data: querydata.map{ |data| data.SO2}},{name: 'CO(mg/m3)',data: querydata.map{ |data| data.CO}},{name: 'NO2(μg/m3)',data: querydata.map{ |data| data.NO2}},{name: 'O3(μg/m3)',data: querydata.map{ |data| data.O3}}]}
+		elsif params[:type]=='PM25'
+			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'PM2.5(μg/m3)',data: querydata.map{ |data| data.pm25}}]}
+		elsif params[:type]=='PM10'
+			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'PM10(μg/m3)',data: querydata.map{ |data| data.pm10}}]}
+		elsif params[:type]=='SO2'
+			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'SO2(μg/m3)',data: querydata.map{ |data| data.SO2}}]}
+		elsif params[:type]=='NO2'
+			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'NO2(μg/m3)',data: querydata.map{ |data| data.NO2}}]}
+		elsif params[:type]=='CO'
+			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'CO(mg/m3)',data: querydata.map{ |data| data.CO}}]}
+		elsif params[:type]=='O3'
+			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'O3(μg/m3)',data: querydata.map{ |data| data.O3}}]}
+		elsif params[:type]=='tem' && params[:exact]=='eh'
+			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: '温度(℃)',data: querydata.map{ |data| data.temp}}]}
+		elsif params[:type]=='wind' && params[:exact]=='eh'
+			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: '风速(级)',data: querydata.map{ |data| data.windspeed}}]}
+		elsif params[:type]=='hum' && params[:exact]=='eh'
+			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: '湿度(%)',data: querydata.map{ |data| data.humi}}]}
+		else
+			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}}]}
+		end
+		respond_to do |format|
+			format.html { }
+			format.js   { }
+			format.json {
+				render json: @chartdata
+			}
+		end
+	end
+=begin
+  def city_compare_chart
+	city1=City.find_by city_name: params[:city1]
+	city2=City.find_by city_name: params[:city2] 
+	city3=City.find_by city_name: params[:city3]
+	cityarray=Array[city1,city2,city3]
 
+
+	startdate=Time.local(params[:starttime][0,4].to_i,params[:starttime][5,2].to_i,params[:starttime][8,2].to_i)
+	enddate=Time.local(params[:endtime][0,4].to_i,params[:endtime][5,2].to_i,params[:endtime][8,2].to_i,23)
+	if  params[:starttime]==params[:endtime] 
+	  startdate=Time.local(params[:starttime][0,4].to_i,params[:starttime][5,2].to_i,params[:starttime][8,2].to_i,10)
+	  enddate=Time.local(params[:endtime][0,4].to_i,params[:endtime][5,2].to_i,params[:endtime][8,2].to_i,21)
+	  querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id: [?,?,?]",startdate,enddate,city1.id,city2.id,city3.id)
+	elsif params[:exact]=='eh'
+	  querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id: [?,?,?]",startdate,enddate,city1.id,city2.id,city3.id) 
+	else
+	  querydata=TempSfcitiesDay.where("data_real_time>=? AND data_real_time<=? AND city_id: [?,?,?]",startdate,enddate,city1.id,city2.id,city3.id)
+	end  
+	  @citycompare={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: cityarray.map{ |cityobj| {name: cityobj.city_name,data: querydata.map{ |data| data[params[:type]] if data.city_id==cityobj.id}}}
+
+	respond_to do |format|
+	  format.html { }
+	  format.js   { }
+	  format.json {
+		render json: @citycompare
+	  }
+	end 
+	end
+=end
 	def get_lev(a)
 		if (0 .. 50) === a
 			lev = 'you'
@@ -316,7 +387,6 @@ class WelcomeController < ApplicationController
 		response = HTTParty.post('http://www.izhenqi.cn/api/getdata_history.php', :body => option)
 		JSON.parse(response.body)
 	end
-
 	def hb_real
 		hs = Hash.new
 		begin
@@ -329,7 +399,6 @@ class WelcomeController < ApplicationController
 		end
 		hs
 	end
-
 	def get_rank_json(webUrl,secretstr,typestr,datestr)
 		hs = Hash.new
 		begin
@@ -366,7 +435,6 @@ class WelcomeController < ApplicationController
 	def get_data_to_pinggu
 		@lfdatabyhour=get_rank_json('lfdata','LANGFANGRANK','HOUR','')
 	end
-
 	def set_nil_value(data)
 		data.each do |c|
 			if c.zonghezhishu==nil 
