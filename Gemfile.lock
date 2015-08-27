@@ -169,6 +169,7 @@ GEM
     ruby-netcdf (0.7.1.1)
       narray
       narray_miss
+    ruby-ole (1.2.11.8)
     sass (3.4.16)
     sass-rails (5.0.3)
       railties (>= 4.0.0, < 5.0)
@@ -182,6 +183,8 @@ GEM
     simple_form (3.1.0)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
+    spreadsheet (1.0.4)
+      ruby-ole (>= 1.0)
     spring (1.3.6)
     sprockets (3.2.0)
       rack (~> 1.0)
@@ -246,6 +249,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   simple_form (~> 3.1.0)
+  spreadsheet
   spring
   sprockets-rails
   turbolinks

@@ -122,27 +122,27 @@ class WelcomeController < ApplicationController
 		end
 	end
 	def pinggu
-		#廊坊数据
-		@lfdatabyhour=change_data_type(TempLfHour.last(11)) 
-		@lfdatabyday=change_data_type(TempLfDay.last(11)) 
-		@lfdatabymonth=change_data_type(TempLfMonth.last(11))
-		@lfdatabyyear=change_data_type(TempLfYear.last(11))
+		#保定数据
+		@bddatabyhour=change_data_type(get_db_data(TempBdHour)) 
+		@bddatabyday=change_data_type(get_db_data(TempBdDay)) 
+		@bddatabymonth=change_data_type(get_db_data(TempBdMonth))
+		@bddatabyyear=change_data_type(get_db_data(TempBdYear))
 
 		#河北数据
-		@hebeidatabyhour=change_data_type(TempHbHour.last(11)) 
-		hebeidatabyday=change_data_type(TempJjjDay.last(13))
+		@hebeidatabyhour=change_data_type(get_db_data(TempHbHour)) 
+		hebeidatabyday=change_data_type(get_db_data(TempJjjDay))
 		hebeidatabyday[:cities].delete_if{|item| (item['city']=='北京')||(item['city']=='天津')}
 		@hebeidatabyday=hebeidatabyday
 
 		#京津冀
-		@jjjdatabyday=change_data_type(TempJjjDay.last(13))
-		@jjjdatabymonth=change_data_type(TempJjjMonth.last(13))
-		@jjjdatabyyear=change_data_type(TempJjjYear.last(13))
+		@jjjdatabyday=change_data_type(get_db_data(TempJjjDay))
+		@jjjdatabymonth=change_data_type(get_db_data(TempJjjMonth))
+		@jjjdatabyyear=change_data_type(get_db_data(TempJjjYear))
 
 		#74城市
-		@sfcitiesrankbyday=change_data_type(TempSfcitiesDay.last(74))
-		@sfcitiesrankbymonth=change_data_type(TempSfcitiesMonth.last(74))
-		@sfcitiesrankbyyear=change_data_type(TempSfcitiesYear.last(74))
+		@sfcitiesrankbyday=change_data_type(get_db_data(TempSfcitiesDay))
+		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth))
+		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear))
 
 
 		@post = params[:city_post] if params[:city_post]
@@ -254,8 +254,33 @@ class WelcomeController < ApplicationController
 		lev_arr.each_with_index do |lev,i|
 			@day_fdata << {w:td[i], start:lev[:start], end:lev[:end], start_han:lev_han_arr[i][:start], end_han:lev_han_arr[i][:end],pol:pri_pol[i]}
 		end
-
 	end
+
+	#获取数据库数据pinggu.html.erb显示
+	def get_db_data(model_name)
+		stime = Time.now
+		etime = Time.now
+		oneday = 60*60*24
+		if /\w*Hour/.match(model_name.name)
+			stime = stime.beginning_of_day
+			etime = etime.end_of_day
+		else
+			stime = stime.beginning_of_hour
+			etime = etime.end_of_hour
+			oneday /= 24
+		end
+		while oneday 
+			stime = stime - oneday
+			etime = etime - oneday 
+			sql_str=Array.new
+			sql_str<<"data_real_time >= ? AND data_real_time <= ?"
+			sql_str<<stime
+			sql_str<<etime
+			data = model_name.where(sql_str)
+			return data.uniq if !data[0].nil?  #不为空，去掉重复项并返回
+		end
+	end
+	#去掉重复项
 
 	#修改小数点位数
 	def change_data_type(data)			

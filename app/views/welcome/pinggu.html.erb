@@ -265,7 +265,7 @@
 
 <!--综合曲线模块-->
 
-<%= stylesheet_link_tag 'css/button', media:'all', 'data-turbolinks-track' => true %>
+<%= stylesheet_link_tag 'css/button',"css/wdatepicker", media:'all', 'data-turbolinks-track' => true %>
 
 <script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
 
@@ -373,6 +373,18 @@ function datePicked(){
 	}
 }
 $(document).ready(function(){
+	$("#beginTime").datepicker({
+    onSelect: function(dateText,inst){
+      datePicked();
+    }
+    });
+
+     $("#stopTime").datepicker({
+    onSelect: function(dateText,inst){
+      datePicked();
+    }
+    });
+
 	$("#beginTime").val(pStartTime); 
 	$("#stopTime").val(pEndTime);
 	ChartQuery();
@@ -405,9 +417,9 @@ $(document).ready(function(){
 			<button type="button" class="btna btna-default btndategroup1" id="ed"value="exactDay" onclick="changeExact('ed')" style="width:30px">按天</button>
 		</div>
 		<div style="float:right;margin-top:-30px;">
-			<input name="starttime" id="beginTime" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:datePicked})" style="width:90px"/>-
-				<input name="endtime" id="stopTime" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:datePicked})" style="width:90px"/>
-				</div>
+			<input name="starttime" id="beginTime" class="Wdate" type="text" style="width:110px"/>-
+      		<input name="endtime" id="stopTime" class="Wdate" type="text" style="width:110px"/>
+		</div>
 			</div>
 			<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 </div>
@@ -426,7 +438,7 @@ $(document).ready(function(){
 						<div class="row">
 							<div class="col-xs-6">
 								<table class="table table-striped">
-									<caption>廊坊市各区县小时排名&nbsp&nbsp<%= @lfdatabyhour[:time].strftime("%Y-%m-%d %H:00:00") %></caption>
+									<caption>廊坊市各区县小时排名&nbsp&nbsp<%= @bddatabyhour[:time].strftime("%Y-%m-%d %H:00:00") %></caption>
 									<thead>
 										<tr>
 											<th>排名</th>
@@ -437,9 +449,9 @@ $(document).ready(function(){
 										</tr>
 									</thead>
 									<tbody>
-										<% lfdatabyhour=@lfdatabyhour[:cities].sort_by{|a| a['AQI']} %>
-										<% for i in (0...lfdatabyhour.length) %>
-											<% tmp=lfdatabyhour[i] %>
+										<% bddatabyhour=@bddatabyhour[:cities].sort_by{|a| a['AQI']} %>
+										<% for i in (0...bddatabyhour.length) %>
+											<% tmp=bddatabyhour[i] %>
 											<tr>
 												<td><%= i+1 %></td>
 												<td><%= tmp['city'] %></td>
@@ -453,7 +465,7 @@ $(document).ready(function(){
 							</div>
 							<div class="col-xs-6">
 								<table class="table table-striped">
-									<caption>廊坊市各区县空气质量日均排名&nbsp&nbsp<%= @lfdatabyday[:time].strftime("%Y-%m-%d") %></caption>
+									<caption>廊坊市各区县空气质量日均排名&nbsp&nbsp<%= @bddatabyday[:time].strftime("%Y-%m-%d") %></caption>
 									<thead>
 										<tr>
 											<th>排名</th>
@@ -464,9 +476,9 @@ $(document).ready(function(){
 										</tr>
 									</thead>
 									<tbody>
-										<% lfdatabyday=@lfdatabyday[:cities].sort_by{|a| a['AQI']} %>
-										<% for i in (0...lfdatabyday.length) %>
-											<% tmp=lfdatabyday[i]%>
+										<% bddatabyday=@bddatabyday[:cities].sort_by{|a| a['AQI']} %>
+										<% for i in (0...bddatabyday.length) %>
+											<% tmp=bddatabyday[i]%>
 											<tr>
 												<td><%= i+1 %></td>
 												<td><%= tmp['city']%></td>
@@ -589,7 +601,7 @@ $(document).ready(function(){
 						<div class="tab-content">
 							<div class="tab-pane fade in active" id="lfgqxri">
 								<span>更新时间: 
-									<%=	@lfdatabyday[:time].strftime("%Y-%m-%d")%>
+									<%=	@bddatabyday[:time].strftime("%Y-%m-%d")%>
 								</span> 
 								<table class="table">
 									<thead>
@@ -606,9 +618,9 @@ $(document).ready(function(){
 										</tr>
 									</thead>
 									<tbody>
-										<% lfdatabyday=@lfdatabyday[:cities].sort_by{|a| a['zonghezhishu']} %>
-										<% for i in (0...lfdatabyday.length)%>
-											<% tmp=lfdatabyday[i] %>
+										<% bddatabyday=@bddatabyday[:cities].sort_by{|a| a['zonghezhishu']} %>
+										<% for i in (0...bddatabyday.length)%>
+											<% tmp=bddatabyday[i] %>
 											<tr>
 												<td><%= i+1%></td>
 												<td><%= tmp['city'] %></td>
@@ -626,7 +638,7 @@ $(document).ready(function(){
 							</div>		
 							<div class="tab-pane fade" id="lfgqxyue">
 								<span>更新时间: 
-									<%= @lfdatabymonth[:time].strftime("%Y-%m-%d") %>
+									<%= @bddatabymonth[:time].strftime("%Y-%m-%d") %>
 								</span> 
 								<table class="table">
 									<thead>
@@ -643,9 +655,9 @@ $(document).ready(function(){
 										</tr>
 									</thead>
 									<tbody>
-										<% lfdatabymonth=@lfdatabymonth[:cities].sort_by{|a| a['zonghezhishu']} %>
-										<% for i in (0...lfdatabymonth.length) %>
-											<% tmp=lfdatabymonth[i] %>
+										<% bddatabymonth=@bddatabymonth[:cities].sort_by{|a| a['zonghezhishu']} %>
+										<% for i in (0...bddatabymonth.length) %>
+											<% tmp=bddatabymonth[i] %>
 											<tr>
 												<td><%= i+1 %></td>
 												<td><%= tmp['city'] %></td>
@@ -663,7 +675,7 @@ $(document).ready(function(){
 							</div>
 							<div class="tab-pane fade" id="lfgqxnian">
 								<span>更新时间: 
-									<%= @lfdatabyyear[:time].strftime("%Y-%m-%d") %>
+									<%= @bddatabyyear[:time].strftime("%Y-%m-%d") %>
 								</span> 
 								<table class="table">
 									<thead>
@@ -680,9 +692,9 @@ $(document).ready(function(){
 										</tr>
 									</thead>
 									<tbody>
-										<% lfdatabyyear=@lfdatabyyear[:cities].sort_by{|a| a['zonghezhishu']} %>
-										<% for i in (0...lfdatabyyear.length) %>
-											<% tmp=lfdatabyyear[i] %>
+										<% bddatabyyear=@bddatabyyear[:cities].sort_by{|a| a['zonghezhishu']} %>
+										<% for i in (0...bddatabyyear.length) %>
+											<% tmp=bddatabyyear[i] %>
 											<tr>
 												<td><%= i+1 %></td>
 												<td><%= tmp['city']%></td>
@@ -722,7 +734,7 @@ $(document).ready(function(){
 						<div class="tab-content">
 							<div class="tab-pane fade in active" id="lfgqxricr">
 								<span>更新时间: 
-									<%= @lfdatabyday[:time].strftime("%Y-%m-%d") %>
+									<%= @bddatabyday[:time].strftime("%Y-%m-%d") %>
 								</span> 
 								<table class="table">
 									<thead>
@@ -739,9 +751,9 @@ $(document).ready(function(){
 										</tr>
 									</thead>
 									<tbody>
-										<% lfdatabyday=@lfdatabyday[:cities].sort_by{|a| a['zongheindex_change_rate'].to_f} %>
-										<% for i in (0...lfdatabyday.length) %>
-											<% tmp=lfdatabyday[i] %>
+										<% bddatabyday=@bddatabyday[:cities].sort_by{|a| a['zongheindex_change_rate'].to_f} %>
+										<% for i in (0...bddatabyday.length) %>
+											<% tmp=bddatabyday[i] %>
 											<tr>
 												<td><%= i+1 %></td>
 												<td><%= tmp['city'] %></td>
@@ -759,7 +771,7 @@ $(document).ready(function(){
 							</div>
 							<div class="tab-pane fade" id="lfgqxyuecr">
 								<span>更新时间: 
-									<%= @lfdatabymonth[:time].strftime("%Y-%m-%d")%>
+									<%= @bddatabymonth[:time].strftime("%Y-%m-%d")%>
 								</span> 
 								<table class="table">
 									<thead>
@@ -776,9 +788,9 @@ $(document).ready(function(){
 										</tr>
 									</thead>
 									<tbody>
-										<% lfdatabymonth=@lfdatabymonth[:cities].sort_by{|a| a['zongheindex_change_rate'].to_f}%>
-										<% for i in (0...lfdatabymonth.length)%>
-											<% tmp=lfdatabymonth[i] %>
+										<% bddatabymonth=@bddatabymonth[:cities].sort_by{|a| a['zongheindex_change_rate'].to_f}%>
+										<% for i in (0...bddatabymonth.length)%>
+											<% tmp=bddatabymonth[i] %>
 											<tr>
 												<td><%= i+1%></td>
 												<td><%= tmp['city']%></td>
@@ -796,7 +808,7 @@ $(document).ready(function(){
 							</div>
 							<div class="tab-pane fade" id="lfgqxniancr">
 								<span>更新时间: 
-									<%=	@lfdatabyyear[:time].strftime("%Y-%m-%d") %>
+									<%=	@bddatabyyear[:time].strftime("%Y-%m-%d") %>
 								</span> 
 								<table class="table">
 									<thead>
@@ -813,9 +825,9 @@ $(document).ready(function(){
 										</tr>
 									</thead>
 									<tbody>
-										<% lfdatabyyear=@lfdatabyyear[:cities].sort_by{|a| a['zongheindex_change_rate'].to_f} %>
-										<% for i in (0...lfdatabyyear.length)%>
-											<% tmp=lfdatabyyear[i] %>
+										<% bddatabyyear=@bddatabyyear[:cities].sort_by{|a| a['zongheindex_change_rate'].to_f} %>
+										<% for i in (0...bddatabyyear.length)%>
+											<% tmp=bddatabyyear[i] %>
 											<tr>
 												<td><%= i+1%></td>
 												<td><%= tmp['city']%></td>

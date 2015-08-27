@@ -1,153 +1,43 @@
 require_relative './common.rb'
 #数据库二次封装
-def get_db_data(table_name,table_operation,table_operation_string)
+def get_db_data(name,keyword,select_string)
 	tabledata=Object.new
-	case table_name
+	select_string = nil if select_string == ''
+	case name
 	when 'day_city'
-		case table_operation
-		when 'new'
-			tabledata=DayCity.new
-		when 'all'
-			tabledata=DayCity.all	
-		when 'last'
-			tabledata=DayCity.last
-		when 'where'
-			tabledata=DayCity.where(table_operation_string)
-		end
+		tabledata = DayCity.send(keyword,select_string)
 	when 'temp_lf_hours'
-		case table_operation
-		when 'new'
-			tabledata=TempLfHour.new	
-		when 'all'
-			tabledata=TempLfHour.all
-		when 'last'
-			tabledata=TempLfHour.last
-		when 'where'
-			tabledata=TempLfHour.where(table_operation_string)	
-		end
+		tabledata = TempLfHour.send(keyword,select_string)
 	when 'temp_lf_days'
-		case table_operation
-		when 'new'
-			tabledata=TempLfDay.new
-		when 'all'
-			tabledata=TempLfDay.all
-		when 'last'
-			tabledata=TempLfDay.last
-		when 'where'
-			tabledata=TempLfDay.where(table_operation_string)
-		end
+		tabledata = TempLfDay.send(keyword,select_string)
 	when 'temp_lf_months'
-		case table_operation
-		when 'new'
-			tabledata=TempLfMonth.new
-		when 'all' 
-			tabledata=TempLfMonth.all
-		when 'last'
-			tabledata=TempLfMonth.last
-		when 'where'
-			tabledata=TempLfMonth.where(table_operation_string)
-		end
+		tabledata = TempLfMonth.send(keyword,select_string)
 	when 'temp_lf_years'
-		case table_operation
-		when 'new'
-			tabledata=TempLfYear.new
-		when 'all'
-			tabledata=TempLfYear.all
-		when 'last'
-			tabledata=TempLfYear.last
-		when 'where'
-			tabledata=TempLfYear.where(table_operation_string)
-		end
+		tabledata = TempLfYear.send(keyword,select_string)
 	when 'temp_hb_hours'
-		case table_operation
-		when 'new'
-			tabledata=TempHbHour.new	
-		when 'all'
-			tabledata=TempHbHour.all
-		when 'last'
-			tabledata=TempHbHour.last
-		when 'where'
-			tabledata=TempHbHour.where(table_operation_string)
-		end
+		tabledata = TempHbHour.send(keyword,select_string)
 	when 'temp_jjj_days'
-		case table_operation
-		when 'new'
-			tabledata=TempJjjDay.new
-		when 'all'
-			tabledata=TempJjjDay.all
-		when 'last'			
-			tabledata=TempJjjDay.last
-		when 'where'
-			tabledata=TempJjjDay.where(table_operation_string)
-		end
-
+		tabledata = TempJjjDay.send(keyword,select_string)
 	when 'temp_jjj_months'
-		case table_operation
-		when 'new'
-			tabledata=TempJjjMonth.new
-		when 'all' 
-			tabledata=TempJjjMonth.all
-		when 'last'
-			tabledata=TempJjjMonth.last
-		when 'where'
-			tabledata=TempJjjMonth.where(table_operation_string)
-		end																						
+		tabledata = TempJjjMonth.send(keyword,select_string)
 	when 'temp_jjj_years'
-		case table_operation
-		when 'new' 
-			tabledata=TempJjjYear.new
-		when 'all'
-			tabledata=TempJjjYear.all
-		when 'last'
-			tabledata=TempJjjYear.last	
-		when 'where'
-			tabledata=TempJjjYear.where(table_operation_string)
-		end
+		tabledata = TempJjjYear.send(keyword,select_string)
+	when 'temp_bd_hours'
+		tabledata = TempBdHour.send(keyword,select_string)
+	when 'temp_bd_days'
+		tabledata = TempBdDay.send(keyword,select_string)
+	when 'temp_bd_months'
+		tabledata = TempBdMonth.send(keyword,select_string)
+	when 'temp_bd_years'
+		tabledata = TempBdYear.send(keyword,select_string)
 	when 'temp_sfcities_hours'
-		case table_operation
-		when 'new'
-			tabledata=TempSfcitiesHour.new
-		when 'all'
-			tabledata=TempSfcitiesHour.all
-		when 'last'
-			tabledata=TempSfcitiesHour.last
-		when 'where'
-			tabledata=TempSfcitiesHour.where(table_operation_string)
-		end
+		tabledata = TempSfcitiesHour.send(keyword,select_string)
 	when 'temp_sfcities_days'
-		case table_operation
-		when 'new' 
-			tabledata=TempSfcitiesDay.new	
-		when 'all'
-			tabledata=TempSfcitiesDay.all
-		when 'last'
-			tabledata=TempSfcitiesDay.last
-		when 'where'			
-			tabledata=TempSfcitiesDay.where(table_operation_string)	
-		end
-
+		tabledata = TempSfcitiesDay.send(keyword,select_string)
 	when 'temp_sfcities_months'
-		case table_operation
-		when 'new'
-			tabledata=TempSfcitiesMonth.new
-		when 'all'
-			tabledata=TempSfcitiesMonth.all
-		when 'last'
-			tabledata=TempSfcitiesMonth.last
-		when 'where'
-			tabledata=TempSfcitiesMonth.where(table_operation_string)
-		end
+		tabledata = TempSfcitiesMonth.send(keyword,select_string)
 	when 'temp_sfcities_years'
-		case table_operation
-		when 'new'
-			tabledata=TempSfcitiesYear.new	
-		when 'all' 
-			tabledata=TempSfcitiesYear.all
-		when 'last'
-			tabledata=TempSfcitiesYear.last	
-		when 'where'
-			tabledata=TempSfcitiesYear.where(table_operation_string)
-		end
+		tabledata = TempSfcitiesYear.send(keyword,select_string)
 	end
 	tabledata	
 end
@@ -158,9 +48,7 @@ end
 #typestr:数据类型  
 #datestr：日期  格式(YYYY-MM-DD)
 def get_rank_json(web_flag,secretstr,typestr,datestr)
-	if datestr!=''
-		datestr=datestr.strftime("%Y-%m-%d")
-	end
+	datestr=datestr.strftime("%Y-%m-%d") if datestr!=''
 	hs = Hash.new
 	begin
 		if web_flag == 'shishi_china_rank_data'
@@ -191,7 +79,7 @@ def get_rank_json(web_flag,secretstr,typestr,datestr)
 		json_data=JSON.parse(response.body)
 		if web_flag == 'lf_history_data'
 			hs[:time] = json_data['date']
-			hs[:cities] = lf_history_data_column_name_modify(json_data['rows'])
+			hs[:cities] = column_name_modify(json_data['rows'])
 		else 
 			hs[:time] =json_data['time']
 			hs[:cities] = json_data['rows']
@@ -202,26 +90,18 @@ def get_rank_json(web_flag,secretstr,typestr,datestr)
 	end 
 	hs
 end
-
-def lf_history_data_column_name_modify(hs)
-	data_array=Array.new
-	hs.each do |t|
-		temp_day=Hash.new
-		temp_day['city']=t["city_name"]
-		temp_day['so2']=t["so2nd"]		
-		temp_day['no2']=t["no2nd"]
-		temp_day['co']=t["cond"]
-		temp_day['o3']=t["o3_8hnd"]
-		temp_day['pm10']=t["pm10nd"]
-		temp_day['pm2_5']=t["pm25nd"]
-		temp_day['aqi']=t["aqi"]
-		if t['quality'].nil?
-			temp_day['quality']=t["quality"]
-		end
-		temp_day['main_pollutant']=t["main_pollutant"]
-		data_array<<temp_day
+#接口中不符合统一字段名，进行处理后再使用
+def column_name_modify(hs)
+	for i in (0..hs.length)
+		hs[i]['city']=hs[i]['city_name'] if hs[i]['city_name']!=nil
+		hs[i]['so2']=hs[i]['so2nd'] if hs[i]['so2nd']!=nil
+		hs[i]['no2']=hs[i]['no2nd'] if hs[i]['no2nd']!=nil
+		hs[i]['co']=hs[i]['cond'] if hs[i]['cond']!=nil
+		hs[i]['o3']=hs[i]['o3nd'] if hs[i]['o3']!=nil
+		hs[i]['pm10']=hs[i]['pm10'] if hs[i]['pm10']!=nil
+		hs[i]['pm2_5']=hs[i]['pm2_5'] if hs[i]['pm2_5']!=nil
 	end
-	data_array
+	hs
 end
 
 #计算综合指数 需要6项指标的数据
@@ -235,9 +115,10 @@ def get_zonghezhishu(flag)
 	zonghezhishu_value=dayCity.SO2.to_f/60+dayCity.NO2.to_f/40+dayCity.pm10.to_f/70+dayCity.pm25.to_f/35+dayCity.CO.to_f/4+dayCity.O3.to_f/160
 	zonghezhishu_value
 end
-#获得平均数
-def get_avg_data(flag,id,time)
+#获取月平均数
+def get_avg_by_month(flag,id,time)
 	second_in_day=60*60*24
+
 	#指标数组，暂存数据进行处理
 	so2_array=Array.new
 	no2_array=Array.new
@@ -249,17 +130,72 @@ def get_avg_data(flag,id,time)
 	#遍历当月从1号到当天，获取数据
 	first_day=time.to_time.beginning_of_month
 	this_day=time.to_time.end_of_day
-	if flag=='temp_lf_years'||flag=='temp_jjj_years'||flag=='temp_sfcities_years'
-		first_day=time.to_time.beginning_of_year
+
+	name=/\_(\w*)\_/.match(flag)
+	flag="temp_#{name[1]}_days"
+
+	while first_day<=this_day do
+		temp_day=first_day+second_in_day
+		sql_str=Array.new
+		sql_str<<"data_real_time >=? AND data_real_time <=? AND city_id=?"
+		sql_str<<first_day
+		sql_str<<temp_day
+		sql_str<<id
+		daycity=get_db_data(flag,'where',sql_str)	
+		if daycity.length>0
+			day_city=daycity[0]
+			if !day_city.SO2.nil? && day_city.SO2!=0
+				so2_array<<day_city.SO2
+			end
+			if !day_city.NO2.nil? && day_city.NO2!=0
+				no2_array<<day_city.NO2
+			end
+			if !day_city.pm10.nil? && day_city.pm10!=0
+				pm10_array<<day_city.pm10
+			end
+			if !day_city.pm25.nil? && day_city.pm25!=0
+				pm25_array<<day_city.pm25
+			end
+			if !day_city.CO.nil? && day_city.CO!=0
+				co_array<<day_city.CO
+			end
+			if !day_city.O3.nil? && day_city!=0
+				o3_array<<day_city.O3
+			end
+		end
+		first_day=temp_day
 	end
-	case flag
-	when 'temp_lf_months','temp_lf_years'
-		flag='temp_lf_days'
-	when 'temp_jjj_months','temp_jjj_years'
-		flag='temp_jjj_days'
-	when 'temp_sfcities_months','temp_sfcities_years'
-		flag='temp_sfcities_days'
-	end
+	avg_co=percentile(co_array,0.95).to_f
+	avg_o3=percentile(o3_array,0.9).to_f
+
+	hs=Hash.new
+	hs['so2']=avg(so2_array)
+	hs['no2']=avg(no2_array)
+	hs['pm10']=avg(pm10_array)
+	hs['pm2_5']=avg(pm25_array)
+	hs['co']=avg_co
+	hs['o3']=avg_o3
+	hs
+end
+#获取年平均数
+def get_avg_by_year(flag,id,time)
+	second_in_day=60*60*24
+
+	#指标数组，暂存数据进行处理
+	so2_array=Array.new
+	no2_array=Array.new
+	pm10_array=Array.new
+	pm25_array=Array.new
+	co_array=Array.new
+	o3_array=Array.new
+
+	#遍历当月从1号到当天，获取数据
+	first_day=time.to_time.beginning_of_year
+	this_day=time.to_time.end_of_day
+
+	name=/\_(\w*)\_/.match(flag)
+	flag="temp_#{name[1]}_days"
+
 	while first_day<=this_day do
 		temp_day=first_day+second_in_day
 		sql_str=Array.new
@@ -319,13 +255,11 @@ end
 
 #计算同期对比
 def get_change_rate(flag,id,time)
-
 	sql_str=Array.new
 	sql_str<<'data_real_time >= ? AND data_real_time <= ? AND city_id = ?'
 	sql_str<<time.to_time.years_ago(1).beginning_of_day
 	sql_str<<time.to_time.years_ago(1).end_of_day
 	sql_str<<id
-
 	last_years_data=get_db_data(flag,'where',sql_str)	
 	if last_years_data.length == 0
 		return false
@@ -355,6 +289,32 @@ def get_change_rate(flag,id,time)
 	end
 	if !now_years.zonghezhishu.nil? && !last_years.zonghezhishu.nil?
 		hs[:zhzs]=(now_years.zonghezhishu-last_years.zonghezhishu)/last_years.zonghezhishu
+	end
+	hs
+end
+#调用接口最多进行10次尝试，如有数据则返回数据，没有数据返回false
+def ten_times_test(flag,url,secret,type,date)
+	hs=Hash.new
+	(0..10).each do
+		hs=get_rank_json(url,secret,type,date)  
+		break if hs!=false
+	end
+	out_log(Time.now.to_s+" "+flag+"ERROR！") if hs == false
+	out_log(Time.now.to_s+" "+flag+"total is 0");hs=false if hs[:total].to_i==0
+	hs
+end
+#脚本异常返回日志
+def out_log(log_string)
+	this_log = Logger.new("/vagrant/geo_rails_test/log/getdata.log")
+	this_log.info(log_string)
+end
+#与数据库不一直字段处理
+def change_diff_column(hs,flag)
+	if flag=='temp_lf_days'
+		for i in (0..hs[:cities].length)
+			hs[:cities][i]['city']='廊坊开发区' if hs[:cities][i]['city']='市辖区'
+			hs[:cities][i]['city']='大厂' if hs[:cities][i]['city']='大厂回族自治县'
+		end
 	end
 	hs
 end
