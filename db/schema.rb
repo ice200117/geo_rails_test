@@ -11,11 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150724091156) do
+ActiveRecord::Schema.define(version: 20150819093207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+  enable_extension "postgis_topology"
 
   create_table "cities", force: true do |t|
     t.string  "city_name"
@@ -104,6 +105,107 @@ ActiveRecord::Schema.define(version: 20150724091156) do
     t.datetime "updated_at"
   end
 
+  create_table "temp_bd_days", force: true do |t|
+    t.integer  "city_id"
+    t.float    "SO2"
+    t.float    "NO2"
+    t.float    "CO"
+    t.float    "O3"
+    t.float    "pm10"
+    t.float    "pm25"
+    t.float    "zonghezhishu"
+    t.float    "AQI"
+    t.integer  "level"
+    t.string   "main_pol"
+    t.float    "SO2_change_rate"
+    t.float    "NO2_change_rate"
+    t.float    "CO_change_rate"
+    t.float    "O3_change_rate"
+    t.float    "pm10_change_rate"
+    t.float    "pm25_change_rate"
+    t.float    "zongheindex_change_rate"
+    t.datetime "data_real_time"
+    t.string   "weather"
+    t.integer  "temp"
+    t.integer  "humi"
+    t.string   "winddirection"
+    t.integer  "windspeed"
+    t.integer  "windscale"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "temp_bd_hours", force: true do |t|
+    t.integer  "city_id"
+    t.float    "SO2"
+    t.float    "NO2"
+    t.float    "CO"
+    t.float    "O3"
+    t.float    "pm10"
+    t.float    "pm25"
+    t.float    "AQI"
+    t.string   "level"
+    t.string   "main_pol"
+    t.string   "weather"
+    t.string   "winddirection"
+    t.datetime "data_real_time"
+    t.float    "zonghezhishu"
+    t.integer  "windscale"
+    t.integer  "windspeed"
+    t.integer  "humi"
+    t.integer  "temp"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "temp_bd_months", force: true do |t|
+    t.integer  "city_id"
+    t.float    "SO2"
+    t.float    "NO2"
+    t.float    "CO"
+    t.float    "O3"
+    t.float    "pm10"
+    t.float    "pm25"
+    t.float    "zonghezhishu"
+    t.float    "AQI"
+    t.integer  "level"
+    t.string   "main_pol"
+    t.float    "SO2_change_rate"
+    t.float    "NO2_change_rate"
+    t.float    "CO_change_rate"
+    t.float    "O3_change_rate"
+    t.float    "pm10_change_rate"
+    t.float    "pm25_change_rate"
+    t.float    "zongheindex_change_rate"
+    t.datetime "data_real_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "temp_bd_years", force: true do |t|
+    t.integer  "city_id"
+    t.float    "SO2"
+    t.float    "NO2"
+    t.float    "CO"
+    t.float    "O3"
+    t.float    "pm10"
+    t.float    "pm25"
+    t.float    "zonghezhishu"
+    t.float    "AQI"
+    t.integer  "level"
+    t.string   "main_pol"
+    t.float    "SO2_change_rate"
+    t.float    "NO2_change_rate"
+    t.float    "CO_change_rate"
+    t.float    "O3_change_rate"
+    t.float    "pm10_change_rate"
+    t.float    "pm25_change_rate"
+    t.float    "zongheindex_change_rate"
+    t.datetime "data_real_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "temp_hb_hours", force: true do |t|
     t.integer  "city_id"
     t.float    "SO2"
@@ -113,16 +215,18 @@ ActiveRecord::Schema.define(version: 20150724091156) do
     t.float    "pm10"
     t.float    "pm25"
     t.float    "AQI"
-    t.string   "quality"
-    t.string   "main_pollutant"
+    t.string   "level"
+    t.string   "main_pol"
     t.string   "weather"
-    t.string   "temp"
-    t.string   "humi"
     t.string   "winddirection"
-    t.string   "windspeed"
     t.datetime "data_real_time"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "zonghezhishu"
+    t.integer  "windscale"
+    t.integer  "windspeed"
+    t.integer  "humi"
+    t.integer  "temp"
   end
 
   create_table "temp_jjj_days", force: true do |t|
@@ -147,6 +251,12 @@ ActiveRecord::Schema.define(version: 20150724091156) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "data_real_time"
+    t.string   "weather"
+    t.integer  "temp"
+    t.integer  "humi"
+    t.string   "winddirection"
+    t.integer  "windspeed"
+    t.integer  "windscale"
   end
 
   create_table "temp_jjj_months", force: true do |t|
@@ -221,6 +331,12 @@ ActiveRecord::Schema.define(version: 20150724091156) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "data_real_time"
+    t.string   "weather"
+    t.integer  "temp"
+    t.integer  "humi"
+    t.string   "winddirection"
+    t.integer  "windspeed"
+    t.integer  "windscale"
   end
 
   create_table "temp_lf_hours", force: true do |t|
@@ -232,16 +348,18 @@ ActiveRecord::Schema.define(version: 20150724091156) do
     t.float    "pm10"
     t.float    "pm25"
     t.float    "AQI"
-    t.string   "quality"
-    t.string   "main_pollutant"
+    t.string   "level"
+    t.string   "main_pol"
     t.string   "weather"
-    t.string   "temp"
-    t.string   "humi"
     t.string   "winddirection"
-    t.string   "windspeed"
     t.datetime "data_real_time"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "zonghezhishu"
+    t.integer  "windscale"
+    t.integer  "windspeed"
+    t.integer  "humi"
+    t.integer  "temp"
   end
 
   create_table "temp_lf_months", force: true do |t|
@@ -314,6 +432,12 @@ ActiveRecord::Schema.define(version: 20150724091156) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "data_real_time"
+    t.string   "weather"
+    t.integer  "temp"
+    t.integer  "humi"
+    t.string   "winddirection"
+    t.integer  "windspeed"
+    t.integer  "windscale"
   end
 
   create_table "temp_sfcities_hours", force: true do |t|
@@ -325,16 +449,18 @@ ActiveRecord::Schema.define(version: 20150724091156) do
     t.float    "pm10"
     t.float    "pm25"
     t.float    "AQI"
-    t.string   "quality"
-    t.string   "main_pollutant"
+    t.string   "level"
+    t.string   "main_pol"
     t.string   "weather"
-    t.string   "temp"
-    t.string   "humi"
     t.string   "winddirection"
-    t.string   "windspeed"
     t.datetime "data_real_time"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "zonghezhishu"
+    t.integer  "windscale"
+    t.integer  "windspeed"
+    t.integer  "humi"
+    t.integer  "temp"
   end
 
   create_table "temp_sfcities_months", force: true do |t|

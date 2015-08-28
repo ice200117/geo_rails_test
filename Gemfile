@@ -78,3 +78,5 @@ gem 'rb-readline'
 gem 'multipart-post', '~> 2.0.0'
 
 gem 'whenever'
+
+gem 'spreadsheet'

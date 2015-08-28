@@ -10,3 +10,12 @@ Rails.application.config.assets.version = '1.0'
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
 Rails.application.config.assets.precompile += %w( map_welcome.js )
+Rails.application.config.assets.precompile += %w( css/styles.css )
+Rails.application.config.assets.precompile += %w( css/button.css )
+Rails.application.config.assets.precompile += %w( jquery.cookie.js )
+Rails.application.config.assets.precompile += %w( jquery.min.js )
+Rails.application.config.assets.precompile += %w( bootstrap.min.js )
+Rails.application.config.assets.precompile += %w( citySelector.js )
+Rails.application.config.assets.precompile += %w( jquery-ui-datepicker.js )
+Rails.application.config.assets.precompile += %w( css/wdatepicker.css )
+Rails.application.config.assets.precompile += %w( css/jquery-ui.css )

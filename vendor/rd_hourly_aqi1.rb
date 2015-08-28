@@ -44,7 +44,7 @@ end
 strtime = Time.new.strftime("%Y%m%d")+'08'
 #puts strtime
 
-strtime = '2015081208'
+strtime = '2015081908'
 puts strtime
 
 path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
@@ -74,6 +74,7 @@ cs.each do |c|
   if hb_city.include?(py) 
     next
   end
+#  next unless py=="taiyuanshi"
 
   fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
   puts fn

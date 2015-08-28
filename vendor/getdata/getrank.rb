@@ -1,4 +1,5 @@
 require_relative './common.rb'
+require_relative './city_enum.rb'
 
 def main_get
 	hs=Hash.new
@@ -6,34 +7,19 @@ def main_get
 	time=Time.now.yesterday
 	#廊坊日数据
 	flag='temp_lf_days'
-	(0..5).each do
-		hs=get_rank_json('shishi_rank_data','LANGFANGRANK','DAY','')  
-		break if hs!=false
-	end
-	if hs==false
-		puts 'Get temp_lf_days error!'	
-	else
+	hs=ten_times_test(flag,'shishi_rank_data','LANGFANGRANK','DAY','')  
+	if hs!=false
 		temp=get_db_data(flag,'last','')
-		if hs[:total]!='0' && hs[:time].to_time>temp.data_real_time
-			save_db(hs,flag)
-		end
+		save_db(hs,flag) if hs[:time].to_time>temp.data_real_time
 	end
 
 	#廊坊月数据
 	flag='temp_lf_months'
-	hs=get_rank_json('shishi_rank_data','LANGFANGRANK','DAY','')
-	if hs==false 
-		puts 'Get temp_lf_months error!'	
-	else
-		temp=get_db_data('temp_lf_days','last','')
-		if hs[:total]!='0'
-			save_db(hs,flag)	
-		elsif (Time.now.end_of_day-Time.now)<60*60
-			while hs[:total] == '0'
-				hs=get_rank_json('lf_history_data','','',time.yesterday)
-				hs[:time]=time
-				save_db(hs,flag)
-			end
+	if (Time.now.end_of_day-Time.now)<60*60
+		while hs[:total] == '0'
+			hs=get_rank_json('lf_history_data','','',time.yesterday)
+			hs[:time]=time
+			save_db(hs,flag)
 		end
 	end
 	#廊坊年数据
@@ -41,15 +27,13 @@ def main_get
 	hs=get_rank_json('shishi_rank_data','LANGFANGRANK','DAY','')
 	if hs==false
 		puts 'Get temp_lf_years error!'
-	else
-		if hs[:total]!='0'
-			save_db(hs,flag)	
-		elsif (Time.now.end_of_day-Time.now)<60*60
-			while hs[:total]=='0'
-				hs=get_rank_json('lf_history_data','','',time.yesterday)
-				hs[:time]=time
-				save_db(hs,flag)
-			end
+	elsif hs[:total]!='0'
+		save_db(hs,flag)	
+	elsif (Time.now.end_of_day-Time.now)<60*60
+		while hs[:total]=='0'
+			hs=get_rank_json('lf_history_data','','',time.yesterday)
+			hs[:time]=time
+			save_db(hs,flag)
 		end
 	end
 
@@ -62,9 +46,9 @@ def main_get
 	end
 	if hs==false
 		puts 'Get temp_jjj_months error!'
-	else
+	elsif hs[:total]!='0'
 		temp=get_db_data(flag,'last','')
-		if hs[:total]!='0' && hs[:time].to_time>temp.data_real_time
+		if hs[:time].to_time>temp.data_real_time
 			save_db(hs,flag)	
 		end
 	end
@@ -76,9 +60,9 @@ def main_get
 	end
 	if hs==false
 		puts 'Get temp_sfcities_days error!'
-	else
+	elsif hs[:total]!='0'
 		temp=get_db_data(flag,'last','')
-		if hs[:total]!='0' && hs[:time].to_time>temp.data_real_time
+		if hs[:time].to_time>temp.data_real_time
 			save_db(hs,flag)
 		end
 	end
