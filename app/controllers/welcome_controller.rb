@@ -310,7 +310,7 @@ class WelcomeController < ApplicationController
     end
     p aqis
 
-    # adj data
+    # Adj data
     case @post
     when '130600'
       @city_adj = 'ADJ_baoding/'
@@ -319,13 +319,13 @@ class WelcomeController < ApplicationController
     end
 
     @factor='SO2'
+    puts '--------------------------------------------adj'
     @adj_per1 = adj_percent('SO2_120', @city_adj)
     @adj_per2 = adj_percent('NOX_120', @city_adj)
     @adj_per3 = adj_percent('CO_120', @city_adj)
     #@adj_per = {'保定' =>  54.34, '北京' => 12.25}
     #@factor = 'SO2'
-    p @adj_per
-
+    #p @adj_per
 
     # test data
     @county_data = [{title:'安次区',aqi:191,yesterday_aqi:179,r_rank:1,yesterday_r_rank:2}, 
@@ -489,17 +489,19 @@ class WelcomeController < ApplicationController
     nt = Time.now
     i = 0
     path = 'public/images/ftproot/Temp/Backup'+city+'/'
+    #path = '/mnt/share/Temp/Backup'+city+'/'
     begin
       #puts i
       strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
       ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
       #ncfile='public\images\CUACE_09km_adj_2015-06-27.nc'
       i = i + 1
-      return {} if i>30
+      return {} if i>60
     end until File::exists?(ncfile)
 
     #ncfile = 'public/adj/CUACE_09km_adj_2015-06-08.nc'
 
+    #puts ncfile
     if type==""
       var_list = ["CO_120", "NOX_120", "SO2_120"]
     else
@@ -515,6 +517,24 @@ class WelcomeController < ApplicationController
       }
     }
     adj_per
+  end
+
+  def adj_ajax
+    @type = params[:type] if params[:type]
+    post = params[:post] if params[:post]
+    case post
+    when '130600'
+      @city_adj = 'ADJ_baoding/'
+    else
+      @city_adj = 'ADJ/'
+    end
+
+    @adj_per = adj_percent(@type, @city_adj)
+    respond_to do |format|
+      format.js   {
+        puts @adj_per
+      }
+    end
   end
 
   def cal_var ( ncfile, var_name )

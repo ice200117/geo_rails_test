@@ -30,6 +30,7 @@ Rails.application.routes.draw do
    get '/bar' => 'welcome#bar', as: :bar_welcome
    get '/pinggu' => 'welcome#pinggu', as: :pinggu_welcome
    get '/visits_by_day' => 'welcome#visits_by_day', as: :visits_by_day_welcome
+   get 'welcome/adj_ajax/:type/:post' => 'welcome#adj_ajax', as: :adj_ajax_welcome
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
