@@ -13,4 +13,4 @@ end until File::exists?(file)
         $('#factor1').html("<%=@type[0..-5]%>");
         $('#0001').html("<%= j  pie_chart(@adj_per, height: "200px") %>");
         $('#adj_table').html("aa <tr> <th>序号</th> <th>城市</th> <th>贡献比</th> </tr> <% i = 0 %> <% @adj_per.each{ |key,value| %> <tr> <td><%=i = i+1 %></td> <td><%=key %> </td> <td><%=value%></td> </tr> <% } %> ");
-        $('.yuanzhuizong').html('<%= image_tag strnow1+"/CUACE_09km_adj_#{@type}_#{strnow2}.png" %>')
+        $('.yuanzhuizong').html('<%= image_tag "ftproot/Products/Web/#{@city_adj}/#{strnow1}/CUACE_09km_adj_#{@type}_#{strnow2}.png", class:"col-xs-12" %>')

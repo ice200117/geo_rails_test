@@ -42,7 +42,6 @@ class WelcomeController < ApplicationController
     #opts   = {  :region => 'US'  }
     #@chart = GoogleVisualr::Interactive::GeoChart.new(data_table_markers, opts)
 
-
     #data_table = GoogleVisualr::DataTable.new
     #data_table.new_column('number', 'Lat' )
     #data_table.new_column('number', 'Lon' )
@@ -63,7 +62,6 @@ class WelcomeController < ApplicationController
     #opts   = { :showTip => true }
     #@chart = GoogleVisualr::Interactive::Map.new(data_table, opts)
   end
-
   def show
     # @visits = Visit.all
   end 
@@ -262,27 +260,23 @@ class WelcomeController < ApplicationController
 
   #获取数据库数据pinggu.html.erb显示
   def get_db_data(model_name)
-    stime = Time.now
-    etime = Time.now
-    oneday = 60*60*24
+	  t = model_name.last
+	  stime = t.data_real_time
+	  etime = t.data_real_time
     if /\w*Hour/.match(model_name.name)
-      stime = stime.beginning_of_day
-      etime = etime.end_of_day
-    else
       stime = stime.beginning_of_hour
-      etime = etime.end_of_hour
-      oneday /= 24
+	  etime = etime.end_of_hour
+    else
+      stime = stime.beginning_of_day
+	  etime = etime.end_of_day
     end
-    #while oneday 
-      stime = stime - oneday
-      etime = etime - oneday 
       sql_str=Array.new
       sql_str<<"data_real_time >= ? AND data_real_time <= ?"
       sql_str<<stime
       sql_str<<etime
       data = model_name.where(sql_str)
       #return data.uniq if !data[0].nil?  #不为空，去掉重复项并返回
-      data[0].nil? ? [] : data.uniq  #不为空，去掉重复项并返回
+      data[0].nil? ? [] : data.uniq
     #end
   end
   #去掉重复项
