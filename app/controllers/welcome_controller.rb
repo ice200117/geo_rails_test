@@ -261,6 +261,7 @@ class WelcomeController < ApplicationController
   #获取数据库数据pinggu.html.erb显示
   def get_db_data(model_name)
 	  t = model_name.last
+    return [] if t.nil?
 	  stime = t.data_real_time
 	  etime = t.data_real_time
     if /\w*Hour/.match(model_name.name)
@@ -270,13 +271,13 @@ class WelcomeController < ApplicationController
       stime = stime.beginning_of_day
 	  etime = etime.end_of_day
     end
-      sql_str=Array.new
-      sql_str<<"data_real_time >= ? AND data_real_time <= ?"
-      sql_str<<stime
-      sql_str<<etime
-      data = model_name.where(sql_str)
-      #return data.uniq if !data[0].nil?  #不为空，去掉重复项并返回
-      data[0].nil? ? [] : data.uniq
+    sql_str=Array.new
+    sql_str<<"data_real_time >= ? AND data_real_time <= ?"
+    sql_str<<stime
+    sql_str<<etime
+    data = model_name.where(sql_str)
+    #return data.uniq if !data[0].nil?  #不为空，去掉重复项并返回
+    data[0].nil? ? [] : data.uniq
     #end
   end
   #去掉重复项
