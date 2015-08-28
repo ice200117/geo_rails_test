@@ -261,6 +261,7 @@ class WelcomeController < ApplicationController
   #获取数据库数据pinggu.html.erb显示
   def get_db_data(model_name)
 	  t = model_name.last
+	return [] if t.nil?
 	  stime = t.data_real_time
 	  etime = t.data_real_time
     if /\w*Hour/.match(model_name.name)
