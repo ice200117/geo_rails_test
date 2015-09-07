@@ -12,6 +12,7 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
     return nil unless ac.first
     cf[:city_name] = c.city_name
     cf[:publish_datetime] = ac.first.publish_datetime.strftime('%Y-%m-%d_%H')
+    cf[:update_time] = Time.now.strftime('%Y-%m-%d_%H')
     ac.each do |ch|
       #if ch.forecast_datetime > Time.now
       ch.AQI = (ch.AQI**2 *0.0004 + 0.3314*ch.AQI + 18.231).round if pinyin=='taiyuanshi'
