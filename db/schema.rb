@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150819093207) do
+ActiveRecord::Schema.define(version: 20150909035457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.float    "pm25"
     t.float    "zonghezhishu"
     t.float    "AQI"
-    t.integer  "level"
+    t.string   "level"
     t.string   "main_pol"
     t.float    "SO2_change_rate"
     t.float    "NO2_change_rate"
@@ -105,6 +105,17 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.datetime "updated_at"
   end
 
+  create_table "monitor_points", force: true do |t|
+    t.string   "city_id"
+    t.string   "region"
+    t.string   "pointname"
+    t.string   "level"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "temp_bd_days", force: true do |t|
     t.integer  "city_id"
     t.float    "SO2"
@@ -115,7 +126,7 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.float    "pm25"
     t.float    "zonghezhishu"
     t.float    "AQI"
-    t.integer  "level"
+    t.string   "level"
     t.string   "main_pol"
     t.float    "SO2_change_rate"
     t.float    "NO2_change_rate"
@@ -168,7 +179,7 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.float    "pm25"
     t.float    "zonghezhishu"
     t.float    "AQI"
-    t.integer  "level"
+    t.string   "level"
     t.string   "main_pol"
     t.float    "SO2_change_rate"
     t.float    "NO2_change_rate"
@@ -192,7 +203,7 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.float    "pm25"
     t.float    "zonghezhishu"
     t.float    "AQI"
-    t.integer  "level"
+    t.string   "level"
     t.string   "main_pol"
     t.float    "SO2_change_rate"
     t.float    "NO2_change_rate"
@@ -239,7 +250,7 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.float    "pm25"
     t.float    "zonghezhishu"
     t.float    "AQI"
-    t.integer  "level"
+    t.string   "level"
     t.string   "main_pol"
     t.float    "SO2_change_rate"
     t.float    "NO2_change_rate"
@@ -269,7 +280,7 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.float    "pm25"
     t.float    "zonghezhishu"
     t.float    "AQI"
-    t.integer  "level"
+    t.string   "level"
     t.string   "main_pol"
     t.float    "SO2_change_rate"
     t.float    "NO2_change_rate"
@@ -294,7 +305,7 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.float    "pm25"
     t.float    "zonghezhishu"
     t.float    "AQI"
-    t.integer  "level"
+    t.string   "level"
     t.string   "main_pol"
     t.float    "SO2_change_rate"
     t.float    "NO2_change_rate"
@@ -319,7 +330,7 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.float    "pm25"
     t.float    "zonghezhishu"
     t.float    "AQI"
-    t.integer  "level"
+    t.string   "level"
     t.string   "main_pol"
     t.float    "SO2_change_rate"
     t.float    "NO2_change_rate"
@@ -372,7 +383,7 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.float    "pm25"
     t.float    "zonghezhishu"
     t.float    "AQI"
-    t.integer  "level"
+    t.string   "level"
     t.string   "main_pol"
     t.float    "SO2_change_rate"
     t.float    "NO2_change_rate"
@@ -396,7 +407,7 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.float    "pm25"
     t.float    "zonghezhishu"
     t.float    "AQI"
-    t.integer  "level"
+    t.string   "level"
     t.string   "main_pol"
     t.float    "SO2_change_rate"
     t.float    "NO2_change_rate"
@@ -420,7 +431,7 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.float    "pm25"
     t.float    "zonghezhishu"
     t.float    "AQI"
-    t.integer  "level"
+    t.string   "level"
     t.string   "main_pol"
     t.float    "SO2_change_rate"
     t.float    "NO2_change_rate"
@@ -473,7 +484,7 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.float    "pm25"
     t.float    "zonghezhishu"
     t.float    "AQI"
-    t.integer  "level"
+    t.string   "level"
     t.string   "main_pol"
     t.float    "SO2_change_rate"
     t.float    "NO2_change_rate"
@@ -498,7 +509,7 @@ ActiveRecord::Schema.define(version: 20150819093207) do
     t.float    "pm25"
     t.float    "zonghezhishu"
     t.float    "AQI"
-    t.integer  "level"
+    t.string   "level"
     t.string   "main_pol"
     t.float    "SO2_change_rate"
     t.float    "NO2_change_rate"

@@ -378,7 +378,7 @@ datePicked();
         <div class="row">
           <div class="col-xs-6">
             <table class="table table-striped">
-              <caption>廊坊市各区县小时排名&nbsp&nbsp<%= @bddatabyhour[:time].strftime("%Y-%m-%d %H:00:00") %></caption>
+              <caption>保定市各区县小时排名&nbsp&nbsp<%= @bddatabyhour[:time].strftime("%Y-%m-%d %H:00:00") %></caption>
               <thead>
                 <tr>
                   <th>排名</th>
@@ -405,7 +405,7 @@ datePicked();
           </div>
           <div class="col-xs-6">
             <table class="table table-striped">
-              <caption>廊坊市各区县空气质量日均排名&nbsp&nbsp<%= @bddatabyday[:time].strftime("%Y-%m-%d") %></caption>
+              <caption>保定市各区县空气质量日均排名&nbsp&nbsp<%= @bddatabyday[:time].strftime("%Y-%m-%d") %></caption>
               <thead>
                 <tr>
                   <th>排名</th>
@@ -513,6 +513,10 @@ datePicked();
               <td><%= tmp['main_pol'] %></td>
             </tr>
           <% end %>
+		  <tr>
+		  	<td><a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a>
+</td>
+		  </tr>
           </tbody>
         </table>
       </div>
@@ -1193,6 +1197,9 @@ datePicked();
   </div>
 </div>
 </div>
+  <div class="panel-footer">
+    <a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a>
+  </div>
 </div>
 <script>
 $('.home-banner').backstretch("<%= image_url 'top.png' %>");
