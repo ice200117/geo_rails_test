@@ -4,6 +4,8 @@
       <tr>
         <td width="780">
           <div class="logo">
+            <div class="logo"><img src="<%= image_url 'logo.png' %>" width="500" height="54" /></div>
+            <!--
             <div width="307" height="54">
               <div class="dropdown">
                 <button class="btn dropdown-toggle  <%=@lev+'-font'%>" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
@@ -14,6 +16,7 @@
 
                   <%= form_tag(root_path, method: "get", html: { class: 'form-inline' }) do %>
                     <div class="city-group">
+                    -->
                       <!--
                       <li role="presentation">
                         <select id="province" class="city-select form-control ">
@@ -22,6 +25,7 @@
                         </select>
                       </li>
                       -->
+                      <!--
                       <li role="presentation">
                       <select id="city" class="city-select form-control" name='city_post'>
                         <option value="">--城市--</option>
@@ -36,6 +40,7 @@
                 </ul>
               </div>
             </div>
+            -->
           </div>
 
           <div class="haze-forecast">
@@ -380,7 +385,7 @@ datePicked();
             <table class="table table-striped">
               <caption>保定市各区县小时排名&nbsp&nbsp<%= @bddatabyhour[:time].strftime("%Y-%m-%d %H:00:00") %></caption>
               <thead>
-                <tr>
+                <tr class="top11-color-title bluegreen">
                   <th>排名</th>
                   <th>县(市区)</th>
                   <th>AQI</th>
@@ -392,6 +397,7 @@ datePicked();
               <% bddatabyhour=@bddatabyhour[:cities].sort_by{|a| a['AQI']} %>
               <% for i in (0...bddatabyhour.length) %>
                 <% tmp=bddatabyhour[i] %>
+
                 <tr>
                   <td><%= i+1 %></td>
                   <td><%= tmp['city'] %></td>
@@ -407,7 +413,7 @@ datePicked();
             <table class="table table-striped">
               <caption>保定市各区县空气质量日均排名&nbsp&nbsp<%= @bddatabyday[:time].strftime("%Y-%m-%d") %></caption>
               <thead>
-                <tr>
+                <tr class="top11-color-title bluegreen">
                   <th>排名</th>
                   <th>县(市区)</th>
                   <th>AQI</th>
@@ -436,7 +442,7 @@ datePicked();
             <table class="table table-striped">
               <caption>省内城市小时排名&nbsp&nbsp<%= @hebeidatabyhour[:time].strftime("%Y-%m-%d %H:00:00") %></caption>
               <thead>
-                <tr>
+                <tr class="top11-color-title blue">
                   <th>排名</th>
                   <th>城市</th>
                   <th>AQI</th>
@@ -463,7 +469,7 @@ datePicked();
             <table class="table table-striped">
               <caption>省内城市日均排名&nbsp&nbsp<%= @hebeidatabyday[:time].strftime("%Y-%m-%d") %></caption>
               <thead>
-                <tr>
+                <tr class="top11-color-title blue">
                   <th>排名</th>
                   <th>城市</th>
                   <th>AQI</th>
@@ -492,7 +498,7 @@ datePicked();
         <table class="table table-striped">
           <caption>全国74城市空气质量日均排名<%= @sfcitiesrankbyday[:time].strftime("%Y-%m-%d") %></caption>
           <thead>
-            <tr>
+            <tr class="top11-color-title green">
               <th>倒数排名</th>
               <th>城市</th>
               <th>AQI</th>
@@ -504,7 +510,7 @@ datePicked();
           <% sfcitiesrankbyday=@sfcitiesrankbyday[:cities].sort_by{|a| a["AQI"]}%>
           <% for i in (0...sfcitiesrankbyday.length)%>
             <% tmp=sfcitiesrankbyday[73-i]%>
-            <% break if i==24%>
+            <% break if i==40%>
             <tr>
               <td><%= i+1 %></td>
               <td><%= tmp['city'] %></td>
@@ -514,16 +520,16 @@ datePicked();
             </tr>
           <% end %>
 		  <tr>
-		  	<td><a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a>
-</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		  	<td colspan="0"><a href="/rank1503" target="_blank" class='btn-link'>更多</a></td>
 		  </tr>
           </tbody>
         </table>
       </div>
     </div>
-  </div>
-  <div class="panel-footer">
-    <a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a>
   </div>
 </div>
 <div class="panel panel-primary">
@@ -1202,7 +1208,7 @@ datePicked();
   </div>
 </div>
 <script>
-$('.home-banner').backstretch("<%= image_url 'top.png' %>");
+$('.home-banner').backstretch("<%= image_url 'bg.jpg' %>");
 $(function(){
     $(".change").click(function(){
         if($(this).is(".active")){

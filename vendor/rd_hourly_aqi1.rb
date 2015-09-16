@@ -44,7 +44,7 @@ end
 strtime = Time.new.strftime("%Y%m%d")+'08'
 #puts strtime
 
-strtime = '2015083108'
+strtime = '2015091508'
 puts strtime
 
 path = "/mnt/share/Temp/station/#{strtime[0,8]}/"

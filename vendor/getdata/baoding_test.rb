@@ -4,6 +4,7 @@ def main_get
 	#保定小时数据
 	flag = 'temp_bd_hours'
 	hs=ten_times_test(flag,'shishi_rank_data','BAODINGRANK','DAY','')  
+	byebug
 	if hs!=false
 		save_db(hs,flag)
 	end

@@ -123,6 +123,7 @@ class WelcomeController < ApplicationController
 		end
 	end
 
+
 	def pinggu
 		#保定数据
 		@bddatabyhour=change_data_type(get_db_data(TempBdHour)) 

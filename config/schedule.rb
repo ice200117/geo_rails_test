@@ -20,8 +20,5 @@ every "20 * * * * " do
 	command "cd /vagrant/geo_rails_test/ && /home/vagrant/.rbenv/shims/rails r vendor/getdata/gethourdata.rb -e production"
 end
 every 1.days,:at=>'1:00 am' do
-	command "cd /vagrant/geo_rails_test/ && /home/vagrant/.rbenv/shims/rails r vendor/getdata/getrank.rb -e production"
-end
-every 1.days,:at=>'1:30 am' do
-	command "cd /vagrant/geo_rails_test/ && /home/vagrant/.rbenv/shims/rails r vendor/getdata/get74city_month_year.rb production"
+	command "cd /vagrant/geo_rails_test/ && /home/vagrant/.rbenv/shims/rails r vendor/getdata/getdaydata.rb -e production"
 end

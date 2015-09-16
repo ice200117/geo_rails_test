@@ -45,7 +45,7 @@ end
 
 #path = "/vagrant/geo_rails_test/public/images/ftproot/Temp/ADJ/"
 path = "/vagrant/geo_rails_test/public/images/ftproot/Temp/"
-ncfile = path + "CUACE_09km_adj_2015-08-11.nc"
+ncfile = path + "CUACE_09km_adj_2015-09-14.nc"
   CITY_LIST = [
   "MeteoInfo/baoding.txt",
   "MeteoInfo/beijing.txt",
