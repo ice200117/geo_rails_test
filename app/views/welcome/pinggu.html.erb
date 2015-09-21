@@ -116,95 +116,45 @@
   </div>
 </div>
 <div class="container">
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h3 >
-        <strong>全国空气质量趋势预报</strong>
-      </h3>
-    </div>
-    <div class="panel-body">
-      <div class="tabbable" id="tabs-922331">
-        <ul class="nav nav-tabs">
-          <li><a contenteditable="true" data-toggle="tab" href="#panel-437763">趋势预报</a></li>
-          <li class="active"><a contenteditable="true" data-toggle="tab" href="#panel-55716">源追踪</a></li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane" contenteditable="true" id="panel-437763">
-            <%
-                nt = Time.now
-            i = 0
-            path = '/mnt/share/Products/Web/Forecast/CUACE/'
-            begin
-              strtime = (nt-60*60*24*i).strftime("%Y%m%d")
-              file = path + strtime + '/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif'
-              i = i + 1
-              break if i == 7 
-            end until File::exists?(file)
-          %>
-        <%= image_tag 'china_fc09/'+strtime+'/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif', class:'col-xs-8' %>
-        <div class="col-xs-4">
-          <div> <%=@city_name%>未来五天趋势预报</div>
-          <table class="table table-striped">
-            <tr>
-              <th>时间</th>
-              <th>污染级别</th>
-              <th>首要污染物</th>
-              <!--<th>综合指数</th>-->
-            </tr>
-            <% @day_fdata.each do |row| %>
-              <tr>
-                <td><%=row[:w]%></td>
-                <td>
-                  <span class="<%=row[:start]%>" style='width:40px;color:#fff;'><%=row[:start_han]%></span>
-                  ~
-                  <span class="<%=row[:end]%>" style='width:40px;color:#fff;'><%=row[:end_han]%></span>
-                </td>
-                <td><%=row[:pol]%></td>
-              </tr>
-            <% end %>
-          </table>
-        </div>
-      </div>
-
-      <div class="tab-pane active" contenteditable="true" id="panel-55716">
-        <div class="zc-map-labels col-xs-12 row" >
-          <%= link_to 'SO2', adj_ajax_welcome_path(type: "SO2_120", post: @post), remote: true, class: "active change" %>
-          <%= link_to 'NOX', adj_ajax_welcome_path(type: "NOX_120", post: @post), remote: true , class: "change" %>
-          <%= link_to 'CO', adj_ajax_welcome_path(type: "CO_120", post: @post), remote: true , class: "change" %>
-        </div>
-        <div class="row">
-          <div class="yuanzhuizong col-xs-8">
-          </div>
-          <div class="col-xs-4" id="001" >
-            <div> <%=@city_name%><span id="factor1"><%=@factor%></span>因子未来五天污染的来源贡献比</div>
-            <div id="0001">
-              <%= pie_chart(@adj_per1, height: "200px") %>
-            </div>
-            <table class="table table-striped" id="adj_table">
-              <tr>
-                <th>序号</th>
-                <th>城市</th>
-                <th>贡献比</th>
-                <!--<th>综合指数</th>-->
-              </tr>
-
-              <% i = 0 %>
-              <% @adj_per1.each{ |key,value| %>
-                <tr>
-                  <td><%=i = i+1 %></td>
-                  <td><%=key %> </td>
-                  <td><%=value%></td>
-                </tr>
-              <% } %>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-
+	<table cellpadding="0" cellspacing="0" class="content" width="100%">
+		<tbody>
+			<tr>
+				<td>
+					<ul class="menu">
+						<li id="menu_forecast" style="float:left;padding:0px;margin:0px">
+							<font class="top11-title" style="color:black; padding:0px;margin:0px">空气质量预报</font> 
+						</li>
+					</ul>
+					<div class="future-list">
+						<ul>
+							<% for i in (0..4) %>
+								<% t = @forecast_data[i]%>
+								<li>
+									<h4 class="list-title"><%= t["date"] %></h4> 
+									<table cellpadding="0" cellspacing="0">
+										<tbody>
+											<tr>
+												<td><span class="gray">级别</span></td>
+												<td><span class="list-alue"><span class="qingdu small">轻度</span></span></td>
+											</tr>
+											<tr>
+												<td style="width:88px;"><span class="gray">首要污染物</span></td>
+												<td><span class="list-alue">PM2.5</span></td>
+											</tr>
+											<tr>
+												<td style="padding-top:15px;"><span class="gray">天气</span></td>
+												<td style="padding-top:15px;"><span class="list-weather"><%= t["tq"] %>&nbsp;<br><%= t["temp2"] %>℃~℃<%= t["temp1"] %><br><%= t["ws"] %>&nbsp;<%= t["wd"]%></span></td>
+													</tr>
+												</tbody>
+											</table>
+										</li>
+									<% end %>
+								</ul>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
 <!--综合曲线模块-->
 
@@ -509,8 +459,8 @@ datePicked();
           <tbody>
           <% sfcitiesrankbyday=@sfcitiesrankbyday[:cities].sort_by{|a| a["AQI"]}%>
           <% for i in (0...sfcitiesrankbyday.length)%>
-            <% tmp=sfcitiesrankbyday[73-i]%>
-            <% break if i==40%>
+            <% tmp=sfcitiesrankbyday[sfcitiesrankbyday.length-1 -i]%>
+            <% break if i==42 %>
             <tr>
               <td><%= i+1 %></td>
               <td><%= tmp['city'] %></td>
@@ -1104,7 +1054,7 @@ datePicked();
         <tbody>
         <% sfcitiesrankbyday=@sfcitiesrankbyday[:cities].sort_by{|sfri| sfri['zonghezhishu']}%>
         <% for i in (0...sfcitiesrankbyday.length)%>
-          <% tmp=sfcitiesrankbyday[73-i] %>
+          <% tmp=sfcitiesrankbyday[sfcitiesrankbyday.length - 1 -i] %>
           <% break if i==20 %>
           <tr>
             <th><%= i+1 %></th>
@@ -1144,7 +1094,7 @@ datePicked();
   <tbody>
   <%  sfcitiesrankbymonth=@sfcitiesrankbymonth[:cities].sort_by{|sfyue| sfyue['zonghezhishu']}%>
   <% for i in (0...sfcitiesrankbymonth.length)%>
-    <% tmp=sfcitiesrankbymonth[73-i]%>
+    <% tmp=sfcitiesrankbymonth[sfcitiesrankbymonth.length - 1 -i]%>
     <% break if i==20 %>
     <tr>
       <th><%= i+1 %></th>
@@ -1182,7 +1132,7 @@ datePicked();
           <tbody>
           <% sfcitiesrankbyyear=@sfcitiesrankbyyear[:cities].sort_by{|sfnian| sfnian['zonghezhishu']}%>
           <% for i in (0...sfcitiesrankbyyear.length)%>
-            <% tmp=sfcitiesrankbyyear[73-i]%>
+            <% tmp=sfcitiesrankbyyear[sfcitiesrankbyyear.length - 1 -i]%>
             <%	break if i==20 %>
             <tr>
               <th><%= i+1 %></th>

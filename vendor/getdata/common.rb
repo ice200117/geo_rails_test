@@ -58,7 +58,8 @@ end
 #id=城市id
 def get_zonghezhishu(model)
 	dayCity=model.last
-	dayCity.SO2.to_f/60+dayCity.NO2.to_f/40+dayCity.pm10.to_f/70+dayCity.pm25.to_f/35+dayCity.CO.to_f/4+dayCity.O3.to_f/160
+	tmp = dayCity.SO2.to_f/60+dayCity.NO2.to_f/40+dayCity.pm10.to_f/70+dayCity.pm25.to_f/35+dayCity.CO.to_f/4+dayCity.O3.to_f/160
+	tmp
 end
 
 #获取月年平均数

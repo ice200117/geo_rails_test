@@ -23,6 +23,7 @@ Rails.application.routes.draw do
    #root 'welcome#map'
    root 'welcome#pinggu'
    get '/compare' => 'welcome#compare'
+   get '/forecast' => 'welcome#forecast'
    get '/case' => 'welcome#case'
    get '/about' => 'welcome#about'
    get '/rank1503' => 'welcome#rank1503'
