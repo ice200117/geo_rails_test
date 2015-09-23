@@ -11,19 +11,25 @@
     <%= favicon_link_tag '/favicon.png' %>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
   </head>
-  <body class="<%= params[:controller] + '-' + params[:action] %>">
-    <!-- 顶部导航 -->
       <div class="top-nav">
        <div class="navigation" id="toptitle">
-            <a href="/">污染源解析与治理</a>
-            <a id="welcome-pinggu" href="/" class="current-link" data-no-turbolink>减排一览</a>
-            <a id="welcome-compare" href="/compare" >城市对比</a>
-             <a id="welcome-forecast" href="/forecast">预警预测</a>
-            <a id="welcome-case" href="/case">典型案例</a>
-            <a id="zq-map" href="http://www.zq12369.com/map.php" target="_blank">地图模式</a>
-            <a id="welcome-about" href="/about">联系我们</a>
+         <a href="/">污染源解析与治理</a>
+         <a id="welcome-pinggu" href="/" class="current-link" data-no-turbolink>减排一览</a>
+         <a id="welcome-compare" href="/compare" >城市对比</a>
+         <a id="welcome-forecast" href="/forecast">预警预测</a>
+         <a id="welcome-case" href="/case">典型案例</a>
+         <a id="zq-map" href="http://www.zq12369.com/map.php" target="_blank">地图模式</a>
+         <a id="welcome-about" href="/about">联系我们</a>
+         <a id=""  href="real_map" onmouseover="showLtjc(1)" onmouseout="showLtjc(2)">立体监测</a>
+        <div id="ltjcDiv" style="display:none;" onmouseover="showLtjc(1)" onmouseout="showLtjc(2)">
+          <ul>
+            <li><a href="real_map">实 时 监 测</a></li>
+            <li><a href="#">历 史 数 据</a></li>
+          </ul>
+				</div>
        </div>
       </div>
+  
 
 
     <%= yield %>
@@ -61,7 +67,14 @@
         page = $("body").attr("class");
         $(".nav li").removeClass("active");
         return $("#"+page).addClass("active");
-      });
+        });
+      function showLtjc(type){
+        if(type==1){
+          $("#ltjcDiv").css("display","");
+        }else{
+          $("#ltjcDiv").css("display","none");
+        }
+      }
     </script>
   </body>
 </html>

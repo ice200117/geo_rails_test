@@ -773,4 +773,7 @@ class WelcomeController < ApplicationController
 		end
 		
 	end
+
+  def real_map
+  end
 end

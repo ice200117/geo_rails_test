@@ -24,6 +24,7 @@ Rails.application.routes.draw do
    root 'welcome#pinggu'
    get '/compare' => 'welcome#compare'
    get '/forecast' => 'welcome#forecast'
+   get '/real_map' => 'welcome#real_map'
    get '/case' => 'welcome#case'
    get '/about' => 'welcome#about'
    get '/rank1503' => 'welcome#rank1503'
@@ -37,6 +38,7 @@ Rails.application.routes.draw do
 
    get 'welcome/chartway' => 'welcome#chartway'
    get 'welcome/city_compare_chart' => 'welcome#city_compare_chart'
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
