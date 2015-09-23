@@ -11,6 +11,7 @@ def parse_line(line, c)
   hc.publish_datetime = sdate
   hc.forecast_datetime = sdate+delta_hour.to_i*3600
   hc.AQI = line[14,4]
+  hc.AQI = hc.AQI - 33
   hc.main_pol = line[18,13].strip
   hc.grade = line[31,1]
   hc.pm25 = line[99,6]
@@ -46,8 +47,8 @@ strtime = Time.new.strftime("%Y%m%d")+'20'
 puts strtime
 
 #strtime = '2015040808'
-month = 8
-day = 19
+month = 9
+day = 22
 yesterday_str = Time.at(Time.new(2015,month,day).to_i - 86400).strftime("%Y%m%d")+'20'
 strtime = Time.new(2015,month,day).strftime("%Y%m%d")+'20'
 #puts strtime
