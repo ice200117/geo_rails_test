@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery_cookie
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
@@ -23,5 +24,7 @@
 //= require vendor/echarts/echarts
 //= require vendor/BMap/BMap
 //= require 'china_city/jquery.china_city'
+//= require bootstrap.min
+//= require citySelector
 
 

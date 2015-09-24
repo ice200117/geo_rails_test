@@ -264,7 +264,11 @@ def save_db_common(model,t,time)
 
 	day_city = model.last
 	#判断接口是否提供综合指数
-	t['complexindex'] != nil ? day_city.zonghezhishu = t['complexindex'] : day_city.zonghezhishu = get_zonghezhishu(model)
+	if t['complexindex'] != nil && t['complexindex'] != 0
+		day_city.zonghezhishu = t['complexindex']
+	else
+		day_city.zonghezhishu = get_zonghezhishu(model)
+	end
 	day_city.save
 
 	set_change_rate_to_db(model,city.id,time)

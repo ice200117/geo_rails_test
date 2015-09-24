@@ -123,6 +123,72 @@ class WelcomeController < ApplicationController
     end
   end
 
+  def getwinddirectionurl(wd)
+    wid = 0
+    url = nil
+    case wd
+    when '东风'
+     wid = 1
+    when '东南风'
+     wid = 2
+    when '南风'
+     wid = 3
+    when '西南风'
+     wid = 4
+    when '西风'
+     wid = 5
+    when '西北风'
+     wid = 6
+    when '北风'
+     wid = 7
+    when '东北风'
+     wid = 8
+    end
+    
+    url = "<%= image_url 'winddirection/"+ wid +".png' %>" if wid>0
+    url
+  end
+
+  def city_compare_chart
+    city1=City.find_by city_name: (params[:city1]+'市')
+    city2=City.find_by city_name: (params[:city2]+'市')
+    city3=City.find_by city_name: (params[:city3]+'市')
+    cityarray=Array[city1,city2,city3]
+    colorarry=Array['#3399CC','#D26900','#A5A552']
+    counter=-1
+    cityarray=cityarray.uniq
+
+    startdate=Time.local(params[:starttime][0,4].to_i,params[:starttime][5,2].to_i,params[:starttime][8,2].to_i)
+    enddate=Time.local(params[:endtime][0,4].to_i,params[:endtime][5,2].to_i,params[:endtime][8,2].to_i,23)
+    if params[:exact]=='eh' || params[:starttime]==params[:endtime]
+      querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id) 
+    else
+      querydata=TempSfcitiesDay.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id)
+    end  
+    if params[:type]=='temp'
+      if data[params[:type]]>-100 && data[params[:type]]<200 
+        @citycompare={series: cityarray.map{ |cityobj| {name: cityobj.city_name,data: querydata.map{ |data| {x: (data.data_real_time.to_f*1000).to_i,y: data[params[:type]]} if data.city_id==cityobj.id},color: colorarry[counter=counter+1]}}}
+      end
+    elsif params[:type]=='humi'
+      if data[params[:type]]>0
+        @citycompare={series: cityarray.map{ |cityobj| {name: cityobj.city_name,data: querydata.map{ |data| {x: (data.data_real_time.to_f*1000).to_i,y: data[params[:type]]} if data.city_id==cityobj.id},color: colorarry[counter=counter+1]}}}
+      end
+    elsif params[:type]=='windscale'
+      if data[params[:type]]>0
+        @citycompare={series: cityarray.map{ |cityobj| {name: cityobj.city_name,data: querydata.map{ |data| {x: (data.data_real_time.to_f*1000).to_i,y: data[params[:type]],marker: {symbol: getwinddirectionurl(data.winddirection)},winddirection: data.winddirection,weather: data.weather} if data.city_id==cityobj.id},color: colorarry[counter=counter+1]}}}
+      end
+    else
+      @citycompare={series: cityarray.map{ |cityobj| {name: cityobj.city_name,data: querydata.map{ |data| {x: (data.data_real_time.to_f*1000).to_i,y: data[params[:type]]} if data.city_id==cityobj.id},color: colorarry[counter=counter+1]}}}
+    end
+    respond_to do |format|
+      format.html { }
+      format.js   { }
+      format.json {
+        render json: @citycompare
+      }
+    end    
+  end
+
   def pinggu
     #保定数据
     @bddatabyhour=change_data_type(get_db_data(TempBdHour)) 

@@ -788,7 +788,7 @@ datePicked();
               <% for i in (0...jjjdatabyday.length)%>
                 <% tmp=jjjdatabyday[i] %>
                 <tr>
-                  <td><%= i %></td>
+                  <td><%= i+1 %></td>
                   <td><%= tmp['city']%></td>
                   <td><%= tmp['SO2']==nil ? '——' : tmp['SO2'] %></td>
                   <td><%= tmp['NO2']==nil ? '——' : tmp['NO2'] %></td>
@@ -862,7 +862,7 @@ datePicked();
               <%	for i in (0...jjjdatabyyear.length)%>
                 <%tmp=jjjdatabyyear[i] %>
                 <tr>
-                  <td><%= i%></td>
+                  <td><%= i+1%></td>
                   <td><%= tmp['city']%></td>
                   <td><%= tmp['SO2']==nil ? '——' : tmp['SO2'] %></td>
                   <td><%= tmp['NO2']==nil ? '——' : tmp['NO2'] %></td>

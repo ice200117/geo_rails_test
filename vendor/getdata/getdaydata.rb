@@ -49,8 +49,8 @@ common_get_month_year('jjj',TempJjjYear,time)
 hs=ten_times_test(TempSfcitiesDay,'shishi_china_rank_data','CHINARANK','DAY',nil)
 save_db(hs,TempSfcitiesDay) if day_data_common(hs,TempSfcitiesDay)
 
-# #74城市月数据
+#74城市月数据
 common_get_month_year('china_city_74',TempSfcitiesMonth,time)
 
-# #74城市年数据
+#74城市年数据
 common_get_month_year('china_city_74',TempSfcitiesYear,time)
