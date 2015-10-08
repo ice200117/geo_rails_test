@@ -12,10 +12,18 @@
 /*顶部导航*/
 .top-nav,big-blue{width:100%;}
 .navbar,big-blue{width:100%;}
-.navigation{position:relative; width:1100px; margin:0 auto; text-align:right; font-family:"微软雅黑"; font-size:18px; height:56px; line-height:56px; }
-.navigation>a{ color:#333; text-decoration:none; padding-left:50px;}
-.navigation>a:hover{ color:#259ae1;}
-.navigation>a.current-link{ color:#259ae1;}
+.top-nav>div{position:relative; width:1100px; margin:0 auto;text-align:right; font-family:"微软雅黑"; font-size:18px; height:56px; line-height:56px; }
+.navigation{ float:right }
+.navigation>li>a{ color:#333; text-decoration:none; margin-left:50px;}
+.navigation li>a{ color:#333; text-decoration:none;}
+.navigation li>a:hover{ color:#259ae1;}
+.navigation li>a.current-link{ color:#259ae1;}
+
+.navigation>li{float:left;list-style:none;}
+.navigation li a{ color:#333; text-decoration:none;}
+.navigation li a:hover{ color:#259ae1;}
+.navigation li a.current-link{ color:#259ae1;}
+.navigation li .dropdown-menu{min-width:0}
 
 /*cityselect*/
 .citySelector{  font:12px/1.5 tahoma,arial,\5b8b\4f53; background: #fff; }
@@ -62,7 +70,7 @@ background: url(searchlogo.png) no-repeat 60px 3px;
 .menu li.menulink{color:#333; font-size:21px; font-weight:normal;}
 .future-list{ padding:10px 0px; }
 .future-list ul{ overflow:hidden; width:100%;  }
-.future-list ul li{ padding-bottom:10px; float:left; width:210px;height:205px; line-height:36px;  margin-right:10px;  font-size:12px; background:#f6f6f7;}
+.future-list ul li{ padding-bottom:10px; float:left; width:210px;height:215px; line-height:36px;  margin-right:10px;  font-size:12px; background:#f6f6f7;}
 .list-title{ font-size:14px; text-align:center; display:block; color:#333; display:block; margin:0px; padding:0px; height:48px; line-height:48px;}
 .gray{ color:#999;}
 .list-alue{ font-size:16px;}

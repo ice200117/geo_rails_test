@@ -1,0 +1,97 @@
+<div class="home-banner"> 
+	<div class="container">
+		<table cellpadding="0" cellspacing="0" border="0" width="100%;">
+			<tr>
+				<td width="780">
+					<div class="logo">
+						<div class="logo"><img src="<%= image_url 'logo.png' %>" width="500" height="54" /></div>
+					</div>
+					<div class="haze-forecast">
+						<!-- 级别图 -->
+						<div class="haze-grade"><%= image_tag @lev+'.png', width:275, height:157 %></div>
+						<!-- 级别图 end -->
+						<!-- 参数值  -->
+						<div class="haze-value">
+							<ul class="haze-value-top">
+								<li> 
+									<!-- 污染指数 -->
+									<span class="haze-numerical <%=@lev+'-font'%>"><%=@aqi%></span>
+									<!-- 污染指数 end -->
+								</li>
+								<li class="haze-value-bar">
+									<!-- 污染级别 -->
+									<span class="haze-level <%=@lev%>"><%=@lev_han%></span>
+									<!-- 污染级别 end-->
+								</li>
+								<li  class="haze-value-bar">
+									<!-- 污染类型 -->
+									<span class="haze-type">AQI&nbsp;&nbsp;&nbsp;&nbsp;<%=@rt.strftime('%H')%>时更新</span>
+									<!-- 污染类型 end-->
+								</li>
+							</ul> 
+							<ul class="haze-classification">
+								<li>
+									<span class="haze-classification-name you">PM2.5</span>
+									<span class="haze-classification-value"><%=@pm2_5%></span>
+								</li>
+								<li>
+									<span class="haze-classification-name you">PM10</span>
+									<span class="haze-classification-value"><%=@pm10%></span>
+								</li>
+								<li>
+									<span class="haze-classification-name you">SO2</span>
+									<span class="haze-classification-value"><%=@so2%></span>
+								</li>
+								<li>
+									<span class="haze-classification-name you">CO</span>
+									<span class="haze-classification-value"><%=@co%></span>
+								</li>
+								<li>
+									<span class="haze-classification-name you">NO2</span>
+									<span class="haze-classification-value"><%=@no2%></span>
+								</li>
+								<li>
+									<span class="haze-classification-name you">O3</span>
+									<span class="haze-classification-value"><%=@o3%></span>
+								</li>
+							</ul>
+						</div>
+						<!-- 参数值  -->
+					</div>
+				</td>
+				<td width="420" valign="top">
+					<!-- 天气  -->
+					<div class="weather">
+						<div class="date">
+							<span>2015年09月19日19时 <br>  </span>
+							<span><script type="text/javascript">document.write(dayNames[GetDateStr(0).getDay()]);</script>星期六&nbsp;&nbsp;&nbsp;&nbsp; </span>
+							<span> 农历 八月初七</span>
+						</div>
+						<div class="top-weather">
+							<div class="top-weather-icon"><img src="<%= image_url 'top-weather.png' %>" width="64" height="49"></div>
+							<div class="top-weather-text"> <span>晴</span>
+								<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;27℃</span>
+								<span style="font-size:18px;"><br>东南风3级  </span>
+								<span style="font-size:18px;"> 湿度：33%</span>
+							</div>
+						</div>
+					</div>
+					<!-- 天气 end  -->
+					<!-- 日期 -->
+					<div class="paiming">
+						<span>全国当年排名估算：倒数9<br></span>
+						<span>全国当前月排名估算：倒数8<br></span>
+						<span> 全国当前小时排名：倒数75</span><br>
+						<span><a href="http://115.28.227.231:8082/lfgs/index/m/queryQg?type=1" style="font-size:14px; text-decoration:underline; color:#ffdd68;font-family:" 微软雅黑";="" "="">查看更多排名&gt;</a></span>
+					</div>
+					<%# <div class="date"> %>
+					<%# </div> %>
+					<!-- 日期 end -->
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<script type='text/javascript'>
+	$('.home-banner').backstretch("<%= image_url 'bg.jpg' %>");
+</script>

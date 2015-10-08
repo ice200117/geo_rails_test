@@ -23,6 +23,8 @@ Rails.application.routes.draw do
    #root 'welcome#map'
    root 'welcome#pinggu'
    get '/compare' => 'welcome#compare'
+   get '/real_time_monitoring' => 'welcome#real_time_monitoring'
+   get '/history_data' => 'welcome#history_data'
    get '/forecast' => 'welcome#forecast'
    get '/real_map' => 'welcome#real_map'
    get '/case' => 'welcome#case'

@@ -142,7 +142,7 @@ class QuerysController < ApplicationController
         if ch.forecast_datetime > Time.now
       #    ch.AQI = (ch.AQI**2 *0.0004 + 0.3314*ch.AQI - 32.231 ).round if c.city_name_pinyin=='taiyuanshi'
           hf << {forecast_datetime: ch.forecast_datetime.strftime('%Y-%m-%d_%H'), 
-                 AQI: ch.AQI, 
+                 AQI: ch.AQI.round, 
                  main_pol: ch.main_pol, 
                  grade: ch.grade,
                  pm2_5: ch.pm25,

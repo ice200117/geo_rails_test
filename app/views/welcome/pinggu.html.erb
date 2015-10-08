@@ -1,120 +1,4 @@
-<div class="home-banner"> 
-  <div class="container">
-    <table cellpadding="0" cellspacing="0" border="0" width="100%;">
-      <tr>
-        <td width="780">
-          <div class="logo">
-            <div class="logo"><img src="<%= image_url 'logo.png' %>" width="500" height="54" /></div>
-            <!--
-            <div width="307" height="54">
-              <div class="dropdown">
-                <button class="btn dropdown-toggle  <%=@lev+'-font'%>" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                  <h1><strong><%=@city_name%></strong></h1>
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-
-                  <%= form_tag(root_path, method: "get", html: { class: 'form-inline' }) do %>
-                    <div class="city-group">
-                    -->
-                      <!--
-                      <li role="presentation">
-                        <select id="province" class="city-select form-control ">
-                          <option value="">--省份--</option>
-                          <%#= options_for_select(ChinaCity.list, @post[0,2]+'0000') %>
-                        </select>
-                      </li>
-                      -->
-                      <!--
-                      <li role="presentation">
-                      <select id="city" class="city-select form-control" name='city_post'>
-                        <option value="">--城市--</option>
-                        <%= options_for_select(ChinaCity.list(@post[0,2]+'0000'), @post[0,4]+'00') %>
-                      </select>
-                      </li>
-                    </div>
-                    <li role="presentation">
-                    <button id="subbtn" type="submit" class="btn btn-default pull-right" >确认</button>
-                    </li>
-                  <% end %>
-                </ul>
-              </div>
-            </div>
-            -->
-          </div>
-
-          <div class="haze-forecast">
-            <!-- 级别图 -->
-            <div class="haze-grade"><%= image_tag @lev+'.png', width:275, height:157 %></div>
-            <!-- 级别图 end -->
-            <!-- 参数值  -->
-            <div class="haze-value">
-              <ul class="haze-value-top">
-                <li> 
-                <!-- 污染指数 -->
-                <span class="haze-numerical <%=@lev+'-font'%>"><%=@aqi%></span>
-                <!-- 污染指数 end -->
-                </li>
-                <li class="haze-value-bar">
-                <!-- 污染级别 -->
-                <span class="haze-level <%=@lev%>"><%=@lev_han%></span>
-                <!-- 污染级别 end-->
-                </li>
-                <li  class="haze-value-bar">
-                <!-- 污染类型 -->
-                <span class="haze-type">AQI&nbsp;&nbsp;&nbsp;&nbsp;<%=@rt.strftime('%H')%>时更新</span>
-                <!-- 污染类型 end-->
-                </li>
-              </ul> 
-              <ul class="haze-classification">
-                <li>
-                <span class="haze-classification-name you">PM2.5</span>
-                <span class="haze-classification-value"><%=@pm2_5%></span>
-                </li>
-                <li>
-                <span class="haze-classification-name you">PM10</span>
-                <span class="haze-classification-value"><%=@pm10%></span>
-                </li>
-                <li>
-                <span class="haze-classification-name you">SO2</span>
-                <span class="haze-classification-value"><%=@so2%></span>
-                </li>
-                <li>
-                <span class="haze-classification-name you">CO</span>
-                <span class="haze-classification-value"><%=@co%></span>
-                </li>
-                <li>
-                <span class="haze-classification-name you">NO2</span>
-                <span class="haze-classification-value"><%=@no2%></span>
-                </li>
-                <li>
-                <span class="haze-classification-name you">O3</span>
-                <span class="haze-classification-value"><%=@o3%></span>
-                </li>
-              </ul>
-            </div>
-            <!-- 参数值  -->
-          </div>
-        </td>
-        <td width="420" valign="top">
-          <!-- 天气  -->
-          <div class="weather">
-            <!--<span><img src="/images/cloud.png" width="64" height="64" />--></span>
-            <!--<span></span>-->
-            <!--<span>℃</span>-->
-            <!--<span><img src="/images/wind.png" width="26" height="26" /></span>-->
-            <!--<span><img src="/images/humidity.png" width="26" height="26" /></span>-->
-          </div>
-          <!-- 天气 end  -->
-          <!-- 日期 -->
-          <div class="date">
-          </div>
-          <!-- 日期 end -->
-        </td>
-      </tr>
-    </table>
-  </div>
-</div>
+<%= render "welcome/banner" %>
 <div class="container">
 	<table cellpadding="0" cellspacing="0" class="content" width="100%">
 		<tbody>
@@ -130,20 +14,20 @@
 							<% for i in (0..4) %>
 								<% t = @forecast_data[i]%>
 								<li>
-									<h4 class="list-title"><%= t["date"] %></h4> 
+									<h4 class="list-title"><%= t["date"]+"(#{DateTime.now.next_day(i).month}月#{DateTime.now.next_day(i).day}日)" %></h4> 
 									<table cellpadding="0" cellspacing="0">
 										<tbody>
 											<tr>
 												<td><span class="gray">级别</span></td>
-												<td><span class="list-alue"><span class="qingdu small">轻度</span></span></td>
+												<td><span class="list-alue"><span class="qingdu small"><%=t["level"]%></span></span></td>
 											</tr>
 											<tr>
 												<td style="width:88px;"><span class="gray">首要污染物</span></td>
-												<td><span class="list-alue">PM2.5</span></td>
+												<td><span class="list-alue"><%= t["main_pol"]%></span></td>
 											</tr>
 											<tr>
 												<td style="padding-top:15px;"><span class="gray">天气</span></td>
-												<td style="padding-top:15px;"><span class="list-weather"><%= t["tq"] %>&nbsp;<br><%= t["temp2"] %>℃~℃<%= t["temp1"] %><br><%= t["ws"] %>&nbsp;<%= t["wd"]%></span></td>
+												<td class="list-weather" style="padding-top:10px;"><span ><%= t["tq"] %>&nbsp;<br><%= t["temp2"] %>℃~<%= t["temp1"] %>℃<br><%= t["wd"]%>&nbsp;<%= t["ws"] %></span></td>
 													</tr>
 												</tbody>
 											</table>
@@ -160,7 +44,7 @@
 
 <%= stylesheet_link_tag 'css/button',"css/wdatepicker", media:'all', 'data-turbolinks-track' => true %>
 
-<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+<!--<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>-->
 
 <script type="text/javascript"> 
 var pType='zonghe',pTime='d',pExact='eh',pStartTime=GetDateStr(0),pEndTime=GetDateStr(0);
@@ -344,7 +228,7 @@ datePicked();
                 </tr>
               </thead>
               <tbody>
-              <% bddatabyhour=@bddatabyhour[:cities].sort_by{|a| a['AQI']} %>
+              <% bddatabyhour=@bddatabyhour[:cities].sort_by{|a| a['AQI'].to_i} %>
               <% for i in (0...bddatabyhour.length) %>
                 <% tmp=bddatabyhour[i] %>
 
@@ -372,7 +256,7 @@ datePicked();
                 </tr>
               </thead>
               <tbody>
-              <% bddatabyday=@bddatabyday[:cities].sort_by{|a| a['AQI']} %>
+              <% bddatabyday=@bddatabyday[:cities].sort_by{|a| a['AQI'].to_i} %>
               <% for i in (0...bddatabyday.length) %>
                 <% tmp=bddatabyday[i]%>
                 <tr>
@@ -401,13 +285,13 @@ datePicked();
                 </tr>
               </thead>
               <tbody>
-              <% hebeidatabyhour=@hebeidatabyhour[:cities].sort_by{|a| a['AQI']} %>
+              <% hebeidatabyhour=@hebeidatabyhour[:cities].sort_by{|a| a['AQI'].to_i} %>
               <% for i in (0...hebeidatabyhour.length) %>
                 <% tmp=hebeidatabyhour[i] %>
                 <tr>
                   <td><%= i+1 %></td>
                   <td><%= tmp['city'] %></td>
-                  <td><%= tmp['aqi'] %></td>
+                  <td><%= tmp['AQI'] %></td>
                   <td><%= tmp['level'] %></td>
                   <td><%= tmp['main_pol'] %></td>
                 </tr>
@@ -428,7 +312,7 @@ datePicked();
                 </tr>
               </thead>
               <tbody>
-              <% hebeidatabyday=@hebeidatabyday[:cities].sort_by{|a| a['AQI']}%>
+              <% hebeidatabyday=@hebeidatabyday[:cities].sort_by{|a| a['AQI'].to_i}%>
               <% for i in (0...hebeidatabyday.length)%>
                 <% tmp=hebeidatabyday[i]%>
                 <tr>
@@ -457,7 +341,7 @@ datePicked();
             </tr>
           </thead>
           <tbody>
-          <% sfcitiesrankbyday=@sfcitiesrankbyday[:cities].sort_by{|a| a["AQI"]}%>
+          <% sfcitiesrankbyday=@sfcitiesrankbyday[:cities].sort_by{|a| a["AQI"].to_i}%>
           <% for i in (0...sfcitiesrankbyday.length)%>
             <% tmp=sfcitiesrankbyday[sfcitiesrankbyday.length-1 -i]%>
             <% break if i==42 %>
@@ -1158,7 +1042,6 @@ datePicked();
   </div>
 </div>
 <script>
-$('.home-banner').backstretch("<%= image_url 'bg.jpg' %>");
 $(function(){
     $(".change").click(function(){
         if($(this).is(".active")){
@@ -1212,4 +1095,4 @@ end until File::exists?(file)
 %>
                     //change('<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>');
 change('<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
-        </script>
+</script>

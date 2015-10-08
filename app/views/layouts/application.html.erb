@@ -1,82 +1,84 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ForecastAQI</title>
-    <%= stylesheet_link_tag 'application','css/styles','css/jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag 'application',"jquery-ui-datepicker", 'data-turbolinks-track' => true %>
-    <%= csrf_meta_tags %>
-    <%= favicon_link_tag '/favicon.png' %>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
-  </head>
-      <div class="top-nav">
-       <div class="navigation" id="toptitle">
-         <a href="/">污染源解析与治理</a>
-         <a id="welcome-pinggu" href="/" class="current-link" data-no-turbolink>减排一览</a>
-         <a id="welcome-compare" href="/compare" >城市对比</a>
-         <a id="welcome-forecast" href="/forecast">预警预测</a>
-         <a id="welcome-case" href="/case">典型案例</a>
-         <a id="zq-map" href="http://www.zq12369.com/map.php" target="_blank">地图模式</a>
-         <a id="welcome-about" href="/about">联系我们</a>
-         <a id=""  href="real_map" onmouseover="showLtjc(1)" onmouseout="showLtjc(2)">立体监测</a>
-        <div id="ltjcDiv" style="display:none;" onmouseover="showLtjc(1)" onmouseout="showLtjc(2)">
-          <ul>
-            <li><a href="real_map">实 时 监 测</a></li>
-            <li><a href="#">历 史 数 据</a></li>
-          </ul>
-				</div>
-       </div>
-      </div>
-  
-
-
-    <%= yield %>
-
-    <div class="container">
-      <hr>
-      <footer class="footer">
-      <p class="pull-right"><a href="#">返回顶部</a></p>
-      <div class="col-xs-4">
-      </div>
-      <div class="col-xs-8">
-        <dl>
-          <dt>
-          服务电话：13906145733
-          </dt>
-          <dd>
-          联系人：倪经理
-          </dd>
-        </dl>
-      <script type="text/javascript">//var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254317176'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1254317176%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>  
-      </div>
-      </footer>
-    </div>
-    <script type="text/javascript" charset="utf-8">
-      $(function() {
-        $('#toptitle a').each(function(){
-        $(this).click(function(event){
-        $('#toptitle a').removeClass('current-link');
-        $(this).addClass('current-link');
-          });
-        });
-      });
-      $(document).on("page:change", function() {
-        var page;
-        page = $("body").attr("class");
-        $(".nav li").removeClass("active");
-        return $("#"+page).addClass("active");
-        });
-      function showLtjc(type){
-        if(type==1){
-          $("#ltjcDiv").css("display","");
-        }else{
-          $("#ltjcDiv").css("display","none");
-        }
-      }
-    </script>
-  </body>
-</html>
+	<head>
+		<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+				<meta name="viewport" content="width=device-width, initial-scale=1">
+					<title>ForecastAQI</title>
+					<%= stylesheet_link_tag 'application','css/styles','css/jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
+					<%= javascript_include_tag 'application',"jquery-ui-datepicker", 'data-turbolinks-track' => true %>
+					<%= csrf_meta_tags %>
+					<%= favicon_link_tag '/favicon.png' %>
+					<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
+				</head>
+				<body class="<%= params[:controller] + '-' + params[:action] %>">
+					<!-- 顶部导航 -->
+					<div class="top-nav">
+						<div> 
+							<ul class="navigation" id="toptitle">
+								<!--<a href="/">污染源解析与治理</a>-->
+								<li><a id="welcome-pinggu" href="/" class="current-link" data-no-turbolink>首页</a></li>
+								<li><a id="welcome-forecast" href="/forecast">预警预报</a></li>
+								<li><a id="welcome-compare" href="/compare" >城市对比</a></li>
+								<li class="dropdown">
+									<a class="dropdown-toggle showDM" data-toggle="dropdown" id="ltjcDiv1" >立体监测</a>
+									<ul class="dropdown-menu">
+										<li><a href="/real_time_monitoring">实 时 监 测</a></li>
+										<li><a href="/history_data">历 史 数 据</a></li>
+									</ul>
+								</li>
+								<li><a id="zq-map" href="http://www.zq12369.com/map.php" target="_blank">地图模式</a></li>
+								<li><a id="welcome-case" href="/case">典型案例</a></li>
+								<li><a id="welcome-about" href="/about">联系我们</a></li>
+							</ul>
+						</div>
+					</div>
+					<%= yield %>
+					<div class="container">
+						<hr>
+							<footer class="footer">
+								<p class="pull-right"><a href="#">返回顶部</a></p>
+								<div class="col-xs-4">
+								</div>
+								<div class="col-xs-8">
+									<dl>
+										<dt>
+											服务电话：13906145733
+										</dt>
+										<dd>
+											联系人：倪经理
+										</dd>
+									</dl>
+									<script type="text/javascript">//var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254317176'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1254317176%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>  
+								</div>
+							</footer>
+						</div>
+						<script type="text/javascript" charset="utf-8">
+							$(function() {
+								$('#toptitle a').each(function(){
+									$(this).click(function(event){
+										$('#toptitle a').removeClass('current-link');
+										$(this).addClass('current-link');
+									});
+								});
+							});
+/*
+$(document).on("page:change", function() {
+	var page;
+	page = $("body").attr("class");
+	$(".nav li").removeClass("active");
+	return $("#"+page).addClass("active");
+});
+*/
+function showLtjc(type){
+	if(type==1){
+		$("#ltjcDiv").css("display","");
+	}else{
+		$("#ltjcDiv").css("display","none");
+	}
+}
+						</script>
+					</body>
+				</html>
 
 

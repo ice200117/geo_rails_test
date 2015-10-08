@@ -21,3 +21,11 @@
 .welcome-pinggu .navbar {
   #background: transparent;
 }
+
+.top-nav .navigation > li .dropdown-menu{
+	margin-top:0;
+	margin-left:45px;
+}
+.top-nav .navigation > li:hover .dropdown-menu{
+	display:block;
+}

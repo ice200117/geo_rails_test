@@ -1,11 +1,9 @@
-<div class="home-banner"> 
-<img src=<%= image_url 'top.png' %> >
-</div>
+<%= render "welcome/banner"%>
 <!--城市空气质量比较曲线模块-->
 
-<%= stylesheet_link_tag "css/button" %>
+<%= stylesheet_link_tag "css/button","css/wdatepicker" %>
 
-<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+<!--<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>-->
 
 <script type="text/javascript"> 
   var city1='北京',city2='上海',city3='廊坊';

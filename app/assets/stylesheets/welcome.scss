@@ -11,7 +11,7 @@ ul,ul li{ margin:0px; padding:0px; list-style:none;}
 .logo{ padding-top:44px;}
 .haze-forecast{ padding-top:55px; overflow:hidden;}
 .haze-grade{ width:275px; height:157px; float:left; margin-top:17px;}
-.haze-value{ float:right; width:473px; padding-right:20px;}
+.haze-value{ float:right; padding-right:20px;}
 .haze-value-top{ overflow:hidden;}
 .haze-value-top li{ float:left;}
 .haze-numerical{ color:#000; font-size:100px; font-family:Arial; height:100px; line-height:100px; }
@@ -37,9 +37,14 @@ ul,ul li{ margin:0px; padding:0px; list-style:none;}
 .you-font{ color:#72ca29;background:none;border-color:none;}
 .zhongdu-font{color:#b414bb;background:none;border-color:none;}
 .haze-classification-value{ height:32px; line-height:32px; background:#ffffff; color:#333;}
-.weather{font-family:"微软雅黑",Arial; font-size:18px; color:#fff; padding-top:120px; padding-left:48px;}
+
+.weather{ margin-left:120px;margin-top:60px;background:#158dd7;font-family:"微软雅黑",Arial; width:290px;height:140px; font-size:16px; color:#fff;  padding:15px;}
 .weather img{ vertical-align:middle;}
-.date{ padding-left:118px; font-size:12px; font-family:Verdana, Geneva, sans-serif; color:#fff; line-height:21px;  }
+.top-weather-icon{ float:left; margin-right:10px;}
+.top-weather{ clear:both; overflow:hidden; line-height:30px;}
+.top-weather-text{ float:left;}
+.date{ margin-bottom:15px; font-size:12px; font-family:Verdana, Geneva, sans-serif; color:#fff; line-height:21px;  }
+.paiming{ margin-bottom:20px; margin-right:20px; line-height:30px; font-size:16px; font-family:"微软雅黑"; color:#fff;  margin-top:60px; text-align:right; color:#fff;  }
 .suggestions{ padding-top:70px; padding-left:33px;}
 .suggestions span{ display:block; padding-left:15px; float:left;}
 .surround{ height:70px; border-top:1px solid #3aa1d9; margin-top:50px; background:#50b2e7;}

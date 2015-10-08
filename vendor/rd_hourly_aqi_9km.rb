@@ -11,6 +11,7 @@ def parse_line(line, c)
   hc.publish_datetime = sdate
   hc.forecast_datetime = sdate+delta_hour.to_i*3600
   hc.AQI = line[14,4]
+ # hc.AQI = hc.AQI*2.51   # liubin 10/5/2015
   hc.main_pol = line[18,13].strip
   hc.grade = line[31,1]
   hc.pm25 = line[99,6]
