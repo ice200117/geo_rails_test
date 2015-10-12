@@ -63,16 +63,16 @@
 					<!-- 天气  -->
 					<div class="weather">
 						<div class="date">
-							<span>2015年09月19日19时 <br>  </span>
-							<span><script type="text/javascript">document.write(dayNames[GetDateStr(0).getDay()]);</script>星期六&nbsp;&nbsp;&nbsp;&nbsp; </span>
-							<span> 农历 八月初七</span>
+							<span><%= @real_time_weather['time'].to_time.strftime("%Y年%m月%d日%H时") %> <br></span>
+							<span><script type="text/javascript">document.write("星期" + "日一二三四五六".charAt(new Date().getDay()));</script>&nbsp;&nbsp;&nbsp;&nbsp; </span>
+							<span> 农历 <%= ChineseLunar::Lunar.new.lunar_date_in_chinese()[-5,5].delete" " %></span>
 						</div>
 						<div class="top-weather">
 							<div class="top-weather-icon"><img src="<%= image_url 'top-weather.png' %>" width="64" height="49"></div>
-							<div class="top-weather-text"> <span>晴</span>
-								<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;27℃</span>
-								<span style="font-size:18px;"><br>东南风3级  </span>
-								<span style="font-size:18px;"> 湿度：33%</span>
+								<div class="top-weather-text"> <span>晴</span>
+									<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= @real_time_weather['temp'] %>℃</span>
+									<span style="font-size:18px;"><br><%= @real_time_weather['WD'] + @real_time_weather['WS'] %> </span>
+										<span style="font-size:18px;"> 湿度：<%= @real_time_weather['SD'] %></span>
 							</div>
 						</div>
 					</div>

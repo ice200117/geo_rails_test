@@ -123,6 +123,12 @@ class WelcomeController < ApplicationController
 		end
 	end
 
+	def get_history_data
+		model = params[:model]
+		time = params[:time]
+		change_data_type(get_db_data(model.constantiz,time))
+	end
+
 	#1.三组按钮组间关系：根据三组按钮之间的关系确定编程顺序，先通过判断按天还是按小时从而确定查询天表还是小时表
 	#然后，通过第二组按钮最近一天、最近一周等等确定startdate和enddate今儿去卡记录数
 	#最后，通过第一组按钮确定要显示的字段。
@@ -133,8 +139,8 @@ class WelcomeController < ApplicationController
 		startdate=Time.local(params[:starttime][0,4].to_i,params[:starttime][5,2].to_i,params[:starttime][8,2].to_i)
 		enddate=Time.local(params[:endtime][0,4].to_i,params[:endtime][5,2].to_i,params[:endtime][8,2].to_i,23)
 		if  params[:starttime]==params[:endtime] 
-			startdate=Time.local(params[:starttime][0,4].to_i,params[:starttime][5,2].to_i,params[:starttime][8,2].to_i,10)
-			enddate=Time.local(params[:endtime][0,4].to_i,params[:endtime][5,2].to_i,params[:endtime][8,2].to_i,21)
+			startdate=Time.local(params[:starttime][0,4].to_i,params[:starttime][5,2].to_i,params[:starttime][8,2].to_i)
+			enddate=Time.local(params[:endtime][0,4].to_i,params[:endtime][5,2].to_i,params[:endtime][8,2].to_i,23)
 			querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,citybd.id)
 		elsif params[:exact]=='eh'
 			querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,citybd.id) 
@@ -241,27 +247,35 @@ class WelcomeController < ApplicationController
 
 	def pinggu
 		#保定数据
-		@bddatabyhour=change_data_type(get_db_data(TempBdHour)) 
-		@bddatabyday=change_data_type(get_db_data(TempBdDay)) 
-		@bddatabymonth=change_data_type(get_db_data(TempBdMonth))
-		@bddatabyyear=change_data_type(get_db_data(TempBdYear))
+		@bddatabyhour=change_data_type(get_db_data(TempBdHour,TempBdHour.last.data_real_time)) 
+		@bddatabyday=change_data_type(get_db_data(TempBdDay,TempBdDay.last.data_real_time)) 
+		@bddatabymonth=change_data_type(get_db_data(TempBdMonth,TempBdMonth.last.data_real_time))
+		@bddatabyyear=change_data_type(get_db_data(TempBdYear,TempBdYear.last.data_real_time))
 
 		#河北数据
-		@hebeidatabyhour=change_data_type(get_db_data(TempHbHour)) 
-		hebeidatabyday=change_data_type(get_db_data(TempJjjDay))
+		@hebeidatabyhour=change_data_type(get_db_data(TempHbHour,TempHbHour.last.data_real_time)) 
+		hebeidatabyday=change_data_type(get_db_data(TempJjjDay,TempJjjDay.last.data_real_time))
 		hebeidatabyday[:cities].delete_if{|item| (item['city']=='北京')||(item['city']=='天津')}
 		@hebeidatabyday=hebeidatabyday
 
 		#京津冀
-		@jjjdatabyday=change_data_type(get_db_data(TempJjjDay))
-		@jjjdatabymonth=change_data_type(get_db_data(TempJjjMonth))
-		@jjjdatabyyear=change_data_type(get_db_data(TempJjjYear))
+		@jjjdatabyday=change_data_type(get_db_data(TempJjjDay,TempJjjDay.last.data_real_time))
+		@jjjdatabymonth=change_data_type(get_db_data(TempJjjMonth,TempJjjMonth.last.data_real_time))
+		@jjjdatabyyear=change_data_type(get_db_data(TempJjjYear,TempJjjYear.last.data_real_time))
 
 		#74城市
-		@sfcitiesrankbyday=change_data_type(change_74_main_pol(get_db_data(TempSfcitiesDay)))
-		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth))
-		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear))
+		@sfcitiesrankbyday=change_data_type(change_74_main_pol(get_db_data(TempSfcitiesDay,TempSfcitiesDay.last.data_real_time)))
+		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth,TempSfcitiesMonth.last.data_real_time))
+		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear,TempSfcitiesYear.last.data_real_time))
 
+		#实时天气预报
+		begin
+			response = HTTParty.get('http://www.weather.com.cn/adat/sk/101090201.html')	
+			json_data = JSON.parse(response.body)
+			@real_time_weather = json_data['weatherinfo']	
+		rescue
+			hs = false	
+		end
 		#预报数据
 		@forecast_data = get_forecast()
 
@@ -395,26 +409,22 @@ class WelcomeController < ApplicationController
 	end
 
 	#获取数据库数据pinggu.html.erb显示
-	def get_db_data(model_name)
-		t = model_name.last
-		return [] if t.nil?
-		stime = t.data_real_time
-		etime = t.data_real_time
-		if /\w*Hour/.match(model_name.name)
-			stime = stime.beginning_of_hour
-			etime = etime.end_of_hour
+	def get_db_data(model,time)
+		stime=nil
+		etime=nil
+		if /\w*Hour/.match(model.name)
+			stime = time.beginning_of_hour
+			etime = time.end_of_hour
 		else
-			stime = stime.beginning_of_day
-			etime = etime.end_of_day
+			stime = time.beginning_of_day
+			etime = time.end_of_day
 		end
 		sql_str=Array.new
 		sql_str<<"data_real_time >= ? AND data_real_time <= ?"
 		sql_str<<stime
 		sql_str<<etime
-		data = model_name.where(sql_str)
-		#return data.uniq if !data[0].nil?  #不为空，去掉重复项并返回
+		data = model.where(sql_str)
 		data[0].nil? ? [] : data.uniq
-		#end
 	end
 
 	#修改小数点位数
@@ -459,6 +469,7 @@ class WelcomeController < ApplicationController
 		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('baodingshi')
 		temp.each do |k,v|
 			index=k.yday - Time.now.yday
+			v["fore_lev"] = get_lev(v["AQI"])
 			json_data["weather_forecast"][index]=json_data["weather_forecast"][index].merge(v)
 		end
 		puts temp

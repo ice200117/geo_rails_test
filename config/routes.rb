@@ -41,6 +41,7 @@ Rails.application.routes.draw do
    get 'welcome/chartway' => 'welcome#chartway'
    get 'welcome/city_compare_chart' => 'welcome#city_compare_chart'
 
+   get 'welcome/get_history_data/:model/:time' => 'welcome#get_history_data'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

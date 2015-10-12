@@ -79,3 +79,11 @@ background: url(searchlogo.png) no-repeat 60px 3px;
 .list-weatherbar{ padding-top:15px;}
 .small{ font-size:12px; padding:1px 10px; color:#fff;}
 .list-weather{ line-height:21px; font-size:12px;}
+
+.yellow,.qingdu,.you,.zhongdu,.yanzhong,.zhong{ padding:1px 10px;}
+.yanzhong{background:#6f0474;}
+.zhong{ background:#ba1d26;}
+.yellow{ background:#fac305;}
+.qingdu{ background:#fd5b30;}
+.you{ background:#72ca29;}
+.zhongdu{background:#b414bb;}
