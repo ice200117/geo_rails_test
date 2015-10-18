@@ -178,7 +178,7 @@ class WelcomeController < ApplicationController
 			}
 		end
 	end
-
+=begin
 	def getwinddirectionurl(wd)
 		wid = 0
 		url = nil
@@ -244,18 +244,57 @@ class WelcomeController < ApplicationController
 			}
 		end    
 	end
+=end
+
+
+  def city_compare_chart
+    city1=City.find_by city_name: (params[:city1]+'市')
+    city2=City.find_by city_name: (params[:city2]+'市')
+    city3=City.find_by city_name: (params[:city3]+'市')
+    cityidarray=Array[city1.id,city2.id,city3.id]
+    startdate=Time.local(params[:startTime][0,4].to_i,params[:startTime][5,2].to_i,params[:startTime][8,2].to_i,0)
+    enddate=Time.local(params[:endTime][0,4].to_i,params[:endTime][5,2].to_i,params[:endTime][8,2].to_i,23)
+    if params[:type]=='HOUR'
+      querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc') 
+    elsif params[:type]=='DAY'
+      querydata=TempSfcitiesDay.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')
+    else
+      querydata=TempSfcitiesMonth.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')      
+    end  
+    @citycompare={citynum: cityidarray,rows: querydata.map{ |data| { alldata: data,timeformatted: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S")}}}
+    #pp querydata.map{ |data| data.city_id}.uniq.length
+    #pp @citycompare
+    respond_to do |format|
+      format.html { }
+      format.js   { }
+      format.json {
+        render json: @citycompare
+      }
+    end    
+  end
+
+	#去掉保定部分监测点
+	def del_some_points(data)
+		del_point=['地表水厂','游泳馆','接待中心', '华电二区', '定兴县政府', '市监测站', '胶片厂']
+		del_point.each do |t|
+			data[:cities].each do |n|
+				data[:cities].delete(n) if n['city'].strip == t.strip 
+			end
+		end
+		data
+	end
 
 	def pinggu
 		#保定数据
-		@bddatabyhour=change_data_type(get_db_data(TempBdHour,TempBdHour.last.data_real_time)) 
-		@bddatabyday=change_data_type(get_db_data(TempBdDay,TempBdDay.last.data_real_time)) 
-		@bddatabymonth=change_data_type(get_db_data(TempBdMonth,TempBdMonth.last.data_real_time))
-		@bddatabyyear=change_data_type(get_db_data(TempBdYear,TempBdYear.last.data_real_time))
+		@bddatabyhour=del_some_points(change_data_type(get_db_data(TempBdHour,TempBdHour.last.data_real_time))) 
+		@bddatabyday=del_some_points(change_data_type(get_db_data(TempBdDay,TempBdDay.last.data_real_time))) 
+		@bddatabymonth=del_some_points(change_data_type(get_db_data(TempBdMonth,TempBdMonth.last.data_real_time)))
+		@bddatabyyear=del_some_points(change_data_type(get_db_data(TempBdYear,TempBdYear.last.data_real_time)))
 
 		#河北数据
 		@hebeidatabyhour=change_data_type(get_db_data(TempHbHour,TempHbHour.last.data_real_time)) 
 		hebeidatabyday=change_data_type(get_db_data(TempJjjDay,TempJjjDay.last.data_real_time))
-		hebeidatabyday[:cities].delete_if{|item| (item['city']=='北京')||(item['city']=='天津')}
+		hebeidatabyday[:cities] = hebeidatabyday[:cities].delete_if{|item| (item['city']=='北京市')||(item['city']=='天津市')}
 		@hebeidatabyday=hebeidatabyday
 
 		#京津冀
@@ -268,126 +307,13 @@ class WelcomeController < ApplicationController
 		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth,TempSfcitiesMonth.last.data_real_time))
 		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear,TempSfcitiesYear.last.data_real_time))
 
-		#实时天气预报
-		begin
-			response = HTTParty.get('http://www.weather.com.cn/adat/sk/101090201.html')	
-			json_data = JSON.parse(response.body)
-			@real_time_weather = json_data['weatherinfo']	
-		rescue
-			hs = false	
-		end
-		#预报数据
+		@banner = banner()
+
 		@forecast_data = get_forecast()
 
-		@post = params[:city_post] if params[:city_post]
-		@post = '130600' if @post==nil || @post==''
-		@city_name = ChinaCity.get(@post)
-		@province_name = ChinaCity.get(@post[0,2]+'0000')
-
-		case @province_name
-		when '北京市'
-			@city_name = @province_name
-		when '上海市'
-			@city_name = @province_name
-		when '天津市'
-			@city_name = @province_name
-		when '重庆市'
-			@city_name = @province_name
-		end
-
-		# monitor data
-		md = hb_real
-		@rt = md[:time]
-		md[:cities].each do |c|
-			if @city_name.include? c['city']
-				p @city_name, c['city']
-				@aqi = c['aqi']
-				@pm2_5 = c['pm2_5']
-				@pm10 = c['pm10']
-				@so2 = c['so2']
-				@no2 = c['no2']
-				@o3 = c['o3']
-				@co = c['co']
-			end
-		end
-
-		# forecast data
-		aqis = []
-		pri_pol = []
-		c = City.find_by_post_number(@post)
-		ch = c.hourly_city_forecast_air_qualities.last(120).group_by_day(&:forecast_datetime)
-		ch.each do |time,fds|
-			t = Time.now
-			if time > Time.local(t.year,t.month,t.day)
-				#if time >= Time.local(2015,4,24)
-				sum = []
-				fds.each do |fd|
-					sum << fd.AQI
-				end
-				aqis << [sum.min, sum.max]
-				pri_pol << fds[0].main_pol
-			end
-		end
-		p aqis
-
 		# adj data
-		case @post
-		when '130600'
-			@city_adj = 'ADJ_baoding/'
-		else
-			@city_adj = 'ADJ/'
-		end
+		@city_adj = 'ADJ_baoding/'
 
-		@factor='SO2'
-		@adj_per1 = adj_percent('SO2_120', @city_adj)
-		@adj_per2 = adj_percent('NOX_120', @city_adj)
-		@adj_per3 = adj_percent('CO_120', @city_adj)
-		#@adj_per = {'保定' =>  54.34, '北京' => 12.25}
-		#@factor = 'SO2'
-		p @adj_per
-
-
-		# test data
-		@county_data = [{title:'安次区',aqi:191,yesterday_aqi:179,r_rank:1,yesterday_r_rank:2}, 
-				  {title:'广阳区', aqi:182,yesterday_aqi:186,r_rank:2,yesterday_r_rank:1}, 
-				  {title:'廊坊开发区', aqi:140,yesterday_aqi:177,r_rank:3,yesterday_r_rank:3}, 
-				  {title:'固安县', aqi:134,yesterday_aqi:151,r_rank:4,yesterday_r_rank:6}, 
-				  {title:'永清县', aqi:112,yesterday_aqi:136,r_rank:5,yesterday_r_rank:7}, 
-				  {title:'香河县', aqi:110,yesterday_aqi:168,r_rank:6,yesterday_r_rank:4}, 
-				  {title:'大城县', aqi:101,yesterday_aqi:97,r_rank:7,yesterday_r_rank:10}, 
-				  {title:'文安县', aqi:97,yesterday_aqi:119,r_rank:8,yesterday_r_rank:9}, 
-				  {title:'大厂', aqi:96,yesterday_aqi:132,r_rank:9,yesterday_r_rank:8}, 
-				  {title:'霸州市', aqi:92,yesterday_aqi:92,r_rank:10,yesterday_r_rank:11}, 
-				  {title:'三河市', aqi:91,yesterday_aqi:160,r_rank:11,yesterday_r_rank:5}]
-
-		lev_hs = {"you"=>"优", "yellow"=>"良", "qingdu"=>"轻度", "zhong"=>"中度","zhongdu"=>"重度", "yanzhong"=>"严重"}
-
-		#ban lev
-		#@aqi = 120
-		@lev = get_lev(@aqi)
-		@lev_han = lev_hs[@lev]
-
-		# table lev
-		#aqis = [[20,40],[30,80],[80,100],[40,120],[110,400]]
-		#pri_pol = ['pm2.5','pm2.5','pm2.5','pm10','O3']
-		lev_arr = []
-		lev_han_arr= []
-		aqis.each do |aqi|
-			lev_arr << {start:get_lev(aqi[0]),end:get_lev(aqi[1])}
-			lev_han_arr << {start:lev_hs[get_lev(aqi[0])],end:lev_hs[get_lev(aqi[1])]}
-		end
-
-
-		week_hs = ["星期日", "星期一","星期二","星期三","星期四","星期五","星期六"]
-
-		t = (Time.now + 60*60*24*3).strftime('%w').to_i
-		t1 = (Time.now + 60*60*24*4).strftime('%w').to_i
-		td = ["今天","明天","后天",week_hs[t], week_hs[t1]]
-
-		@day_fdata = []
-		lev_arr.each_with_index do |lev,i|
-			@day_fdata << {w:td[i], start:lev[:start], end:lev[:end], start_han:lev_han_arr[i][:start], end_han:lev_han_arr[i][:end],pol:pri_pol[i]}
-		end
 	end
 
 	#修改74城市首要污染物
@@ -472,7 +398,6 @@ class WelcomeController < ApplicationController
 			v["fore_lev"] = get_lev(v["AQI"])
 			json_data["weather_forecast"][index]=json_data["weather_forecast"][index].merge(v)
 		end
-		puts temp
 		json_data["weather_forecast"]
 	end
 
@@ -520,7 +445,8 @@ class WelcomeController < ApplicationController
 		"public/adj/tangshan.txt",
 		"public/adj/tianjin.txt",
 		"public/adj/xingtai.txt",
-		"public/adj/zhangjiakou.txt" ]
+		"public/adj/zhangjiakou.txt"
+	]
 	CL = [
 		"保定",
 		"北京",
@@ -534,7 +460,8 @@ class WelcomeController < ApplicationController
 		"唐山",
 		"天津",
 		"邢台",
-		"张家口" ]
+		"张家口" 
+	]
 	def adj_percent(type="", city='ADJ_baoding')
 		nt = Time.now
 		i = 0
@@ -560,7 +487,7 @@ class WelcomeController < ApplicationController
 		adj_per = {}
 		var_list.each { |var_name|
 			pl = (cal_var ncfile, var_name)
-			puts var_name
+			# puts var_name
 			pl.sort.reverse.each { |p|
 				print CL[pl.index(p)], "   ", p, "\n"
 				adj_per[CL[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
@@ -630,240 +557,34 @@ class WelcomeController < ApplicationController
 		@sfcitiesrankbyday=change_data_type(get_db_data(TempSfcitiesDay))
 		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth))
 		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear))
-
-		@post = params[:city_post] if params[:city_post]
-		@post = '130600' if @post==nil || @post==''
-		@city_name = ChinaCity.get(@post)
-		@province_name = ChinaCity.get(@post[0,2]+'0000')
-
-		case @province_name
-		when '北京市'
-			@city_name = @province_name
-		when '上海市'
-			@city_name = @province_name
-		when '天津市'
-			@city_name = @province_name
-		when '重庆市'
-			@city_name = @province_name
-		end
-
-		# monitor data
-		md = hb_real
-		@rt = md[:time]
-		md[:cities].each do |c|
-			if @city_name.include? c['city']
-				@aqi = c['aqi']
-				@pm2_5 = c['pm2_5']
-				@pm10 = c['pm10']
-				@so2 = c['so2']
-				@no2 = c['no2']
-				@o3 = c['o3']
-				@co = c['co']
-			end
-		end
-
-		# forecast data
-		aqis = []
-		pri_pol = []
-		c = City.find_by_post_number(@post)
-		ch = c.hourly_city_forecast_air_qualities.last(120).group_by_day(&:forecast_datetime)
-		ch.each do |time,fds|
-			t = Time.now
-			if time > Time.local(t.year,t.month,t.day)
-				#if time >= Time.local(2015,4,24)
-				sum = []
-				fds.each do |fd|
-					sum << fd.AQI
-				end
-				aqis << [sum.min, sum.max]
-				pri_pol << fds[0].main_pol
-			end
-		end
-		p aqis
-
-		# adj data
-		case @post
-		when '130600'
-			@city_adj = 'ADJ_baoding/'
-		else
-			@city_adj = 'ADJ/'
-		end
-
-		@factor='SO2'
-		@adj_per1 = adj_percent('SO2_120', @city_adj)
-		@adj_per2 = adj_percent('NOX_120', @city_adj)
-		@adj_per3 = adj_percent('CO_120', @city_adj)
-		@adj_per
-
-		lev_hs = {"you"=>"优", "yellow"=>"良", "qingdu"=>"轻度", "zhong"=>"中度","zhongdu"=>"重度", "yanzhong"=>"严重"}
-
-		@lev = get_lev(@aqi)
-		@lev_han = lev_hs[@lev]
-
-		lev_arr = []
-		lev_han_arr= []
-		aqis.each do |aqi|
-			lev_arr << {start:get_lev(aqi[0]),end:get_lev(aqi[1])}
-			lev_han_arr << {start:lev_hs[get_lev(aqi[0])],end:lev_hs[get_lev(aqi[1])]}
-		end
-
-
-		week_hs = ["星期日", "星期一","星期二","星期三","星期四","星期五","星期六"]
-
-		t = (Time.now + 60*60*24*3).strftime('%w').to_i
-		t1 = (Time.now + 60*60*24*4).strftime('%w').to_i
-		td = ['今天','明天','后天',week_hs[t], week_hs[t1]]
-
-		@day_fdata = []
-		lev_arr.each_with_index do |lev,i|
-			@day_fdata << {w:td[i], start:lev[:start], end:lev[:end], start_han:lev_han_arr[i][:start], end_han:lev_han_arr[i][:end],pol:pri_pol[i]}
-		end
+		@banner=banner()
 	end
 
 	def forecast
-		@post = params[:city_post] if params[:city_post]
-		@post = '130600' if @post==nil || @post==''
-		@city_name = ChinaCity.get(@post)
-		@province_name = ChinaCity.get(@post[0,2]+'0000')
-
-		case @province_name
-		when '北京市'
-			@city_name = @province_name
-		when '上海市'
-			@city_name = @province_name
-		when '天津市'
-			@city_name = @province_name
-		when '重庆市'
-			@city_name = @province_name
-		end
-
-		# monitor data
-		md = hb_real
-		@rt = md[:time]
-		md[:cities].each do |c|
-			if @city_name.include? c['city']
-				@aqi = c['aqi']
-				@pm2_5 = c['pm2_5']
-				@pm10 = c['pm10']
-				@so2 = c['so2']
-				@no2 = c['no2']
-				@o3 = c['o3']
-				@co = c['co']
-			end
-		end
-		# forecast data
-		aqis = []
-		pri_pol = []
-		c = City.find_by_post_number(@post)
-		ch = c.hourly_city_forecast_air_qualities.last(120).group_by_day(&:forecast_datetime)
-		ch.each do |time,fds|
-			t = Time.now
-			if time > Time.local(t.year,t.month,t.day)
-				#if time >= Time.local(2015,4,24)
-				sum = []
-				fds.each do |fd|
-					sum << fd.AQI
-				end
-				aqis << [sum.min, sum.max]
-				pri_pol << fds[0].main_pol
-			end
-		end
-
-		# adj data
-		case @post
-		when '130600'
-			@city_adj = 'ADJ_baoding/'
-		else
-			@city_adj = 'ADJ/'
-		end
-
-		@factor='SO2'
-		@adj_per1 = adj_percent('SO2_120', @city_adj)
-		@adj_per2 = adj_percent('NOX_120', @city_adj)
-		@adj_per3 = adj_percent('CO_120', @city_adj)
-		#@adj_per = {'保定' =>  54.34, '北京' => 12.25}
-		#@factor = 'SO2'
-		p @adj_per
-
-
-		# test data
-		@county_data = [{title:'安次区',aqi:191,yesterday_aqi:179,r_rank:1,yesterday_r_rank:2}, 
-				  {title:'广阳区', aqi:182,yesterday_aqi:186,r_rank:2,yesterday_r_rank:1}, 
-				  {title:'廊坊开发区', aqi:140,yesterday_aqi:177,r_rank:3,yesterday_r_rank:3}, 
-				  {title:'固安县', aqi:134,yesterday_aqi:151,r_rank:4,yesterday_r_rank:6}, 
-				  {title:'永清县', aqi:112,yesterday_aqi:136,r_rank:5,yesterday_r_rank:7}, 
-				  {title:'香河县', aqi:110,yesterday_aqi:168,r_rank:6,yesterday_r_rank:4}, 
-				  {title:'大城县', aqi:101,yesterday_aqi:97,r_rank:7,yesterday_r_rank:10}, 
-				  {title:'文安县', aqi:97,yesterday_aqi:119,r_rank:8,yesterday_r_rank:9}, 
-				  {title:'大厂', aqi:96,yesterday_aqi:132,r_rank:9,yesterday_r_rank:8}, 
-				  {title:'霸州市', aqi:92,yesterday_aqi:92,r_rank:10,yesterday_r_rank:11}, 
-				  {title:'三河市', aqi:91,yesterday_aqi:160,r_rank:11,yesterday_r_rank:5}]
-
-		lev_hs = {"you"=>"优", "yellow"=>"良", "qingdu"=>"轻度", "zhong"=>"中度","zhongdu"=>"重度", "yanzhong"=>"严重"}
-
-		#ban lev
-		#@aqi = 120
-		@lev = get_lev(@aqi)
-		@lev_han = lev_hs[@lev]
-
-		# table lev
-		#aqis = [[20,40],[30,80],[80,100],[40,120],[110,400]]
-		#pri_pol = ['pm2.5','pm2.5','pm2.5','pm10','O3']
-		lev_arr = []
-		lev_han_arr= []
-		aqis.each do |aqi|
-			lev_arr << {start:get_lev(aqi[0]),end:get_lev(aqi[1])}
-			lev_han_arr << {start:lev_hs[get_lev(aqi[0])],end:lev_hs[get_lev(aqi[1])]}
-		end
-
-
-		week_hs = ["星期日", "星期一","星期二","星期三","星期四","星期五","星期六"]
-
-		t = (Time.now + 60*60*24*3).strftime('%w').to_i
-		t1 = (Time.now + 60*60*24*4).strftime('%w').to_i
-		td = ['今天','明天','后天',week_hs[t], week_hs[t1]]
-
-		@day_fdata = []
-		lev_arr.each_with_index do |lev,i|
-			@day_fdata << {w:td[i], start:lev[:start], end:lev[:end], start_han:lev_han_arr[i][:start], end_han:lev_han_arr[i][:end],pol:pri_pol[i]}
-		end
+		@banner = banner()
+		@day_fdata = @banner["day_fdata"]
+		@post='130600'
+		@city_adj = @banner["city_adj"]
+		@adj_per1 = @banner["adj_per1"]
 	end
-
 	def compare
-		@post = params[:city_post] if params[:city_post]
-		@post = '130600' if @post==nil || @post==''
-		@city_name = ChinaCity.get(@post)
-		@province_name = ChinaCity.get(@post[0,2]+'0000')
-
-		case @province_name
-		when '北京市'
-			@city_name = @province_name
-		when '上海市'
-			@city_name = @province_name
-		when '天津市'
-			@city_name = @province_name
-		when '重庆市'
-			@city_name = @province_name
-		end
-
+		@banner = banner()
+	end
+	def banner
+		hs = Hash.new
 		# monitor data
 		md = hb_real
-		@rt = md[:time]
+		hs['rt']= md[:time]
 		md[:cities].each do |c|
-			if @city_name.include? c['city']
-				@aqi = c['aqi']
-				@pm2_5 = c['pm2_5']
-				@pm10 = c['pm10']
-				@so2 = c['so2']
-				@no2 = c['no2']
-				@o3 = c['o3']
-				@co = c['co']
+			if c['city'] == '保定'
+				hs = hs.merge(c)
+				break
 			end
 		end
 		# forecast data
 		aqis = []
 		pri_pol = []
-		c = City.find_by_post_number(@post)
+		c = City.find_by_city_name_pinyin('baodingshi')
 		ch = c.hourly_city_forecast_air_qualities.last(120).group_by_day(&:forecast_datetime)
 		ch.each do |time,fds|
 			t = Time.now
@@ -878,46 +599,11 @@ class WelcomeController < ApplicationController
 			end
 		end
 
-		# adj data
-		case @post
-		when '130600'
-			@city_adj = 'ADJ_baoding/'
-		else
-			@city_adj = 'ADJ/'
-		end
-
-		@factor='SO2'
-		@adj_per1 = adj_percent('SO2_120', @city_adj)
-		@adj_per2 = adj_percent('NOX_120', @city_adj)
-		@adj_per3 = adj_percent('CO_120', @city_adj)
-		#@adj_per = {'保定' =>  54.34, '北京' => 12.25}
-		#@factor = 'SO2'
-		p @adj_per
-
-
-		# test data
-		@county_data = [{title:'安次区',aqi:191,yesterday_aqi:179,r_rank:1,yesterday_r_rank:2}, 
-				  {title:'广阳区', aqi:182,yesterday_aqi:186,r_rank:2,yesterday_r_rank:1}, 
-				  {title:'廊坊开发区', aqi:140,yesterday_aqi:177,r_rank:3,yesterday_r_rank:3}, 
-				  {title:'固安县', aqi:134,yesterday_aqi:151,r_rank:4,yesterday_r_rank:6}, 
-				  {title:'永清县', aqi:112,yesterday_aqi:136,r_rank:5,yesterday_r_rank:7}, 
-				  {title:'香河县', aqi:110,yesterday_aqi:168,r_rank:6,yesterday_r_rank:4}, 
-				  {title:'大城县', aqi:101,yesterday_aqi:97,r_rank:7,yesterday_r_rank:10}, 
-				  {title:'文安县', aqi:97,yesterday_aqi:119,r_rank:8,yesterday_r_rank:9}, 
-				  {title:'大厂', aqi:96,yesterday_aqi:132,r_rank:9,yesterday_r_rank:8}, 
-				  {title:'霸州市', aqi:92,yesterday_aqi:92,r_rank:10,yesterday_r_rank:11}, 
-				  {title:'三河市', aqi:91,yesterday_aqi:160,r_rank:11,yesterday_r_rank:5}]
-
 		lev_hs = {"you"=>"优", "yellow"=>"良", "qingdu"=>"轻度", "zhong"=>"中度","zhongdu"=>"重度", "yanzhong"=>"严重"}
 
-		#ban lev
-		#@aqi = 120
-		@lev = get_lev(@aqi)
-		@lev_han = lev_hs[@lev]
+		hs["lev"] = get_lev(hs["aqi"])
+		hs["lev_han"] = lev_hs[hs["lev"]]
 
-		# table lev
-		#aqis = [[20,40],[30,80],[80,100],[40,120],[110,400]]
-		#pri_pol = ['pm2.5','pm2.5','pm2.5','pm10','O3']
 		lev_arr = []
 		lev_han_arr= []
 		aqis.each do |aqi|
@@ -925,17 +611,31 @@ class WelcomeController < ApplicationController
 			lev_han_arr << {start:lev_hs[get_lev(aqi[0])],end:lev_hs[get_lev(aqi[1])]}
 		end
 
-
 		week_hs = ["星期日", "星期一","星期二","星期三","星期四","星期五","星期六"]
 
 		t = (Time.now + 60*60*24*3).strftime('%w').to_i
 		t1 = (Time.now + 60*60*24*4).strftime('%w').to_i
 		td = ['今天','明天','后天',week_hs[t], week_hs[t1]]
 
-		@day_fdata = []
+		day_fdata = []
 		lev_arr.each_with_index do |lev,i|
-			@day_fdata << {w:td[i], start:lev[:start], end:lev[:end], start_han:lev_han_arr[i][:start], end_han:lev_han_arr[i][:end],pol:pri_pol[i]}
+			day_fdata << {w:td[i], start:lev[:start], end:lev[:end], start_han:lev_han_arr[i][:start], end_han:lev_han_arr[i][:end],pol:pri_pol[i]}
 		end
-	end
+		hs["day_fdata"] = day_fdata
+		#实时天气预报
+		begin
+			response = HTTParty.get('http://www.weather.com.cn/adat/sk/101090201.html')	
+			json_data = JSON.parse(response.body)
+			hs = hs.merge(json_data['weatherinfo'])	
+		rescue
+			hs['real_time_weather'] = false	
+		end
 
+		hs["city_adj"] = 'ADJ_baoding/'
+		hs["adj_per1"] = adj_percent('SO2_120', hs["city_adj"])
+		hs["adj_per2"] = adj_percent('NOX_120', hs["city_adj"])
+		hs["adj_per3"] = adj_percent('CO_120', hs['city_adj'])
+
+		hs
+	end 
 end

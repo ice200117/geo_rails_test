@@ -344,7 +344,7 @@ datePicked();
           <% sfcitiesrankbyday=@sfcitiesrankbyday[:cities].sort_by{|a| a["AQI"].to_i}%>
           <% for i in (0...sfcitiesrankbyday.length)%>
             <% tmp=sfcitiesrankbyday[sfcitiesrankbyday.length-1 -i]%>
-            <% break if i==42 %>
+            <% break if i==35 %>
             <tr>
               <td><%= i+1 %></td>
               <td><%= tmp['city'] %></td>

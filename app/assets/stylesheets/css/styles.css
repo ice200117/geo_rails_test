@@ -87,3 +87,18 @@ background: url(searchlogo.png) no-repeat 60px 3px;
 .qingdu{ background:#fd5b30;}
 .you{ background:#72ca29;}
 .zhongdu{background:#b414bb;}
+
+
+/*城市空气质量比较*/
+.containerbd{width: 1170px!important;}
+.dtipbd{background: #2599e2;width: 10px;height: 26px;float: left;margin-right: 15px;margin-top: 4px;}
+.subtitlebd{vertical-align: middle;color: #343434;font-weight: normal;color: #767874;font-size: 25px;float: left;}
+.subtitlebd span{font-size: 16px;color: #e69e01;}
+.subtitlebd span a{font-size: 16px;color: #e69e01;}
+.subtitlebd a{color: #696969;text-decoration: none;font-size: 16px;font-weight: normal;}
+.subtitlebd .subsubtitlebd{color:#86ce65;font-weight: normal;font-size: 26px;}
+.subtitlebdhr{margin: 2px 0 8px 0;}
+.subtitlebdright, .subtitlebdright a{text-align: right;font-size: 18px;color: #4a870a;margin-top: 5px;}
+.subtitlebd small{font-size: 16px;}
+.btngroupbd{margin:10px 0px;}
+.aqichartbd{width:100%;height: 360px;}

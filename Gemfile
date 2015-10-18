@@ -82,3 +82,5 @@ gem 'whenever'
 gem 'spreadsheet'
 
 gem 'chinese_lunar'
+
+gem 'redis'

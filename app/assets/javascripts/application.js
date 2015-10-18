@@ -20,9 +20,10 @@
 //= require highcharts
 //= require highcharts/highcharts-more
 //= require chartkick
-//= require vendor/esl
-//= require vendor/echarts/echarts
-
+// require vendor/esl
+// require vendor/echarts/echarts
+// require vendor/BMap/BMap
 //= require 'china_city/jquery.china_city'
 //= require bootstrap.min
+//= require respond
 //= require citySelector
