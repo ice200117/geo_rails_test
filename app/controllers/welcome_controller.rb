@@ -273,6 +273,36 @@ class WelcomeController < ApplicationController
     end    
   end
 
+
+  def bdqx_compare_chart
+
+    bdqx_monitorpoint={"白沟新城"=>"白沟新城行政中心楼","满城县"=>"满城税务局","清苑县"=>"清苑县政府","涞水县"=>"涞水县环境监测站","阜平县"=>"阜平县环保局","定兴县"=>"定兴县政府","高阳县"=>"高阳县环保局","容城县"=>"容城县环境保护局","涞源县"=>"涞源县环保局","望都县"=>"望都县环境监测站","安新县"=>"安新民政局","易县"=>"易县环境保护局","曲阳县"=>"曲阳县环保局","蠡县"=>"蠡县县政府","顺平县"=>"顺平县环保局","博野县"=>"博野县招生办","雄县"=>"雄县环境保护局","涿州市"=>"涿州监测站","安国市"=>"安国市政府","高碑店市"=>"高碑店环保局","徐水县"=>"徐水环保局","定州市"=>"定州武装部","唐县"=>"唐县政府楼"}
+    city1=City.find_by city_name: bdqx_monitorpoint[params[:city1]]
+    city2=City.find_by city_name: bdqx_monitorpoint[params[:city2]]
+    city3=City.find_by city_name: bdqx_monitorpoint[params[:city3]]
+    cityidarray=Array[city1.id,city2.id,city3.id]
+    startdate=Time.local(params[:startTime][0,4].to_i,params[:startTime][5,2].to_i,params[:startTime][8,2].to_i,0)
+    enddate=Time.local(params[:endTime][0,4].to_i,params[:endTime][5,2].to_i,params[:endTime][8,2].to_i,23)
+    if params[:type]=='HOUR'
+      querydata=TempBdHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc') 
+    elsif params[:type]=='DAY'
+      querydata=TempBdDay.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')
+    else
+      querydata=TempBdMonth.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')      
+    end  
+    @bdqxcompare={citynum: cityidarray,rows: querydata.map{ |data| { alldata: data,timeformatted: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S")}}}
+    #pp querydata.map{ |data| data.city_id}.uniq.length
+    #pp @citycompare
+    respond_to do |format|
+      format.html { }
+      format.js   { }
+      format.json {
+        render json: @bdqxcompare
+      }
+    end    
+  end
+
+
 	#去掉保定部分监测点
 	def del_some_points(data)
 		del_point=['地表水厂','游泳馆','接待中心', '华电二区', '定兴县政府', '市监测站', '胶片厂']
@@ -336,8 +366,8 @@ class WelcomeController < ApplicationController
 
 	#获取数据库数据pinggu.html.erb显示
 	def get_db_data(model,time)
-		stime=nil
-		etime=nil
+		stime = nil
+		etime = nil
 		if /\w*Hour/.match(model.name)
 			stime = time.beginning_of_hour
 			etime = time.end_of_hour
@@ -462,6 +492,24 @@ class WelcomeController < ApplicationController
 		"邢台",
 		"张家口" 
 	]
+
+	def adj_pie
+		city_dir = 'ADJ_baoding'
+		if params[:city_name]
+			city_dir = 'ADJ_baoding' if params[:city_name] == 'baodingshi'
+		end
+		adj_bd = {}
+		var_list = ["CO_120", "NOX_120", "SO2_120"]
+		var_list.each { |var_name|
+			adj_per = adj_percent(var_name,city_dir)
+			adj_bd[var_name] = adj_per
+		}
+		respond_to do |format|
+			format.json   {
+				render json: adj_bd
+			}
+		end
+	end
 	def adj_percent(type="", city='ADJ_baoding')
 		nt = Time.now
 		i = 0
@@ -570,6 +618,22 @@ class WelcomeController < ApplicationController
 	def compare
 		@banner = banner()
 	end
+	def sfcities_compare
+    	render layout: getlayoutbyaction('sfcities_compare')
+  	end
+
+
+  	def bdqx_compare
+    	render layout: getlayoutbyaction('bdqx_compare')
+  	end
+
+
+  	def getlayoutbyaction(action_name)
+    	if action_name == 'sfcities_compare' || action_name == 'bdqx_compare'
+      		layout='cmp'
+    	end
+    	layout
+  	end
 	def banner
 		hs = Hash.new
 		# monitor data

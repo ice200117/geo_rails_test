@@ -23,6 +23,8 @@ Rails.application.routes.draw do
    #root 'welcome#map'
    root 'welcome#pinggu'
    get '/compare' => 'welcome#compare'
+   get '/bdqx_compare' => 'welcome#bdqx_compare'  
+   get '/sfcities_compare' => 'welcome#sfcities_compare' 
    get '/real_time_monitoring' => 'welcome#real_time_monitoring'
    get '/history_data' => 'welcome#history_data'
    get '/forecast' => 'welcome#forecast'
@@ -40,8 +42,11 @@ Rails.application.routes.draw do
 
    get 'welcome/chartway' => 'welcome#chartway'
    get 'welcome/city_compare_chart' => 'welcome#city_compare_chart'
-
+   get 'welcome/bdqx_compare_chart' => 'welcome#bdqx_compare_chart'
    get 'welcome/get_history_data/:model/:time' => 'welcome#get_history_data'
+
+
+   get '/adj_pie' => 'welcome#adj_pie'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

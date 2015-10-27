@@ -1,0 +1,61 @@
+
+
+<!--保定区县空气质量比较曲线模块-->
+<%= stylesheet_link_tag "css/daterangepicker-bs3.css" %>
+<!--<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>-->
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="containerbd" style="margin-top:57px;">
+
+  <div class="row" >
+    <div class="col-xs-12" >
+      <div class="dtipbd"></div>
+      <div class="subtitlebd" >保定区县空气质量比较</div> 
+    </div>  
+  </div>
+  <hr class="subtitlebdhr" />
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="cityinputBox">
+          <span style="vertical-align:middle">区县1</span> 
+              <input type="text" class="cityinput" id="city1" />
+              <span style="vertical-align:middle">区县2</span> 
+              <input type="text" class="cityinput" id="city2" />
+              <span style="vertical-align:middle">区县3</span> 
+              <input type="text" class="cityinput" id="city3" />
+      </div>
+      <div class="btngroupbd btnbd-toolbar">
+        <div id="btn-group1" class="btnbd-group btnbd-group-sm " style="float:left">
+          <button type="button" class="btnbd btnbd-default btnitemgroup1" value="AQI">AQI</button>
+          <button type="button" class="btnbd btnbd-default btnitemgroup1" value="PM2.5">PM2.5</button>
+          <button type="button" class="btnbd btnbd-default btnitemgroup1" value="PM10">PM10</button>
+          <button type="button" class="btnbd btnbd-default btnitemgroup1" value="SO2">SO2</button>
+          <button type="button" class="btnbd btnbd-default btnitemgroup1" value="NO2">NO2</button>
+          <button type="button" class="btnbd btnbd-default btnitemgroup1" value="CO">CO</button>
+          <button type="button" class="btnbd btnbd-default btnitemgroup1" value="O3">O3</button>
+          <button type="button" class="btnbd btnbd-default btnitemgroup1" value="INDEX">综合指数</button>
+          <button type="button" class="btnbd btnbd-default btnitemgroup1" value="TEMP">温度</button>
+          <button type="button" class="btnbd btnbd-default btnitemgroup1" value="HUMI">湿度</button>
+          <button type="button" class="btnbd btnbd-default btnitemgroup1" value="WIND">风级</button>        
+        </div>
+        <div id="btn-group2" class="btnbd-group btnbd-group-sm " style="float:right; margin:0 ">  
+          </div>
+      </div>
+      <div class="btngroupbd btnbd-toolbar">
+        <div id="btn-group1" class="btnbd-group btnbd-group-sm " style="float:left">
+          <button type="button" class="btnbd btnbd-default btndategroup1" value="DAY">最近一天</button>
+           <button type="button" class="btnbd btnbd-default btndategroup1" value="WEEK">最近一周</button>
+          <button type="button" class="btnbd btnbd-default btndategroup1" value="MONTH">最近一月</button>
+          <button type="button" class="btnbd btnbd-default btndategroup1" value="YEAR">最近一年</button>
+          <input type="text" style="width: 180px;height:30px;padding:6px 10px;" name="reservation" id="reservation" class="form-control" />
+        </div>
+        <div id="btn-group2" class="btnbd-group btnbd-group-sm " style="float:right; margin:0 ">
+          <button type="button" class="btnbd btnbd-default btntypegroup1" value="HOUR">时</button>
+          <button type="button" class="btnbd btnbd-default btntypegroup1" value="DAY">日</button>
+          <button type="button" class="btnbd btnbd-default btntypegroup1" value="MONTH">月</button>  
+          </div>
+      </div>
+      <div id="chart" class="aqichartbd"></div>
+    </div>
+  </div>
+</div>
+<%= javascript_include_tag 'bootstrap.min','respond','bdqxSelector','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','bdqx_compare_chart' %>

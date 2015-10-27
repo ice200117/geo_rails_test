@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>ForecastAQI</title>
+          <%= stylesheet_link_tag 'application','css/styles','css/jquery-ui',"css/bootstrap.min", 'css/bootstrap-table.min', media: 'all', 'data-turbolinks-track' => true %>
+          <%= javascript_include_tag 'application',"jquery-ui-datepicker", 'data-turbolinks-track' => true %>
+          <%= csrf_meta_tags %>
+          <%= favicon_link_tag '/favicon.png' %>
+          <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
+        </head>
+        <body class="<%= params[:controller] + '-' + params[:action] %>">
+          
+          <%= yield %>
+          
+            <script type="text/javascript" charset="utf-8">
+              
+/*
+$(document).on("page:change", function() {
+  var page;
+  page = $("body").attr("class");
+  $(".nav li").removeClass("active");
+  return $("#"+page).addClass("active");
+});
+*/
+
+            </script>
+          </body>
+        </html>
+
+

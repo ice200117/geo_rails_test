@@ -16,7 +16,11 @@ class QuerysController < ApplicationController
        "CO_24", "NOX_24", "SO2_24" ]
     end
     #puts varnames
-    path = '/mnt/share/Temp/BackupADJ/'
+	path = '/mnt/share/Temp/BackupADJ/'
+
+    if params[:city_name]
+		path = '/mnt/share/Temp/BackupADJ_baoding/'
+	end
     #if @@alt
     #  @@alt = false
     #  puts 'langfang'

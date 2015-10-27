@@ -1,0 +1,91 @@
+<span>更新时间: 
+<%= data[:time].strftime("%Y-%m-%d") %>
+</span> 
+<table class="table">
+	<thead>
+		<tr>
+			<th>排名</th>
+			<th>
+				<% if flag == 'bd' %>
+				<%= '县(市区)'%>
+				<% else %>
+				<%= '城市'%>
+				<% end %>
+			</th>
+			<th>SO2(ug/m3)</th>
+			<th>NO2(ug/m3)</th>
+			<th>CO(mg/m3)</th>
+			<th>O3(ug/m3)</th>
+			<th>PM10(ug/m3)</th>
+			<th>PM2.5(ug/m3)</th>
+			<th>综合指数</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% data = data[:cities].sort_by{|a| a['zonghezhishu']}%>
+		<% for i in (0...data.length)%>
+		<% break if flag == 'sf' && i == 20%>
+		<% tmp=data[i] %>
+		<tr>
+			<td><%= i %></td>
+			<td><%= tmp['city']%></td>
+			<td>
+				<%= tmp['SO2']==nil ? '——' : tmp['SO2'] %>
+				<% if flag != 'sf'%>
+				&nbsp&nbsp
+				<%= tmp['SO2_change_rate']==nil ? '——' : (tmp['SO2_change_rate'] + '%') %>
+				<%= image_tag "#{tmp['img']}.jpg" if !tmp['SO2_change_rate'].nil? %>
+				<% end %>
+			</td>
+			<td>
+				<%= tmp['NO2']==nil ? '——' : tmp['NO2'] %>
+				<% if flag != 'sf'%>
+				&nbsp&nbsp
+				<%= tmp['NO2_change_rate']==nil ? '——' : (tmp['NO2_change_rate'] + '%') %>
+				<%= image_tag "#{tmp['img']}.jpg" if !tmp['NO2_change_rate'].nil? %></td>
+				<% end %>
+			</td>
+			<td>
+				<%= tmp['CO']==nil ? '——' : tmp['CO'] %>
+				<% if flag != 'sf'%>
+				&nbsp&nbsp
+				<%= tmp['CO_change_rate']==nil ? '——' : (tmp['CO_change_rate']+ '%') %>
+				<%= image_tag "#{tmp['img']}.jpg" if !tmp['CO_change_rate'].nil? %></td>
+				<% end %>
+			</td>
+			<td>
+				<%= tmp['O3']==nil ? '——' : tmp['O3'] %>
+				<% if flag != 'sf'%>
+				&nbsp&nbsp
+				<%= tmp['O3_change_rate']==nil ? '——' : (tmp['O3_change_rate']+ '%') %>
+				<%= image_tag "#{tmp['img']}.jpg" if !tmp['O3_change_rate'].nil? %></td>
+				<% end %>
+			</td>
+			<td>
+				<%= tmp['pm10']==nil ? '——' : tmp['pm10'] %>
+				<% if flag != 'sf'%>
+				&nbsp&nbsp
+				<%= tmp['pm10_change_rate']==nil ? '——' : (tmp['pm10_change_rate']+ '%') %>
+				<%= image_tag "#{tmp['img']}.jpg" if !tmp['pm10_change_rate'].nil? %></td>
+				<% end %>
+			</td>
+			<td>
+				<%= tmp['pm25']==nil ? '——' : tmp['pm25'] %>
+				<% if flag != 'sf'%>
+				&nbsp&nbsp
+				<%= tmp['pm25_change_rate']==nil ? '——' : (tmp['pm25_change_rate']+ '%') %>
+				<%= image_tag "#{tmp['img']}.jpg" if !tmp['pm25_change_rate'].nil? %></td>
+				<% end %>
+			</td>
+			<td>
+				<%= tmp['zonghezhishu']==nil ? '——' : tmp['zonghezhishu'] %>
+				<% if flag != 'sf'%>
+				&nbsp&nbsp
+				<%= tmp['zongheindex_change_rate']==nil ? '——' : (tmp['zongheindex_change_rate']+ '%') %>
+				<%= image_tag "#{tmp['img']}.jpg" if !tmp['zongheindex_change_rate'].nil? %></td>
+				<% end %>
+			</td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
