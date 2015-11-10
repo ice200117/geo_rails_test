@@ -1,0 +1,44 @@
+require_relative '../getdata/city_enum.rb'
+#end_time:结束时间
+def set_monitor(id,begin_time,end_time)
+	model = get_model_by_id(id)  #获取Model
+	hours = []
+	hours << "data_real_time >= ? and data_real_time <= ? and id = ?"
+	hours << begin_time.beginning_of_hour
+	hours << end_time.now.end_of_hour
+	hours << id
+	@monitor = model.where(hours)
+end
+
+def set_forecast(id)
+	c = City.find_by_id(id)
+	hourly_city_forecast_air_qualities
+end 
+
+#通过时间、ID获取相应的监测数据
+def hour_by_id_time(id,time)
+	city = City.find_by_id(id)
+	model = get_model_by_id(id)
+	in_hour=[]
+	id_hour<<"data_real_time >= ? and data_real_time <= ? and id = ?"
+	in_hour<<time.beginning_of_hour
+	in_hour<<time.end_of_hour
+	in_hour<<id
+	data_ary = model.where(in_hour) 
+end
+
+#private methods
+private
+def get_model_by_id(id)
+	model = false
+	if CityEnum.baoding.include?(city.city_name)
+		model = TempBdHour
+	elsif CityEnum.langfang.include?(city.city_name)
+		model = TempLfHour
+	elsif CityEnum.jjj.include?(city.city_name)
+		model = TempJjjHour
+	elsif CityEnum.china_city_74.include?(city.city_name)
+		model = TempSfcitiesHour
+	end
+	model ? model : "Don't find model by id,please contact libaoxi(693879111@qq.com)"
+end

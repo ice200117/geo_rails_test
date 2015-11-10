@@ -259,7 +259,7 @@ def save_db_common(model,t,time)
 	day_city.humi = t['humi'] if t['humi'] != nil && day_city.respond_to?('humi')
 	day_city.winddirection=t['winddirection'] if t['winddirection'] != nil && day_city.respond_to?('winddirection')
 	day_city.windspeed=t['windspeed'] if t['windspeed'] != nil && day_city.respond_to?('windspeed')
-	day_city.data_real_time = time.to_time
+	day_city.data_real_time = time.to_time.localtime
 	day_city.save
 
 	day_city = model.last
