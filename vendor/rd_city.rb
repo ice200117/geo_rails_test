@@ -15,6 +15,7 @@ IO.foreach("vendor/station.EXT") do |line|
   city_name_pinyin = line[25,18].strip
   city_name  = line[46..-4].strip
 
+  next if City.find_by_city_name(city_name)!=nil
 
   c = City.new
   c.city_name       =  city_name

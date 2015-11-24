@@ -120,4 +120,10 @@ class CityEnum
 			'成都市'
 		]
 	end
+	def self.all_city(city_name)
+		hs=Hash.new
+		hs['海西州'] = '海西蒙古族藏族自治州'
+		hs['临夏州'] = '临夏回族自治州'
+		hs[city_name]
+	end
 end
