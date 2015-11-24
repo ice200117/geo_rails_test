@@ -11,11 +11,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150909035457) do
+ActiveRecord::Schema.define(version: 20151118072028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+  enable_extension "postgis_topology"
+
+  create_table "china_cities_hours", force: true do |t|
+    t.integer  "city_id"
+    t.float    "SO2"
+    t.float    "NO2"
+    t.float    "CO"
+    t.float    "O3"
+    t.float    "pm10"
+    t.float    "pm25"
+    t.float    "AQI"
+    t.string   "level"
+    t.string   "main_pol"
+    t.string   "quality"
+    t.string   "weather"
+    t.string   "temp"
+    t.string   "humi"
+    t.string   "winddirection"
+    t.string   "windspeed"
+    t.integer  "windscale"
+    t.float    "zonghezhishu"
+    t.datetime "data_real_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "cities", force: true do |t|
     t.string  "city_name"
@@ -105,7 +130,6 @@ ActiveRecord::Schema.define(version: 20150909035457) do
   end
 
   create_table "monitor_points", force: true do |t|
-    t.string   "city_id"
     t.string   "region"
     t.string   "pointname"
     t.string   "level"
@@ -113,7 +137,11 @@ ActiveRecord::Schema.define(version: 20150909035457) do
     t.float    "longitude"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "city_id"
+    t.integer  "post_number"
   end
+
+  add_index "monitor_points", ["post_number"], :name => "index_monitor_points_on_post_number"
 
   create_table "temp_bd_days", force: true do |t|
     t.integer  "city_id"

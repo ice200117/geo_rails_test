@@ -11,7 +11,7 @@ def hour_data_common(hs,model)
 		return false
 	end
 end
-
+(1..2)
 hs=Hash.new
 oneday=60*60*24
 
@@ -30,3 +30,10 @@ save_db(hs,TempHbHour) if hour_data_common(hs,TempHbHour)
 #74城市实时数据
 hs=ten_times_test(TempSfcitiesHour,'shishi_rank_data','CHINARANK','HOUR',nil)
 save_db(hs,TempSfcitiesHour) if hour_data_common(hs,TempSfcitiesHour) 
+
+#全国城市实时数据
+hs = Hash.new
+hs[:secret] = "70ad4cb02984355c0f08f2e84be72c9c"
+hs[:method] = "GETCITYDATA"
+hs = ten_times_test(ChinaCitiesHour,'all_city_by_hour',hs,'HOUR',nil)
+save_db(hs,ChinaCitiesHour)

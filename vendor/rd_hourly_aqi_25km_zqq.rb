@@ -41,11 +41,11 @@ def parse_line(line, c)
 end
 
 #strtime = Time.mktime(Time.new.strftime("%Y%m%d")+'08')
-#strtime = Time.new.strftime("%Y%m%d")+'08'
+strtime = Time.new.strftime("%Y%m%d")+'08'
 #strtime = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
-#puts strtime
+# puts strtime
 
-strtime = '2015102408'
+strtime = '2015112308'
 puts strtime
 
 path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
