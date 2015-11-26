@@ -1,5 +1,8 @@
 class WelcomeController < ApplicationController
 	include NumRu
+  	protect_from_forgery :except => :get_forecast_baoding
+
+
 
 	def index
 		#data_table = GoogleVisualr::DataTable.new
@@ -118,11 +121,17 @@ class WelcomeController < ApplicationController
 		#@chart = [{name: c.city_name, data: hs.group_by_hour(:forecast_datetime).average("AQI")}]
 		@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime.strftime("%H\n %d%b"),  h.AQI]} }]
 		#@chart = c.hourly_city_forecast_air_qualities.group_by_hour(:forecast_datetime).average("AQI")
+		
+
+		@fore_group_day = {}
+	    h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime > ?", 4.days.ago).group_by_day(:forecast_datetime, format: "%HZ\n %d%b").average(:AQI)
+	    h.each {|k,v| @fore_group_day[k] = v.round}
+
 		respond_to do |format|
 			format.html { }
 			format.js   { }
 			format.json {
-				render json: @chart
+				#render json: @chart
 			}
 		end
 	end
@@ -435,6 +444,27 @@ class WelcomeController < ApplicationController
 		json_data["weather_forecast"]
 	end
 
+	#获取预测数据
+	def get_forecast_baoding
+		response = HTTParty.get('http://www.izhenqi.cn/api/getforecast_weather.php')
+		json_data = JSON.parse(response)
+		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('baodingshi')
+		temp.each do |k,v|
+			index=k.yday - Time.now.yday
+			v["fore_lev"] = get_lev(v["AQI"])
+			json_data["weather_forecast"][index]=json_data["weather_forecast"][index].merge(v)
+		end
+
+
+		respond_to do |format|
+		  format.html { render json: json_data["weather_forecast"]}
+		  if params[:callback]
+			format.js { render :json => json_data["weather_forecast"], :callback => params[:callback] }
+		  else
+			format.json { render json: json_data["weather_forecast"]}
+		  end
+	    end
+	end
 
 
 	def get_lev(a)

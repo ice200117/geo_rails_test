@@ -279,8 +279,8 @@ end
 #保存数据到数据库
 def save_db_common(model,t,time)
 	out_log(t['city']) if t['city'].size <3
-	city = City.find_by_city_name(t['city'])
-	city = City.find_by_city_name(t['city'].to_s+'市') if city.nil?
+	city = City.find_by_city_name(t['city'].to_s+'市')
+	city = City.find_by_city_name(t['city']) if city.nil?
 	city = City.find_by_city_name(CityEnum.all_city(t['city'])) if city.nil?
 	return if city.nil?	
 	day_city=model.new
@@ -300,11 +300,8 @@ def save_db_common(model,t,time)
 	day_city.humi = t['humi'] if t['humi'] != nil && day_city.respond_to?('humi')
 	day_city.winddirection=t['winddirection'] if t['winddirection'] != nil && day_city.respond_to?('winddirection')
 	day_city.windspeed=t['windspeed'] if t['windspeed'] != nil && day_city.respond_to?('windspeed')
-	if t['time'].nil?
-		day_city.data_real_time = time.to_time.localtime
-	else
-		day_city.data_real_time = t['time'].to_time.localtime
-	end
+	time = t['time'].to_time.localtime if time.nil?
+	day_city.data_real_time = time.to_time.localtime
 	day_city.save
 
 	if model.new.respond_to?('zonghezhishu')

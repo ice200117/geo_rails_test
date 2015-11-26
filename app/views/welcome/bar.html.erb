@@ -1,5 +1,6 @@
 <div class="container">
 
+	<!--
   <% post = '370211' %>
   <div class="city-group">
     <select id="province" class="city-select">
@@ -15,6 +16,7 @@
       <%= options_for_select(ChinaCity.list(post[0,4]+'00'), post) %>
     </select>
   </div>
+  -->
 
 
 
@@ -29,20 +31,16 @@
   <% end %>
 
   <div id="line_chart1">
-    <%= column_chart bar_welcome_path,  height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"}}%>
+    <%#= column_chart bar_welcome_path,  height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"}}%>
+    <%= column_chart @chart,  height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"}}%>
   </div>
 
-  <div class="col-xs-12">
-    <%= column_chart HourlyCityForecastAirQuality.group(:publish_datetime).group_by_day(:forecast_datetime, format: "%HZ\n %d%b").average(:AQI), height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"},subtitle:{text:"2015-04-12_21:00       +  120h"}}  %>
-  </div>
-  <div class="col-xs-4">
-    <%= pie_chart({"Football" => 10, "Basketball" => 5}, class:"col-xs-4") %>
-  </div>
-  <div class="col-xs-4">
-    <%= pie_chart({"Football" => 10, "Basketball" => 5}, class:"col-xs-4") %>
-  </div>
-  <div class="col-xs-4">
-    <%= pie_chart({"Football" => 10, "Basketball" => 5}, class:"col-xs-4") %>
+  <div id='fore_compare' class="col-xs-12">
+
+	  <%# c = City.find_by_city_name_pinyin('langfangshi') %>
+	  <%# h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime > ?", 4.days.ago).group_by_day(:forecast_datetime, format: "%HZ\n %d%b").average(:AQI) %>
+	  <%# h.each {|k,v| h[k] = v.round}%>
+	  <%= column_chart @fore_group_day, height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"},subtitle:{text:"2015-04-12_21:00       +  120h"}}  %>
   </div>
 
 </div>

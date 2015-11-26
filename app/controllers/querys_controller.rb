@@ -113,6 +113,8 @@ class QuerysController < ApplicationController
     render json: chf
   end
 
+
+
   def cities
     cs = City.pluck(:city_name, :city_name_pinyin)
     render json: cs

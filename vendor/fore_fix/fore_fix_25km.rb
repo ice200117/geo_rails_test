@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require_relative "fore_fix.rb"
+require_relative 'daliy_avg'
 
 #start---------------
 puts "--start--"
@@ -127,4 +128,6 @@ cs.each do |c|
 end
 f_avg.close
 after_avg.close
+# puts "--start--25km--"
+DaliyAvg.avg_25
 puts "OK"

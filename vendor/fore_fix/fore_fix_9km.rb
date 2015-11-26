@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require_relative "./fore_fix.rb"
+require_relative 'daliy_avg'
 
 #start---------------
 puts "--start--"
@@ -33,8 +34,10 @@ cs.each do |c|
 	py = c.city_name_pinyin.strip
 	
 	# fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
-	fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_orig"
+	 # fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_adjust"
+	 fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_orig"
 	fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
+	# fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_adjust"
 	# next unless hb_city.include?(py)
 	f = File.open(path+fn) if File::exists?(path+fn) 
 	next unless f
@@ -121,4 +124,6 @@ cs.each do |c|
 end
 f_avg.close
 after_avg.close
+puts "--start--9km--"
+DaliyAvg.avg_9
 puts "OK"
