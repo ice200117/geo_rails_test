@@ -278,7 +278,7 @@ end
 
 #保存数据到数据库
 def save_db_common(model,t,time)
-	out_log(t['city']) if t['city'].size <3
+	# out_log(t['city']) if t['city'].size <3
 	city = City.find_by_city_name(t['city'].to_s+'市')
 	city = City.find_by_city_name(t['city']) if city.nil?
 	city = City.find_by_city_name(CityEnum.all_city(t['city'])) if city.nil?

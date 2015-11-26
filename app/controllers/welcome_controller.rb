@@ -458,7 +458,7 @@ class WelcomeController < ApplicationController
 
 		respond_to do |format|
 		  format.html { render json: json_data["weather_forecast"]}
-		  if params[:callback]
+		  if params[:callback] #jsonp回调函数名
 			format.js { render :json => json_data["weather_forecast"], :callback => params[:callback] }
 		  else
 			format.json { render json: json_data["weather_forecast"]}
