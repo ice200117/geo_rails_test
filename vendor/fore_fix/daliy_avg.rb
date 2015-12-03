@@ -32,8 +32,8 @@ class DaliyAvg
 				tmp << hs[:AQI].to_i
 				if num == 24 || line[11,3] == '120'  #计数24之后 计数器归零
 					num = 0 
-					tmp_time = tmp_time.to_time.tomorrow
 					daliy_avg.puts(tmp_time.strftime("%Y%m%d")+'-'+c+'-AQI: '+(tmp.inject(0){|sum,x| sum+=x}/tmp.length).to_s)
+					tmp_time = tmp_time.to_time.tomorrow
 					tmp.clear 
 				end
 			end
@@ -70,8 +70,8 @@ class DaliyAvg
 				tmp << hs[:AQI].to_i
 				if num == 24 || line[11,3] == '120'  #计数24之后 计数器归零
 					num = 0 
-					tmp_time = tmp_time.tomorrow
 					daliy_avg.puts(tmp_time.strftime("%Y%m%d").to_s+'-'+c+'-AQI: '+(tmp.inject(0){|sum,x| sum+=x}/tmp.length).to_s)
+					tmp_time = tmp_time.tomorrow
 					tmp.clear 
 				end
 			end

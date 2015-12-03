@@ -1,6 +1,6 @@
 class QuerysController < ApplicationController
   include NumRu
-  protect_from_forgery :except => :adj
+  protect_from_forgery :except => [:adj, :monitor_data]
 
   @@alt = true
 
@@ -165,5 +165,24 @@ class QuerysController < ApplicationController
     end
 
     render json: achf
+  end
+
+
+  def monitor_data
+	  if params[:city_name]
+		  data = ChinaCitiesHour.get_real_monitor_data(params[:city_name])
+	  else
+		  data = ChinaCitiesHour.get_all_real_data
+	  end
+
+
+    respond_to do |format|
+      format.html { render json: data}
+      if params[:callback]
+        format.js { render :json => data.to_json, :callback => params[:callback] }
+      else
+        format.json { render json: data}
+      end
+    end
   end
 end

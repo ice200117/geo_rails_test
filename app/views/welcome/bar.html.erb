@@ -43,5 +43,24 @@
 	  <%= column_chart @fore_group_day, height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"},subtitle:{text:"2015-04-12_21:00       +  120h"}}  %>
   </div>
 
+  <table class="table table-striped" id="fore_avg_aqi">
+	  <tr>
+		  <th>发布时间</th>
+		  <th>预报时间</th>
+		  <th>AQI</th>
+		  <!--<th>综合指数</th>-->
+	  </tr>
+
+	  <% @fore_group_day.each{ |key,value| %>
+		  <tr>
+		  <% unless value == 0 %>
+			  <td><%= key[0].strftime("%Y-%m-%d") %></td>
+			  <td><%= key[1] %> </td>
+			  <td><%= value %></td>
+		  <% end %>
+		  </tr>
+	  <% } %>
+  </table>
+
 </div>
 

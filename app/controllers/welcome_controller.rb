@@ -1,7 +1,6 @@
 class WelcomeController < ApplicationController
 	include NumRu
-  	protect_from_forgery :except => :get_forecast_baoding
-
+	protect_from_forgery :except => [:get_forecast_baoding, :get_city_point]
 
 
 	def index
@@ -71,22 +70,22 @@ class WelcomeController < ApplicationController
 
 	def map
 		#respond_to do |format|
-			#format.js   {}
-			#format.html   {}
-			#format.json {
-				#achf = Hash.new
-				#cs = City.all
-				#cs.each do |c|
-					#ch = c.hourly_city_forecast_air_qualities.last(120)[0]
-					#achf[c.city_name] = ch.AQI  if ch
-				#end
-				#render json: achf
-			#}
+		#format.js   {}
+		#format.html   {}
+		#format.json {
+		#achf = Hash.new
+		#cs = City.all
+		#cs.each do |c|
+		#ch = c.hourly_city_forecast_air_qualities.last(120)[0]
+		#achf[c.city_name] = ch.AQI  if ch
 		#end
-    
-    system('ls')
-    r = `rails r vendor/test.rb`
-    puts r
+		#render json: achf
+		#}
+		#end
+
+		system('ls')
+		r = `rails r vendor/test.rb`
+		puts r
 	end
 
 	def visits_by_day
@@ -121,11 +120,11 @@ class WelcomeController < ApplicationController
 		#@chart = [{name: c.city_name, data: hs.group_by_hour(:forecast_datetime).average("AQI")}]
 		@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime.strftime("%H\n %d%b"),  h.AQI]} }]
 		#@chart = c.hourly_city_forecast_air_qualities.group_by_hour(:forecast_datetime).average("AQI")
-		
+
 
 		@fore_group_day = {}
-	    h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime > ?", 4.days.ago).group_by_day(:forecast_datetime, format: "%HZ\n %d%b").average(:AQI)
-	    h.each {|k,v| @fore_group_day[k] = v.round}
+		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime > ?", 7.days.ago).group_by_day(:forecast_datetime, format: "%HZ\n %d%b").average(:AQI)
+		h.each {|k,v| @fore_group_day[k] = v.round}
 
 		respond_to do |format|
 			format.html { }
@@ -138,8 +137,9 @@ class WelcomeController < ApplicationController
 
 	def get_history_data
 		model = params[:model]
-		time = params[:time]
-		change_data_type(get_db_data(model.constantiz,time))
+		time = params[:time].to_time
+		data = change_data_type(get_db_data(model.constantize,time))
+		render :json=>data
 	end
 
 	#1.三组按钮组间关系：根据三组按钮之间的关系确定编程顺序，先通过判断按天还是按小时从而确定查询天表还是小时表
@@ -260,60 +260,60 @@ class WelcomeController < ApplicationController
 =end
 
 
-  def city_compare_chart
-    city1=City.find_by city_name: (params[:city1]+'市')
-    city2=City.find_by city_name: (params[:city2]+'市')
-    city3=City.find_by city_name: (params[:city3]+'市')
-    cityidarray=Array[city1.id,city2.id,city3.id]
-    startdate=Time.local(params[:startTime][0,4].to_i,params[:startTime][5,2].to_i,params[:startTime][8,2].to_i,0)
-    enddate=Time.local(params[:endTime][0,4].to_i,params[:endTime][5,2].to_i,params[:endTime][8,2].to_i,23)
-    if params[:type]=='HOUR'
-      querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc') 
-    elsif params[:type]=='DAY'
-      querydata=TempSfcitiesDay.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')
-    else
-      querydata=TempSfcitiesMonth.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')      
-    end  
-    @citycompare={citynum: cityidarray,rows: querydata.map{ |data| { alldata: data,timeformatted: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S")}}}
-    #pp querydata.map{ |data| data.city_id}.uniq.length
-    #pp @citycompare
-    respond_to do |format|
-      format.html { }
-      format.js   { }
-      format.json {
-        render json: @citycompare
-      }
-    end    
-  end
+	def city_compare_chart
+		city1=City.find_by city_name: (params[:city1]+'市')
+		city2=City.find_by city_name: (params[:city2]+'市')
+		city3=City.find_by city_name: (params[:city3]+'市')
+		cityidarray=Array[city1.id,city2.id,city3.id]
+		startdate=Time.local(params[:startTime][0,4].to_i,params[:startTime][5,2].to_i,params[:startTime][8,2].to_i,0)
+		enddate=Time.local(params[:endTime][0,4].to_i,params[:endTime][5,2].to_i,params[:endTime][8,2].to_i,23)
+		if params[:type]=='HOUR'
+			querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc') 
+		elsif params[:type]=='DAY'
+			querydata=TempSfcitiesDay.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')
+		else
+			querydata=TempSfcitiesMonth.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')      
+		end  
+		@citycompare={citynum: cityidarray,rows: querydata.map{ |data| { alldata: data,timeformatted: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S")}}}
+		#pp querydata.map{ |data| data.city_id}.uniq.length
+		#pp @citycompare
+		respond_to do |format|
+			format.html { }
+			format.js   { }
+			format.json {
+				render json: @citycompare
+			}
+		end    
+	end
 
 
-  def bdqx_compare_chart
+	def bdqx_compare_chart
 
-    bdqx_monitorpoint={"白沟新城"=>"白沟新城行政中心楼","满城县"=>"满城税务局","清苑县"=>"清苑县政府","涞水县"=>"涞水县环境监测站","阜平县"=>"阜平县环保局","定兴县"=>"定兴县政府","高阳县"=>"高阳县环保局","容城县"=>"容城县环境保护局","涞源县"=>"涞源县环保局","望都县"=>"望都县环境监测站","安新县"=>"安新民政局","易县"=>"易县环境保护局","曲阳县"=>"曲阳县环保局","蠡县"=>"蠡县县政府","顺平县"=>"顺平县环保局","博野县"=>"博野县招生办","雄县"=>"雄县环境保护局","涿州市"=>"涿州监测站","安国市"=>"安国市政府","高碑店市"=>"高碑店环保局","徐水县"=>"徐水环保局","定州市"=>"定州武装部","唐县"=>"唐县政府楼"}
-    city1=City.find_by city_name: bdqx_monitorpoint[params[:city1]]
-    city2=City.find_by city_name: bdqx_monitorpoint[params[:city2]]
-    city3=City.find_by city_name: bdqx_monitorpoint[params[:city3]]
-    cityidarray=Array[city1.id,city2.id,city3.id]
-    startdate=Time.local(params[:startTime][0,4].to_i,params[:startTime][5,2].to_i,params[:startTime][8,2].to_i,0)
-    enddate=Time.local(params[:endTime][0,4].to_i,params[:endTime][5,2].to_i,params[:endTime][8,2].to_i,23)
-    if params[:type]=='HOUR'
-      querydata=TempBdHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc') 
-    elsif params[:type]=='DAY'
-      querydata=TempBdDay.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')
-    else
-      querydata=TempBdMonth.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')      
-    end  
-    @bdqxcompare={citynum: cityidarray,rows: querydata.map{ |data| { alldata: data,timeformatted: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S")}}}
-    #pp querydata.map{ |data| data.city_id}.uniq.length
-    #pp @citycompare
-    respond_to do |format|
-      format.html { }
-      format.js   { }
-      format.json {
-        render json: @bdqxcompare
-      }
-    end    
-  end
+		bdqx_monitorpoint={"白沟新城"=>"白沟新城行政中心楼","满城县"=>"满城税务局","清苑县"=>"清苑县政府","涞水县"=>"涞水县环境监测站","阜平县"=>"阜平县环保局","定兴县"=>"定兴县政府","高阳县"=>"高阳县环保局","容城县"=>"容城县环境保护局","涞源县"=>"涞源县环保局","望都县"=>"望都县环境监测站","安新县"=>"安新民政局","易县"=>"易县环境保护局","曲阳县"=>"曲阳县环保局","蠡县"=>"蠡县县政府","顺平县"=>"顺平县环保局","博野县"=>"博野县招生办","雄县"=>"雄县环境保护局","涿州市"=>"涿州监测站","安国市"=>"安国市政府","高碑店市"=>"高碑店环保局","徐水县"=>"徐水环保局","定州市"=>"定州武装部","唐县"=>"唐县政府楼"}
+		city1=City.find_by city_name: bdqx_monitorpoint[params[:city1]]
+		city2=City.find_by city_name: bdqx_monitorpoint[params[:city2]]
+		city3=City.find_by city_name: bdqx_monitorpoint[params[:city3]]
+		cityidarray=Array[city1.id,city2.id,city3.id]
+		startdate=Time.local(params[:startTime][0,4].to_i,params[:startTime][5,2].to_i,params[:startTime][8,2].to_i,0)
+		enddate=Time.local(params[:endTime][0,4].to_i,params[:endTime][5,2].to_i,params[:endTime][8,2].to_i,23)
+		if params[:type]=='HOUR'
+			querydata=TempBdHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc') 
+		elsif params[:type]=='DAY'
+			querydata=TempBdDay.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')
+		else
+			querydata=TempBdMonth.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')      
+		end  
+		@bdqxcompare={citynum: cityidarray,rows: querydata.map{ |data| { alldata: data,timeformatted: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S")}}}
+		#pp querydata.map{ |data| data.city_id}.uniq.length
+		#pp @citycompare
+		respond_to do |format|
+			format.html { }
+			format.js   { }
+			format.json {
+				render json: @bdqxcompare
+			}
+		end    
+	end
 
 
 	#去掉保定部分监测点
@@ -433,38 +433,102 @@ class WelcomeController < ApplicationController
 
 	#获取预测数据
 	def get_forecast
-		response = HTTParty.get('http://www.izhenqi.cn/api/getforecast_weather.php')
-		json_data = JSON.parse(response)
-		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('baodingshi')
-		temp.each do |k,v|
-			index=k.yday - Time.now.yday
-			v["fore_lev"] = get_lev(v["AQI"])
-			json_data["weather_forecast"][index]=json_data["weather_forecast"][index].merge(v)
+		city_name_encode = ERB::Util.url_encode("保定市")
+		options = Hash.new
+		headers={'apikey' => 'f8484c1661a905c5ca470b0d90af8d9f'}
+		options[:headers] = headers
+		url = "http://apis.baidu.com/showapi_open_bus/weather_showapi/address?area=#{city_name_encode}&needMoreDay=1"
+		response = HTTParty.get(url,options)
+		json = JSON.parse(response.body)
+		puts 0 if json['showapi_res_error'] == 0
+		@weather = Hash.new
+		json['showapi_res_body'].each do |k,v|
+			if k[-1].to_i > 0 
+				tq = get_tq(v)
+				@weather[tq['day']] = tq
+			end
 		end
-		json_data["weather_forecast"]
+		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('baodingshi')
+		@ret = {}
+		temp.each do |k,v|
+			v["fore_lev"] = get_lev(v["AQI"])
+			time = k.strftime("%Y%m%d")
+			if @weather[time] != nil
+				@ret[time]=@weather[time].merge(v)
+			end
+		end
+		@ret
+	end
+	#天气处理与get_forecast合作使用
+	def get_tq(f1)
+		tq = Hash.new
+		tq['tq'] = f1['day_weather']
+		if f1['day_air_temperature'][-1] == '℃'
+			tq['temp1'] = f1['day_air_temperature'][0,f1['day_air_temperature'].size-1]
+		else
+			tq['temp1'] = f1['day_air_temperature'] 
+		end
+		tq['temp2'] = f1['night_air_temperature']
+		if f1['day_wind_direction'] == '无持续风向' && f1['night_wind_direction'] == '无持续风向'
+			tq['wd'] = f1['day_wind_direction']
+		elsif f1['day_wind_direction'] != '无持续风向' && f1['night_wind_direction'] == '无持续风向'
+			tq['wd'] = f1['day_wind_direction']
+		elsif f1['day_wind_direction'] == '无持续风向' && f1['night_wind_direction'] != '无持续风向'
+			tq['wd'] = f1['night_wind_direction']
+		elsif f1['day_wind_direction'] != '无持续风向' && f1['night_wind_direction'] != '无持续风向'
+			if f1['day_wind_direction'] == f1['night_wind_direction'] 
+				tq['wd'] = f1['day_wind_direction']
+			elsif f1['day_wind_direction'] != f1['night_wind_direction'] 
+				tq['wd'] = f1['day_wind_direction']+'~'+f1['night_wind_direction']
+			end
+		end
+		dw = f1['day_wind_power']
+		nw = f1['night_wind_power']
+		def wind_power(wp)
+			return wp[0,2] if wp[0,2] == '微风'
+			for e in (0...wp.size)
+				return wp[0,e+1] if wp[e] == '级'
+			end		
+		end
+		dw = wind_power(dw)
+		nw = wind_power(nw)
+		if dw == nw
+			tq['ws'] = dw
+		elsif dw != nw
+			dw[0].to_i > nw[0].to_i ? tq['ws'] = nw + '~' + dw : tq['ws'] = dw + '~' + nw
+		end
+		tq['day'] = f1['day'].to_time.strftime("%Y%m%d")
+		tq
 	end
 
 	#获取预测数据
 	def get_forecast_baoding
-		response = HTTParty.get('http://www.izhenqi.cn/api/getforecast_weather.php')
-		json_data = JSON.parse(response)
-		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('baodingshi')
-		temp.each do |k,v|
-			index=k.yday - Time.now.yday
-			v["fore_lev"] = get_lev(v["AQI"])
-			json_data["weather_forecast"][index]=json_data["weather_forecast"][index].merge(v)
-		end
-
+		data = get_forecast()
 
 		respond_to do |format|
-		  format.html { render json: json_data["weather_forecast"]}
-		  if params[:callback] #jsonp回调函数名
-			format.js { render :json => json_data["weather_forecast"], :callback => params[:callback] }
-		  else
-			format.json { render json: json_data["weather_forecast"]}
-		  end
-	    end
+			format.html { render json: data }
+			if params[:callback] #jsonp回调函数名
+				format.js { render :json => data, :callback => params[:callback] }
+			else
+				format.json { render json: data}
+			end
+		end
 	end
+
+
+	#获取城市名称和经纬度
+	def get_city_point
+		pointdata=City.all.map{ |data| { city_name: data.city_name,longitude: data.longitude,latitude: data.latitude} }
+		respond_to do |format|
+			format.html { render json: pointdata}
+			if params[:callback] #jsonp回调函数名
+				format.js { render :json => pointdata, :callback => params[:callback] }
+			else
+				format.json { render json: pointdata}
+			end
+		end
+	end
+
 
 
 	def get_lev(a)
@@ -653,21 +717,21 @@ class WelcomeController < ApplicationController
 		@banner = banner()
 	end
 	def sfcities_compare
-    	render layout: getlayoutbyaction('sfcities_compare')
-  	end
+		render layout: getlayoutbyaction('sfcities_compare')
+	end
 
 
-  	def bdqx_compare
-    	render layout: getlayoutbyaction('bdqx_compare')
-  	end
+	def bdqx_compare
+		render layout: getlayoutbyaction('bdqx_compare')
+	end
 
 
-  	def getlayoutbyaction(action_name)
-    	if action_name == 'sfcities_compare' || action_name == 'bdqx_compare'
-      		layout='cmp'
-    	end
-    	layout
-  	end
+	def getlayoutbyaction(action_name)
+		if action_name == 'sfcities_compare' || action_name == 'bdqx_compare'
+			layout='cmp'
+		end
+		layout
+	end
 	def banner
 		hs = Hash.new
 		# monitor data
