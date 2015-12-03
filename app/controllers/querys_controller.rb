@@ -122,19 +122,20 @@ class QuerysController < ApplicationController
 
   def all_cities2
     achf = []
-    ac = City.pluck(:city_name_pinyin)
+    ac = City.where("id < 388").pluck(:city_name_pinyin)
     h = HourlyCityForecastAirQuality.new
     ac.each do |c|
       ch = h.city_forecast(c) 
       achf << ch if ch
     end
 
+    puts achf
     render json: achf
   end
 
   def all_cities
     achf = []
-    cs = City.includes(:hourly_city_forecast_air_qualities)
+    cs = City.where("id < 388")
     cs.each do |c|
       cf = Hash.new
       hf = []

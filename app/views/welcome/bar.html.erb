@@ -17,22 +17,23 @@
     </select>
   </div>
   -->
+  
 
 
 
   <%= form_tag(bar_welcome_path, method: "get", html: { class: 'form-inline' }, remote: true) do %>
     <%= label_tag(:d, "城市：") %>
-    <%= collection_select(:c, :city_id, City.all, :id, :city_name) %>
+    <%= collection_select(:c, :city_id, City.all, :id, :city_name, {:selected => 18}) %>
     <%= label_tag(:start_date, "开始日期：") %>
     <%= select_date Date.today-5.days, prefix: :start_date %>
     <%= label_tag(:end_date, "结束日期：") %>
-    <%= select_date Date.today, prefix: :end_date %>
+    <%= select_date Date.today+5.days, prefix: :end_date %>
     <button id="subbtn" type="submit" class="btn btn-default" >Submit</button>
   <% end %>
 
   <div id="line_chart1">
     <%#= column_chart bar_welcome_path,  height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"}}%>
-    <%= column_chart @chart,  height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"}}%>
+	<%= line_chart @chart,  height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text:" City_AQI      CUACE (CAMS)"}} %>
   </div>
 
   <div id='fore_compare' class="col-xs-12">
@@ -40,7 +41,7 @@
 	  <%# c = City.find_by_city_name_pinyin('langfangshi') %>
 	  <%# h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime > ?", 4.days.ago).group_by_day(:forecast_datetime, format: "%HZ\n %d%b").average(:AQI) %>
 	  <%# h.each {|k,v| h[k] = v.round}%>
-	  <%= column_chart @fore_group_day, height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"},subtitle:{text:"2015-04-12_21:00       +  120h"}}  %>
+	  <%= column_chart @fore_group_day, height: "600px", library: {title:{text:"City_forecast_AQI_day_compare"}}  %>
   </div>
 
   <table class="table table-striped" id="fore_avg_aqi">
@@ -54,11 +55,38 @@
 	  <% @fore_group_day.each{ |key,value| %>
 		  <tr>
 		  <% unless value == 0 %>
-			  <td><%= key[0].strftime("%Y-%m-%d") %></td>
+			  <td><%= key[0] %></td>
 			  <td><%= key[1] %> </td>
 			  <td><%= value %></td>
 		  <% end %>
 		  </tr>
+	  <% } %>
+  </table>
+
+  <h2>当天的预报均值和监测均值对比表</h2>
+  <table class="table table-striped" id="fore_monitor_compare">
+	  <tr>
+		  <th>城市</th>
+		  <th>今天的监测日均值</th>
+		  <th>今天的预报日均值</th>
+		  <th>预报偏差</th>
+		  <th>预报发布时间</th>
+		  <!--<th>综合指数</th>-->
+	  </tr>
+
+	  <% @diff_monitor_forecast.each{ |d| %>
+	  	  <% if d[3] > 50 %>
+		  <tr style="color:#ff0000">
+		  <% else %>
+		  <tr>
+		  <% end %>
+			  <td><%= d[0] %></td>
+			  <td><%= d[1] %> </td>
+			  <td><%= d[2] %></td>
+		  	  <td><%= d[3] %></td>
+		  	  <td><%= d[4] %></td>
+		  </tr>
+		  
 	  <% } %>
   </table>
 

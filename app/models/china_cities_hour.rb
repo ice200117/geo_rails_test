@@ -2,6 +2,24 @@ class ChinaCitiesHour < ActiveRecord::Base
 	belongs_to :cities
 	validates_uniqueness_of :city_id, :scope => :data_real_time
 
+	def self.today_avg(city_name_pinyin=nil,spe="AQI")
+		city_avg = {}
+		if city_name_pinyin
+			c = City.find_by_city_name_pinyin(city_name_pinyin)
+			f = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day).average(spe)
+			city_avg[c.city_name] = f.round if f
+		else
+			#cs = City.includes(:china_cities_hours)
+			cs = City.all
+			d = 
+			cs.each do |c|
+				f = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day).average(spe)
+				city_avg[c.city_name] = f.round if f
+			end
+		end
+		city_avg
+	end
+
 	def self.get_real_monitor_data(city_name_pinyin)
 		c = City.find_by_city_name_pinyin(city_name_pinyin)
 		d = c.china_cities_hours.last
@@ -48,5 +66,13 @@ class ChinaCitiesHour < ActiveRecord::Base
 		data_arr
 	end
 
+	def self.history_data(city, start_time)
+		d = city.china_cities_hours.group_by_day(:data_real_time, range: start_time..Time.now).average(:AQI)
+		hs = {}
+		d.each do |k,v|
+			hs[[city.city_name+'监测值', k.strftime("%d%b")]] = v.round
+		end
+		hs
+	end
 
 end

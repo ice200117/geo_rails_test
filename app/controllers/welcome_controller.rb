@@ -105,7 +105,18 @@ class WelcomeController < ApplicationController
 	end
 
 	def bar
-		params[:c] ? (id =  params[:c][:city_id]) : (id = City.find_by city_name_pinyin: 'langfangshi')
+		if params[:c] 
+			(id =  params[:c][:city_id]) 
+		else
+			@diff_monitor_forecast = []
+			(id = City.find_by city_name_pinyin: 'langfangshi')
+			monitor_today_avg = ChinaCitiesHour.today_avg
+			forecast_today_avg = HourlyCityForecastAirQuality.today_avg
+			monitor_today_avg.each do |k,v|
+				d = monitor_today_avg[k] - forecast_today_avg[k].values[0]
+				@diff_monitor_forecast << [ k, monitor_today_avg[k], forecast_today_avg[k].values[0], d.abs, forecast_today_avg[k].keys[0]]
+			end
+		end
 		c = City.find(id)
 		if params[:start_date] && params[:end_date]
 			sd = Time.local(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
@@ -116,15 +127,23 @@ class WelcomeController < ApplicationController
 			hss.each {|h| hs << h if h.forecast_datetime >= sd && h.forecast_datetime <= ed }
 		else
 			hs = c.hourly_city_forecast_air_qualities.last(120)
-		end
+		end 
+
+		md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
 		#@chart = [{name: c.city_name, data: hs.group_by_hour(:forecast_datetime).average("AQI")}]
-		@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime.strftime("%H\n %d%b"),  h.AQI]} }]
+		#@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime.strftime("%H\n %d%b"),  h.AQI]} }]
+		@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime.strftime("%Y-%m-%d %H"),  h.AQI]} }]
+		@chart << {name: '监测值', data: md.map { |h| [ h.data_real_time.strftime("%Y-%m-%d %H"),  h.AQI] } }
 		#@chart = c.hourly_city_forecast_air_qualities.group_by_hour(:forecast_datetime).average("AQI")
 
 
 		@fore_group_day = {}
-		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime > ?", 7.days.ago).group_by_day(:forecast_datetime, format: "%HZ\n %d%b").average(:AQI)
-		h.each {|k,v| @fore_group_day[k] = v.round}
+		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime >= ?", 6.days.ago.beginning_of_day).group_by_day(:forecast_datetime, format: "%d%b").average(:AQI)
+		h.each {|k,v| k[0] = k[0].strftime("%d%b"); @fore_group_day[k] = v.round}
+
+		#获取过去几天的监测值
+		md = ChinaCitiesHour.history_data(c, 6.days.ago.beginning_of_day)
+		@fore_group_day.merge!(md)
 
 		respond_to do |format|
 			format.html { }

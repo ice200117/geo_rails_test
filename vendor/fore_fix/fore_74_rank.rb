@@ -30,13 +30,15 @@ CityEnum.china_city_74.each do |city_name|
 		city_ary[time] << hs
 	end
 end
+
 #进行排名
 city_ary.each do |k,v|
 	city_ary[k] = v.sort_by{|a| a[:aqi]}
 end
 #写入廊坊市
 city_ary.each do |k,v|
-	for e in (v.length-1..0)
+	for e in (0..v.length-1)
+		e = v.length-1 - e
 		if v[e][:pinyin] == 'langfangshi'
 			f.puts(k+' '+v[e][:city]+' '+'AQI: '+v[e][:aqi].to_s+' '+(e+1).to_s)
 		end
@@ -46,9 +48,9 @@ f.puts('---74city---')
 #写入74城市
 city_ary.each do |k,v|
 	f.puts('---'+k+'---')
-	for e in (v.length-1..0)
+	for e in (0..v.length-1)
+		e = v.length-1 - e
 		line = k+' '+v[e][:city]+' '+v[e][:pinyin]+' AQI: '+v[e][:aqi].to_s+' RANK: '+(e+1).to_s
-		puts line
 		f.puts(line)
 	end		
 end
