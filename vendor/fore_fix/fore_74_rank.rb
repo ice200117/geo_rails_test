@@ -49,8 +49,9 @@ f.puts('---74city---')
 city_ary.each do |k,v|
 	f.puts('---'+k+'---')
 	for e in (0..v.length-1)
+		n=e+1
 		e = v.length-1 - e
-		line = k+' '+v[e][:city]+' '+v[e][:pinyin]+' AQI: '+v[e][:aqi].to_s+' RANK: '+(e+1).to_s
+		line = k+' '+v[e][:city]+' '+v[e][:pinyin]+' AQI: '+v[e][:aqi].to_s+' RANK: '+(n).to_s
 		f.puts(line)
 	end		
 end

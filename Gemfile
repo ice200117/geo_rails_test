@@ -84,3 +84,5 @@ gem 'spreadsheet'
 gem 'chinese_lunar'
 
 gem 'redis'
+
+gem 'jquery-datatables-rails' 

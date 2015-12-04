@@ -44,12 +44,12 @@
 	  <%= column_chart @fore_group_day, height: "600px", library: {title:{text:"City_forecast_AQI_day_compare"}}  %>
   </div>
 
+  <!--
   <table class="table table-striped" id="fore_avg_aqi">
 	  <tr>
 		  <th>发布时间</th>
 		  <th>预报时间</th>
 		  <th>AQI</th>
-		  <!--<th>综合指数</th>-->
 	  </tr>
 
 	  <% @fore_group_day.each{ |key,value| %>
@@ -62,9 +62,11 @@
 		  </tr>
 	  <% } %>
   </table>
+  -->
 
   <h2>当天的预报均值和监测均值对比表</h2>
-  <table class="table table-striped" id="fore_monitor_compare">
+  <table class="display" id="fore_monitor_compare" cellspacing="0" width="100%">
+	  <thead>
 	  <tr>
 		  <th>城市</th>
 		  <th>今天的监测日均值</th>
@@ -73,6 +75,9 @@
 		  <th>预报发布时间</th>
 		  <!--<th>综合指数</th>-->
 	  </tr>
+	  </thead>
+
+	  <tbody>
 
 	  <% @diff_monitor_forecast.each{ |d| %>
 	  	  <% if d[3] > 50 %>
@@ -88,7 +93,15 @@
 		  </tr>
 		  
 	  <% } %>
+	  </tbody>
   </table>
 
 </div>
 
+<script>
+	$(document).ready(function() {
+		$('#fore_monitor_compare').DataTable( {
+			"order": [[ 3, "desc" ]]
+		} );
+	});
+</script>

@@ -117,6 +117,7 @@ class WelcomeController < ApplicationController
 				@diff_monitor_forecast << [ k, monitor_today_avg[k], forecast_today_avg[k].values[0], d.abs, forecast_today_avg[k].keys[0]]
 			end
 		end
+
 		c = City.find(id)
 		if params[:start_date] && params[:end_date]
 			sd = Time.local(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
@@ -149,7 +150,7 @@ class WelcomeController < ApplicationController
 			format.html { }
 			format.js   { }
 			format.json {
-				#render json: @chart
+				render json: @diff_monitor_forecast
 			}
 		end
 	end
