@@ -109,6 +109,7 @@ class WelcomeController < ApplicationController
 		if params[:c] 
 			(id =  params[:c][:city_id]) 
 		else
+      # Table 1: 全国城市当天监测与预报日均值差值
 			(id = City.find_by city_name_pinyin: 'langfangshi')
 			monitor_today_avg = ChinaCitiesHour.today_avg
 			forecast_today_avg = HourlyCityForecastAirQuality.today_avg
@@ -118,6 +119,7 @@ class WelcomeController < ApplicationController
 			end
 		end
 
+    # Table 2: 城市监测与预报值小时值对比
 		c = City.find(id)
 		if params[:start_date] && params[:end_date]
 			sd = Time.local(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
@@ -131,18 +133,16 @@ class WelcomeController < ApplicationController
 		end 
 
 		md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
-		#@chart = [{name: c.city_name, data: hs.group_by_hour(:forecast_datetime).average("AQI")}]
-		#@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime.strftime("%H\n %d%b"),  h.AQI]} }]
-		@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime.strftime("%Y-%m-%d %H"),  h.AQI]} }]
-		@chart << {name: '监测值', data: md.map { |h| [ h.data_real_time.strftime("%Y-%m-%d %H"),  h.AQI] } }
-		#@chart = c.hourly_city_forecast_air_qualities.group_by_hour(:forecast_datetime).average("AQI")
+		@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime,  h.AQI]} }]
+		@chart << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.AQI] } }
 
 
+    # Table 3: 过去一星期城市监测与预报值日均值对比
 		@fore_group_day = {}
-		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime >= ?", 6.days.ago.beginning_of_day).group_by_day(:forecast_datetime, format: "%d%b").average(:AQI)
-		h.each {|k,v| k[0] = k[0].strftime("%d%b"); @fore_group_day[k] = v.round}
+		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime >= ?", 6.days.ago.beginning_of_day).group_by_day(:forecast_datetime).average(:AQI)
+    h.each {|k,v| k.map!{|x| x.strftime("%d%b")}; @fore_group_day[k] = v.round}
 
-		#获取过去几天的监测值
+		# 获取过去几天的监测值
 		md = ChinaCitiesHour.history_data(c, 6.days.ago.beginning_of_day)
 		@fore_group_day.merge!(md)
 
