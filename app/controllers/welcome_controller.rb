@@ -105,10 +105,10 @@ class WelcomeController < ApplicationController
 	end
 
 	def bar
+		@diff_monitor_forecast = []
 		if params[:c] 
 			(id =  params[:c][:city_id]) 
 		else
-			@diff_monitor_forecast = []
 			(id = City.find_by city_name_pinyin: 'langfangshi')
 			monitor_today_avg = ChinaCitiesHour.today_avg
 			forecast_today_avg = HourlyCityForecastAirQuality.today_avg

@@ -45,7 +45,7 @@ strtime = Time.new.strftime("%Y%m%d")+'08'
 #strtime = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
 # puts strtime
 
-strtime = '2015120108'
+strtime = '2015120308'
 puts strtime
 
 path = "/mnt/share/Temp/station/#{strtime[0,8]}/"

@@ -41,9 +41,13 @@ def parse_line(line, c)
 end
 
 #strtime = Time.mktime(Time.new.strftime("%Y%m%d")+'08')
-strtime = Time.new.strftime("%Y%m%d")+'08'
+if Time.new.hour >18
+	strtime = Time.new.strftime("%Y%m%d")+'08'
+else
+	strtime = (Time.new-1.day).strftime("%Y%m%d")+'08'
+end
 #strtime = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
-puts strtime
+puts 'deal date = ', strtime
 
 #strtime = '2015040808'
 #puts strtime
@@ -83,7 +87,7 @@ cs.each do |c|
     parse_line(line, c)
   end
   f.close
-  puts fn+" successful!"
+  puts fn+" update database successful!"
   #end
 end
 

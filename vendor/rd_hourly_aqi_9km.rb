@@ -84,7 +84,7 @@ cs.each do |c|
   parse_line(line, c)
   end
   f.close
-  puts fn+" successful!"
+  puts fn+" update database successful!"
   #end
 end
 

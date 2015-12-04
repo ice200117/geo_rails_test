@@ -9,7 +9,8 @@ class DaliyAvg
 		strtime = Time.now.yesterday.strftime("%Y%m%d")
 		time = strtime+'08'
 		#路径设定
-		path = "/mnt/share/Temp/station_orig/#{strtime[0,8]}/"
+		# path = "/mnt/share/Temp/station_orig/#{strtime[0,8]}/"
+		path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
 		filename = '25km_daliy.txt'
 		Dir::mkdir(path) if !Dir.exists?(path)
 		File.delete(path+filename) if File.exists?(path+filename)
@@ -47,7 +48,8 @@ class DaliyAvg
 		strtime = Time.now.strftime("%Y%m%d")
 		time = strtime.to_time.yesterday.strftime("%Y%m%d")+'20'
 		#路径设定
-		path = "/mnt/share/Temp/station_9km_orig/#{strtime[0,8]}/"
+		# path = "/mnt/share/Temp/station_9km_orig/#{strtime[0,8]}/"
+		path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 		filename = '9km_daliy.txt'
 		Dir::mkdir(path) if !Dir.exists?(path)
 		File.delete(path+filename) if File.exists?(path+filename)
