@@ -33,7 +33,7 @@
 
   <div id="line_chart1">
     <%#= column_chart bar_welcome_path,  height: "600px", library: {title:{text:"Station_Langfang_AQI      CUACE (CAMS)"}}%>
-	<%= line_chart @chart,  height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text:" City_AQI      CUACE (CAMS)"}} %>
+	<%= line_chart @chart,  height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text:" City_AQI      CUACE (CAMS)"} } %>
   </div>
 
   <div id='fore_compare' class="col-xs-12">
@@ -100,6 +100,7 @@
 
 <script>
 	$(document).ready(function() {
+
 		$('#fore_monitor_compare').DataTable( {
 			"order": [[ 3, "desc" ]]
 		} );

@@ -6,6 +6,6 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/vagrant/Meteo
 
 echo 'fix 9km txt'
 cd /vagrant/geo_rails_test/
-rails  r vendor/fore_fix/fore_fix_9km.rb 
+/home/vagrant/.rbenv/shims/rails r vendor/fore_fix/fore_fix_9km.rb 
 #rails  r vendor/fore_fix/fore_74_rank.rb
 
