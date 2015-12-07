@@ -256,8 +256,9 @@ end
 
 #脚本异常返回日志
 def out_log(log_string)
-	this_log = Logger.new("/vagrant/geo_rails_test/log/getdata.log")
-	this_log.info(log_string)
+	this_log = File.open("/vagrant/geo_rails_test/log/getdata.log","a")
+	this_log.puts(log_string)
+	this_log.close
 end
 
 #与数据库不一致字段处理
@@ -281,7 +282,8 @@ def save_db_common(model,t,time)
 	# out_log(t['city']) if t['city'].size <3
 	city = City.find_by_city_name(t['city'].to_s+'市')
 	city = City.find_by_city_name(t['city']) if city.nil?
-	city = City.find_by_city_name(CityEnum.all_city(t['city'])) if city.nil?
+	city = City.find_by_city_name(CityEnum.city_short(t['city'])) if city.nil?
+	out_log(t['city']) if city.nil?	
 	return if city.nil?	
 	day_city=model.new
 	day_city.city_id=city.id

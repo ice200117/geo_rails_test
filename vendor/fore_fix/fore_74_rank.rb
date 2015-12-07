@@ -38,9 +38,10 @@ end
 #写入廊坊市
 city_ary.each do |k,v|
 	for e in (0..v.length-1)
+		n = e+1
 		e = v.length-1 - e
 		if v[e][:pinyin] == 'langfangshi'
-			f.puts(k+' '+v[e][:city]+' '+'AQI: '+v[e][:aqi].to_s+' '+(e+1).to_s)
+			f.puts(k+' '+v[e][:city]+' '+'AQI: '+v[n][:aqi].to_s+' '+' RANK: '+(n).to_s)
 		end
 	end		
 end

@@ -114,6 +114,9 @@ class WelcomeController < ApplicationController
 			monitor_today_avg = ChinaCitiesHour.today_avg
 			forecast_today_avg = HourlyCityForecastAirQuality.today_avg
 			monitor_today_avg.each do |k,v|
+				puts '================'+k
+				next unless forecast_today_avg[k]
+				puts '----------------'+k
 				d = monitor_today_avg[k] - forecast_today_avg[k].values[0]
 				@diff_monitor_forecast << [ k, monitor_today_avg[k], forecast_today_avg[k].values[0], d.abs, forecast_today_avg[k].keys[0]]
 			end

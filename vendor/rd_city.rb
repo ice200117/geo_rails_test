@@ -15,15 +15,14 @@ IO.foreach("vendor/station.EXT") do |line|
   city_name_pinyin = line[25,18].strip
   city_name  = line[46..-4].strip
 
-  next if City.find_by_city_name(city_name)!=nil
 
+  next if City.find_by_city_name(city_name)
   c = City.new
-  c.city_name       =  city_name
-  c.city_name_pinyin       =  city_name_pinyin
-  c.post_number       =  post_number
+
+  c.city_name = city_name
+  c.city_name_pinyin = city_name_pinyin
+  c.post_number = post_number
   c.longitude = longitude
   c.latitude = latitude
   c.save 
 end
-
-

@@ -106,7 +106,7 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 				i += 1
 			end
 		end
-
-		{fs[0].publish_datetime.strftime("%Y-%m-%d_%H") => (aqi_sum/i).round } if i > 0
+		i > 0 ? {fs[0].publish_datetime.strftime("%Y-%m-%d_%H") => (aqi_sum/i).round }   : nil
+		
 	end
 end
