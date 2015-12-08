@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_cookie
 //= require jquery_ujs
+//= require dataTables/jquery.dataTables
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require jquery-migrate-min

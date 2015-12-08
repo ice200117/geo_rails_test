@@ -76,4 +76,37 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 			lev = '严重污染'
 		end
 	end
+
+	def self.today_avg(city_name_pinyin=nil,spe="AQI")
+		city_avg = {}
+		if city_name_pinyin
+			c = City.find_by_city_name_pinyin(city_name_pinyin)
+
+			
+			city_avg[c.city_name] = city_avg_today(c,spe) if c
+		else
+			#cs = City.includes(:china_cities_hours)
+			cs = City.where("id < 388")
+			cs.each do |c|
+				city_avg[c.city_name] = city_avg_today(c,spe)
+			end
+		end
+		city_avg
+	end
+
+	def self.city_avg_today(city=nil,spe="AQI")
+		return nil unless city
+		fs = city.hourly_city_forecast_air_qualities.last(120)
+
+		aqi_sum = 0
+		i = 0
+		fs.each do |f|
+			if f.forecast_datetime >= Time.zone.now.beginning_of_day and f.forecast_datetime <= Time.zone.now
+				aqi_sum += f.AQI
+				i += 1
+			end
+		end
+		i > 0 ? {fs[0].publish_datetime.strftime("%Y-%m-%d_%H") => (aqi_sum/i).round }   : nil
+		
+	end
 end

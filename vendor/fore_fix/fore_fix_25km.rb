@@ -17,20 +17,14 @@ path = "/mnt/share/Temp/station_orig/#{strtime[0,8]}/"
 
 # path_fix = "/vagrant/fix/station_25km/#{strtime[0,8]}/"
 #path_fix = "/mnt/share/Temp/station_orig/#{strtime[0,8]}/"
-path_fix = "/mnt/share/Temp/station_orig/#{strtime[0,8]}/"
+path_fix = "/mnt/share/Temp/station/#{strtime[0,8]}/"
 
-begin
 Dir::mkdir(path_fix) if !Dir.exists?(path_fix)
-File.delete(path_fix+"avg.txt") if File.exist?(path_fix+"avg.txt")
 f_avg=File.new(path_fix+"avg.txt","w")
 
 Dir::mkdir(path_fix) if !Dir.exists?(path_fix)
-File.delete(path_fix+"after_avg.txt") if File.exist?(path_fix+"after_avg.txt")
 after_avg=File.new(path_fix+"after_avg.txt","w")
 after_avg.puts(ChinaCitiesHour.last.data_real_time) 
-rescue
-	p 'delete file error!'
-end
 
 default_25km_city = default_25km()
 cs = City.all
@@ -48,7 +42,6 @@ cs.each do |c|
 
 	if ChinaCitiesHour.find_by_city_id(c.id).nil?
 		# FileUtils.cp f,path_fix+fnout
-		File.delete(path_fix+fnout) if File::exist?(path_fix+fnout)
 		file = File.open(path_fix+fnout,"w")
 		f.rewind
 		first_line = f.readlines
@@ -115,7 +108,6 @@ cs.each do |c|
 	#end
 	after_avg.puts(c.city_name_pinyin.to_s+" "+avg.to_s) #平均系数写入after_avg.txt
 
-	File.delete(path_fix+fnout) if File::exist?(path_fix+fnout)
 	file = File.open(path_fix+fnout,"w")
 	f.rewind
 	first_line = f.readlines

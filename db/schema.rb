@@ -16,7 +16,6 @@ ActiveRecord::Schema.define(version: 20151118072028) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
-  enable_extension "postgis_topology"
 
   create_table "all_city_hours", force: true do |t|
     t.integer  "city_id"
@@ -126,6 +125,27 @@ ActiveRecord::Schema.define(version: 20151118072028) do
     t.spatial  "latlon",        limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.float    "longitude"
     t.float    "latitude"
+  end
+
+  create_table "forecasts", force: true do |t|
+    t.integer  "city_id"
+    t.float    "SO2"
+    t.float    "NO2"
+    t.float    "CO"
+    t.float    "O3"
+    t.float    "pm10"
+    t.float    "pm25"
+    t.float    "AQI"
+    t.string   "quality"
+    t.string   "main_pollutant"
+    t.string   "weather"
+    t.string   "temp"
+    t.string   "humi"
+    t.string   "winddirection"
+    t.string   "windspeed"
+    t.datetime "data_real_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "hourly_city_forecast_air_qualities", force: true do |t|

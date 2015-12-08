@@ -117,12 +117,12 @@ def default_9km
 	# zhengzhoushi = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.28,'zhongdu'=>1.35,'yanzhong' => 1.55}
 	# hetiandiq = {'you'=>1.1,'yellow' =>2.28,'qingdu'=>1.38,'zhong'=>1.08,'zhongdu'=>1.1,'yanzhong'=>1.1}
 	# kashidiqu = hetiandiq 
-	cities_default['baodingshi'] = {'you' =>0.90,'yellow' => 0.94,'qingdu'=>1.01,'zhong'=>1.55,'zhongdu'=>1.78,'yanzhong'=>1.91 }
-	cities_default['taiyuanshi'] = {'you' =>1.00,'yellow' => 1.34,'qingdu'=>1.51,'zhong'=>1.65,'zhongdu'=>2.78,'yanzhong'=>2.91 }
-	cities_default['langfangshi'] = {'you' =>0.90,'yellow' =>0.90,'qingdu'=>1,'zhong'=>1,'zhongdu'=>1.35,'yanzhong'=>1.95 }
-    cities_default['beijingshi'] = {'you' =>0.90,'yellow' =>0.94,'qingdu'=>1.01,'zhong'=>1.44,'zhongdu'=>1.85,'yanzhong'=>1.95 }
-	cities_default['shenyangshi'] = {'you' =>0.90,'yellow' => 0.94,'qingdu'=>1.81,'zhong'=>0.85,'zhongdu'=>0.98,'yanzhong'=>1.81 }
-	cities_default['changchunshi'] = {'you' =>0.90,'yellow' => 0.94,'qingdu'=>1.81,'zhong'=>0.85,'zhongdu'=>0.98,'yanzhong'=>1.81 }
+	cities_default['baodingshi'] = {'you' =>0.70,'yellow' => 0.94,'qingdu'=>0.71,'zhong'=>0.95,'zhongdu'=>1.08,'yanzhong'=>1.01 }
+	cities_default['taiyuanshi'] = {'you' =>0.90,'yellow' => 1.04,'qingdu'=>1.11,'zhong'=>1.25,'zhongdu'=>1.48,'yanzhong'=>1.61 }
+	cities_default['langfangshi'] = {'you' =>0.70,'yellow' =>0.90,'qingdu'=>0.85,'zhong'=>0.81,'zhongdu'=>0.95,'yanzhong'=>0.95 }
+    cities_default['beijingshi'] = {'you' =>0.70,'yellow' =>0.94,'qingdu'=>0.81,'zhong'=>1.04,'zhongdu'=>1.05,'yanzhong'=>1.15 }
+	cities_default['shenyangshi'] = {'you' =>0.80,'yellow' => 0.94,'qingdu'=>1.01,'zhong'=>0.85,'zhongdu'=>0.98,'yanzhong'=>1.11 }
+	cities_default['changchunshi'] = {'you' =>0.80,'yellow' => 0.94,'qingdu'=>1.81,'zhong'=>0.85,'zhongdu'=>0.98,'yanzhong'=>1.11 }
 	cities_default['other'] = {'you' =>0.8,'yellow' =>0.9,'qingdu'=>0.90,'zhong'=>1.01,'zhongdu'=>1.34,'yanzhong'=>1.51}
 	return cities_default
 end
@@ -152,7 +152,17 @@ def default_25km
 	cities_default['changchunshi'] = {'you' =>0.9,'yellow' =>0.9,'qingdu'=>0.98,'zhong'=>0.88,'zhongdu'=>1.08,'yanzhong'=>1.20}
 	cities_default['haerbinshi'] = {'you' =>0.9,'yellow' =>0.9,'qingdu'=>0.98,'zhong'=>0.88,'zhongdu'=>1.08,'yanzhong'=>1.20}
 	#end 东北
-	cities_default['jinanshi'] = {'you' =>0.9,'yellow' =>1,'qingdu'=>0.9,'zhong'=>1.1,'zhongdu'=>1.35,'yanzhong'=>1.55 }
+	#shangdongshen
+	jinanshi = {'you' =>0.9,'yellow' =>1,'qingdu'=>0.9,'zhong'=>1.1,'zhongdu'=>1.35,'yanzhong'=>1.55 }
+	cities_default['jinanshi'] = jinanshi 
+	cities_default['dezhoushi'] = jinanshi
+	cities_default['liaochengshi'] = jinanshi
+	cities_default['hezeshi'] = jinanshi
+	cities_default['zaozhuangshi'] = jinanshi
+	cities_default['binzhoushi'] = jinanshi
+	cities_default['weifangshi'] = jinanshi
+	cities_default['dongyingshi'] = jinanshi
+	#end 
 	#hebeishen
 	hengshuishi = {'you' =>1,'yellow' =>1,'qingdu'=>1.08,'zhong'=>1.19,'zhongdu'=>1.45,'yanzhong'=>1.85 }
 	cities_default['hengshuishi'] = hengshuishi
@@ -164,10 +174,10 @@ def default_25km
 	cities_default['cangzhoushi'] = hengshuishi
 	cities_default['qinhuangdaoshi'] = hengshuishi
 	cities_default['zhangjiakoushi'] = hengshuishi
-	cities_default['baodingshi'] = {'you' =>0.88,'yellow' => 1.08,'qingdu'=>1.1,'zhong'=>1.2,'zhongdu'=>1.65,'yanzhong'=>2.15 }
-	cities_default['langfangshi'] = {'you' =>0.8,'yellow' =>0.88,'qingdu'=>1,'zhong'=>1,'zhongdu'=>1.65,'yanzhong'=>2.05 }
+	cities_default['baodingshi'] = {'you' =>0.58,'yellow' => 0.88,'qingdu'=>1.05,'zhong'=>0.95,'zhongdu'=>1.05,'yanzhong'=>0.85 }
+	cities_default['langfangshi'] = {'you' =>0.6,'yellow' =>0.75,'qingdu'=>1,'zhong'=>0.95,'zhongdu'=>0.95,'yanzhong'=>1.05 }
 	#end
-	cities_default['hangzhoushi'] = {'you' =>0.9,'yellow' =>0.8,'qingdu'=>1,'zhong'=>1.08,'zhongdu'=>1.88,'yanzhong'=>1.1}
+	cities_default['hangzhoushi'] = {'you' =>0.9,'yellow' =>1.0,'qingdu'=>1.25,'zhong'=>1.38,'zhongdu'=>1.88,'yanzhong'=>1.35}
 	cities_default['zhengzhoushi'] = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.28,'zhongdu'=>1.35,'yanzhong' => 1.55}
 	cities_default['hetiandiqu'] = {'you' => 1.1,'yellow' =>2.28,'qingdu'=>1.38,'zhong'=>1.08,'zhongdu'=>1.1,'yanzhong'=>1.1}
 	cities_default['kashidiqu'] = cities_default['hetiandiqu'] 

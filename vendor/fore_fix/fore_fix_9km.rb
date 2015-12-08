@@ -7,25 +7,24 @@ puts "--start--"
 yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
 strtime = Time.now.strftime("%Y%m%d")
 
-# strtime = '20151118' 
-# yesterday_str = '2015111720' 
+# strtime = '20151128' 
+# yesterday_str = '2015112720' 
 puts strtime
 puts yesterday_str
 
 #path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
 path = "/mnt/share/Temp/station_9km_orig/#{strtime[0,8]}/"
 
-#path_fix = "/vagrant/fix/station_9km/#{strtime[0,8]}/"
-path_fix = "/mnt/share/Temp/station_9km_orig/#{strtime[0,8]}/"
+# path_fix = "/vagrant/fix/station_9km/#{strtime[0,8]}/"
+# path_fix = "/mnt/share/Temp/station_9km_orig/#{strtime[0,8]}/"
+path_fix = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 
 Dir::mkdir(path_fix) if !Dir.exists?(path_fix)
-File.delete(path_fix+"avg.txt") if File.exist?(path_fix+"avg.txt")
-f_avg=File.new(path_fix+"avg.txt","w")
+f_avg=File.open(path_fix+"avg.txt","w")
 
 Dir::mkdir(path_fix) if !Dir.exists?(path_fix)
-File.delete(path_fix+"after_avg.txt") if File.exist?(path_fix+"after_avg.txt")
-after_avg=File.new(path_fix+"after_avg.txt","w")
-after_avg.puts(ChinaCitiesHour.last.data_real_time)
+after_avg=File.open(path_fix+"after_avg.txt","w")
+after_avg.puts(Time.now)
 
 default_9km_city = default_9km()
 cs = City.all
@@ -46,7 +45,6 @@ cs.each do |c|
 	#begin判断预报城市是否与观测城市匹配
 	if ChinaCitiesHour.find_by_city_id(c.id).nil?
 		# FileUtils.cp f,path_fix+fnout
-		File.delete(path_fix+fnout) if File::exist?(path_fix+fnout)
 		file = File.open(path_fix+fnout,"w")
 		f.rewind
 		first_line = f.readlines
@@ -110,8 +108,6 @@ cs.each do |c|
 		end
 	end
 	after_avg.puts(c.city_name_pinyin.to_s+" "+avg.to_s) #最终系数写入文件
-
-	File.delete(path_fix+fnout) if File::exist?(path_fix+fnout)
 	file = File.open(path_fix+fnout,"w")
 	f.rewind
 	first_line = f.readlines

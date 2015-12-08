@@ -108,6 +108,7 @@ class WelcomeController < ApplicationController
 	def bar
 		params[:c] ? (id =  params[:c][:city_id]) : (id = City.find_by city_name_pinyin: 'langfangshi')
 		c = City.find(id)
+
 		if params[:start_date] && params[:end_date]
 			sd = Time.local(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
 			ed = Time.local(params[:end_date][:year].to_i, params[:end_date][:month].to_i, params[:end_date][:day].to_i,23)
@@ -118,6 +119,7 @@ class WelcomeController < ApplicationController
 		else
 			hs = c.hourly_city_forecast_air_qualities.last(120)
 		end
+
 		#@chart = [{name: c.city_name, data: hs.group_by_hour(:forecast_datetime).average("AQI")}]
 		@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime.strftime("%H\n %d%b"),  h.AQI]} }]
 		#@chart = c.hourly_city_forecast_air_qualities.group_by_hour(:forecast_datetime).average("AQI")
