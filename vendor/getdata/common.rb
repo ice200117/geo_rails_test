@@ -281,8 +281,8 @@ def save_db_common(model,t,time)
 	# out_log(t['city']) if t['city'].size <3
 	city = City.find_by_city_name(t['city'].to_s+'市')
 	city = City.find_by_city_name(t['city']) if city.nil?
-	city = City.find_by_city_name(CityEnum.all_city(t['city'])) if city.nil?
-	return if city.nil?	
+	city = City.find_by_city_name(CityEnum.city_short(t['city'])) if city.nil?
+	byebug if city.nil?	
 	day_city=model.new
 	day_city.city_id=city.id
 	day_city.SO2=t['so2'] if t['so2'] != nil

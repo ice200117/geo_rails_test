@@ -138,8 +138,9 @@ class WelcomeController < ApplicationController
 
 	def get_history_data
 		model = params[:model]
-		time = params[:time]
-		change_data_type(get_db_data(model.constantiz,time))
+		time = params[:time].to_time
+		data = change_data_type(get_db_data(model.constantize,time))
+		render :json=>data
 	end
 
 	#1.三组按钮组间关系：根据三组按钮之间的关系确定编程顺序，先通过判断按天还是按小时从而确定查询天表还是小时表
@@ -433,6 +434,19 @@ class WelcomeController < ApplicationController
 
 	#获取预测数据
 	def get_forecast
+		city_name_encode = ERB::Util.url_encode("保定市")
+		options = Hash.new
+		headers={'apikey' => 'f8484c1661a905c5ca470b0d90af8d9f'}
+		options[:headers] = headers
+		url = "http://apis.baidu.com/showapi_open_bus/weather_showapi/address?area=#{city_name_encode}&needMoreDay=1"
+		response = HTTParty.get(url,options)
+		json = JSON.parse(response.body)
+		puts 0 if json['showapi_res_error'] == 0
+		weather = Array.new
+		json['showapi_res_body'].each do |k,v|
+			weather << get_tq(v) if k[-1].to_i > 0
+		end
+
 		response = HTTParty.get('http://www.izhenqi.cn/api/getforecast_weather.php')
 		json_data = JSON.parse(response)
 		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('baodingshi')
@@ -443,11 +457,49 @@ class WelcomeController < ApplicationController
 		end
 		json_data["weather_forecast"]
 	end
-
+	#天气处理与get_forecast合作使用
+	def get_tq(f1)
+		tq = Hash.new
+		tq['tq'] = f1['day_weather']
+		if f1['day_air_temperature'][-1] == '℃'
+			tq['temp1'] = f1['day_air_temperature'][0,f1['day_air_temperature'].size-1]
+		else
+			tq['temp1'] = f1['day_air_temperature'] 
+		end
+		tq['temp2'] = f1['night_air_temperature']
+		if f1['day_wind_direction'] == '无持续风向' && f1['night_wind_direction'] == '无持续风向'
+			tq['wd'] = f1['day_wind_direction']
+		elsif f1['day_wind_direction'] != '无持续风向' && f1['night_wind_direction'] == '无持续风向'
+			tq['wd'] = f1['day_wind_direction']
+		elsif f1['day_wind_direction'] == '无持续风向' && f1['night_wind_direction'] != '无持续风向'
+			tq['wd'] = f1['night_wind_direction']
+		elsif f1['day_wind_direction'] != '无持续风向' && f1['night_wind_direction'] != '无持续风向'
+			if f1['day_wind_direction'] == f1['night_wind_direction'] 
+				tq['wd'] = f1['day_wind_direction']
+			elsif f1['day_wind_direction'] != f1['night_wind_direction'] 
+				tq['wd'] = f1['day_wind_direction']+'~'+f1['night_wind_direction']
+			end
+		end
+		dw = f1['day_wind_power']
+		nw = f1['night_wind_power']
+		def wind_power(wp)
+			return wp[0,2] if wp[0,2] == '微风'
+			for e in (0...wp.size)
+				return wp[0,e+1] if wp[e] == '级'
+			end		
+		end
+		dw = wind_power(dw)
+		nw = wind_power(nw)
+		if dw == nw
+			tq['ws'] = dw
+		elsif dw != nw
+			dw[0].to_i > nw[0].to_i ? tq['ws'] = nw + '~' + dw : tq['ws'] = dw + '~' + nw
+		end
+		tq
+	end
 	#获取预测数据
 	def get_forecast_baoding
-		response = HTTParty.get('http://www.izhenqi.cn/api/getforecast_weather.php')
-		json_data = JSON.parse(response)
+		byebug
 		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('baodingshi')
 		temp.each do |k,v|
 			index=k.yday - Time.now.yday

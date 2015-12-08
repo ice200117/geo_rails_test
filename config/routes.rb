@@ -44,6 +44,7 @@ Rails.application.routes.draw do
    get 'welcome/city_compare_chart' => 'welcome#city_compare_chart'
    get 'welcome/bdqx_compare_chart' => 'welcome#bdqx_compare_chart'
    get 'welcome/get_history_data/:model/:time' => 'welcome#get_history_data'
+   # get 'welcome/get_history_data' => 'welcome#get_history_data'
    get 'welcome/get_forecast_baoding' => 'welcome#get_forecast_baoding'   
 
 

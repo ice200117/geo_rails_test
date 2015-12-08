@@ -18,6 +18,30 @@ ActiveRecord::Schema.define(version: 20151118072028) do
   enable_extension "postgis"
   enable_extension "postgis_topology"
 
+  create_table "all_city_hours", force: true do |t|
+    t.integer  "city_id"
+    t.integer  "post_num"
+    t.float    "SO2"
+    t.float    "NO2"
+    t.float    "CO"
+    t.float    "O3"
+    t.float    "pm10"
+    t.float    "pm25"
+    t.float    "AQI"
+    t.string   "quality"
+    t.string   "main_pollutant"
+    t.string   "weather"
+    t.string   "temp"
+    t.string   "humi"
+    t.string   "winddirection"
+    t.string   "windspeed"
+    t.datetime "data_real_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "all_city_hours", ["post_num"], :name => "index_all_city_hours_on_post_num"
+
   create_table "china_cities_hours", force: true do |t|
     t.integer  "city_id"
     t.float    "SO2"
@@ -137,6 +161,7 @@ ActiveRecord::Schema.define(version: 20151118072028) do
     t.float    "longitude"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.spatial  "lonlat",      limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.integer  "city_id"
     t.integer  "post_number"
   end
