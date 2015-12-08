@@ -1,9 +1,6 @@
 #!/usr/bin/ruby
 
 firstline = true
-cs = City.all
-cs.each { |c| c.destroy }
-
 IO.foreach("vendor/station.EXT") do |line| 
   if firstline
     firstline = false
@@ -15,8 +12,8 @@ IO.foreach("vendor/station.EXT") do |line|
   city_name_pinyin = line[25,18].strip
   city_name  = line[46..-4].strip
 
-  next if City.find_by_city_name(city_name)
-  c = City.new
+  c = City.find_by_post_number(post_number)
+  c = City.new if c == nil
 
   c.city_name = city_name
   c.city_name_pinyin = city_name_pinyin

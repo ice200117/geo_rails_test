@@ -261,15 +261,6 @@ def out_log(log_string)
 	this_log.close
 end
 
-#与数据库不一致字段处理
-def change_diff_cityname(hs)
-	for i in (0...hs[:cities].length)
-		hs[:cities][i]['city']='廊坊开发区' if hs[:cities][i]['city'] =='市辖区'
-		hs[:cities][i]['city']='大厂' if hs[:cities][i]['city'] =='大厂回族自治县'
-	end
-	hs
-end
-
 #保存数据
 def save_db(hs,model)
 	hs[:cities].each do |t|
@@ -279,7 +270,6 @@ end
 
 #保存数据到数据库
 def save_db_common(model,t,time)
-	# out_log(t['city']) if t['city'].size <3
 	city = City.find_by_city_name(t['city'].to_s+'市')
 	city = City.find_by_city_name(t['city']) if city.nil?
 	city = City.find_by_city_name(CityEnum.city_short(t['city'])) if city.nil?

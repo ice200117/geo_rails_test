@@ -11,11 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151118072028) do
+ActiveRecord::Schema.define(version: 20151208083219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+  enable_extension "postgis_topology"
 
   create_table "all_city_hours", force: true do |t|
     t.integer  "city_id"
@@ -72,6 +73,8 @@ ActiveRecord::Schema.define(version: 20151118072028) do
     t.float   "latitude"
     t.spatial "lonlat",           limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.float   "longitude"
+    t.string  "province"
+    t.string  "district"
   end
 
   create_table "counties", force: true do |t|
@@ -127,27 +130,6 @@ ActiveRecord::Schema.define(version: 20151118072028) do
     t.float    "latitude"
   end
 
-  create_table "forecasts", force: true do |t|
-    t.integer  "city_id"
-    t.float    "SO2"
-    t.float    "NO2"
-    t.float    "CO"
-    t.float    "O3"
-    t.float    "pm10"
-    t.float    "pm25"
-    t.float    "AQI"
-    t.string   "quality"
-    t.string   "main_pollutant"
-    t.string   "weather"
-    t.string   "temp"
-    t.string   "humi"
-    t.string   "winddirection"
-    t.string   "windspeed"
-    t.datetime "data_real_time"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "hourly_city_forecast_air_qualities", force: true do |t|
     t.integer  "city_id"
     t.datetime "publish_datetime"
@@ -181,12 +163,9 @@ ActiveRecord::Schema.define(version: 20151118072028) do
     t.float    "longitude"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "lonlat",      limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.integer  "city_id"
     t.integer  "post_number"
   end
-
-  add_index "monitor_points", ["post_number"], :name => "index_monitor_points_on_post_number"
 
   create_table "temp_bd_days", force: true do |t|
     t.integer  "city_id"
