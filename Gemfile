@@ -88,3 +88,6 @@ gem 'chinese_lunar'
 gem 'redis'
 
 gem 'jquery-datatables-rails' 
+
+gem 'rails-perftest'
+gem 'ruby-prof'

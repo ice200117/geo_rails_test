@@ -31,6 +31,7 @@ def set_bd_year(time,id)
 end
 
 def save_db(time,id,flag)
+  
 	day_city = get_db_data(flag,'new',nil)
 	day_city.city_id=id
 	case flag
