@@ -27,7 +27,12 @@ default: &default
 
 development:
   <<: *default
+<<<<<<< HEAD
   database: geo_rails_test_development
+=======
+  # database: geo_rails_test_development
+  database: geo_rails_test_production
+>>>>>>> libaoxi
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -41,11 +46,11 @@ development:
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
   # domain sockets, so uncomment these lines.
-  host: 60.10.135.153
+  # host: 60.10.135.153
 
   # The TCP port the server listens on. Defaults to 5432.
   # If your server runs on a different port number, change accordingly.
-  port: 5432
+  # port: 5432
 
   # Schema search path. The server defaults to $user,public
   #schema_search_path: myapp,sharedapp,public
