@@ -1,5 +1,4 @@
 require_relative './common.rb'
-
 def hour_data_common(hs,model)
 	if hs != false 
 		if model.last.nil? || hs[:time].to_time>model.last.data_real_time
@@ -36,7 +35,4 @@ hs = Hash.new
 hs[:secret] = "70ad4cb02984355c0f08f2e84be72c9c"
 hs[:method] = "GETCITYDATA"
 hs = ten_times_test(ChinaCitiesHour,'all_city_by_hour',hs,'HOUR',nil)
-f = File.open("/vagrant/city.txt","w")
-f.puts(hs)
-f.close
 save_db(hs,ChinaCitiesHour)
