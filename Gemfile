@@ -70,7 +70,9 @@ gem 'bootstrap-will_paginate'
 
 #gem 'codemirror-rails'
 gem 'simple_form', '~> 3.1.0'
+gem 'GB2260', '~> 0.2.0'
 gem 'china_city', '~> 0.0.4'
+
 
 gem 'ruby-netcdf', '~> 0.7.1.1'
 gem 'httparty', '~> 0.13.4'

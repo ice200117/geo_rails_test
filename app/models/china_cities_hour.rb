@@ -14,7 +14,11 @@ class ChinaCitiesHour < ActiveRecord::Base
 			d = 
 			cs.each do |c|
 				f = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day).average(spe)
-				city_avg[c.city_name] = f.round if f
+      if f
+				city_avg[c.city_name] = f.round 
+      else
+        puts 'no monitor data in forecast station ' + c.city_name
+      end
 			end
 		end
 		city_avg
