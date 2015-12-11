@@ -1,4 +1,13 @@
 require_relative './city_enum.rb'
+require 'rexml/document'
+include REXML
+
+#全国实时天气
+def weather_api(citykey = "101250501")
+	response = HTTParty.get('http://wthrcdn.etouch.cn/WeatherApi?citykey='+citykey)
+	data = Hash.from_xml(response.body)
+end
+
 def get_rank_json(web_flag,secretstr,typestr,datestr)
 	datestr=datestr.strftime("%Y-%m-%d") if datestr != nil
 	methodstr = ''
@@ -34,12 +43,7 @@ def get_rank_json(web_flag,secretstr,typestr,datestr)
 			#全国城市小时数据
 			option = {secret:secretstr,method:methodstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+methodstr+typestr) }
 			response = HTTParty.post('http://www.izhenqi.cn/api/dataapi.php',:body => option)
-			Base64.decode64(response.body)
 		end
-		# byebug
-		# f=File.open("/vagrant/geo_rails_test/vendor/test.txt",'w')
-		# f.puts(Base64.decode64(response.body))
-		# f.close
 		json_data = ''
 		if web_flag == 'all_city_by_hour'
 			json_data=JSON.parse(Base64.decode64(response.body))
@@ -62,7 +66,7 @@ def column_name_modify(hs)
 		hs[i]['no2']=hs[i]['no2nd'] if hs[i]['no2nd']!=nil
 		hs[i]['co']=hs[i]['cond'] if hs[i]['cond']!=nil
 		hs[i]['o3']=hs[i]['o3_8hnd'] if hs[i]['o3_8hnd']!=nil
-		hs[i]['o3']=hs[i]['o3_8h'] if hs[i]['o3_8h'] != nil
+		hs[i]['o3']=hs[i]['o3_8h'] if hs[i]['o3_8h'] != nil && hs[i]['o3'] == 0 && hs[i]['o3_8h'] != 0
 		hs[i]['pm2_5']=hs[i]['pm25nd'] if hs[i]['pm25nd'] != nil
 		hs[i]['pm10'] = hs[i]['pm10nd'] if hs[i]['pm10nd'] != nil
 	end
@@ -261,15 +265,6 @@ def out_log(log_string)
 	this_log.close
 end
 
-#与数据库不一致字段处理
-def change_diff_cityname(hs)
-	for i in (0...hs[:cities].length)
-		hs[:cities][i]['city']='廊坊开发区' if hs[:cities][i]['city'] =='市辖区'
-		hs[:cities][i]['city']='大厂' if hs[:cities][i]['city'] =='大厂回族自治县'
-	end
-	hs
-end
-
 #保存数据
 def save_db(hs,model)
 	hs[:cities].each do |t|
@@ -279,7 +274,19 @@ end
 
 #保存数据到数据库
 def save_db_common(model,t,time)
-	# out_log(t['city']) if t['city'].size <3
+	#天气获取
+	key = ''
+	IO.foreach("vendor/getdata/citykey.txt") do |line|
+		city_name = line[0,11].strip
+		byebug if t['city'] == '七台河'
+		if city_name == t['city']
+			key = line[12..-1].strip
+			break
+		end
+	end
+	if model.name == 'ChinaCitiesHour'
+		hs = weather_api(key)
+	end
 	city = City.find_by_city_name(t['city'].to_s+'市')
 	city = City.find_by_city_name(t['city']) if city.nil?
 	city = City.find_by_city_name(CityEnum.city_short(t['city'])) if city.nil?

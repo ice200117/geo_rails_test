@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151210145402) do
+ActiveRecord::Schema.define(version: 20151211054956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -269,6 +269,24 @@ ActiveRecord::Schema.define(version: 20151210145402) do
     t.integer   "windspeed"
     t.integer   "humi"
     t.integer   "temp"
+  end
+
+  create_table "temp_hourly_forecasts", force: true do |t|
+    t.integer  "city_id"
+    t.datetime "publish_datetime"
+    t.datetime "forecast_datetime"
+    t.float    "AQI"
+    t.string   "main_pol"
+    t.integer  "grade"
+    t.float    "pm25"
+    t.float    "pm10"
+    t.float    "SO2"
+    t.float    "CO"
+    t.float    "NO2"
+    t.float    "O3"
+    t.float    "VIS"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "temp_jjj_days", force: true do |t|

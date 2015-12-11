@@ -475,6 +475,7 @@ class WelcomeController < ApplicationController
 			end
 		end
 		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('baodingshi')
+		byebug
 		@ret = {}
 		temp.each do |k,v|
 			v["fore_lev"] = get_lev(v["AQI"])
@@ -527,7 +528,6 @@ class WelcomeController < ApplicationController
 		tq['day'] = f1['day'].to_time.strftime("%Y%m%d")
 		tq
 	end
-
 	#获取预测数据
 	def get_forecast_baoding
 		data = get_forecast()
