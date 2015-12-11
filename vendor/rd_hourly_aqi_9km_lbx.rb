@@ -72,6 +72,7 @@ end
 #cs << City.find_by_city_name_pinyin('huzhoushi')
 cs = City.all
 cs.each do |c|
+
 	py = c.city_name_pinyin.strip
 	fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
 	puts fn
