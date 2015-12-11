@@ -2,25 +2,20 @@ class ChinaCitiesHour < ActiveRecord::Base
 	belongs_to :cities
 	validates_uniqueness_of :city_id, :scope => :data_real_time
 
-	def self.today_avg(city_name_pinyin=nil,spe="AQI")
+	def self.today_avg(city_name_pinyin=nil,spe=:AQI)
 		city_avg = {}
 		if city_name_pinyin
 			c = City.find_by_city_name_pinyin(city_name_pinyin)
 			f = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day).average(spe)
 			city_avg[c.city_name] = f.round if f
 		else
-			#cs = City.includes(:china_cities_hours)
-			cs = City.all
-			d = 
-			cs.each do |c|
-				f = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day).average(spe)
-      if f
-				city_avg[c.city_name] = f.round 
-      else
-        puts 'no monitor data in forecast station ' + c.city_name
-      end
+      cs = City.includes(:china_cities_hours).where(china_cities_hours: {data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day})
+			cs.each do |cl|
+        f = (cl.china_cities_hours.collect(&spe).sum / cl.china_cities_hours.length).to_i
+        city_avg[cl.city_name] = f
 			end
 		end
+		puts city_avg
 		city_avg
 	end
 

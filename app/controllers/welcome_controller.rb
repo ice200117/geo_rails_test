@@ -114,9 +114,7 @@ class WelcomeController < ApplicationController
 			monitor_today_avg = ChinaCitiesHour.today_avg
 			forecast_today_avg = HourlyCityForecastAirQuality.today_avg
 			monitor_today_avg.each do |k,v|
-				puts '================'+k
 				next unless forecast_today_avg[k]
-				puts '----------------'+k
 				d = monitor_today_avg[k] - forecast_today_avg[k].values[0]
 				@diff_monitor_forecast << [ k, monitor_today_avg[k], forecast_today_avg[k].values[0], d.abs, forecast_today_avg[k].keys[0]]
 			end
@@ -142,12 +140,17 @@ class WelcomeController < ApplicationController
 
     # Table 3: 过去一星期城市监测与预报值日均值对比
 		@fore_group_day = {}
-		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime >= ?", 6.days.ago.beginning_of_day).group_by_day(:forecast_datetime).average(:AQI)
-    h.each {|k,v| k.map!{|x| x.strftime("%d%b")}; @fore_group_day[k] = v.round}
 
 		# 获取过去几天的监测值
-		md = ChinaCitiesHour.history_data(c, 6.days.ago.beginning_of_day)
+		@fore_group_day = ChinaCitiesHour.history_data(c, 6.days.ago.beginning_of_day)
+
+		# 获取过去几天发布的预报值
+    md = {}
+		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime >= ?", 6.days.ago.beginning_of_day).group_by_day(:forecast_datetime).average(:AQI)
+    h.each {|k,v| k.map!{|x| x.strftime("%d%b")}; md[k] = v.round}
+
 		@fore_group_day.merge!(md)
+
 
 		respond_to do |format|
 			format.html { }
@@ -503,12 +506,13 @@ class WelcomeController < ApplicationController
 			if f1['day_wind_direction'] == f1['night_wind_direction'] 
 				tq['wd'] = f1['day_wind_direction']
 			elsif f1['day_wind_direction'] != f1['night_wind_direction'] 
-				tq['wd'] = f1['day_wind_direction']+'~'+f1['night_wind_direction']
+				#tq['wd'] = f1['day_wind_direction']+'~'+f1['night_wind_direction']
 			end
 		end
 		dw = f1['day_wind_power']
 		nw = f1['night_wind_power']
 		def wind_power(wp)
+      return '' unless wp
 			return wp[0,2] if wp[0,2] == '微风'
 			for e in (0...wp.size)
 				return wp[0,e+1] if wp[e] == '级'
