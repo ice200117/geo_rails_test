@@ -178,17 +178,33 @@ def default_25km
 	cities_default['langfangshi'] = {'you' =>0.6,'yellow' =>0.75,'qingdu'=>1,'zhong'=>0.95,'zhongdu'=>0.95,'yanzhong'=>1.05 }
 	#end
 	#henansheng
-	henansheng = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.28,'zhongdu'=>1.35,'yanzhong' => 1.55}
+	henansheng = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.08,'zhongdu'=>1.05,'yanzhong' => 1.05}
 	cities_default['zhengzhoushi'] = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.28,'zhongdu'=>1.35,'yanzhong' => 1.55}
 	cities_default['kaifengshi'] = hennansheng
-	cities_default[''] = hennansheng
+	cities_default['luoyangshi'] = hennansheng
+	cities_default['pingdingshanshi'] = hennansheng
+	cities_default['anyangshi'] = hennansheng
+	cities_default['hebeishi'] = hennansheng
+	cities_default['xinxiangshi'] = hennansheng
+	cities_default['jiaozuoshi'] = hennansheng
+	cities_default['puyangshi'] = hennansheng
+	cities_default['xuchangshi'] = hennansheng
+	cities_default['luoheshi'] = hennansheng
+	cities_default['sanmenxiashi'] = hennansheng
+	cities_default['nanyangshi'] = hennansheng
+	cities_default['shangqiushi'] = hennansheng
+	cities_default['xinyangshi'] = hennansheng
+	cities_default['zhoukoushi'] = hennansheng
+	cities_default['zhumadianshi'] = hennansheng
+	#end
+	#hubeisheng
+	cities_default['wuhaishi'] = {'you' =>0.8,'yellow' =>1,'qingdu'=>1.58,'zhong'=>1.68,'zhongdu'=>1.58,'yanzhong'=>1.5}
 	#end
 	cities_default['hangzhoushi'] = {'you' =>0.9,'yellow' =>1.0,'qingdu'=>1.25,'zhong'=>1.38,'zhongdu'=>1.88,'yanzhong'=>1.35}
 	cities_default['zhengzhoushi'] = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.28,'zhongdu'=>1.35,'yanzhong' => 1.55}
 	cities_default['hetiandiqu'] = {'you' => 1.1,'yellow' =>2.28,'qingdu'=>1.38,'zhong'=>1.08,'zhongdu'=>1.1,'yanzhong'=>1.1}
 	cities_default['kashidiqu'] = cities_default['hetiandiqu'] 
 	cities_default['other'] = {'you' =>0.8,'yellow' =>1,'qingdu'=>1.58,'zhong'=>1.68,'zhongdu'=>1.58,'yanzhong'=>1.5}
-	cities_default
 end
 #遍历station
 def station_ext
