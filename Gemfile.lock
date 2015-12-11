@@ -145,6 +145,7 @@ GEM
     rake (10.4.2)
     rb-readline (0.5.3)
     rdoc (4.2.0)
+      json (~> 1.4)
     redis (3.2.2)
     rgeo (0.4.0)
     rgeo-activerecord (1.2.0)
@@ -271,6 +272,3 @@ DEPENDENCIES
   web-console (~> 2.0)
   whenever
   will_paginate (~> 3.0.6)
-
-BUNDLED WITH
-   1.10.6
