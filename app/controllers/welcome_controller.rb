@@ -472,6 +472,7 @@ class WelcomeController < ApplicationController
 			end
 		end
 		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('baodingshi')
+		byebug
 		@ret = {}
 		temp.each do |k,v|
 			v["fore_lev"] = get_lev(v["AQI"])
@@ -523,56 +524,8 @@ class WelcomeController < ApplicationController
 		tq['day'] = f1['day'].to_time.strftime("%Y%m%d")
 		tq
 	end
-	#天气处理与get_forecast合作使用
-	def get_tq(f1)
-		tq = Hash.new
-		tq['tq'] = f1['day_weather']
-		if f1['day_air_temperature'][-1] == '℃'
-			tq['temp1'] = f1['day_air_temperature'][0,f1['day_air_temperature'].size-1]
-		else
-			tq['temp1'] = f1['day_air_temperature'] 
-		end
-		tq['temp2'] = f1['night_air_temperature']
-		if f1['day_wind_direction'] == '无持续风向' && f1['night_wind_direction'] == '无持续风向'
-			tq['wd'] = f1['day_wind_direction']
-		elsif f1['day_wind_direction'] != '无持续风向' && f1['night_wind_direction'] == '无持续风向'
-			tq['wd'] = f1['day_wind_direction']
-		elsif f1['day_wind_direction'] == '无持续风向' && f1['night_wind_direction'] != '无持续风向'
-			tq['wd'] = f1['night_wind_direction']
-		elsif f1['day_wind_direction'] != '无持续风向' && f1['night_wind_direction'] != '无持续风向'
-			if f1['day_wind_direction'] == f1['night_wind_direction'] 
-				tq['wd'] = f1['day_wind_direction']
-			elsif f1['day_wind_direction'] != f1['night_wind_direction'] 
-				tq['wd'] = f1['day_wind_direction']+'~'+f1['night_wind_direction']
-			end
-		end
-		dw = f1['day_wind_power']
-		nw = f1['night_wind_power']
-		def wind_power(wp)
-			return wp[0,2] if wp[0,2] == '微风'
-			for e in (0...wp.size)
-				return wp[0,e+1] if wp[e] == '级'
-			end		
-		end
-		dw = wind_power(dw)
-		nw = wind_power(nw)
-		if dw == nw
-			tq['ws'] = dw
-		elsif dw != nw
-			dw[0].to_i > nw[0].to_i ? tq['ws'] = nw + '~' + dw : tq['ws'] = dw + '~' + nw
-		end
-		tq
-	end
 	#获取预测数据
 	def get_forecast_baoding
-<<<<<<< HEAD
-		byebug
-		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('baodingshi')
-		temp.each do |k,v|
-			index=k.yday - Time.now.yday
-			v["fore_lev"] = get_lev(v["AQI"])
-			json_data["weather_forecast"][index]=json_data["weather_forecast"][index].merge(v)
-=======
 		data = get_forecast()
 
 		respond_to do |format|
@@ -582,7 +535,6 @@ class WelcomeController < ApplicationController
 			else
 				format.json { render json: data}
 			end
->>>>>>> b280981542e67548a2f437b447607dd8866f0b85
 		end
 	end
 

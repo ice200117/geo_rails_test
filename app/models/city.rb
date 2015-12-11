@@ -1,6 +1,7 @@
 class City < ActiveRecord::Base
   before_save       :setLonLat
   has_many :hourly_city_forecast_air_qualities
+  has_many :temp_hourly_forecasts
   has_many :day_cities
   has_many :temp_sfcities_hours
   has_many :monitor_points
