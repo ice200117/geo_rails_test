@@ -177,11 +177,15 @@ def default_25km
 	cities_default['baodingshi'] = {'you' =>0.58,'yellow' => 0.88,'qingdu'=>1.05,'zhong'=>0.95,'zhongdu'=>1.05,'yanzhong'=>0.85 }
 	cities_default['langfangshi'] = {'you' =>0.6,'yellow' =>0.75,'qingdu'=>1,'zhong'=>0.95,'zhongdu'=>0.95,'yanzhong'=>1.05 }
 	#end
+	#henansheng
+	zhengzhoushi = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.28,'zhongdu'=>1.35,'yanzhong' => 1.55}
+	cities_default['zhengzhoushi'] = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.28,'zhongdu'=>1.35,'yanzhong' => 1.55}
+	#end
 	cities_default['hangzhoushi'] = {'you' =>0.9,'yellow' =>1.0,'qingdu'=>1.25,'zhong'=>1.38,'zhongdu'=>1.88,'yanzhong'=>1.35}
 	cities_default['zhengzhoushi'] = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.28,'zhongdu'=>1.35,'yanzhong' => 1.55}
 	cities_default['hetiandiqu'] = {'you' => 1.1,'yellow' =>2.28,'qingdu'=>1.38,'zhong'=>1.08,'zhongdu'=>1.1,'yanzhong'=>1.1}
 	cities_default['kashidiqu'] = cities_default['hetiandiqu'] 
-	cities_default['other'] = {'you' =>0.8,'yellow' =>1,'qingdu'=>1.78,'zhong'=>2.38,'zhongdu'=>2.58,'yanzhong'=>1.1}
+	cities_default['other'] = {'you' =>0.8,'yellow' =>1,'qingdu'=>1.58,'zhong'=>1.68,'zhongdu'=>1.58,'yanzhong'=>1.5}
 	cities_default
 end
 #遍历station

@@ -126,8 +126,6 @@ ActiveRecord::Schema.define(version: 20151211054956) do
     t.timestamp "updated_at",        precision: 6
   end
 
-  add_index "hourly_city_forecast_air_qualities", ["city_id", "publish_datetime", "forecast_datetime"], :name => "index_hourlyaqi_city_pubtime_foretime", :unique => true
-
   create_table "locations", force: true do |t|
     t.string    "name"
     t.spatial   "latlon",     limit: {:srid=>4326, :type=>"geometry", :geographic=>true}

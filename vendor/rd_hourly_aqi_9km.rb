@@ -4,12 +4,19 @@
 
 
 def parse_line(line, c)
-  hc = HourlyCityForecastAirQuality.new
+  #hc = HourlyCityForecastAirQuality.new
   sd = line[0,10]
   delta_hour = line[11,3]
   sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
-  hc.publish_datetime = sdate
-  hc.forecast_datetime = sdate+delta_hour.to_i*3600
+
+  
+  #hc.city_id = c.id
+  #hc.publish_datetime = sdate
+  #hc.forecast_datetime = sdate+delta_hour.to_i*3600
+
+  hc = HourlyCityForecastAirQuality.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
+
+
   hc.AQI = line[14,4]
  # hc.AQI = hc.AQI*2.51   # liubin 10/5/2015
   hc.main_pol = line[18,13].strip
@@ -22,7 +29,6 @@ def parse_line(line, c)
   hc.O3 = line[75,6]
   hc.VIS = line[32,7]
 
-  hc.city_id = c.id
   hc.save
 
   #puts '----------'

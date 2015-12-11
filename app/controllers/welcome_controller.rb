@@ -475,7 +475,6 @@ class WelcomeController < ApplicationController
 			end
 		end
 		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('baodingshi')
-		byebug
 		@ret = {}
 		temp.each do |k,v|
 			v["fore_lev"] = get_lev(v["AQI"])
