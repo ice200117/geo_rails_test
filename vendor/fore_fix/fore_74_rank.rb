@@ -1,7 +1,6 @@
 require_relative 'city_enum.rb'
 
 #文件操作
-path = '/mnt/share/Temp/Rank/'
 # path = '/vagrant/Rank/'
 filename = Time.now.strftime("%Y%m%d").to_s+'.txt'
 f = File.open(path+filename,'w')
