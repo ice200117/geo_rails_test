@@ -69,8 +69,8 @@ end
 
 #cs = Array.new
 #cs << City.find_by_city_name_pinyin('langfangshi')
-#cs << City.find_by_city_name_pinyin('huzhoushi')
-cs = City.all
+cs << City.find_by_city_name_pinyin('huzhoushi')
+#cs = City.all
 cs.each do |c|
   #puts c.city_name_pinyin
   #if c.city_name_pinyin.rstrip.eql?('langfangshi')

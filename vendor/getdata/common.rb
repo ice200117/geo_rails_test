@@ -275,18 +275,18 @@ end
 #保存数据到数据库
 def save_db_common(model,t,time)
 	#天气获取
-	key = ''
-	IO.foreach("vendor/getdata/citykey.txt") do |line|
-		city_name = line[0,11].strip
-		byebug if t['city'] == '七台河'
-		if city_name == t['city']
-			key = line[12..-1].strip
-			break
-		end
-	end
-	if model.name == 'ChinaCitiesHour'
-		hs = weather_api(key)
-	end
+	# key = ''
+	# IO.foreach("vendor/getdata/citykey.txt") do |line|
+	# 	city_name = line[0,11].strip
+	# 	# byebug if t['city'] == '七台河'
+	# 	if city_name == t['city']
+	# 		key = line[12..-1].strip
+	# 		break
+	# 	end
+	# end
+	# if model.name == 'ChinaCitiesHour'
+	# 	hs = weather_api(key)
+	# end
 	city = City.find_by_city_name(t['city'].to_s+'市')
 	city = City.find_by_city_name(t['city']) if city.nil?
 	city = City.find_by_city_name(CityEnum.city_short(t['city'])) if city.nil?
