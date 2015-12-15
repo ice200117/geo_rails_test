@@ -68,8 +68,8 @@ IO.foreach("vendor/station_hb.EXT") do |line|
 end
 
 #cs = Array.new
-#cs << City.find_by_city_name_pinyin('langfangshi')
-cs << City.find_by_city_name_pinyin('huzhoushi')
+cs << City.find_by_city_name_pinyin('langfangshi')
+# cs << City.find_by_city_name_pinyin('huzhoushi')
 #cs = City.all
 cs.each do |c|
   #puts c.city_name_pinyin
