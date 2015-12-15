@@ -84,7 +84,7 @@ class DaliyAvg
 end
 #start-----------------------
 # puts "--start--9km--"
-# DaliyAvg.avg_9
+  DaliyAvg.avg_9
 # puts "--start--25km--"
-# DaliyAvg.avg_25
+  # DaliyAvg.avg_25
 # puts "OK"

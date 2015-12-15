@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   get 'querys/adj' => 'querys#adj'
   get 'querys/adj_5days' => 'querys#adj_5days'
   get 'querys/monitor_data' => 'querys#monitor_data'
+  get 'querys/get_weather_air_data' => 'querys#get_weather_air_data'
+
 
   #get '/forecast_points/lookup' => 'forecast_points#lookup'
   #resources :forecast_points

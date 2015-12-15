@@ -120,7 +120,7 @@ def default_9km
 	cities_default['baodingshi'] = {'you' =>0.70,'yellow' => 0.94,'qingdu'=>0.71,'zhong'=>0.95,'zhongdu'=>1.08,'yanzhong'=>1.01 }
 	cities_default['taiyuanshi'] = {'you' =>0.90,'yellow' => 1.04,'qingdu'=>1.11,'zhong'=>1.25,'zhongdu'=>1.48,'yanzhong'=>1.61 }
 	cities_default['langfangshi'] = {'you' =>0.70,'yellow' =>0.90,'qingdu'=>0.85,'zhong'=>0.81,'zhongdu'=>0.95,'yanzhong'=>0.95 }
-    cities_default['beijingshi'] = {'you' =>0.70,'yellow' =>0.94,'qingdu'=>1.21,'zhong'=>1.44,'zhongdu'=>1.55,'yanzhong'=>1.15 }
+    cities_default['beijingshi'] = {'you' =>0.70,'yellow' =>0.94,'qingdu'=>1.01,'zhong'=>1.04,'zhongdu'=>1.05,'yanzhong'=>0.95 }
 	cities_default['shenyangshi'] = {'you' =>0.80,'yellow' => 0.94,'qingdu'=>1.01,'zhong'=>0.85,'zhongdu'=>0.98,'yanzhong'=>1.11 }
 	cities_default['changchunshi'] = {'you' =>0.80,'yellow' => 0.94,'qingdu'=>1.81,'zhong'=>0.85,'zhongdu'=>0.98,'yanzhong'=>1.11 }
 	cities_default['other'] = {'you' =>0.8,'yellow' =>0.9,'qingdu'=>0.90,'zhong'=>1.01,'zhongdu'=>1.34,'yanzhong'=>1.51}
@@ -141,7 +141,7 @@ def default_25km
 	end		
 	#end 长江口
 	#begin 东北
-	dongbei = {'you'=>0.5,'yellow'=>0.6,'qingdu'=>0.88,'zhong'=>0.88,'zhongdu'=>0.88,'yanzhong'=>1.01}
+	dongbei = {'you'=>0.3,'yellow'=>0.4,'qingdu'=>0.88,'zhong'=>0.88,'zhongdu'=>0.88,'yanzhong'=>1.01}
 	for e in (44..67)
 		next if e == 57
 		next if e == 66
