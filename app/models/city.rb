@@ -6,6 +6,10 @@ class City < ActiveRecord::Base
   has_many :temp_sfcities_hours
   has_many :monitor_points
   has_many :china_cities_hours
+  has_many :weather_hours
+  has_many :weather_forecasts
+  has_many :weather_days
+  
 #  validates_uniqueness_of :post_number
 
   set_rgeo_factory_for_column(:lonlat,

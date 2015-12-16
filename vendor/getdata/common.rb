@@ -1,12 +1,4 @@
 require_relative './city_enum.rb'
-require 'rexml/document'
-include REXML
-
-#全国实时天气
-def weather_api(citykey = "101250501")
-	response = HTTParty.get('http://wthrcdn.etouch.cn/WeatherApi?citykey='+citykey)
-	data = Hash.from_xml(response.body)
-end
 
 def get_rank_json(web_flag,secretstr,typestr,datestr)
 	datestr=datestr.strftime("%Y-%m-%d") if datestr != nil

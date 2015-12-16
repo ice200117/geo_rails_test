@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151211054956) do
+ActiveRecord::Schema.define(version: 20151216110138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -571,6 +571,51 @@ ActiveRecord::Schema.define(version: 20151211054956) do
     t.timestamp "updated_at",              precision: 6
     t.timestamp "data_real_time",          precision: 6
     t.integer   "maxindex"
+  end
+
+  create_table "weather_days", force: true do |t|
+    t.integer  "city_id"
+    t.datetime "publish_datetime"
+    t.string   "high"
+    t.string   "low"
+    t.string   "day_type"
+    t.string   "day_fx"
+    t.string   "day_fl"
+    t.string   "night_type"
+    t.string   "night_fx"
+    t.string   "night_fl"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "weather_forecasts", force: true do |t|
+    t.integer  "city_id"
+    t.datetime "publish_datetime"
+    t.datetime "forecast_datetime"
+    t.string   "high"
+    t.string   "low"
+    t.string   "day_type"
+    t.string   "day_fx"
+    t.string   "day_fl"
+    t.string   "night_type"
+    t.string   "night_fx"
+    t.string   "night_fl"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "weather_hours", force: true do |t|
+    t.integer  "city_id"
+    t.datetime "publish_datetime"
+    t.integer  "wendu"
+    t.string   "fengli"
+    t.string   "shidu"
+    t.string   "fengxiang"
+    t.datetime "sunrise"
+    t.datetime "sunset"
+    t.text     "zhishu"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
