@@ -117,7 +117,7 @@ def default_9km
 	# zhengzhoushi = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.28,'zhongdu'=>1.35,'yanzhong' => 1.55}
 	# hetiandiq = {'you'=>1.1,'yellow' =>2.28,'qingdu'=>1.38,'zhong'=>1.08,'zhongdu'=>1.1,'yanzhong'=>1.1}
 	# kashidiqu = hetiandiq 
-	cities_default['baodingshi'] = {'you' =>0.70,'yellow' => 0.94,'qingdu'=>0.71,'zhong'=>0.95,'zhongdu'=>1.08,'yanzhong'=>1.01 }
+	cities_default['baodingshi'] = {'you' =>0.70,'yellow' => 0.94,'qingdu'=>1.01,'zhong'=>0.95,'zhongdu'=>0.98,'yanzhong'=>1.01 }
 	cities_default['taiyuanshi'] = {'you' =>0.90,'yellow' => 1.04,'qingdu'=>1.11,'zhong'=>1.25,'zhongdu'=>1.48,'yanzhong'=>1.61 }
 	cities_default['langfangshi'] = {'you' =>0.70,'yellow' =>0.90,'qingdu'=>0.85,'zhong'=>0.81,'zhongdu'=>0.95,'yanzhong'=>0.95 }
     cities_default['beijingshi'] = {'you' =>0.70,'yellow' =>0.94,'qingdu'=>1.01,'zhong'=>1.04,'zhongdu'=>1.05,'yanzhong'=>0.95 }

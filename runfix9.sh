@@ -1,7 +1,7 @@
 #!/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/vagrant/MeteoInfo/:/home/vagrant/.rbenv/shims/
 echo 'download data and figure'
-#cd /vagrant/script/
+cd /vagrant/script/
 #/vagrant/MeteoInfo/meteoinfo.sh post_download_orig.py > ../log_9km_orig.txt
 
 echo 'fix 9km txt'

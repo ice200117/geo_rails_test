@@ -144,7 +144,7 @@ class QuerysController < ApplicationController
       cf = Hash.new
       hf = []
       #hs = c.hourly_city_forecast_air_qualities.order(publish_datetime: :desc).limit(120).where("forecast_datetime > ?", Time.now)
-      hs = c.hourly_city_forecast_air_qualities.last(120)
+      hs = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
       return nil unless hs.first
       cf[:city_name] = c.city_name
       cf[:publish_datetime] = hs.first.publish_datetime.strftime('%Y-%m-%d_%H')

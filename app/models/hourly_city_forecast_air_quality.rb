@@ -7,7 +7,7 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 		puts pinyin
 		c = City.find_by city_name_pinyin: pinyin
 		return nil unless c
-		ac = c.hourly_city_forecast_air_qualities.last(120)
+		ac = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
 		#puts ac.first
 		return nil unless ac.first
 		cf[:city_name] = c.city_name
@@ -36,7 +36,7 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 
 	#未来五天城市预报
 	def air_quality_forecast(pinyin)
-		tmp = City.find_by_city_name_pinyin(pinyin).hourly_city_forecast_air_qualities.last(120).group_by_day(&:forecast_datetime)
+		tmp = City.find_by_city_name_pinyin(pinyin).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
 		fore_data = Hash.new
 		tmp.each do |time,data|
 			temp = Hash.new 
@@ -111,7 +111,7 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 
   def self.city_avg_today(city=nil,spe=:AQI)
     return nil unless city
-    fs = city.hourly_city_forecast_air_qualities.last(120)
+    fs = city.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
 
     aqi_sum = 0
     i = 0
