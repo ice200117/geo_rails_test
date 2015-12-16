@@ -20,7 +20,7 @@ class DaliyAvg
 		city_ary.each do |c|
 			daliy_avg.puts(City.find_by_city_name_pinyin(c).city_name)
 			#处理文件目录
-			fn = "XJ_ENVAQFC_#{c}_#{time}_00000-07200.TXT_orig"
+			fn = "XJ_ENVAQFC_#{c}_#{time}_00000-07200.TXT"
 			f = File.open(path+fn) if File::exists?(path+fn)
 			next unless f
 			puts c
@@ -55,7 +55,7 @@ class DaliyAvg
 		File.delete(path+filename) if File.exists?(path+filename)
 		daliy_avg=File.open(path+filename,"w")
 		#城市遍历
-		city_ary=Array['beijingshi','langfangshi','baodingshi','taiyuanshi','shenyangshi']
+		city_ary=Array['beijingshi','langfangshi','baodingshi','taiyuanshi','shenyangshi','changchunshi','hengshuishi']
 		city_ary.each do |c|
 			daliy_avg.puts(City.find_by_city_name_pinyin(c).city_name)
 			#处理文件目录
@@ -84,7 +84,7 @@ class DaliyAvg
 end
 #start-----------------------
 # puts "--start--9km--"
-  DaliyAvg.avg_9
+ DaliyAvg.avg_9
 # puts "--start--25km--"
-  # DaliyAvg.avg_25
+# DaliyAvg.avg_25
 # puts "OK"

@@ -126,11 +126,11 @@ class WelcomeController < ApplicationController
 			sd = Time.local(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
 			ed = Time.local(params[:end_date][:year].to_i, params[:end_date][:month].to_i, params[:end_date][:day].to_i,23)
 			return 'error: start date can not later than end date!' if sd > ed
-			hss = c.hourly_city_forecast_air_qualities.last(120)
+			hss = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
 			hs = []
 			hss.each {|h| hs << h if h.forecast_datetime >= sd && h.forecast_datetime <= ed }
 		else
-			hs = c.hourly_city_forecast_air_qualities.last(120)
+			hs = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
 		end 
 
 		md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
@@ -773,7 +773,7 @@ class WelcomeController < ApplicationController
 		aqis = []
 		pri_pol = []
 		c = City.find_by_city_name_pinyin('baodingshi')
-		ch = c.hourly_city_forecast_air_qualities.last(120).group_by_day(&:forecast_datetime)
+		ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
 		ch.each do |time,fds|
 			t = Time.now
 			if time > Time.local(t.year,t.month,t.day)
