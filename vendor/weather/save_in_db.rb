@@ -2,7 +2,8 @@ require_relative 'city_number.rb'
 require_relative 'weather'
 
 def save_hour(data,id)
-	w = WeatherHour.new
+	w = WeatherHour.find_or_create_by(city_id:id,publish_datetime:data['updatetime'].to_time)
+	return false if !w.wendu.nil?
 	w.city_id = id
 	w.publish_datetime = data['updatetime'].to_time
 	w.wendu = data['wendu']
@@ -12,8 +13,8 @@ def save_hour(data,id)
 	w.sunrise = data['sunrise_1']
 	w.sunset = data['sunset_1']
 	w.zhishu = data['zhishus']['zhishu'].to_s
-	# byebug
 	w.save
+	return true
 end
 def save_day(data,id)
 	w = WeatherDay.new
@@ -47,13 +48,12 @@ def save_forecast(data,id)
 	end
 end
 
-hour = false
-hour = true if WeatherHour.last.publish_datetime != Weather::Weather.new.all_weather_info_of_city['resp']['updatetime'].to_time
+# hour = false
+# hour = true if WeatherHour.last.publish_datetime != Weather::Weather.new.all_weather_info_of_city['resp']['updatetime'].to_time
 day = false
 day = true if WeatherDay.last.publish_datetime.day != Time.now.yesterday.day
 forecast = false
 forecast = true if WeatherForecast.last.publish_datetime.day != Time.now.day
-return if hour && day && forecast
 #城市循环
 city_number.each do |k,v|
 	c = City.where("city_name LIKE ?",k+'%')
@@ -62,13 +62,14 @@ city_number.each do |k,v|
 		puts k+' is error!'
 		next 
 	end
-	puts k+' is null!' if data['resp']['error'] != nil
-	next if data['resp']['error'] != nil || c.size == 0
-	c = c[0]
-	save_hour(data['resp'],c.id) if hour
-	puts 'WeatherHour '+k+' is ok!' if data['resp']['error'] == nil
-	save_day(data['resp']['yesterday'],c.id) if day	
-	puts 'WeatherDay '+k+' is ok!' if data['resp']['error'] == nil
-	save_forecast(data['resp'],c.id) if forecast
-	puts 'WeatherForecast '+k+' is ok!' if data['resp']['error'] == nil
+	if data['resp']['error'] == nil && c.size != 0
+		c = c[0]
+		puts 'WeatherHour '+k+' is ok!' if save_hour(data['resp'],c.id)  
+		save_day(data['resp']['yesterday'],c.id) if day	
+		puts 'WeatherDay '+k+' is ok!' if data['resp']['error'] == nil && day
+		save_forecast(data['resp'],c.id) if forecast
+		puts 'WeatherForecast '+k+' is ok!' if data['resp']['error'] == nil && forecast
+	else
+		puts k+' is null!' if data['resp']['error'] != nil
+	end
 end
