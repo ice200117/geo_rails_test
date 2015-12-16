@@ -1,9 +1,12 @@
 require_relative 'city_enum.rb'
 
 #文件操作
-# path = '/vagrant/Rank/'
+ # path = '/vagrant/Rank/'
+path = '/mnt/share/Temp/Rank/'
 filename = Time.now.strftime("%Y%m%d").to_s+'.txt'
+puts path+filename
 f = File.open(path+filename,'w')
+# puts f
 #遍历74城市
 city_ary = Hash.new
 CityEnum.china_city_74.each do |city_name|

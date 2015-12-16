@@ -55,7 +55,7 @@ class ChinaCitiesHour < ActiveRecord::Base
 			data[:NO2] = d.NO2
 			data[:O3] = d.O3
 			data[:pm10] = d.pm10
-		    data[:pm25] = d.pm25
+		  data[:pm25] = d.pm25
 			data[:level] = d.level
 			data[:main_pol] = d.main_pol
 			data[:AQI] = d.AQI

@@ -92,18 +92,18 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 
       # Sencond method
       nowday = Time.zone.now
-      cs = City.includes(:hourly_city_forecast_air_qualities).where(hourly_city_forecast_air_qualities: {publish_datetime: 5.days.ago.beginning_of_day..nowday.end_of_day, forecast_datetime: nowday.beginning_of_day..nowday.end_of_day})
+      cs = City.includes(:hourly_city_forecast_air_qualities).where(hourly_city_forecast_air_qualities: {publish_datetime: 5.days.ago.beginning_of_day..nowday.end_of_day, forecast_datetime: nowday.beginning_of_day..nowday})
       cs.each do |cl|
         fs = cl.hourly_city_forecast_air_qualities
         latest_publish_datetime = fs.last.publish_datetime
         aqi_sum = 0; i = 0
         fs.each do |f|
-          if f.publish_datetime = latest_publish_datetime
+          if f.publish_datetime == latest_publish_datetime
             aqi_sum += f.send(spe)
             i += 1
           end
         end
-        city_avg[cl.city_name] = {fs[0].publish_datetime.strftime("%Y-%m-%d_%H") => (aqi_sum/i).round }
+        city_avg[cl.city_name] = {latest_publish_datetime.strftime("%Y-%m-%d_%H") => (aqi_sum/i).round }
       end
     end
     city_avg
