@@ -102,7 +102,7 @@ cs.each do |c|
 			tmp = default_9km_city[c.city_name_pinyin][k]
 		end
 		if v != nil
-			avg[k] = (tmp+v)/2
+			avg[k] = (tmp*5+v)/6
 		else
 			avg[k] = tmp
 		end

@@ -86,8 +86,12 @@ gem 'spreadsheet'
 gem 'chinese_lunar'
 
 gem 'redis'
+gem 'redis-rails'
+gem 'redis-store'
 
 gem 'jquery-datatables-rails' 
 
 gem 'rails-perftest'
 gem 'ruby-prof'
+
+gem 'mailfactory'

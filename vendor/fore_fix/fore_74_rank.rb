@@ -4,7 +4,7 @@ require_relative 'city_enum.rb'
  # path = '/vagrant/Rank/'
 path = '/mnt/share/Temp/Rank/'
 filename = Time.now.strftime("%Y%m%d").to_s+'.txt'
-puts path+filename
+puts filename
 f = File.open(path+filename,'w')
 # puts f
 #遍历74城市
