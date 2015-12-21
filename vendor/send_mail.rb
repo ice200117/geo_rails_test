@@ -12,7 +12,7 @@ Subject: Cities
 #{data}
 MESSAGE_END
 
-Net::SMTP.start('smtp.mxhichina.com',25,'hh12369.com','libaoxi@hh12369.com','Lbx12369@',:plain) do |smtp|
+Net::SMTP.start('smtp.mxhichina.com',25,'mail.hh12369.com','libaoxi@hh12369.com','Lbx12369@',:plain) do |smtp|
 	open_timeout=(300)
 	read_timeout=(300)
 	smtp.send_message(message,'libaoxi@hh12369.com',['693879111@qq.com','liubin@hh12369.com','zhouqinqian@hh12369.com','lihaishan@hh12369.com'])

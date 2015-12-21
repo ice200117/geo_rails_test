@@ -153,7 +153,7 @@ def default_25km
 	cities_default['haerbinshi'] = {'you' =>0.9,'yellow' =>0.9,'qingdu'=>0.98,'zhong'=>0.88,'zhongdu'=>0.90,'yanzhong'=>1.20}
 	#end 东北
 	#shangdongshen
-    shandongsheng = {'you' =>0.9,'yellow' =>0.68,'qingdu'=>0.65,'zhong'=>0.85,'zhongdu'=>0.95,'yanzhong'=>1.05 }
+    shandongsheng = {'you' =>0.9,'yellow' =>0.88,'qingdu'=>1.02,'zhong'=>1.05,'zhongdu'=>0.95,'yanzhong'=>0.85 }
 	cities_default['jinanshi'] = {'you' =>0.9,'yellow' =>1,'qingdu'=>0.8,'zhong'=>0.85,'zhongdu'=>0.95,'yanzhong'=>1.05 }
 	cities_default['dezhoushi'] = shandongsheng
 	cities_default['liaochengshi'] = shandongsheng
