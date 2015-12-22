@@ -5,7 +5,7 @@ data = JSON.parse(response.body)
 data.delete_if{|x| x[3]<49}
 
 message = <<MESSAGE_END
-Form: libaoxi <libaoxi@hh12369.com>
+Form:Libaoxi<libaoxi@hh12369.com>
 To: <693879111@qq.com>,<liubin@hh12369.com>,<zhouqinqian@hh12369.com>,<lihaishan@hh12369.com>
 Subject: Cities
 

@@ -125,7 +125,7 @@ def default_9km
 	# end
 	# liaoning 辽宁
 	liaoningsheng = {'you' =>0.80,'yellow' => 0.94,'qingdu'=>1.01,'zhong'=>0.85,'zhongdu'=>0.98,'yanzhong'=>1.11 }
-	for e in (44..58)
+	for e in (44..56)
 		# next if e == 93
 		# puts e.to_s+' '+city_index[e]
 		cities_default[city_index[e]] = liaoningsheng
@@ -169,13 +169,26 @@ def default_25km
 	#shangdongshen 山东
 	shandongsheng = {'you' =>0.9,'yellow' =>0.88,'qingdu'=>0.92,'zhong'=>0.95,'zhongdu'=>0.95,'yanzhong'=>0.85 }
 	cities_default['jinanshi'] = {'you' =>0.9,'yellow' =>1,'qingdu'=>0.8,'zhong'=>0.85,'zhongdu'=>0.95,'yanzhong'=>0.85 }
-	cities_default['dezhoushi'] = shandongsheng
-	cities_default['liaochengshi'] = shandongsheng
-	cities_default['hezeshi'] = shandongsheng
-	cities_default['zaozhuangshi'] = shandongsheng
-	cities_default['binzhoushi'] = shandongsheng
-	cities_default['weifangshi'] = shandongsheng
-	cities_default['dongyingshi'] = shandongsheng
+	for e in (142..157)
+		# next if e == 57
+		# next if e == 66
+		cities_default[city_index[e]] = shandongsheng
+		# puts e.to_s+' '+city_index[e]
+	end	
+	# cities_default['dezhoushi'] = shandongsheng
+	# cities_default['binzhoushi'] = shandongsheng
+	# cities_default['dongyingshi'] = shandongsheng
+	# cities_default['shouguangshi'] = shandongsheng
+	# cities_default['zhangqiushi'] = shandongsheng
+	# cities_default['weifangshi'] = shandongsheng
+	# cities_default['ziboshi'] = shandongsheng
+	# cities_default[''] = shandongsheng
+	# cities_default['liaochengshi'] = shandongsheng
+	# cities_default['hezeshi'] = shandongsheng
+	# cities_default['zaozhuangshi'] = shandongsheng
+	# cities_default['binzhoushi'] = shandongsheng
+	# cities_default['weifangshi'] = shandongsheng
+	# cities_default['dongyingshi'] = shandongsheng
 	#end 
 	#
 	#hebeisheng not used 
@@ -195,24 +208,30 @@ def default_25km
 	#end
 	#
 	#henansheng 河南
-	hennansheng = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.08,'zhongdu'=>1.05,'yanzhong' => 1.05}
+	hennansheng = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.08,'zhongdu'=>1.25,'yanzhong' => 1.35}
 	cities_default['zhengzhoushi'] = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.28,'zhongdu'=>1.35,'yanzhong' => 1.55}
-	cities_default['kaifengshi'] = hennansheng
-	cities_default['luoyangshi'] = hennansheng
-	cities_default['pingdingshanshi'] = hennansheng
-	cities_default['anyangshi'] = hennansheng
-	cities_default['hebeishi'] = hennansheng
-	cities_default['xinxiangshi'] = hennansheng
-	cities_default['jiaozuoshi'] = hennansheng
-	cities_default['puyangshi'] = hennansheng
-	cities_default['xuchangshi'] = hennansheng
-	cities_default['luoheshi'] = hennansheng
-	cities_default['sanmenxiashi'] = hennansheng
-	cities_default['nanyangshi'] = hennansheng
-	cities_default['shangqiushi'] = hennansheng
-	cities_default['xinyangshi'] = hennansheng
-	cities_default['zhoukoushi'] = hennansheng
-	cities_default['zhumadianshi'] = hennansheng
+	for e in (159..174)
+		# next if e == 57
+		# next if e == 66
+		cities_default[city_index[e]] = hennansheng
+		# puts e.to_s+' '+city_index[e]
+	end	
+	# cities_default['kaifengshi'] = hennansheng
+	# cities_default['luoyangshi'] = hennansheng
+	# cities_default['pingdingshanshi'] = hennansheng
+	# cities_default['anyangshi'] = hennansheng
+	# cities_default['hebeishi'] = hennansheng
+	# cities_default['xinxiangshi'] = hennansheng
+	# cities_default['jiaozuoshi'] = hennansheng
+	# cities_default['puyangshi'] = hennansheng
+	# cities_default['xuchangshi'] = hennansheng
+	# cities_default['luoheshi'] = hennansheng
+	# cities_default['sanmenxiashi'] = hennansheng
+	# cities_default['nanyangshi'] = hennansheng
+	# cities_default['shangqiushi'] = hennansheng
+	# cities_default['xinyangshi'] = hennansheng
+	# cities_default['zhoukoushi'] = hennansheng
+	# cities_default['zhumadianshi'] = hennansheng
 	#end
 	#
 	#hubeisheng 湖北
