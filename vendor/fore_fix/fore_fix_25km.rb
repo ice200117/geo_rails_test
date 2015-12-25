@@ -7,8 +7,8 @@ puts "--start--"
 yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
 strtime = Time.now.yesterday.strftime("%Y%m%d")
 
-strtime = '20151221' 
-yesterday_str = '2015122108' 
+# strtime = '20151221' 
+# yesterday_str = '2015122108' 
 puts strtime
 puts yesterday_str
 
