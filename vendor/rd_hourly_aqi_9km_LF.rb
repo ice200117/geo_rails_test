@@ -8,6 +8,7 @@ def parse_line(line, c)
 	sd = line[0,10]
 	delta_hour = line[11,3]
 	sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
+	# puts sdate+delta_hour.to_i*3600
 
 	# hc.publish_datetime = sdate
 	# hc.forecast_datetime = sdate+delta_hour.to_i*3600
@@ -46,10 +47,10 @@ end
 #strtime = Time.mktime(Time.new.strftime("%Y%m%d")+'08')
 yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
 strtime = Time.new.strftime("%Y%m%d")+'20'
-puts strtime
+# puts strtime
 
 #strtime = '2015040808'
-#puts strtime
+puts strtime
 
 path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 
@@ -86,6 +87,7 @@ puts fn
 f = File.open(path+fn) if File::exists?(path+fn) 
 exit unless f
 f.readlines[2..-1].each do |line| 
+	# puts line
 	parse_line(line, c)
 end
 f.close
