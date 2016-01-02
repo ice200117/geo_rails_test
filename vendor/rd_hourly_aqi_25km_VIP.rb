@@ -75,7 +75,8 @@ end
 # py = c.city_name_pinyin.strip
 # py = 'hangzhoushi'
 #py = 'pingdingshanshi'
-py = 'jinanshi'
+# py = 'jinanshi'
+py = 'songyuanshi'
 
 c = City.find_by_city_name_pinyin(py)
 # puts c

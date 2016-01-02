@@ -51,12 +51,13 @@ class DaliyAvg
 		#路径设定
 		# path = "/mnt/share/Temp/station_9km_orig/#{strtime[0,8]}/"
 		path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
+		puts path
 		filename = '9km_daliy.txt'
 		Dir::mkdir(path) if !Dir.exists?(path)
 		File.delete(path+filename) if File.exists?(path+filename)
 		daliy_avg=File.open(path+filename,"w")
 		#城市遍历
-		city_ary=Array['beijingshi','langfangshi','tianjinshi','baodingshi','handanshi','xingtaishi','taiyuanshi','shenyangshi','shijiazhuangshi','hengshuishi','changchunshi']
+		city_ary=Array['beijingshi','langfangshi','tianjinshi','baodingshi','handanshi','xingtaishi','taiyuanshi','shenyangshi','shijiazhuangshi','hengshuishi','tangshanshi','cangzhoushi']
 		city_ary.each do |c|
 			daliy_avg.puts(City.find_by_city_name_pinyin(c).city_name)
 			#处理文件目录
@@ -85,7 +86,7 @@ class DaliyAvg
 end
 #start-----------------------
 # puts "--start--9km--"
- DaliyAvg.avg_9
+DaliyAvg.avg_9
 # puts "--start--25km--"
 # DaliyAvg.avg_25
 # puts "OK"
