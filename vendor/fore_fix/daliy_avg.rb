@@ -57,7 +57,7 @@ class DaliyAvg
 		File.delete(path+filename) if File.exists?(path+filename)
 		daliy_avg=File.open(path+filename,"w")
 		#城市遍历
-		city_ary=Array['beijingshi','langfangshi','tianjinshi','baodingshi','handanshi','xingtaishi','taiyuanshi','shenyangshi','shijiazhuangshi','hengshuishi','tangshanshi','cangzhoushi']
+		city_ary=Array['beijingshi','langfangshi','tianjinshi','baodingshi','handanshi','xingtaishi','taiyuanshi','shijiazhuangshi','hengshuishi','tangshanshi','cangzhoushi']
 		city_ary.each do |c|
 			daliy_avg.puts(City.find_by_city_name_pinyin(c).city_name)
 			#处理文件目录
