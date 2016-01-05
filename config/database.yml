@@ -83,8 +83,8 @@ test:
 #
 
 production:
-  url: <%= ENV['DATABASE_URL'] %>
-  #<<: *default
-  #database: geo_rails_test_production
+    #url: <%= ENV['DATABASE_URL'] %>
+  <<: *default
+  database: geo_rails_test_production
   #username: geo_rails_test
   #password: <%= ENV['GEO_RAILS_TEST_DATABASE_PASSWORD'] %>

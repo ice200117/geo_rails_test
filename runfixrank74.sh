@@ -9,5 +9,5 @@ echo 'rank74'
 
 cd /vagrant/geo_rails_test/
 echo 'send mails'
-/home/vagrant/.rbenv/shims/rails r vendor/fore_fix/test_send_mail.rb -e production
-# rails  r vendor/fore_fix/test_send_mail.rb -e production
+#/home/vagrant/.rbenv/shims/rails r vendor/fore_fix/test_send_mail.rb -e production
+ rails  r vendor/fore_fix/test_send_mail.rb -e production

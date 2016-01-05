@@ -1,5 +1,6 @@
 class WelcomeController < ApplicationController
-  caches_page :pinggu, :bar
+	caches_page :pinggu, :bar
+	cache_sweeper :welcome_sweeper
 
 	include NumRu
 	protect_from_forgery :except => [:get_forecast_baoding, :get_city_point]
