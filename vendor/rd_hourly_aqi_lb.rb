@@ -18,6 +18,10 @@ def parse_line(line, c)
   hc = HourlyCityForecastAirQuality.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
 
   hc.AQI = line[14,4]
+  puts sdate+delta_hour.to_i*3600
+  puts line[14,4]
+  puts hc.AQI
+  puts '---------'
   hc.main_pol = line[18,13].strip
   hc.grade = line[31,1]
   hc.pm25 = line[99,6]
@@ -63,20 +67,24 @@ path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
 # Read hua bei city, do not read data of these city.
 firstline = true
 hb_city = Array.new
-IO.foreach("vendor/station_hb.EXT") do |line| 
-  if firstline
-  firstline = false
-  next
-  end
+#IO.foreach("vendor/station_hb.EXT") do |line| 
+IO.foreach("vendor/station.EXT_lb") do |line| 
+  #if firstline
+  #firstline = false
+  #next
+  #end
   post_number = line[1,7]
   latitude = line[8,8]
   longitude = line[16,8]
   city_name_pinyin = line[25,18].strip
-  #hb_city << city_name_pinyin
+  hb_city << city_name_pinyin
   #  city_name  = line[46..-4].strip
 end
   
-hb_city << 'hangzhoushi'
+puts hb_city
+puts '-------'
+#hb_city << 'hangzhoushi'
+#hb_city << 'hulunbeiershi'
 
 cs = City.all
 cs.each do |c|

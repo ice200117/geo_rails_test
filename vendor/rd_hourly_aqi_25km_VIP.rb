@@ -45,7 +45,7 @@ end
 strtime = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
 # puts strtime
 
-# strtime = '2015121408'
+# strtime = '2015122108'
 puts strtime
 # byebuy
 path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
@@ -73,7 +73,9 @@ end
 # puts c.city_name_pinyin
 #if c.city_name_pinyin.rstrip.eql?('langfangshi')
 # py = c.city_name_pinyin.strip
-py = 'hangzhoushi'
+# py = 'hangzhoushi'
+#py = 'pingdingshanshi'
+py = 'jinanshi'
 
 c = City.find_by_city_name_pinyin(py)
 # puts c
