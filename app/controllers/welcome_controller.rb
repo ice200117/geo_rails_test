@@ -1,4 +1,6 @@
 class WelcomeController < ApplicationController
+  caches_page :pinggu, :bar
+
 	include NumRu
 	protect_from_forgery :except => [:get_forecast_baoding, :get_city_point]
 
@@ -758,6 +760,7 @@ class WelcomeController < ApplicationController
 		end
 		layout
 	end
+
 	def banner
 		hs = Hash.new
 		# monitor data
@@ -826,4 +829,6 @@ class WelcomeController < ApplicationController
 
 		hs
 	end 
+
+
 end

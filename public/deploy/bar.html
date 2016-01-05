@@ -1,0 +1,3723 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>ForecastAQI</title>
+		<link data-turbolinks-track="true" href="/assets/application.self-7c7700154a929c0451078c14cb99a42c927f36e8d4e3545401d5a395a80fbc8c.css?body=1" media="all" rel="stylesheet" />
+<link data-turbolinks-track="true" href="/assets/dataTables/jquery.dataTables.self-b90179accbd8550a37e9cbbe621da6128d940518e83579bc59c4d5c1f66a2389.css?body=1" media="all" rel="stylesheet" />
+<link data-turbolinks-track="true" href="/assets/css/styles.self-363495eff9f5ab96721c508f89f15a748af3730ea432db729dff81ec8987756d.css?body=1" media="all" rel="stylesheet" />
+<link data-turbolinks-track="true" href="/assets/css/jquery-ui.self-c3f6a5c469447ce59c3f24f4eaabcc921ff5f76c19ec320854b6eb27f83c0666.css?body=1" media="all" rel="stylesheet" />
+<link data-turbolinks-track="true" href="/assets/css/bootstrap.min.self-0c387d4121d11818d5243106d683103d7f3f68d3539bf9cf6c85002430661c9f.css?body=1" media="all" rel="stylesheet" />
+<link data-turbolinks-track="true" href="/assets/css/bootstrap-table.min.self-1002e7a799cf93a7482156a16d310615e4d31b54c7948afbdeee2b9018dbca84.css?body=1" media="all" rel="stylesheet" />
+		<script data-turbolinks-track="true" src="/assets/jquery.self-4c7649dd655c61cb850cfd2e71f937c3bbf3e3a752a3499ed8bb9884473fe1dd.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/jquery_cookie.self-ab2c546089c54b96e0bf71dc2de05bffc5ec2b65aa853339b11bde5b3141d46d.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/jquery_ujs.self-82819b9f2de121124a614eeab50287468ad6f4b1ef4437925a7832ffbdf2cce9.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/dataTables/jquery.dataTables.self-770bf6f5f52c93784a25c3c866719f24d091a3f864c36850a7d338b58bbed52c.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap/affix.self-3555752f8a930795ee9e56751a52e6871104ae85d01b3ab8363da3802a5ecc78.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap/alert.self-d8b7bd612b3dcfdefb7b5539b9d5848d66ccbd3e7af8bb8d48bfb3288aaa7be8.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap/button.self-e74d33ba39500940a78d6fa4d2d64f6ca7fd86d60a2149641f7fde7ba711d8a1.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap/carousel.self-35d204878d906298e55bc24553e11fd89b980fc4ffe5792fe36af8c0da289c54.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap/collapse.self-056c40532d9f0f126ec17e839f60c942f573fbd61a086e7f156306e3fc5e8c1f.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap/dropdown.self-e56c2ffee4618411d43ecf15c89273f6223847ad756e1cd17545d04afa732ed4.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap/modal.self-62463080dba6b9d024ff0a3192da0e76eacbc683194f3395047c6f5cfa0acb59.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap/scrollspy.self-52afd90e8ba97d9f08617a13986e8869d6c4a45751c0bff59a6f91241e722aca.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap/tab.self-dad0d5c377f9fae26394484535ebb23ccf68afae084f896af6ea4cdf8c9f6ae0.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap/transition.self-3b268d4cd8c79e46ded7392885f72f64ffb5b0d49948a12b8cf9779f6163e13a.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap/tooltip.self-facdc69246a072acb927ded77ff655f7c27a518b9357fddd45d119fbc8a0ab9f.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap/popover.self-210cff1fb4b72b71a29b5122180cb5937c8145cd13a934dc838280f1d9607a3e.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap-sprockets.self-fbfa5ad7d9aa0afe439ec4ff3883acc4cb92b62cb67c40d674320c9aa1d4642d.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/jquery-migrate-min.self-4b9a092934f8df934403368a55b57a2c6c331f24d2b1f40b452bd2e95356aa3e.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/vendor/jquery.backstretch.min.self-6fa7638a32d803fbd92452bd9773e427fcc9373f10430a3efc12e9994042873c.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/highcharts.self-6c71917ec30182234cbb921f18ebd8b65d125361ae002e83b7ba0340e6ed2cbf.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/highcharts/highcharts-more.self-f7d2624cbe3d90cf6349a95967a78eab1d831a40ad006f27f0edee207999b3bd.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/chartkick.self-c33f97212de7f499029d66ddf93fb10e12286d4bf207b6fbeaabb0e93a03e9f7.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/china_city/jquery.china_city.self-88d5514aff114bb148a43c5207bc7a889a353394da854c5c4e925f74d1c63222.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/bootstrap.min.self-d66e555f160df017adf1ca16a36cd609a36d49c51637e365c5b8847d0065fa40.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/respond.self-bb3e192a29a6c897c0964210aeae45c48971c5765771e77f6eb9a64bf0457dec.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/citySelector.self-1e935c7161fc5794d07feb958a19413aa66a3bdb891ad104accf8977d132a174.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/application.self-eea77c795a0c9adf0d566c1a16fc4ea559c9762124b9c60c56ebec4e95e691f1.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/jquery-ui-datepicker.self-de5c4c369ddebc3592e363ffe88a384a5b7a723a310430bbc21547ad3bec815c.js?body=1"></script>
+		<meta content="authenticity_token" name="csrf-param" />
+<meta content="W3c7fzcOE1D+Anmh5uAGE/SjOnkEFwodBdXaTNgg9iA=" name="csrf-token" />
+		<link href="/favicon.png" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
+	<script>
+		Highcharts.setOptions({
+			global: {
+				useUTC: false
+			}
+		});
+	</script>
+	</head>
+	<body class="welcome-bar">
+		<!-- 顶部导航 -->
+		<div class="top-nav">
+			<div> 
+				<ul class="navigation" id="toptitle">
+					<!--<a href="/">污染源解析与治理</a>-->
+					<li><a id="welcome-pinggu" href="/" class="current-link" data-no-turbolink>首页</a></li>
+					<li><a id="welcome-forecast" href="/forecast">预警预报</a></li>
+					<li><a id="welcome-compare" href="/compare" >城市对比</a></li>
+					<li class="dropdown">
+						<a class="dropdown-toggle showDM" data-toggle="dropdown" id="ltjcDiv1" >立体监测</a>
+						<ul class="dropdown-menu">
+							<li><a href="/real_time_monitoring">实 时 监 测</a></li>
+							<li><a href="/history_data">历 史 数 据</a></li>
+						</ul>
+					</li>
+					<li><a id="zq-map" href="http://www.zq12369.com/map.php" target="_blank">地图模式</a></li>
+					<li><a id="welcome-case" href="/case">典型案例</a></li>
+					<li><a id="welcome-about" href="/about">联系我们</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="container">
+
+	<!--
+  <div class="city-group">
+    <select id="province" class="city-select">
+      <option value="">--省份--</option>
+      <option value="110000">北京市</option>
+<option value="120000">天津市</option>
+<option value="130000">河北省</option>
+<option value="140000">山西省</option>
+<option value="150000">内蒙古自治区</option>
+<option value="210000">辽宁省</option>
+<option value="220000">吉林省</option>
+<option value="230000">黑龙江省</option>
+<option value="310000">上海市</option>
+<option value="320000">江苏省</option>
+<option value="330000">浙江省</option>
+<option value="340000">安徽省</option>
+<option value="350000">福建省</option>
+<option value="360000">江西省</option>
+<option selected="selected" value="370000">山东省</option>
+<option value="410000">河南省</option>
+<option value="420000">湖北省</option>
+<option value="430000">湖南省</option>
+<option value="440000">广东省</option>
+<option value="450000">广西壮族自治区</option>
+<option value="460000">海南省</option>
+<option value="500000">重庆市</option>
+<option value="510000">四川省</option>
+<option value="520000">贵州省</option>
+<option value="530000">云南省</option>
+<option value="540000">西藏自治区</option>
+<option value="610000">陕西省</option>
+<option value="620000">甘肃省</option>
+<option value="630000">青海省</option>
+<option value="640000">宁夏回族自治区</option>
+<option value="650000">新疆维吾尔自治区</option>
+    </select>
+    <select id="city" class="city-select">
+      <option value="">--城市--</option>
+      <option value="370100">济南市</option>
+<option selected="selected" value="370200">青岛市</option>
+<option value="370300">淄博市</option>
+<option value="370400">枣庄市</option>
+<option value="370500">东营市</option>
+<option value="370600">烟台市</option>
+<option value="370700">潍坊市</option>
+<option value="370800">济宁市</option>
+<option value="370900">泰安市</option>
+<option value="371000">威海市</option>
+<option value="371100">日照市</option>
+<option value="371200">莱芜市</option>
+<option value="371300">临沂市</option>
+<option value="371400">德州市</option>
+<option value="371500">聊城市</option>
+<option value="371600">滨州市</option>
+<option value="371700">菏泽市</option>
+    </select>
+    <select id="district" class="city-select">
+      <option value="">--地区--</option>
+      <option value="370201">市辖区</option>
+<option value="370202">市南区</option>
+<option value="370203">市北区</option>
+<option selected="selected" value="370211">黄岛区</option>
+<option value="370212">崂山区</option>
+<option value="370213">李沧区</option>
+<option value="370214">城阳区</option>
+<option value="370281">胶州市</option>
+<option value="370282">即墨市</option>
+<option value="370283">平度市</option>
+<option value="370285">莱西市</option>
+    </select>
+  </div>
+  -->
+  
+
+
+
+  <form accept-charset="UTF-8" action="/bar" data-remote="true" html="{:class=&gt;&quot;form-inline&quot;}" method="get"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+    <label for="d">城市：</label>
+    <select id="c_city_id" name="c[city_id]"><option value="1">北京</option>
+<option value="2">东城区</option>
+<option value="3">西城区</option>
+<option value="4">朝阳区</option>
+<option value="5">丰台区</option>
+<option value="6">石景山区</option>
+<option value="7">海淀区</option>
+<option value="8">天津</option>
+<option value="9">石家庄市</option>
+<option value="10">唐山市</option>
+<option value="11">秦皇岛市</option>
+<option value="12">邯郸市</option>
+<option value="13">邢台市</option>
+<option value="14">保定市</option>
+<option value="15">张家口市</option>
+<option value="16">承德市</option>
+<option value="17">沧州市</option>
+<option selected="selected" value="18">廊坊市</option>
+<option value="19">衡水市</option>
+<option value="20">太原市</option>
+<option value="21">大同市</option>
+<option value="22">阳泉市</option>
+<option value="23">长治市</option>
+<option value="24">晋城市</option>
+<option value="25">朔州市</option>
+<option value="26">晋中市</option>
+<option value="27">运城市</option>
+<option value="28">忻州市</option>
+<option value="29">临汾市</option>
+<option value="30">吕梁市</option>
+<option value="31">呼和浩特市</option>
+<option value="32">包头市</option>
+<option value="33">乌海市</option>
+<option value="34">赤峰市</option>
+<option value="35">通辽市</option>
+<option value="36">鄂尔多斯市</option>
+<option value="37">呼伦贝尔市</option>
+<option value="38">巴彦淖尔市</option>
+<option value="39">乌兰察布市</option>
+<option value="40">兴安盟</option>
+<option value="41">锡林郭勒盟</option>
+<option value="42">阿拉善盟</option>
+<option value="43">沈阳市</option>
+<option value="44">大连市</option>
+<option value="45">鞍山市</option>
+<option value="46">抚顺市</option>
+<option value="47">本溪市</option>
+<option value="48">丹东市</option>
+<option value="49">锦州市</option>
+<option value="50">营口市</option>
+<option value="51">阜新市</option>
+<option value="52">辽阳市</option>
+<option value="53">盘锦市</option>
+<option value="54">铁岭市</option>
+<option value="55">朝阳市</option>
+<option value="56">葫芦岛市</option>
+<option value="57">长春市</option>
+<option value="58">吉林市</option>
+<option value="59">四平市</option>
+<option value="60">辽源市</option>
+<option value="61">通化市</option>
+<option value="62">白山市</option>
+<option value="63">松原市</option>
+<option value="64">白城市</option>
+<option value="65">延边朝鲜族自治州</option>
+<option value="66">哈尔滨市</option>
+<option value="67">齐齐哈尔市</option>
+<option value="68">鸡西市</option>
+<option value="69">鹤岗市</option>
+<option value="70">双鸭山市</option>
+<option value="71">大庆市</option>
+<option value="72">伊春市</option>
+<option value="73">佳木斯市</option>
+<option value="74">七台河市</option>
+<option value="75">牡丹江市</option>
+<option value="76">黑河市</option>
+<option value="77">绥化市</option>
+<option value="78">大兴安岭地区</option>
+<option value="79">上海</option>
+<option value="80">南京市</option>
+<option value="81">无锡市</option>
+<option value="82">徐州市</option>
+<option value="83">常州市</option>
+<option value="84">苏州市</option>
+<option value="85">南通市</option>
+<option value="86">连云港市</option>
+<option value="87">淮安市</option>
+<option value="88">盐城市</option>
+<option value="89">扬州市</option>
+<option value="90">镇江市</option>
+<option value="91">泰州市</option>
+<option value="92">宿迁市</option>
+<option value="93">杭州市</option>
+<option value="94">宁波市</option>
+<option value="95">温州市</option>
+<option value="96">嘉兴市</option>
+<option value="97">湖州市</option>
+<option value="98">绍兴市</option>
+<option value="99">金华市</option>
+<option value="100">衢州市</option>
+<option value="101">舟山市</option>
+<option value="102">台州市</option>
+<option value="103">丽水市</option>
+<option value="104">合肥市</option>
+<option value="105">芜湖市</option>
+<option value="106">蚌埠市</option>
+<option value="107">淮南市</option>
+<option value="108">马鞍山市</option>
+<option value="109">淮北市</option>
+<option value="110">铜陵市</option>
+<option value="111">安庆市</option>
+<option value="112">黄山市</option>
+<option value="113">滁州市</option>
+<option value="114">阜阳市</option>
+<option value="115">宿州市</option>
+<option value="116">巢湖市</option>
+<option value="117">六安市</option>
+<option value="118">亳州市</option>
+<option value="119">池州市</option>
+<option value="120">宣城市</option>
+<option value="121">福州市</option>
+<option value="122">厦门市</option>
+<option value="123">莆田市</option>
+<option value="124">三明市</option>
+<option value="125">泉州市</option>
+<option value="126">漳州市</option>
+<option value="127">南平市</option>
+<option value="128">龙岩市</option>
+<option value="129">宁德市</option>
+<option value="130">南昌市</option>
+<option value="131">景德镇市</option>
+<option value="132">萍乡市</option>
+<option value="133">九江市</option>
+<option value="134">新余市</option>
+<option value="135">鹰潭市</option>
+<option value="136">赣州市</option>
+<option value="137">吉安市</option>
+<option value="138">宜春市</option>
+<option value="139">抚州市</option>
+<option value="140">上饶市</option>
+<option value="141">济南市</option>
+<option value="142">青岛市</option>
+<option value="143">淄博市</option>
+<option value="144">枣庄市</option>
+<option value="145">东营市</option>
+<option value="146">烟台市</option>
+<option value="147">潍坊市</option>
+<option value="148">济宁市</option>
+<option value="149">泰安市</option>
+<option value="150">威海市</option>
+<option value="151">日照市</option>
+<option value="152">莱芜市</option>
+<option value="153">临沂市</option>
+<option value="154">德州市</option>
+<option value="155">聊城市</option>
+<option value="156">滨州市</option>
+<option value="157">菏泽市</option>
+<option value="158">郑州市</option>
+<option value="159">开封市</option>
+<option value="160">洛阳市</option>
+<option value="161">平顶山市</option>
+<option value="162">安阳市</option>
+<option value="163">鹤壁市</option>
+<option value="164">新乡市</option>
+<option value="165">焦作市</option>
+<option value="166">濮阳市</option>
+<option value="167">许昌市</option>
+<option value="168">漯河市</option>
+<option value="169">三门峡市</option>
+<option value="170">南阳市</option>
+<option value="171">商丘市</option>
+<option value="172">信阳市</option>
+<option value="173">周口市</option>
+<option value="174">驻马店市</option>
+<option value="175">武汉市</option>
+<option value="176">黄石市</option>
+<option value="177">十堰市</option>
+<option value="178">宜昌市</option>
+<option value="179">襄樊市</option>
+<option value="180">鄂州市</option>
+<option value="181">荆门市</option>
+<option value="182">孝感市</option>
+<option value="183">荆州市</option>
+<option value="184">黄冈市</option>
+<option value="185">咸宁市</option>
+<option value="186">随州市</option>
+<option value="187">恩施土家族苗族自治州</option>
+<option value="188">长沙市</option>
+<option value="189">株洲市</option>
+<option value="190">湘潭市</option>
+<option value="191">衡阳市</option>
+<option value="192">邵阳市</option>
+<option value="193">岳阳市</option>
+<option value="194">常德市</option>
+<option value="195">张家界市</option>
+<option value="196">益阳市</option>
+<option value="197">郴州市</option>
+<option value="198">永州市</option>
+<option value="199">怀化市</option>
+<option value="200">娄底市</option>
+<option value="201">湘西土家族苗族自治州</option>
+<option value="202">广州市</option>
+<option value="203">韶关市</option>
+<option value="204">深圳市</option>
+<option value="205">珠海市</option>
+<option value="206">汕头市</option>
+<option value="207">佛山市</option>
+<option value="208">江门市</option>
+<option value="209">湛江市</option>
+<option value="210">茂名市</option>
+<option value="211">肇庆市</option>
+<option value="212">惠州市</option>
+<option value="213">梅州市</option>
+<option value="214">汕尾市</option>
+<option value="215">河源市</option>
+<option value="216">阳江市</option>
+<option value="217">清远市</option>
+<option value="218">东莞市</option>
+<option value="219">中山市</option>
+<option value="220">潮州市</option>
+<option value="221">揭阳市</option>
+<option value="222">云浮市</option>
+<option value="223">南宁市</option>
+<option value="224">柳州市</option>
+<option value="225">桂林市</option>
+<option value="226">梧州市</option>
+<option value="227">北海市</option>
+<option value="228">防城港市</option>
+<option value="229">钦州市</option>
+<option value="230">贵港市</option>
+<option value="231">玉林市</option>
+<option value="232">百色市</option>
+<option value="233">贺州市</option>
+<option value="234">河池市</option>
+<option value="235">来宾市</option>
+<option value="236">崇左市</option>
+<option value="237">海口市</option>
+<option value="238">三亚市</option>
+<option value="239">重庆市</option>
+<option value="240">成都市</option>
+<option value="241">自贡市</option>
+<option value="242">攀枝花市</option>
+<option value="243">泸州市</option>
+<option value="244">德阳市</option>
+<option value="245">绵阳市</option>
+<option value="246">广元市</option>
+<option value="247">遂宁市</option>
+<option value="248">内江市</option>
+<option value="249">乐山市</option>
+<option value="250">南充市</option>
+<option value="251">眉山市</option>
+<option value="252">宜宾市</option>
+<option value="253">广安市</option>
+<option value="254">达州市</option>
+<option value="255">雅安市</option>
+<option value="256">巴中市</option>
+<option value="257">资阳市</option>
+<option value="258">阿坝藏族羌族自治州</option>
+<option value="259">甘孜藏族自治州</option>
+<option value="260">凉山彝族自治州</option>
+<option value="261">贵阳市</option>
+<option value="262">六盘水市</option>
+<option value="263">遵义市</option>
+<option value="264">安顺市</option>
+<option value="265">铜仁地区</option>
+<option value="266">黔西南布依族苗族自治州</option>
+<option value="267">毕节地区</option>
+<option value="268">黔东南苗族侗族自治州</option>
+<option value="269">黔南布依族苗族自治州</option>
+<option value="270">昆明市</option>
+<option value="271">曲靖市</option>
+<option value="272">玉溪市</option>
+<option value="273">保山市</option>
+<option value="274">昭通市</option>
+<option value="275">丽江市</option>
+<option value="276">普洱市</option>
+<option value="277">临沧市</option>
+<option value="278">楚雄彝族自治州</option>
+<option value="279">红河哈尼族彝族自治州</option>
+<option value="280">文山壮族苗族自治州</option>
+<option value="281">西双版纳傣族自治州</option>
+<option value="282">大理白族自治州</option>
+<option value="283">德宏傣族景颇族自治州</option>
+<option value="284">怒江傈僳族自治州</option>
+<option value="285">迪庆藏族自治州</option>
+<option value="286">拉萨市</option>
+<option value="287">昌都地区</option>
+<option value="288">山南地区</option>
+<option value="289">日喀则地区</option>
+<option value="290">那曲地区</option>
+<option value="291">阿里地区</option>
+<option value="292">林芝地区</option>
+<option value="293">西安市</option>
+<option value="294">铜川市</option>
+<option value="295">宝鸡市</option>
+<option value="296">咸阳市</option>
+<option value="297">渭南市</option>
+<option value="298">延安市</option>
+<option value="299">汉中市</option>
+<option value="300">榆林市</option>
+<option value="301">安康市</option>
+<option value="302">商洛市</option>
+<option value="303">兰州市</option>
+<option value="304">嘉峪关市</option>
+<option value="305">金昌市</option>
+<option value="306">白银市</option>
+<option value="307">天水市</option>
+<option value="308">武威市</option>
+<option value="309">张掖市</option>
+<option value="310">平凉市</option>
+<option value="311">酒泉市</option>
+<option value="312">庆阳市</option>
+<option value="313">定西市</option>
+<option value="314">陇南市</option>
+<option value="315">临夏回族自治州</option>
+<option value="316">甘南藏族自治州</option>
+<option value="317">西宁市</option>
+<option value="318">海东地区</option>
+<option value="319">海北藏族自治州</option>
+<option value="320">黄南藏族自治州</option>
+<option value="321">海南藏族自治州</option>
+<option value="322">果洛藏族自治州</option>
+<option value="323">玉树藏族自治州</option>
+<option value="324">海西蒙古族藏族自治州</option>
+<option value="325">银川市</option>
+<option value="326">石嘴山市</option>
+<option value="327">吴忠市</option>
+<option value="328">固原市</option>
+<option value="329">中卫市</option>
+<option value="330">乌鲁木齐市</option>
+<option value="331">克拉玛依市</option>
+<option value="332">吐鲁番地区</option>
+<option value="333">哈密地区</option>
+<option value="334">昌吉回族自治州</option>
+<option value="335">博尔塔拉蒙古自治州</option>
+<option value="336">巴音郭楞蒙古自治州</option>
+<option value="337">阿克苏地区</option>
+<option value="338">克孜勒苏柯尔克孜自治州</option>
+<option value="339">喀什地区</option>
+<option value="340">和田地区</option>
+<option value="341">伊犁哈萨克自治州</option>
+<option value="342">塔城地区</option>
+<option value="343">阿勒泰地区</option>
+<option value="344">台北市</option>
+<option value="345">香港</option>
+<option value="346">澳门</option>
+<option value="389">安国市</option>
+<option value="390">清苑县</option>
+<option value="391">广阳区</option>
+<option value="392">安次区</option>
+<option value="393">大城县</option>
+<option value="394">香河县</option>
+<option value="395">文安县</option>
+<option value="396">霸州市</option>
+<option value="397">市辖区</option>
+<option value="398">大厂回族自治县</option>
+<option value="399">三河市</option>
+<option value="400">固安县</option>
+<option value="401">永清县</option>
+<option value="402">临安市</option>
+<option value="403">义乌市</option>
+<option value="404">乳山市</option>
+<option value="405">五家渠市</option>
+<option value="406">即墨市</option>
+<option value="407">句容市</option>
+<option value="408">吴江市</option>
+<option value="409">太仓市</option>
+<option value="410">宜兴市</option>
+<option value="411">富阳市</option>
+<option value="412">寿光市</option>
+<option value="413">常熟市</option>
+<option value="414">平度市</option>
+<option value="415">库尔勒市</option>
+<option value="416">张家港市</option>
+<option value="417">招远市</option>
+<option value="418">文登市</option>
+<option value="419">昆山市</option>
+<option value="420">江阴市</option>
+<option value="421">海门市</option>
+<option value="422">溧阳市</option>
+<option value="423">瓦房店市</option>
+<option value="424">石河子市</option>
+<option value="425">章丘市</option>
+<option value="426">胶南市</option>
+<option value="427">胶州市</option>
+<option value="428">荣成市</option>
+<option value="429">莱州市</option>
+<option value="430">莱西市</option>
+<option value="431">蓬莱市</option>
+<option value="432">襄阳市</option>
+<option value="433">金坛市</option></select>
+    <label for="start_date">开始日期：</label>
+    <select id="start_date_year" name="start_date[year]">
+<option value="2010">2010</option>
+<option value="2011">2011</option>
+<option value="2012">2012</option>
+<option value="2013">2013</option>
+<option value="2014">2014</option>
+<option selected="selected" value="2015">2015</option>
+<option value="2016">2016</option>
+<option value="2017">2017</option>
+<option value="2018">2018</option>
+<option value="2019">2019</option>
+<option value="2020">2020</option>
+</select>
+<select id="start_date_month" name="start_date[month]">
+<option value="1">January</option>
+<option value="2">February</option>
+<option value="3">March</option>
+<option value="4">April</option>
+<option value="5">May</option>
+<option value="6">June</option>
+<option value="7">July</option>
+<option value="8">August</option>
+<option value="9">September</option>
+<option value="10">October</option>
+<option value="11">November</option>
+<option selected="selected" value="12">December</option>
+</select>
+<select id="start_date_day" name="start_date[day]">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option selected="selected" value="31">31</option>
+</select>
+
+    <label for="end_date">结束日期：</label>
+    <select id="end_date_year" name="end_date[year]">
+<option value="2011">2011</option>
+<option value="2012">2012</option>
+<option value="2013">2013</option>
+<option value="2014">2014</option>
+<option value="2015">2015</option>
+<option selected="selected" value="2016">2016</option>
+<option value="2017">2017</option>
+<option value="2018">2018</option>
+<option value="2019">2019</option>
+<option value="2020">2020</option>
+<option value="2021">2021</option>
+</select>
+<select id="end_date_month" name="end_date[month]">
+<option selected="selected" value="1">January</option>
+<option value="2">February</option>
+<option value="3">March</option>
+<option value="4">April</option>
+<option value="5">May</option>
+<option value="6">June</option>
+<option value="7">July</option>
+<option value="8">August</option>
+<option value="9">September</option>
+<option value="10">October</option>
+<option value="11">November</option>
+<option value="12">December</option>
+</select>
+<select id="end_date_day" name="end_date[day]">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option selected="selected" value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select>
+
+    <button id="subbtn" type="submit" class="btn btn-default" >Submit</button>
+</form>
+  <div id="line_chart1">
+	<div id="chart-1" style="height: 600px; text-align: center; color: #999; line-height: 600px; font-size: 14px; font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif;">Loading...</div><script type="text/javascript">
+  new Chartkick.LineChart("chart-1", [{"name":"廊坊市","data":[["2016-01-04T21:00:00.000+08:00",124.0],["2016-01-04T22:00:00.000+08:00",134.0],["2016-01-04T23:00:00.000+08:00",175.0],["2016-01-05T00:00:00.000+08:00",142.0],["2016-01-05T01:00:00.000+08:00",95.0],["2016-01-05T02:00:00.000+08:00",67.0],["2016-01-05T03:00:00.000+08:00",61.0],["2016-01-05T04:00:00.000+08:00",61.0],["2016-01-05T05:00:00.000+08:00",56.0],["2016-01-05T06:00:00.000+08:00",64.0],["2016-01-05T07:00:00.000+08:00",56.0],["2016-01-05T08:00:00.000+08:00",43.0],["2016-01-05T09:00:00.000+08:00",49.0],["2016-01-05T10:00:00.000+08:00",78.0],["2016-01-05T11:00:00.000+08:00",72.0],["2016-01-05T12:00:00.000+08:00",76.0],["2016-01-05T13:00:00.000+08:00",78.0],["2016-01-05T14:00:00.000+08:00",77.0],["2016-01-05T15:00:00.000+08:00",72.0],["2016-01-05T16:00:00.000+08:00",67.0],["2016-01-05T17:00:00.000+08:00",64.0],["2016-01-05T18:00:00.000+08:00",65.0],["2016-01-05T19:00:00.000+08:00",76.0],["2016-01-05T20:00:00.000+08:00",102.0],["2016-01-05T21:00:00.000+08:00",108.0],["2016-01-05T22:00:00.000+08:00",106.0],["2016-01-05T23:00:00.000+08:00",84.0],["2016-01-06T00:00:00.000+08:00",77.0],["2016-01-06T01:00:00.000+08:00",84.0],["2016-01-06T02:00:00.000+08:00",91.0],["2016-01-06T03:00:00.000+08:00",103.0],["2016-01-06T04:00:00.000+08:00",133.0],["2016-01-06T05:00:00.000+08:00",120.0],["2016-01-06T06:00:00.000+08:00",141.0],["2016-01-06T07:00:00.000+08:00",125.0],["2016-01-06T08:00:00.000+08:00",145.0],["2016-01-06T09:00:00.000+08:00",143.0],["2016-01-06T10:00:00.000+08:00",141.0],["2016-01-06T11:00:00.000+08:00",88.0],["2016-01-06T12:00:00.000+08:00",56.0],["2016-01-06T13:00:00.000+08:00",49.0],["2016-01-06T14:00:00.000+08:00",43.0],["2016-01-06T15:00:00.000+08:00",43.0],["2016-01-06T16:00:00.000+08:00",53.0],["2016-01-06T17:00:00.000+08:00",56.0],["2016-01-06T18:00:00.000+08:00",94.0],["2016-01-06T19:00:00.000+08:00",129.0],["2016-01-06T20:00:00.000+08:00",102.0],["2016-01-06T21:00:00.000+08:00",141.0],["2016-01-06T22:00:00.000+08:00",96.0],["2016-01-06T23:00:00.000+08:00",59.0],["2016-01-07T00:00:00.000+08:00",57.0],["2016-01-07T01:00:00.000+08:00",51.0],["2016-01-07T02:00:00.000+08:00",47.0],["2016-01-07T03:00:00.000+08:00",43.0],["2016-01-07T04:00:00.000+08:00",44.0],["2016-01-07T05:00:00.000+08:00",48.0],["2016-01-07T06:00:00.000+08:00",56.0],["2016-01-07T07:00:00.000+08:00",55.0],["2016-01-07T08:00:00.000+08:00",70.0],["2016-01-07T09:00:00.000+08:00",90.0],["2016-01-07T10:00:00.000+08:00",103.0],["2016-01-07T11:00:00.000+08:00",66.0],["2016-01-07T12:00:00.000+08:00",49.0],["2016-01-07T13:00:00.000+08:00",41.0],["2016-01-07T14:00:00.000+08:00",47.0],["2016-01-07T15:00:00.000+08:00",56.0],["2016-01-07T16:00:00.000+08:00",58.0],["2016-01-07T17:00:00.000+08:00",77.0],["2016-01-07T18:00:00.000+08:00",80.0],["2016-01-07T19:00:00.000+08:00",77.0],["2016-01-07T20:00:00.000+08:00",82.0],["2016-01-07T21:00:00.000+08:00",96.0],["2016-01-07T22:00:00.000+08:00",100.0],["2016-01-07T23:00:00.000+08:00",120.0],["2016-01-08T00:00:00.000+08:00",123.0],["2016-01-08T01:00:00.000+08:00",104.0],["2016-01-08T02:00:00.000+08:00",74.0],["2016-01-08T03:00:00.000+08:00",65.0],["2016-01-08T04:00:00.000+08:00",61.0],["2016-01-08T05:00:00.000+08:00",63.0],["2016-01-08T06:00:00.000+08:00",65.0],["2016-01-08T07:00:00.000+08:00",66.0],["2016-01-08T08:00:00.000+08:00",65.0],["2016-01-08T09:00:00.000+08:00",63.0],["2016-01-08T10:00:00.000+08:00",57.0],["2016-01-08T11:00:00.000+08:00",37.0],["2016-01-08T12:00:00.000+08:00",32.0],["2016-01-08T13:00:00.000+08:00",31.0],["2016-01-08T14:00:00.000+08:00",31.0],["2016-01-08T15:00:00.000+08:00",36.0],["2016-01-08T16:00:00.000+08:00",48.0],["2016-01-08T17:00:00.000+08:00",58.0],["2016-01-08T18:00:00.000+08:00",90.0],["2016-01-08T19:00:00.000+08:00",122.0],["2016-01-08T20:00:00.000+08:00",141.0],["2016-01-08T21:00:00.000+08:00",144.0],["2016-01-08T22:00:00.000+08:00",141.0],["2016-01-08T23:00:00.000+08:00",126.0],["2016-01-09T00:00:00.000+08:00",115.0],["2016-01-09T01:00:00.000+08:00",113.0],["2016-01-09T02:00:00.000+08:00",116.0],["2016-01-09T03:00:00.000+08:00",118.0],["2016-01-09T04:00:00.000+08:00",116.0],["2016-01-09T05:00:00.000+08:00",116.0],["2016-01-09T06:00:00.000+08:00",119.0],["2016-01-09T07:00:00.000+08:00",122.0],["2016-01-09T08:00:00.000+08:00",124.0],["2016-01-09T09:00:00.000+08:00",134.0],["2016-01-09T10:00:00.000+08:00",213.0],["2016-01-09T11:00:00.000+08:00",164.0],["2016-01-09T12:00:00.000+08:00",111.0],["2016-01-09T13:00:00.000+08:00",82.0],["2016-01-09T14:00:00.000+08:00",57.0],["2016-01-09T15:00:00.000+08:00",63.0],["2016-01-09T16:00:00.000+08:00",70.0],["2016-01-09T17:00:00.000+08:00",103.0],["2016-01-09T18:00:00.000+08:00",124.0],["2016-01-09T19:00:00.000+08:00",143.0],["2016-01-09T20:00:00.000+08:00",163.0]]},{"name":"监测值","data":[["2016-01-05T08:00:00.000+08:00",37.0],["2016-01-05T09:00:00.000+08:00",39.0],["2016-01-05T10:00:00.000+08:00",48.0],["2016-01-05T11:00:00.000+08:00",51.0],["2016-01-05T00:00:00.000+08:00",54.0],["2016-01-05T01:00:00.000+08:00",51.0],["2016-01-05T02:00:00.000+08:00",52.0],["2016-01-05T03:00:00.000+08:00",48.0],["2016-01-05T04:00:00.000+08:00",42.0],["2016-01-05T05:00:00.000+08:00",39.0],["2016-01-05T06:00:00.000+08:00",39.0],["2016-01-05T07:00:00.000+08:00",35.0]]}], {"library":{"chart":{"backgroundColor":"#eee"},"title":{"text":" City_AQI      CUACE (CAMS)"}}});
+</script>
+
+  </div>
+
+  <div id='fore_compare' class="col-xs-12">
+
+	  <div id="chart-2" style="height: 600px; text-align: center; color: #999; line-height: 600px; font-size: 14px; font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif;">Loading...</div><script type="text/javascript">
+  new Chartkick.ColumnChart("chart-2", [{"name":"廊坊市监测值","data":[["30Dec",183],["31Dec",131],["01Jan",319],["02Jan",437],["03Jan",174],["04Jan",117],["05Jan",45]]},{"name":"30Dec","data":[["30Dec",80],["31Dec",135],["01Jan",207],["02Jan",212],["03Jan",158],["04Jan",144],["05Jan",0],["06Jan",0],["07Jan",0],["08Jan",0],["09Jan",0]]},{"name":"03Jan","data":[["30Dec",0],["31Dec",0],["01Jan",0],["02Jan",0],["03Jan",259],["04Jan",125],["05Jan",136],["06Jan",130],["07Jan",108],["08Jan",125],["09Jan",0]]},{"name":"31Dec","data":[["30Dec",0],["31Dec",312],["01Jan",216],["02Jan",205],["03Jan",206],["04Jan",163],["05Jan",198],["06Jan",0],["07Jan",0],["08Jan",0],["09Jan",0]]},{"name":"02Jan","data":[["30Dec",0],["31Dec",0],["01Jan",0],["02Jan",349],["03Jan",199],["04Jan",118],["05Jan",148],["06Jan",108],["07Jan",104],["08Jan",0],["09Jan",0]]},{"name":"04Jan","data":[["30Dec",0],["31Dec",0],["01Jan",0],["02Jan",0],["03Jan",0],["04Jan",144],["05Jan",76],["06Jan",96],["07Jan",67],["08Jan",77],["09Jan",118]]},{"name":"01Jan","data":[["30Dec",0],["31Dec",0],["01Jan",433],["02Jan",388],["03Jan",252],["04Jan",141],["05Jan",186],["06Jan",101],["07Jan",0],["08Jan",0],["09Jan",0]]}], {"library":{"title":{"text":"City_forecast_AQI_day_compare"}}});
+</script>
+
+  </div>
+
+  <!--
+  <table class="table table-striped" id="fore_avg_aqi">
+	  <tr>
+		  <th>发布时间</th>
+		  <th>预报时间</th>
+		  <th>AQI</th>
+	  </tr>
+
+		  <tr>
+			  <td>廊坊市监测值</td>
+			  <td>30Dec </td>
+			  <td>183</td>
+		  </tr>
+		  <tr>
+			  <td>廊坊市监测值</td>
+			  <td>31Dec </td>
+			  <td>131</td>
+		  </tr>
+		  <tr>
+			  <td>廊坊市监测值</td>
+			  <td>01Jan </td>
+			  <td>319</td>
+		  </tr>
+		  <tr>
+			  <td>廊坊市监测值</td>
+			  <td>02Jan </td>
+			  <td>437</td>
+		  </tr>
+		  <tr>
+			  <td>廊坊市监测值</td>
+			  <td>03Jan </td>
+			  <td>174</td>
+		  </tr>
+		  <tr>
+			  <td>廊坊市监测值</td>
+			  <td>04Jan </td>
+			  <td>117</td>
+		  </tr>
+		  <tr>
+			  <td>廊坊市监测值</td>
+			  <td>05Jan </td>
+			  <td>45</td>
+		  </tr>
+		  <tr>
+			  <td>30Dec</td>
+			  <td>30Dec </td>
+			  <td>80</td>
+		  </tr>
+		  <tr>
+			  <td>30Dec</td>
+			  <td>31Dec </td>
+			  <td>135</td>
+		  </tr>
+		  <tr>
+			  <td>30Dec</td>
+			  <td>01Jan </td>
+			  <td>207</td>
+		  </tr>
+		  <tr>
+			  <td>30Dec</td>
+			  <td>02Jan </td>
+			  <td>212</td>
+		  </tr>
+		  <tr>
+			  <td>30Dec</td>
+			  <td>03Jan </td>
+			  <td>158</td>
+		  </tr>
+		  <tr>
+			  <td>30Dec</td>
+			  <td>04Jan </td>
+			  <td>144</td>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+			  <td>03Jan</td>
+			  <td>03Jan </td>
+			  <td>259</td>
+		  </tr>
+		  <tr>
+			  <td>03Jan</td>
+			  <td>04Jan </td>
+			  <td>125</td>
+		  </tr>
+		  <tr>
+			  <td>03Jan</td>
+			  <td>05Jan </td>
+			  <td>136</td>
+		  </tr>
+		  <tr>
+			  <td>03Jan</td>
+			  <td>06Jan </td>
+			  <td>130</td>
+		  </tr>
+		  <tr>
+			  <td>03Jan</td>
+			  <td>07Jan </td>
+			  <td>108</td>
+		  </tr>
+		  <tr>
+			  <td>03Jan</td>
+			  <td>08Jan </td>
+			  <td>125</td>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+			  <td>31Dec</td>
+			  <td>31Dec </td>
+			  <td>312</td>
+		  </tr>
+		  <tr>
+			  <td>31Dec</td>
+			  <td>01Jan </td>
+			  <td>216</td>
+		  </tr>
+		  <tr>
+			  <td>31Dec</td>
+			  <td>02Jan </td>
+			  <td>205</td>
+		  </tr>
+		  <tr>
+			  <td>31Dec</td>
+			  <td>03Jan </td>
+			  <td>206</td>
+		  </tr>
+		  <tr>
+			  <td>31Dec</td>
+			  <td>04Jan </td>
+			  <td>163</td>
+		  </tr>
+		  <tr>
+			  <td>31Dec</td>
+			  <td>05Jan </td>
+			  <td>198</td>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+			  <td>02Jan</td>
+			  <td>02Jan </td>
+			  <td>349</td>
+		  </tr>
+		  <tr>
+			  <td>02Jan</td>
+			  <td>03Jan </td>
+			  <td>199</td>
+		  </tr>
+		  <tr>
+			  <td>02Jan</td>
+			  <td>04Jan </td>
+			  <td>118</td>
+		  </tr>
+		  <tr>
+			  <td>02Jan</td>
+			  <td>05Jan </td>
+			  <td>148</td>
+		  </tr>
+		  <tr>
+			  <td>02Jan</td>
+			  <td>06Jan </td>
+			  <td>108</td>
+		  </tr>
+		  <tr>
+			  <td>02Jan</td>
+			  <td>07Jan </td>
+			  <td>104</td>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+			  <td>04Jan</td>
+			  <td>04Jan </td>
+			  <td>144</td>
+		  </tr>
+		  <tr>
+			  <td>04Jan</td>
+			  <td>05Jan </td>
+			  <td>76</td>
+		  </tr>
+		  <tr>
+			  <td>04Jan</td>
+			  <td>06Jan </td>
+			  <td>96</td>
+		  </tr>
+		  <tr>
+			  <td>04Jan</td>
+			  <td>07Jan </td>
+			  <td>67</td>
+		  </tr>
+		  <tr>
+			  <td>04Jan</td>
+			  <td>08Jan </td>
+			  <td>77</td>
+		  </tr>
+		  <tr>
+			  <td>04Jan</td>
+			  <td>09Jan </td>
+			  <td>118</td>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+			  <td>01Jan</td>
+			  <td>01Jan </td>
+			  <td>433</td>
+		  </tr>
+		  <tr>
+			  <td>01Jan</td>
+			  <td>02Jan </td>
+			  <td>388</td>
+		  </tr>
+		  <tr>
+			  <td>01Jan</td>
+			  <td>03Jan </td>
+			  <td>252</td>
+		  </tr>
+		  <tr>
+			  <td>01Jan</td>
+			  <td>04Jan </td>
+			  <td>141</td>
+		  </tr>
+		  <tr>
+			  <td>01Jan</td>
+			  <td>05Jan </td>
+			  <td>186</td>
+		  </tr>
+		  <tr>
+			  <td>01Jan</td>
+			  <td>06Jan </td>
+			  <td>101</td>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+  </table>
+  -->
+
+  <h2>当天的预报均值和监测均值对比表</h2>
+  <table class="display" id="fore_monitor_compare" cellspacing="0" width="100%">
+	  <thead>
+	  <tr>
+		  <th>城市</th>
+		  <th>今天的监测日均值</th>
+		  <th>今天到目前的预报均值</th>
+		  <th>预报偏差</th>
+		  <th>预报发布时间</th>
+		  <!--<th>综合指数</th>-->
+	  </tr>
+	  </thead>
+
+	  <tbody>
+
+		  <tr>
+			  <td>绍兴市</td>
+			  <td>78 </td>
+			  <td>63</td>
+		  	  <td>15</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>绥化市</td>
+			  <td>23 </td>
+			  <td>27</td>
+		  	  <td>4</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>绵阳市</td>
+			  <td>171 </td>
+			  <td>299</td>
+		  	  <td>128</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>聊城市</td>
+			  <td>105 </td>
+			  <td>83</td>
+		  	  <td>22</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>肇庆市</td>
+			  <td>58 </td>
+			  <td>27</td>
+		  	  <td>31</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>自贡市</td>
+			  <td>235 </td>
+			  <td>190</td>
+		  	  <td>45</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>舟山市</td>
+			  <td>48 </td>
+			  <td>65</td>
+		  	  <td>17</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>芜湖市</td>
+			  <td>73 </td>
+			  <td>72</td>
+		  	  <td>1</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>苏州市</td>
+			  <td>47 </td>
+			  <td>37</td>
+		  	  <td>10</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>茂名市</td>
+			  <td>37 </td>
+			  <td>26</td>
+		  	  <td>11</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>荆州市</td>
+			  <td>353 </td>
+			  <td>130</td>
+		  	  <td>223</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>荆门市</td>
+			  <td>276 </td>
+			  <td>146</td>
+		  	  <td>130</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>莆田市</td>
+			  <td>90 </td>
+			  <td>71</td>
+		  	  <td>19</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>莱芜市</td>
+			  <td>105 </td>
+			  <td>54</td>
+		  	  <td>51</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>菏泽市</td>
+			  <td>176 </td>
+			  <td>102</td>
+		  	  <td>74</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>萍乡市</td>
+			  <td>180 </td>
+			  <td>99</td>
+		  	  <td>81</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>营口市</td>
+			  <td>68 </td>
+			  <td>77</td>
+		  	  <td>9</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>葫芦岛市</td>
+			  <td>106 </td>
+			  <td>52</td>
+		  	  <td>54</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>蚌埠市</td>
+			  <td>68 </td>
+			  <td>38</td>
+		  	  <td>30</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>衡水市</td>
+			  <td>87 </td>
+			  <td>106</td>
+		  	  <td>19</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>衡阳市</td>
+			  <td>180 </td>
+			  <td>108</td>
+		  	  <td>72</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>衢州市</td>
+			  <td>106 </td>
+			  <td>76</td>
+		  	  <td>30</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>西双版纳傣族自治州</td>
+			  <td>54 </td>
+			  <td>36</td>
+		  	  <td>18</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>西宁市</td>
+			  <td>66 </td>
+			  <td>59</td>
+		  	  <td>7</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>西安市</td>
+			  <td>343 </td>
+			  <td>119</td>
+		  	  <td>224</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>许昌市</td>
+			  <td>170 </td>
+			  <td>88</td>
+		  	  <td>82</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>贵港市</td>
+			  <td>102 </td>
+			  <td>79</td>
+		  	  <td>23</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>贵阳市</td>
+			  <td>93 </td>
+			  <td>90</td>
+		  	  <td>3</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>贺州市</td>
+			  <td>63 </td>
+			  <td>55</td>
+		  	  <td>8</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>资阳市</td>
+			  <td>106 </td>
+			  <td>201</td>
+		  	  <td>95</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>赣州市</td>
+			  <td>94 </td>
+			  <td>86</td>
+		  	  <td>8</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>赤峰市</td>
+			  <td>43 </td>
+			  <td>79</td>
+		  	  <td>36</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>辽源市</td>
+			  <td>60 </td>
+			  <td>30</td>
+		  	  <td>30</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>辽阳市</td>
+			  <td>63 </td>
+			  <td>125</td>
+		  	  <td>62</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>达州市</td>
+			  <td>155 </td>
+			  <td>126</td>
+		  	  <td>29</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>运城市</td>
+			  <td>336 </td>
+			  <td>98</td>
+		  	  <td>238</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>连云港市</td>
+			  <td>34 </td>
+			  <td>30</td>
+		  	  <td>4</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>迪庆藏族自治州</td>
+			  <td>26 </td>
+			  <td>40</td>
+		  	  <td>14</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>通化市</td>
+			  <td>128 </td>
+			  <td>49</td>
+		  	  <td>79</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>通辽市</td>
+			  <td>33 </td>
+			  <td>20</td>
+		  	  <td>13</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>遂宁市</td>
+			  <td>100 </td>
+			  <td>158</td>
+		  	  <td>58</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>遵义市</td>
+			  <td>116 </td>
+			  <td>97</td>
+		  	  <td>19</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>邢台市</td>
+			  <td>125 </td>
+			  <td>140</td>
+		  	  <td>15</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>那曲地区</td>
+			  <td>123 </td>
+			  <td>22</td>
+		  	  <td>101</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>邯郸市</td>
+			  <td>119 </td>
+			  <td>153</td>
+		  	  <td>34</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>邵阳市</td>
+			  <td>135 </td>
+			  <td>106</td>
+		  	  <td>29</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>郑州市</td>
+			  <td>207 </td>
+			  <td>147</td>
+		  	  <td>60</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>郴州市</td>
+			  <td>137 </td>
+			  <td>81</td>
+		  	  <td>56</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>鄂尔多斯市</td>
+			  <td>27 </td>
+			  <td>37</td>
+		  	  <td>10</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>鄂州市</td>
+			  <td>134 </td>
+			  <td>86</td>
+		  	  <td>48</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>酒泉市</td>
+			  <td>75 </td>
+			  <td>22</td>
+		  	  <td>53</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>重庆市</td>
+			  <td>106 </td>
+			  <td>143</td>
+		  	  <td>37</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>金华市</td>
+			  <td>122 </td>
+			  <td>83</td>
+		  	  <td>39</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>金昌市</td>
+			  <td>38 </td>
+			  <td>29</td>
+		  	  <td>9</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>钦州市</td>
+			  <td>48 </td>
+			  <td>70</td>
+		  	  <td>22</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>铁岭市</td>
+			  <td>73 </td>
+			  <td>44</td>
+		  	  <td>29</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>铜仁地区</td>
+			  <td>65 </td>
+			  <td>97</td>
+		  	  <td>32</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>铜川市</td>
+			  <td>301 </td>
+			  <td>82</td>
+		  	  <td>219</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>铜陵市</td>
+			  <td>88 </td>
+			  <td>64</td>
+		  	  <td>24</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>银川市</td>
+			  <td>35 </td>
+			  <td>59</td>
+		  	  <td>24</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>锡林郭勒盟</td>
+			  <td>18 </td>
+			  <td>12</td>
+		  	  <td>6</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>锦州市</td>
+			  <td>110 </td>
+			  <td>67</td>
+		  	  <td>43</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>镇江市</td>
+			  <td>45 </td>
+			  <td>26</td>
+		  	  <td>19</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>长春市</td>
+			  <td>51 </td>
+			  <td>25</td>
+		  	  <td>26</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>长沙市</td>
+			  <td>203 </td>
+			  <td>141</td>
+		  	  <td>62</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>长治市</td>
+			  <td>228 </td>
+			  <td>105</td>
+		  	  <td>123</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>阜新市</td>
+			  <td>47 </td>
+			  <td>53</td>
+		  	  <td>6</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>阜阳市</td>
+			  <td>145 </td>
+			  <td>63</td>
+		  	  <td>82</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>防城港市</td>
+			  <td>38 </td>
+			  <td>58</td>
+		  	  <td>20</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>阳江市</td>
+			  <td>30 </td>
+			  <td>23</td>
+		  	  <td>7</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>阳泉市</td>
+			  <td>168 </td>
+			  <td>54</td>
+		  	  <td>114</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>阿克苏地区</td>
+			  <td>198 </td>
+			  <td>68</td>
+		  	  <td>130</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>阿勒泰地区</td>
+			  <td>23 </td>
+			  <td>37</td>
+		  	  <td>14</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>阿坝藏族羌族自治州</td>
+			  <td>31 </td>
+			  <td>40</td>
+		  	  <td>9</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>阿拉善盟</td>
+			  <td>40 </td>
+			  <td>24</td>
+		  	  <td>16</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>阿里地区</td>
+			  <td>49 </td>
+			  <td>30</td>
+		  	  <td>19</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>陇南市</td>
+			  <td>76 </td>
+			  <td>49</td>
+		  	  <td>27</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>随州市</td>
+			  <td>122 </td>
+			  <td>85</td>
+		  	  <td>37</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>雅安市</td>
+			  <td>87 </td>
+			  <td>60</td>
+		  	  <td>27</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>青岛市</td>
+			  <td>56 </td>
+			  <td>61</td>
+		  	  <td>5</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>鞍山市</td>
+			  <td>73 </td>
+			  <td>98</td>
+		  	  <td>25</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>韶关市</td>
+			  <td>83 </td>
+			  <td>83</td>
+		  	  <td>0</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>马鞍山市</td>
+			  <td>48 </td>
+			  <td>36</td>
+		  	  <td>12</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>驻马店市</td>
+			  <td>171 </td>
+			  <td>99</td>
+		  	  <td>72</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>鸡西市</td>
+			  <td>21 </td>
+			  <td>21</td>
+		  	  <td>0</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>鹤壁市</td>
+			  <td>144 </td>
+			  <td>95</td>
+		  	  <td>49</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>鹤岗市</td>
+			  <td>48 </td>
+			  <td>52</td>
+		  	  <td>4</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>鹰潭市</td>
+			  <td>97 </td>
+			  <td>93</td>
+		  	  <td>4</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>黄冈市</td>
+			  <td>99 </td>
+			  <td>82</td>
+		  	  <td>17</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>黄山市</td>
+			  <td>52 </td>
+			  <td>67</td>
+		  	  <td>15</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>黄石市</td>
+			  <td>126 </td>
+			  <td>99</td>
+		  	  <td>27</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>黑河市</td>
+			  <td>27 </td>
+			  <td>14</td>
+		  	  <td>13</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>黔东南苗族侗族自治州</td>
+			  <td>85 </td>
+			  <td>85</td>
+		  	  <td>0</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>黔南布依族苗族自治州</td>
+			  <td>98 </td>
+			  <td>78</td>
+		  	  <td>20</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>黔西南布依族苗族自治州</td>
+			  <td>73 </td>
+			  <td>77</td>
+		  	  <td>4</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>齐齐哈尔市</td>
+			  <td>52 </td>
+			  <td>21</td>
+		  	  <td>31</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>龙岩市</td>
+			  <td>48 </td>
+			  <td>47</td>
+		  	  <td>1</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>七台河市</td>
+			  <td>59 </td>
+			  <td>33</td>
+		  	  <td>26</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>三亚市</td>
+			  <td>28 </td>
+			  <td>48</td>
+		  	  <td>20</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>三明市</td>
+			  <td>59 </td>
+			  <td>47</td>
+		  	  <td>12</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>三门峡市</td>
+			  <td>327 </td>
+			  <td>115</td>
+		  	  <td>212</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>上海</td>
+			  <td>45 </td>
+			  <td>40</td>
+		  	  <td>5</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>上饶市</td>
+			  <td>72 </td>
+			  <td>69</td>
+		  	  <td>3</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>东莞市</td>
+			  <td>61 </td>
+			  <td>59</td>
+		  	  <td>2</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>东营市</td>
+			  <td>73 </td>
+			  <td>33</td>
+		  	  <td>40</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>中卫市</td>
+			  <td>54 </td>
+			  <td>22</td>
+		  	  <td>32</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>中山市</td>
+			  <td>25 </td>
+			  <td>25</td>
+		  	  <td>0</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>临夏回族自治州</td>
+			  <td>51 </td>
+			  <td>59</td>
+		  	  <td>8</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>临汾市</td>
+			  <td>215 </td>
+			  <td>103</td>
+		  	  <td>112</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>临沂市</td>
+			  <td>87 </td>
+			  <td>76</td>
+		  	  <td>11</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>临沧市</td>
+			  <td>40 </td>
+			  <td>34</td>
+		  	  <td>6</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>丹东市</td>
+			  <td>74 </td>
+			  <td>62</td>
+		  	  <td>12</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>丽水市</td>
+			  <td>109 </td>
+			  <td>44</td>
+		  	  <td>65</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>丽江市</td>
+			  <td>28 </td>
+			  <td>35</td>
+		  	  <td>7</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>乌兰察布市</td>
+			  <td>48 </td>
+			  <td>16</td>
+		  	  <td>32</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>乌海市</td>
+			  <td>46 </td>
+			  <td>38</td>
+		  	  <td>8</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>乌鲁木齐市</td>
+			  <td>126 </td>
+			  <td>71</td>
+		  	  <td>55</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>乐山市</td>
+			  <td>114 </td>
+			  <td>92</td>
+		  	  <td>22</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>九江市</td>
+			  <td>127 </td>
+			  <td>89</td>
+		  	  <td>38</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>云浮市</td>
+			  <td>41 </td>
+			  <td>46</td>
+		  	  <td>5</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>亳州市</td>
+			  <td>132 </td>
+			  <td>92</td>
+		  	  <td>40</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>伊春市</td>
+			  <td>69 </td>
+			  <td>24</td>
+		  	  <td>45</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>伊犁哈萨克自治州</td>
+			  <td>63 </td>
+			  <td>46</td>
+		  	  <td>17</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>佛山市</td>
+			  <td>46 </td>
+			  <td>40</td>
+		  	  <td>6</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>佳木斯市</td>
+			  <td>35 </td>
+			  <td>26</td>
+		  	  <td>9</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>保定市</td>
+			  <td>149 </td>
+			  <td>129</td>
+		  	  <td>20</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>保山市</td>
+			  <td>64 </td>
+			  <td>34</td>
+		  	  <td>30</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>信阳市</td>
+			  <td>144 </td>
+			  <td>87</td>
+		  	  <td>57</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>克孜勒苏柯尔克孜自治州</td>
+			  <td>110 </td>
+			  <td>46</td>
+		  	  <td>64</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>克拉玛依市</td>
+			  <td>57 </td>
+			  <td>38</td>
+		  	  <td>19</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>六安市</td>
+			  <td>95 </td>
+			  <td>40</td>
+		  	  <td>55</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>六盘水市</td>
+			  <td>140 </td>
+			  <td>106</td>
+		  	  <td>34</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>兰州市</td>
+			  <td>62 </td>
+			  <td>45</td>
+		  	  <td>17</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>兴安盟</td>
+			  <td>19 </td>
+			  <td>17</td>
+		  	  <td>2</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>内江市</td>
+			  <td>147 </td>
+			  <td>181</td>
+		  	  <td>34</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>凉山彝族自治州</td>
+			  <td>36 </td>
+			  <td>34</td>
+		  	  <td>2</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>包头市</td>
+			  <td>31 </td>
+			  <td>42</td>
+		  	  <td>11</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>北京</td>
+			  <td>18 </td>
+			  <td>51</td>
+		  	  <td>33</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>北海市</td>
+			  <td>33 </td>
+			  <td>53</td>
+		  	  <td>20</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>十堰市</td>
+			  <td>298 </td>
+			  <td>106</td>
+		  	  <td>192</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>南京市</td>
+			  <td>40 </td>
+			  <td>35</td>
+		  	  <td>5</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>南充市</td>
+			  <td>135 </td>
+			  <td>177</td>
+		  	  <td>42</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>南宁市</td>
+			  <td>61 </td>
+			  <td>64</td>
+		  	  <td>3</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>南平市</td>
+			  <td>57 </td>
+			  <td>55</td>
+		  	  <td>2</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>南昌市</td>
+			  <td>105 </td>
+			  <td>88</td>
+		  	  <td>17</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>南通市</td>
+			  <td>38 </td>
+			  <td>25</td>
+		  	  <td>13</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>南阳市</td>
+			  <td>213 </td>
+			  <td>111</td>
+		  	  <td>102</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>博尔塔拉蒙古自治州</td>
+			  <td>74 </td>
+			  <td>46</td>
+		  	  <td>28</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>厦门市</td>
+			  <td>55 </td>
+			  <td>117</td>
+		  	  <td>62</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>双鸭山市</td>
+			  <td>50 </td>
+			  <td>26</td>
+		  	  <td>24</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>台州市</td>
+			  <td>116 </td>
+			  <td>75</td>
+		  	  <td>41</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>合肥市</td>
+			  <td>69 </td>
+			  <td>42</td>
+		  	  <td>27</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>吉安市</td>
+			  <td>123 </td>
+			  <td>89</td>
+		  	  <td>34</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>吉林市</td>
+			  <td>42 </td>
+			  <td>35</td>
+		  	  <td>7</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>吐鲁番地区</td>
+			  <td>223 </td>
+			  <td>48</td>
+		  	  <td>175</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>吕梁市</td>
+			  <td>52 </td>
+			  <td>42</td>
+		  	  <td>10</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>吴忠市</td>
+			  <td>28 </td>
+			  <td>30</td>
+		  	  <td>2</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>周口市</td>
+			  <td>198 </td>
+			  <td>87</td>
+		  	  <td>111</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>呼伦贝尔市</td>
+			  <td>32 </td>
+			  <td>15</td>
+		  	  <td>17</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>呼和浩特市</td>
+			  <td>38 </td>
+			  <td>50</td>
+		  	  <td>12</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>和田地区</td>
+			  <td>64 </td>
+			  <td>47</td>
+		  	  <td>17</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>咸宁市</td>
+			  <td>147 </td>
+			  <td>92</td>
+		  	  <td>55</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>咸阳市</td>
+			  <td>340 </td>
+			  <td>108</td>
+		  	  <td>232</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>哈密地区</td>
+			  <td>104 </td>
+			  <td>56</td>
+		  	  <td>48</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>哈尔滨市</td>
+			  <td>73 </td>
+			  <td>78</td>
+		  	  <td>5</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>唐山市</td>
+			  <td>56 </td>
+			  <td>77</td>
+		  	  <td>21</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>商丘市</td>
+			  <td>194 </td>
+			  <td>89</td>
+		  	  <td>105</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>商洛市</td>
+			  <td>100 </td>
+			  <td>75</td>
+		  	  <td>25</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>喀什地区</td>
+			  <td>277 </td>
+			  <td>98</td>
+		  	  <td>179</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>嘉兴市</td>
+			  <td>60 </td>
+			  <td>56</td>
+		  	  <td>4</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>嘉峪关市</td>
+			  <td>65 </td>
+			  <td>24</td>
+		  	  <td>41</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>四平市</td>
+			  <td>39 </td>
+			  <td>29</td>
+		  	  <td>10</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>固原市</td>
+			  <td>75 </td>
+			  <td>37</td>
+		  	  <td>38</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>塔城地区</td>
+			  <td>37 </td>
+			  <td>31</td>
+		  	  <td>6</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>大兴安岭地区</td>
+			  <td>25 </td>
+			  <td>17</td>
+		  	  <td>8</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>大同市</td>
+			  <td>30 </td>
+			  <td>55</td>
+		  	  <td>25</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>大庆市</td>
+			  <td>49 </td>
+			  <td>19</td>
+		  	  <td>30</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>大理白族自治州</td>
+			  <td>27 </td>
+			  <td>28</td>
+		  	  <td>1</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>大连市</td>
+			  <td>60 </td>
+			  <td>87</td>
+		  	  <td>27</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>天水市</td>
+			  <td>59 </td>
+			  <td>64</td>
+		  	  <td>5</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>天津</td>
+			  <td>36 </td>
+			  <td>106</td>
+		  	  <td>70</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>太原市</td>
+			  <td>61 </td>
+			  <td>97</td>
+		  	  <td>36</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>威海市</td>
+			  <td>29 </td>
+			  <td>28</td>
+		  	  <td>1</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>娄底市</td>
+			  <td>92 </td>
+			  <td>108</td>
+		  	  <td>16</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>孝感市</td>
+			  <td>86 </td>
+			  <td>110</td>
+		  	  <td>24</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>宁德市</td>
+			  <td>77 </td>
+			  <td>75</td>
+		  	  <td>2</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>宁波市</td>
+			  <td>70 </td>
+			  <td>91</td>
+		  	  <td>21</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>安庆市</td>
+			  <td>82 </td>
+			  <td>60</td>
+		  	  <td>22</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>安康市</td>
+			  <td>162 </td>
+			  <td>102</td>
+		  	  <td>60</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>安阳市</td>
+			  <td>104 </td>
+			  <td>97</td>
+		  	  <td>7</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>安顺市</td>
+			  <td>94 </td>
+			  <td>75</td>
+		  	  <td>19</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>定西市</td>
+			  <td>76 </td>
+			  <td>37</td>
+		  	  <td>39</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>宜宾市</td>
+			  <td>195 </td>
+			  <td>168</td>
+		  	  <td>27</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>宜昌市</td>
+			  <td>191 </td>
+			  <td>93</td>
+		  	  <td>98</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>宜春市</td>
+			  <td>130 </td>
+			  <td>102</td>
+		  	  <td>28</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>宝鸡市</td>
+			  <td>186 </td>
+			  <td>71</td>
+		  	  <td>115</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>宣城市</td>
+			  <td>93 </td>
+			  <td>42</td>
+		  	  <td>51</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>宿州市</td>
+			  <td>56 </td>
+			  <td>62</td>
+		  	  <td>6</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>宿迁市</td>
+			  <td>39 </td>
+			  <td>50</td>
+		  	  <td>11</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>山南地区</td>
+			  <td>29 </td>
+			  <td>35</td>
+		  	  <td>6</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>岳阳市</td>
+			  <td>141 </td>
+			  <td>99</td>
+		  	  <td>42</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>崇左市</td>
+			  <td>79 </td>
+			  <td>56</td>
+		  	  <td>23</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>巴中市</td>
+			  <td>161 </td>
+			  <td>125</td>
+		  	  <td>36</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>巴彦淖尔市</td>
+			  <td>40 </td>
+			  <td>25</td>
+		  	  <td>15</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>常州市</td>
+			  <td>41 </td>
+			  <td>41</td>
+		  	  <td>0</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>常德市</td>
+			  <td>350 </td>
+			  <td>135</td>
+		  	  <td>215</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>平凉市</td>
+			  <td>74 </td>
+			  <td>26</td>
+		  	  <td>48</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>平顶山市</td>
+			  <td>186 </td>
+			  <td>141</td>
+		  	  <td>45</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>广元市</td>
+			  <td>127 </td>
+			  <td>96</td>
+		  	  <td>31</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>广安市</td>
+			  <td>78 </td>
+			  <td>122</td>
+		  	  <td>44</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>广州市</td>
+			  <td>60 </td>
+			  <td>75</td>
+		  	  <td>15</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>庆阳市</td>
+			  <td>48 </td>
+			  <td>24</td>
+		  	  <td>24</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>廊坊市</td>
+			  <td>44 </td>
+			  <td>71</td>
+		  	  <td>27</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>延安市</td>
+			  <td>61 </td>
+			  <td>31</td>
+		  	  <td>30</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>延边朝鲜族自治州</td>
+			  <td>51 </td>
+			  <td>20</td>
+		  	  <td>31</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>开封市</td>
+			  <td>183 </td>
+			  <td>92</td>
+		  	  <td>91</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>张家口市</td>
+			  <td>36 </td>
+			  <td>46</td>
+		  	  <td>10</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>张家界市</td>
+			  <td>152 </td>
+			  <td>102</td>
+		  	  <td>50</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>张掖市</td>
+			  <td>76 </td>
+			  <td>61</td>
+		  	  <td>15</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>徐州市</td>
+			  <td>66 </td>
+			  <td>66</td>
+		  	  <td>0</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>德宏傣族景颇族自治州</td>
+			  <td>49 </td>
+			  <td>40</td>
+		  	  <td>9</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>德州市</td>
+			  <td>91 </td>
+			  <td>150</td>
+		  	  <td>59</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>德阳市</td>
+			  <td>160 </td>
+			  <td>216</td>
+		  	  <td>56</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>忻州市</td>
+			  <td>33 </td>
+			  <td>33</td>
+		  	  <td>0</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>怀化市</td>
+			  <td>82 </td>
+			  <td>79</td>
+		  	  <td>3</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>怒江傈僳族自治州</td>
+			  <td>54 </td>
+			  <td>39</td>
+		  	  <td>15</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>恩施土家族苗族自治州</td>
+			  <td>191 </td>
+			  <td>70</td>
+		  	  <td>121</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>惠州市</td>
+			  <td>46 </td>
+			  <td>32</td>
+		  	  <td>14</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>成都市</td>
+			  <td>211 </td>
+			  <td>188</td>
+		  	  <td>23</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>扬州市</td>
+			  <td>43 </td>
+			  <td>26</td>
+		  	  <td>17</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>承德市</td>
+			  <td>44 </td>
+			  <td>23</td>
+		  	  <td>21</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>抚州市</td>
+			  <td>74 </td>
+			  <td>89</td>
+		  	  <td>15</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>抚顺市</td>
+			  <td>126 </td>
+			  <td>115</td>
+		  	  <td>11</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>拉萨市</td>
+			  <td>46 </td>
+			  <td>36</td>
+		  	  <td>10</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>揭阳市</td>
+			  <td>132 </td>
+			  <td>86</td>
+		  	  <td>46</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>攀枝花市</td>
+			  <td>79 </td>
+			  <td>45</td>
+		  	  <td>34</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>文山壮族苗族自治州</td>
+			  <td>50 </td>
+			  <td>29</td>
+		  	  <td>21</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>新乡市</td>
+			  <td>191 </td>
+			  <td>94</td>
+		  	  <td>97</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>新余市</td>
+			  <td>103 </td>
+			  <td>97</td>
+		  	  <td>6</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>无锡市</td>
+			  <td>52 </td>
+			  <td>28</td>
+		  	  <td>24</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>日喀则地区</td>
+			  <td>54 </td>
+			  <td>41</td>
+		  	  <td>13</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>日照市</td>
+			  <td>78 </td>
+			  <td>73</td>
+		  	  <td>5</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>昆明市</td>
+			  <td>71 </td>
+			  <td>78</td>
+		  	  <td>7</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>昌吉回族自治州</td>
+			  <td>149 </td>
+			  <td>34</td>
+		  	  <td>115</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>昌都地区</td>
+			  <td>37 </td>
+			  <td>36</td>
+		  	  <td>1</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>昭通市</td>
+			  <td>134 </td>
+			  <td>57</td>
+		  	  <td>77</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>晋中市</td>
+			  <td>188 </td>
+			  <td>68</td>
+		  	  <td>120</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>晋城市</td>
+			  <td>283 </td>
+			  <td>94</td>
+		  	  <td>189</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>普洱市</td>
+			  <td>41 </td>
+			  <td>27</td>
+		  	  <td>14</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>景德镇市</td>
+			  <td>61 </td>
+			  <td>68</td>
+		  	  <td>7</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>曲靖市</td>
+			  <td>64 </td>
+			  <td>79</td>
+		  	  <td>15</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>朔州市</td>
+			  <td>96 </td>
+			  <td>66</td>
+		  	  <td>30</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>朝阳市</td>
+			  <td>59 </td>
+			  <td>39</td>
+		  	  <td>20</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>本溪市</td>
+			  <td>86 </td>
+			  <td>111</td>
+		  	  <td>25</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>来宾市</td>
+			  <td>135 </td>
+			  <td>88</td>
+		  	  <td>47</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>杭州市</td>
+			  <td>85 </td>
+			  <td>76</td>
+		  	  <td>9</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>松原市</td>
+			  <td>40 </td>
+			  <td>18</td>
+		  	  <td>22</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>林芝地区</td>
+			  <td>60 </td>
+			  <td>32</td>
+		  	  <td>28</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>果洛藏族自治州</td>
+			  <td>88 </td>
+			  <td>37</td>
+		  	  <td>51</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>枣庄市</td>
+			  <td>86 </td>
+			  <td>116</td>
+		  	  <td>30</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>柳州市</td>
+			  <td>147 </td>
+			  <td>93</td>
+		  	  <td>54</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>株洲市</td>
+			  <td>217 </td>
+			  <td>142</td>
+		  	  <td>75</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>桂林市</td>
+			  <td>163 </td>
+			  <td>107</td>
+		  	  <td>56</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>梅州市</td>
+			  <td>51 </td>
+			  <td>65</td>
+		  	  <td>14</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>梧州市</td>
+			  <td>65 </td>
+			  <td>61</td>
+		  	  <td>4</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>楚雄彝族自治州</td>
+			  <td>57 </td>
+			  <td>34</td>
+		  	  <td>23</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>榆林市</td>
+			  <td>45 </td>
+			  <td>27</td>
+		  	  <td>18</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>武威市</td>
+			  <td>44 </td>
+			  <td>22</td>
+		  	  <td>22</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>武汉市</td>
+			  <td>131 </td>
+			  <td>93</td>
+		  	  <td>38</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>毕节地区</td>
+			  <td>74 </td>
+			  <td>63</td>
+		  	  <td>11</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>永州市</td>
+			  <td>117 </td>
+			  <td>84</td>
+		  	  <td>33</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>汉中市</td>
+			  <td>194 </td>
+			  <td>81</td>
+		  	  <td>113</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>汕头市</td>
+			  <td>93 </td>
+			  <td>64</td>
+		  	  <td>29</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>汕尾市</td>
+			  <td>54 </td>
+			  <td>47</td>
+		  	  <td>7</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>江门市</td>
+			  <td>45 </td>
+			  <td>22</td>
+		  	  <td>23</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>池州市</td>
+			  <td>118 </td>
+			  <td>60</td>
+		  	  <td>58</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>沈阳市</td>
+			  <td>65 </td>
+			  <td>71</td>
+		  	  <td>6</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>沧州市</td>
+			  <td>53 </td>
+			  <td>126</td>
+		  	  <td>73</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>河池市</td>
+			  <td>95 </td>
+			  <td>68</td>
+		  	  <td>27</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>河源市</td>
+			  <td>45 </td>
+			  <td>45</td>
+		  	  <td>0</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>泉州市</td>
+			  <td>65 </td>
+			  <td>82</td>
+		  	  <td>17</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>泰安市</td>
+			  <td>104 </td>
+			  <td>66</td>
+		  	  <td>38</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>泰州市</td>
+			  <td>38 </td>
+			  <td>28</td>
+		  	  <td>10</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>泸州市</td>
+			  <td>174 </td>
+			  <td>120</td>
+		  	  <td>54</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>洛阳市</td>
+			  <td>256 </td>
+			  <td>191</td>
+		  	  <td>65</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>济南市</td>
+			  <td>131 </td>
+			  <td>89</td>
+		  	  <td>42</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>济宁市</td>
+			  <td>192 </td>
+			  <td>95</td>
+		  	  <td>97</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>海东地区</td>
+			  <td>75 </td>
+			  <td>36</td>
+		  	  <td>39</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>海北藏族自治州</td>
+			  <td>45 </td>
+			  <td>29</td>
+		  	  <td>16</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>海南藏族自治州</td>
+			  <td>47 </td>
+			  <td>33</td>
+		  	  <td>14</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>海口市</td>
+			  <td>22 </td>
+			  <td>28</td>
+		  	  <td>6</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>海西蒙古族藏族自治州</td>
+			  <td>46 </td>
+			  <td>33</td>
+		  	  <td>13</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>淄博市</td>
+			  <td>85 </td>
+			  <td>37</td>
+		  	  <td>48</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>淮北市</td>
+			  <td>46 </td>
+			  <td>86</td>
+		  	  <td>40</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>淮南市</td>
+			  <td>55 </td>
+			  <td>69</td>
+		  	  <td>14</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>淮安市</td>
+			  <td>35 </td>
+			  <td>29</td>
+		  	  <td>6</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>深圳市</td>
+			  <td>33 </td>
+			  <td>33</td>
+		  	  <td>0</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>清远市</td>
+			  <td>29 </td>
+			  <td>57</td>
+		  	  <td>28</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>温州市</td>
+			  <td>109 </td>
+			  <td>88</td>
+		  	  <td>21</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>渭南市</td>
+			  <td>289 </td>
+			  <td>122</td>
+		  	  <td>167</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>湖州市</td>
+			  <td>90 </td>
+			  <td>49</td>
+		  	  <td>41</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>湘潭市</td>
+			  <td>234 </td>
+			  <td>136</td>
+		  	  <td>98</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>湘西土家族苗族自治州</td>
+			  <td>105 </td>
+			  <td>90</td>
+		  	  <td>15</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>湛江市</td>
+			  <td>29 </td>
+			  <td>24</td>
+		  	  <td>5</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>滁州市</td>
+			  <td>44 </td>
+			  <td>27</td>
+		  	  <td>17</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>滨州市</td>
+			  <td>84 </td>
+			  <td>45</td>
+		  	  <td>39</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>漯河市</td>
+			  <td>217 </td>
+			  <td>89</td>
+		  	  <td>128</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>漳州市</td>
+			  <td>98 </td>
+			  <td>232</td>
+		  	  <td>134</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>潍坊市</td>
+			  <td>64 </td>
+			  <td>45</td>
+		  	  <td>19</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>潮州市</td>
+			  <td>83 </td>
+			  <td>71</td>
+		  	  <td>12</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>濮阳市</td>
+			  <td>136 </td>
+			  <td>81</td>
+		  	  <td>55</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>烟台市</td>
+			  <td>54 </td>
+			  <td>38</td>
+		  	  <td>16</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>焦作市</td>
+			  <td>222 </td>
+			  <td>99</td>
+		  	  <td>123</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>牡丹江市</td>
+			  <td>61 </td>
+			  <td>21</td>
+		  	  <td>40</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>玉林市</td>
+			  <td>66 </td>
+			  <td>70</td>
+		  	  <td>4</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>玉树藏族自治州</td>
+			  <td>47 </td>
+			  <td>26</td>
+		  	  <td>21</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>玉溪市</td>
+			  <td>56 </td>
+			  <td>24</td>
+		  	  <td>32</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>珠海市</td>
+			  <td>31 </td>
+			  <td>14</td>
+		  	  <td>17</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>甘南藏族自治州</td>
+			  <td>94 </td>
+			  <td>39</td>
+		  	  <td>55</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>甘孜藏族自治州</td>
+			  <td>38 </td>
+			  <td>39</td>
+		  	  <td>1</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>白城市</td>
+			  <td>40 </td>
+			  <td>17</td>
+		  	  <td>23</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>白山市</td>
+			  <td>90 </td>
+			  <td>44</td>
+		  	  <td>46</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>白银市</td>
+			  <td>54 </td>
+			  <td>58</td>
+		  	  <td>4</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>百色市</td>
+			  <td>82 </td>
+			  <td>59</td>
+		  	  <td>23</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>益阳市</td>
+			  <td>237 </td>
+			  <td>124</td>
+		  	  <td>113</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>盐城市</td>
+			  <td>31 </td>
+			  <td>30</td>
+		  	  <td>1</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>盘锦市</td>
+			  <td>56 </td>
+			  <td>48</td>
+		  	  <td>8</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>眉山市</td>
+			  <td>156 </td>
+			  <td>157</td>
+		  	  <td>1</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr style="color:#ff0000">
+			  <td>石嘴山市</td>
+			  <td>38 </td>
+			  <td>103</td>
+		  	  <td>65</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>石家庄市</td>
+			  <td>124 </td>
+			  <td>86</td>
+		  	  <td>38</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>福州市</td>
+			  <td>69 </td>
+			  <td>83</td>
+		  	  <td>14</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>秦皇岛市</td>
+			  <td>37 </td>
+			  <td>58</td>
+		  	  <td>21</td>
+		  	  <td>2016-01-04_20</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>红河哈尼族彝族自治州</td>
+			  <td>39 </td>
+			  <td>37</td>
+		  	  <td>2</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+		  <tr>
+			  <td>黄南藏族自治州</td>
+			  <td>70 </td>
+			  <td>34</td>
+		  	  <td>36</td>
+		  	  <td>2016-01-04_08</td>
+		  </tr>
+		  
+	  </tbody>
+  </table>
+
+</div>
+
+<script>
+	$(document).ready(function() {
+
+		$('#fore_monitor_compare').DataTable( {
+			"order": [[ 3, "desc" ]]
+		} );
+	});
+</script>
+
+		<div class="container">
+			<hr>
+			<footer class="footer">
+				<p class="pull-right"><a href="#">返回顶部</a></p>
+				<div class="col-xs-4">
+				</div>
+				<div class="col-xs-8">
+					<dl>
+						<dt>
+							服务电话：13906145733
+						</dt>
+						<dd>
+							联系人：倪经理
+						</dd>
+					</dl>
+					<script type="text/javascript">//var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254317176'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1254317176%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>  
+				</div>
+			</footer>
+		</div>
+		<script type="text/javascript" charset="utf-8">
+			$(function() {
+				$('#toptitle a').each(function(){
+					$(this).click(function(event){
+						$('#toptitle a').removeClass('current-link');
+						$(this).addClass('current-link');
+					});
+				});
+			});
+/*
+   $(document).on("page:change", function() {
+   var page;
+   page = $("body").attr("class");
+   $(".nav li").removeClass("active");
+   return $("#"+page).addClass("active");
+   });
+ */
+function showLtjc(type){
+	if(type==1){
+		$("#ltjcDiv").css("display","");
+	}else{
+		$("#ltjcDiv").css("display","none");
+	}
+}
+		</script>
+	</body>
+</html>
+
+
