@@ -13,7 +13,7 @@
 						<ul>
 							<% for i in (0..4) %>
 								<% time = (Time.now.strftime("%Y%m%d").to_i+i).to_s%>
-								<% t = @weather[time] %>
+								<% t = @forecast_data[time] %>
 								<li>
 									<%# <h4 class="list-title"><%= t["day"]+"(#{DateTime.now.next_day(i).month}月#{DateTime.now.next_day(i).day}日)" %1></h4> %> 
 									<h4 class="list-title"><%= t["day"] %></h4>  
@@ -21,7 +21,7 @@
 										<tbody>
 											<tr>
 												<td><span class="gray">级别</span></td>
-												<td><span class="list-alue"><span class="<%= t["fore_lev"] if !t['fore_lev'].nil? %> small"><%=t["level"] if !t['level'].nil? %></span></span></td>
+												<td><span class="list-alue"><span class="<%= t["fore_lev"] if t["fore_lev"] != nil %> small"><%= t["level"] if t['level'] !=nil %></span></span></td>
 											</tr>
 											<tr>
 												<td style="width:88px;"><span class="gray">首要污染物</span></td>

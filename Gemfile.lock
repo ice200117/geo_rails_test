@@ -109,6 +109,8 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    mailfactory (1.4.0)
+      mime-types (>= 1.13.1)
     mime-types (1.25.1)
     mini_portile2 (2.0.0)
     minitest (5.8.3)
@@ -124,6 +126,8 @@ GEM
     pg (0.18.4)
     polyglot (0.3.5)
     rack (1.5.5)
+    rack-cache (1.5.1)
+      rack (>= 0.4)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.1.0)
@@ -147,6 +151,25 @@ GEM
     rdoc (4.2.0)
       json (~> 1.4)
     redis (3.2.2)
+    redis-actionpack (4.0.1)
+      actionpack (~> 4)
+      redis-rack (~> 1.5.0)
+      redis-store (~> 1.1.0)
+    redis-activesupport (4.1.5)
+      activesupport (>= 3, < 5)
+      redis-store (~> 1.1.0)
+    redis-rack (1.5.0)
+      rack (~> 1.5)
+      redis-store (~> 1.1.0)
+    redis-rack-cache (1.2.3)
+      rack-cache (~> 1.2)
+      redis-store (~> 1.1.0)
+    redis-rails (4.0.0)
+      redis-actionpack (~> 4)
+      redis-activesupport (~> 4)
+      redis-store (~> 1.1.0)
+    redis-store (1.1.7)
+      redis (>= 2.2)
     rgeo (0.4.0)
     rgeo-activerecord (1.2.0)
       activerecord (~> 4.0)
@@ -250,12 +273,16 @@ DEPENDENCIES
   jquery-datatables-rails
   jquery-migrate-rails (~> 1.2.1)
   jquery-rails
+  mailfactory
   multipart-post (~> 2.0.0)
   pg
   rails (= 4.1.0)
   rails-perftest
   rb-readline
   redis
+  redis-rack-cache
+  redis-rails
+  redis-store
   rgeo-geojson
   rgeo-shapefile
   rspec-rails

@@ -38,6 +38,7 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 	def air_quality_forecast(pinyin)
 		tmp = City.find_by_city_name_pinyin(pinyin).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
 		fore_data = Hash.new
+		puts tmp
 		tmp.each do |time,data|
 			temp = Hash.new 
 			sum = 0
