@@ -86,26 +86,16 @@ gem 'spreadsheet'
 gem 'chinese_lunar'
 
 gem 'redis'
-<<<<<<< HEAD
-gem 'redis-store'
-gem 'redis-rails'
-gem 'redis-rack-cache'
-=======
 gem 'redis-rails'
 gem 'redis-store'
->>>>>>> ebff5cf67618f181334164191fb0d7d9b081f690
 
 gem 'jquery-datatables-rails' 
 
 gem 'rails-perftest'
 gem 'ruby-prof'
-<<<<<<< HEAD
-gem 'mailfactory'
-=======
 
 gem 'mailfactory'
 
 gem 'actionpack-page_caching', '~> 1.0', '>= 1.0.2'
 gem 'actionpack-action_caching', '~> 1.1', '>= 1.1.1'
 gem 'rails-observers'
->>>>>>> ebff5cf67618f181334164191fb0d7d9b081f690

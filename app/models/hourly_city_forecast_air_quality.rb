@@ -1,12 +1,21 @@
 class HourlyCityForecastAirQuality < ActiveRecord::Base
 	belongs_to :city
 
-	def city_forecast(pinyin)
+	def city_forecast_by_id(cityid)
+		c = City.find_by_post_number(cityid)
+		return nil unless c
+		city_forecast(c)
+	end
+
+	def city_forecast_by_pinyin(pinyin)
+		c = City.find_by_city_name_pinyin(pinyin)
+		return nil unless c
+		city_forecast(c)
+	end
+
+	def city_forecast(c)
 		cf = Hash.new
 		hf = []
-		puts pinyin
-		c = City.find_by city_name_pinyin: pinyin
-		return nil unless c
 		ac = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
 		#puts ac.first
 		return nil unless ac.first

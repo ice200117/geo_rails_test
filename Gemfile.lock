@@ -167,12 +167,9 @@ GEM
     redis-rack (1.5.0)
       rack (~> 1.5)
       redis-store (~> 1.1.0)
-<<<<<<< HEAD
     redis-rack-cache (1.2.3)
       rack-cache (~> 1.2)
       redis-store (~> 1.1.0)
-=======
->>>>>>> ebff5cf67618f181334164191fb0d7d9b081f690
     redis-rails (4.0.0)
       redis-actionpack (~> 4)
       redis-activesupport (~> 4)
@@ -292,10 +289,6 @@ DEPENDENCIES
   rails-perftest
   rb-readline
   redis
-<<<<<<< HEAD
-  redis-rack-cache
-=======
->>>>>>> ebff5cf67618f181334164191fb0d7d9b081f690
   redis-rails
   redis-store
   rgeo-geojson
