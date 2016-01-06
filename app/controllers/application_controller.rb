@@ -3,4 +3,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   include ActionController::Caching::Pages
   protect_from_forgery with: :exception
+
+  cache_sweeper :welcome_sweeper
 end

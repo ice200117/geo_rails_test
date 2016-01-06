@@ -37,5 +37,7 @@ module GeoRailsTest
     
     # Page cache
     config.action_controller.page_cache_directory = "#{Rails.root.to_s}/public/deploy"
+
+	config.active_record.observers = :china_cities_hour_observer
   end
 end
