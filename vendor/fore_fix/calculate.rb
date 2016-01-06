@@ -2,14 +2,17 @@
 require_relative "fore_fix.rb"
 
 def calculate
-	save_path = "/mnt/share/Temp/station_9km_orig/#{strtime[0,8]}/"
-	write_path = "/mnt/share/Temp/calculate/#{strtime[0,8]}/"
+	yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
+	strtime = Time.now.strftime("%Y%m%d")
+	save_path = "/mnt/share/Temp/calculate/#{strtime[0,8]}/"
+	read_path = "/mnt/share/Temp/station_9km_orig/#{strtime[0,8]}/"
+	Dir::mkdir(save_path) if !Dir.exists?(save_path)
 	City.all.each do |c|
 		puts c.city_name.strip
 		py = c.city_name_pinyin.strip
 		fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_orig"
 		fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
-		f = File.open(path+fn) if File::exists?(path+fn) 
+		f = File.open(save_path+fn) if File::exists?(save_path+fn) 
 		next unless f
 		f_save = File.open(save_path+fn,'w')
 		puts fnout+' successful'
@@ -25,10 +28,10 @@ def calculate
 			tmp << c.id
 			data = ChinaCitiesHour.where(tmp)
 			next if data.length == 0
-			f_save.puts(c.city_name+' '+c.city_name_pinyin+': 差值=>'+(hs[:AQI].to_i-data[0].to_i).to_s+' 比值=>'hs[:AQI].AQI/data[0].AQI) if !data[0].AQI.nil?
+			f_save.puts(hs[:forecast_datetime].to_s+' '+c.city_name+' '+c.city_name_pinyin+': 差值=>'+(hs[:AQI].to_i-data[0].AQI.to_i).to_s+' 比值=>'+(hs[:AQI].to_i/data[0].AQI).to_s) if !data[0].AQI.nil?
 		end
 		#end
 		f_save.close()
 	end
 end
-calculate
+calculate()

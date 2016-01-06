@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   #get 'counties/lookup'
   get 'querys/aqis_by_city' => 'querys#aqis_by_city'
+  get 'querys/aqis_by_city/:city' => 'querys#aqis_by_city'
   get 'querys' => 'querys#cities'
   get 'querys/all_cities' => 'querys#all_cities2'
   get 'querys/adj' => 'querys#adj'

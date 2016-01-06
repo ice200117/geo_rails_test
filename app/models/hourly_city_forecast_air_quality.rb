@@ -93,7 +93,7 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 
       # Sencond method
       nowday = Time.zone.now
-      cs = City.includes(:hourly_city_forecast_air_qualities).where(hourly_city_forecast_air_qualities: {publish_datetime: 5.days.ago.beginning_of_day..nowday.end_of_day, forecast_datetime: nowday.beginning_of_day..nowday})
+      cs = City.includes(:hourly_city_forecast_air_qualities).where(hourly_city_forecast_air_qualities: {publish_datetime: 5.days.ago.beginning_of_day..nowday.end_of_day, forecast_datetime: nowday.beginning_of_day..nowday}).order("hourly_city_forecast_air_qualities.publish_datetime")
       cs.each do |cl|
         fs = cl.hourly_city_forecast_air_qualities
         latest_publish_datetime = fs.last.publish_datetime

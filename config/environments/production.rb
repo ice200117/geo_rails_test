@@ -3,6 +3,10 @@ Rails.application.configure do
 
   # Code is not reloaded between requests.
   config.cache_classes = true
+<<<<<<< HEAD
+=======
+  # config.gem 'redis-store',lib=>'redis-store'
+>>>>>>> ebff5cf67618f181334164191fb0d7d9b081f690
   config.cache_store = :redis_store
 
   # Eager load code on boot. This eager loads most of Rails and
@@ -77,4 +81,6 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+
 end

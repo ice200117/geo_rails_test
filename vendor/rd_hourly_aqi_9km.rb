@@ -78,11 +78,11 @@ end
 #cs << City.find_by_city_name_pinyin('huzhoushi')
 cs = City.all
 cs.each do |c|
-  #puts c.city_name_pinyin
+  puts c.city_name_pinyin
   #if c.city_name_pinyin.rstrip.eql?('langfangshi')
   py = c.city_name_pinyin.strip
   fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
-  puts fn
+  # puts fn
   next unless hb_city.include?(py)
   f = File.open(path+fn) if File::exists?(path+fn) 
   next unless f

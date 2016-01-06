@@ -34,5 +34,8 @@ module GeoRailsTest
     #config.active_record.raise_in_transactional_callbacks = true
 
     #config.assets.precompile += ['bootstrap-sass/dropdown.js']
+    
+    # Page cache
+    config.action_controller.page_cache_directory = "#{Rails.root.to_s}/public/deploy"
   end
 end

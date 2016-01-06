@@ -6,4 +6,4 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/vagrant/Meteo
 
 echo 'run fix 25km'
 cd /vagrant/geo_rails_test/
-/home/vagrant/.rbenv/shims/rails r vendor/fore_fix/fore_fix_25km.rb 
+/home/vagrant/.rbenv/shims/rails r vendor/fore_fix/fore_fix_25km.rb -e production
