@@ -1,12 +1,19 @@
 class HourlyCityForecastAirQuality < ActiveRecord::Base
 	belongs_to :city
 
-	def city_forecast(pinyin)
-		cf = Hash.new
-		hf = []
-		puts pinyin
+	def city_forecast_by_id(cityid)
+		c=City.find_by_post_number(cityid)
+		return nil unless c
+		city_forecast(c)
+	end
+	def city_forecast_by_pinyin(pinyin)
 		c = City.find_by city_name_pinyin: pinyin
 		return nil unless c
+		city_forecast(c)
+	end
+	def city_forecast(c)
+		cf = Hash.new
+		hf = []
 		ac = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
 		#puts ac.first
 		return nil unless ac.first
@@ -77,51 +84,51 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 		end
 	end
 
-  def self.today_avg(city_name_pinyin=nil,spe=:AQI)
-    city_avg = {}
-    if city_name_pinyin
-      c = City.find_by_city_name_pinyin(city_name_pinyin)
+	def self.today_avg(city_name_pinyin=nil,spe=:AQI)
+		city_avg = {}
+		if city_name_pinyin
+			c = City.find_by_city_name_pinyin(city_name_pinyin)
 
-      city_avg[c.city_name] = city_avg_today(c,spe) if c
-    else
-      # First method
-      #cs = City.where("id < 388")
-      #cs.each do |c|
-        #city_avg[c.city_name] = city_avg_today(c,spe)
-      #end
+			city_avg[c.city_name] = city_avg_today(c,spe) if c
+		else
+			# First method
+			#cs = City.where("id < 388")
+			#cs.each do |c|
+			#city_avg[c.city_name] = city_avg_today(c,spe)
+			#end
 
-      # Sencond method
-      nowday = Time.zone.now
-      cs = City.includes(:hourly_city_forecast_air_qualities).where(hourly_city_forecast_air_qualities: {publish_datetime: 5.days.ago.beginning_of_day..nowday.end_of_day, forecast_datetime: nowday.beginning_of_day..nowday}).order("hourly_city_forecast_air_qualities.publish_datetime")
-      cs.each do |cl|
-        fs = cl.hourly_city_forecast_air_qualities
-        latest_publish_datetime = fs.last.publish_datetime
-        aqi_sum = 0; i = 0
-        fs.each do |f|
-          if f.publish_datetime == latest_publish_datetime
-            aqi_sum += f.send(spe)
-            i += 1
-          end
-        end
-        city_avg[cl.city_name] = {latest_publish_datetime.strftime("%Y-%m-%d_%H") => (aqi_sum/i).round }
-      end
-    end
-    city_avg
-  end
+			# Sencond method
+			nowday = Time.zone.now
+			cs = City.includes(:hourly_city_forecast_air_qualities).where(hourly_city_forecast_air_qualities: {publish_datetime: 5.days.ago.beginning_of_day..nowday.end_of_day, forecast_datetime: nowday.beginning_of_day..nowday}).order("hourly_city_forecast_air_qualities.publish_datetime")
+			cs.each do |cl|
+				fs = cl.hourly_city_forecast_air_qualities
+				latest_publish_datetime = fs.last.publish_datetime
+				aqi_sum = 0; i = 0
+				fs.each do |f|
+					if f.publish_datetime == latest_publish_datetime
+						aqi_sum += f.send(spe)
+						i += 1
+					end
+				end
+				city_avg[cl.city_name] = {latest_publish_datetime.strftime("%Y-%m-%d_%H") => (aqi_sum/i).round }
+			end
+		end
+		city_avg
+	end
 
-  def self.city_avg_today(city=nil,spe=:AQI)
-    return nil unless city
-    fs = city.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
+	def self.city_avg_today(city=nil,spe=:AQI)
+		return nil unless city
+		fs = city.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
 
-    aqi_sum = 0
-    i = 0
-    fs.each do |f|
-      if f.forecast_datetime >= Time.zone.now.beginning_of_day and f.forecast_datetime <= Time.zone.now
-        aqi_sum += f.send(spe)
-        i += 1
-      end
-    end
-    i > 0 ? {fs[0].publish_datetime.strftime("%Y-%m-%d_%H") => (aqi_sum/i).round }   : nil
+		aqi_sum = 0
+		i = 0
+		fs.each do |f|
+			if f.forecast_datetime >= Time.zone.now.beginning_of_day and f.forecast_datetime <= Time.zone.now
+				aqi_sum += f.send(spe)
+				i += 1
+			end
+		end
+		i > 0 ? {fs[0].publish_datetime.strftime("%Y-%m-%d_%H") => (aqi_sum/i).round }   : nil
 
-  end
+	end
 end

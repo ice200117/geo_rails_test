@@ -1,4 +1,5 @@
 class QuerysController < ApplicationController
+	caches_page :get_weather_air_data
 
   require 'open-uri'
   require 'nokogiri'
@@ -113,10 +114,16 @@ class QuerysController < ApplicationController
   def aqis_by_city
     pinyin = params[:city]
     h = HourlyCityForecastAirQuality.new
-    chf = h.city_forecast(pinyin)
+    chf = h.city_forecast_by_pinyin(pinyin)
     render json: chf
   end
 
+  def aqis_by_cityid
+    cityid = params[:cityid]
+    h = HourlyCityForecastAirQuality.new
+    chf = h.city_forecast_by_id(cityid)
+    render json: chf
+  end
 
 
   def cities
