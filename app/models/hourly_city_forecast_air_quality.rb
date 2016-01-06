@@ -2,7 +2,7 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 	belongs_to :city
 
 	def city_forecast_by_id(cityid)
-		c = City.find_by_post_number(cityid)
+		c = City.find_by_cityid(cityid)
 		return nil unless c
 		city_forecast(c)
 	end
