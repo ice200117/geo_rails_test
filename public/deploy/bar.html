@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>ForecastAQI</title>
+		<link data-turbolinks-track="true" href="/assets/application-4deedf77c73f20b45ca7e8d423c878725e13bb3789264ef03989ea38c7ffa4a2.css" media="all" rel="stylesheet" />
+<link data-turbolinks-track="true" href="/assets/css/styles-047f9f2950b8da7c74f053a9cdaeefd634fceb2090cfa8cbb456382a89239677.css" media="all" rel="stylesheet" />
+<link data-turbolinks-track="true" href="/assets/css/jquery-ui-c3ca7a017458c1c1198719f5d7bc072deded15362e2db28295cba4fc7bec2b36.css" media="all" rel="stylesheet" />
+<link data-turbolinks-track="true" href="/assets/css/bootstrap.min-f76130ad566d6ac851e4d140ddd543a9390636f35cb24d15da65f47e88a31b20.css" media="all" rel="stylesheet" />
+<link data-turbolinks-track="true" href="/assets/css/bootstrap-table.min-3f39b76b01c215df5b73e0af4744f6b82654fe7baabbf9b25a9b355b3caffa73.css" media="all" rel="stylesheet" />
+		<script data-turbolinks-track="true" src="/assets/application-497ea77b064d49523466d86be6b7fed9ec44a63a37db640dbc531fa101b02ef1.js"></script>
+<script data-turbolinks-track="true" src="/assets/jquery-ui-datepicker-28168331d598e58ec42ad2f174d1f733442f17458f9baf40705a0a32736f47ac.js"></script>
+		<meta content="authenticity_token" name="csrf-param" />
+<meta content="+y7YvE0464csyfEAosjEKbps/nmJm+PRSR/fyNtbjjM=" name="csrf-token" />
+		<link href="/favicon.png" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
+	<script>
+		Highcharts.setOptions({
+			global: {
+				useUTC: false
+			}
+		});
+	</script>
+	</head>
+	<body class="welcome-bar">
+		<!-- 顶部导航 -->
+		<div class="top-nav">
+			<div> 
+				<ul class="navigation" id="toptitle">
+					<!--<a href="/">污染源解析与治理</a>-->
+					<li><a id="welcome-pinggu" href="/" class="current-link" data-no-turbolink>首页</a></li>
+					<li><a id="welcome-forecast" href="/forecast">预警预报</a></li>
+					<li><a id="welcome-compare" href="/compare" >城市对比</a></li>
+					<li class="dropdown">
+						<a class="dropdown-toggle showDM" data-toggle="dropdown" id="ltjcDiv1" >立体监测</a>
+						<ul class="dropdown-menu">
+							<li><a href="/real_time_monitoring">实 时 监 测</a></li>
+							<li><a href="/history_data">历 史 数 据</a></li>
+						</ul>
+					</li>
+					<li><a id="zq-map" href="http://www.zq12369.com/map.php" target="_blank">地图模式</a></li>
+					<li><a id="welcome-case" href="/case">典型案例</a></li>
+					<li><a id="welcome-about" href="/about">联系我们</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="container">
+
+	<!--
+  <div class="city-group">
+    <select id="province" class="city-select">
+      <option value="">--省份--</option>
+      <option value="110000">北京市</option>
+<option value="120000">天津市</option>
+<option value="130000">河北省</option>
+<option value="140000">山西省</option>
+<option value="150000">内蒙古自治区</option>
+<option value="210000">辽宁省</option>
+<option value="220000">吉林省</option>
+<option value="230000">黑龙江省</option>
+<option value="310000">上海市</option>
+<option value="320000">江苏省</option>
+<option value="330000">浙江省</option>
+<option value="340000">安徽省</option>
+<option value="350000">福建省</option>
+<option value="360000">江西省</option>
+<option selected="selected" value="370000">山东省</option>
+<option value="410000">河南省</option>
+<option value="420000">湖北省</option>
+<option value="430000">湖南省</option>
+<option value="440000">广东省</option>
+<option value="450000">广西壮族自治区</option>
+<option value="460000">海南省</option>
+<option value="500000">重庆市</option>
+<option value="510000">四川省</option>
+<option value="520000">贵州省</option>
+<option value="530000">云南省</option>
+<option value="540000">西藏自治区</option>
+<option value="610000">陕西省</option>
+<option value="620000">甘肃省</option>
+<option value="630000">青海省</option>
+<option value="640000">宁夏回族自治区</option>
+<option value="650000">新疆维吾尔自治区</option>
+    </select>
+    <select id="city" class="city-select">
+      <option value="">--城市--</option>
+      <option value="370100">济南市</option>
+<option selected="selected" value="370200">青岛市</option>
+<option value="370300">淄博市</option>
+<option value="370400">枣庄市</option>
+<option value="370500">东营市</option>
+<option value="370600">烟台市</option>
+<option value="370700">潍坊市</option>
+<option value="370800">济宁市</option>
+<option value="370900">泰安市</option>
+<option value="371000">威海市</option>
+<option value="371100">日照市</option>
+<option value="371200">莱芜市</option>
+<option value="371300">临沂市</option>
+<option value="371400">德州市</option>
+<option value="371500">聊城市</option>
+<option value="371600">滨州市</option>
+<option value="371700">菏泽市</option>
+    </select>
+    <select id="district" class="city-select">
+      <option value="">--地区--</option>
+      <option value="370201">市辖区</option>
+<option value="370202">市南区</option>
+<option value="370203">市北区</option>
+<option selected="selected" value="370211">黄岛区</option>
+<option value="370212">崂山区</option>
+<option value="370213">李沧区</option>
+<option value="370214">城阳区</option>
+<option value="370281">胶州市</option>
+<option value="370282">即墨市</option>
+<option value="370283">平度市</option>
+<option value="370285">莱西市</option>
+    </select>
+  </div>
+  -->
+  
+
+
+
+  <form accept-charset="UTF-8" action="/bar" data-remote="true" html="{:class=&gt;&quot;form-inline&quot;}" method="get"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+    <label for="d">城市：</label>
+    <select id="c_city_id" name="c[city_id]"><option value="2">东城区</option>
+<option value="3">西城区</option>
+<option value="4">朝阳区</option>
+<option value="5">丰台区</option>
+<option value="6">石景山区</option>
+<option value="7">海淀区</option>
+<option value="8">天津</option>
+<option value="45">鞍山市</option>
+<option value="38">巴彦淖尔市</option>
+<option value="64">白城市</option>
+<option value="62">白山市</option>
+<option value="14">保定市</option>
+<option value="47">本溪市</option>
+<option value="17">沧州市</option>
+<option value="57">长春市</option>
+<option value="23">长治市</option>
+<option value="55">朝阳市</option>
+<option value="16">承德市</option>
+<option value="34">赤峰市</option>
+<option value="44">大连市</option>
+<option value="48">丹东市</option>
+<option value="36">鄂尔多斯市</option>
+<option value="46">抚顺市</option>
+<option value="51">阜新市</option>
+<option value="66">哈尔滨市</option>
+<option value="12">邯郸市</option>
+<option value="69">鹤岗市</option>
+<option value="19">衡水市</option>
+<option value="31">呼和浩特市</option>
+<option value="56">葫芦岛市</option>
+<option value="68">鸡西市</option>
+<option value="58">吉林市</option>
+<option value="49">锦州市</option>
+<option value="24">晋城市</option>
+<option value="26">晋中市</option>
+<option selected="selected" value="18">廊坊市</option>
+<option value="52">辽阳市</option>
+<option value="60">辽源市</option>
+<option value="29">临汾市</option>
+<option value="30">吕梁市</option>
+<option value="67">齐齐哈尔市</option>
+<option value="11">秦皇岛市</option>
+<option value="43">沈阳市</option>
+<option value="9">石家庄市</option>
+<option value="25">朔州市</option>
+<option value="59">四平市</option>
+<option value="63">松原市</option>
+<option value="20">太原市</option>
+<option value="10">唐山市</option>
+<option value="61">通化市</option>
+<option value="35">通辽市</option>
+<option value="33">乌海市</option>
+<option value="39">乌兰察布市</option>
+<option value="41">锡林郭勒盟</option>
+<option value="28">忻州市</option>
+<option value="40">兴安盟</option>
+<option value="13">邢台市</option>
+<option value="22">阳泉市</option>
+<option value="50">营口市</option>
+<option value="27">运城市</option>
+<option value="15">张家口市</option>
+<option value="1">北京</option>
+<option value="116">巢湖市</option>
+<option value="106">蚌埠市</option>
+<option value="83">常州市</option>
+<option value="119">池州市</option>
+<option value="113">滁州市</option>
+<option value="71">大庆市</option>
+<option value="78">大兴安岭地区</option>
+<option value="114">阜阳市</option>
+<option value="136">赣州市</option>
+<option value="93">杭州市</option>
+<option value="76">黑河市</option>
+<option value="97">湖州市</option>
+<option value="87">淮安市</option>
+<option value="109">淮北市</option>
+<option value="107">淮南市</option>
+<option value="112">黄山市</option>
+<option value="137">吉安市</option>
+<option value="73">佳木斯市</option>
+<option value="96">嘉兴市</option>
+<option value="131">景德镇市</option>
+<option value="133">九江市</option>
+<option value="103">丽水市</option>
+<option value="86">连云港市</option>
+<option value="117">六安市</option>
+<option value="128">龙岩市</option>
+<option value="108">马鞍山市</option>
+<option value="75">牡丹江市</option>
+<option value="130">南昌市</option>
+<option value="127">南平市</option>
+<option value="85">南通市</option>
+<option value="94">宁波市</option>
+<option value="129">宁德市</option>
+<option value="132">萍乡市</option>
+<option value="123">莆田市</option>
+<option value="74">七台河市</option>
+<option value="100">衢州市</option>
+<option value="125">泉州市</option>
+<option value="124">三明市</option>
+<option value="70">双鸭山市</option>
+<option value="92">宿迁市</option>
+<option value="115">宿州市</option>
+<option value="77">绥化市</option>
+<option value="102">台州市</option>
+<option value="91">泰州市</option>
+<option value="110">铜陵市</option>
+<option value="95">温州市</option>
+<option value="81">无锡市</option>
+<option value="122">厦门市</option>
+<option value="134">新余市</option>
+<option value="82">徐州市</option>
+<option value="120">宣城市</option>
+<option value="88">盐城市</option>
+<option value="89">扬州市</option>
+<option value="138">宜春市</option>
+<option value="135">鹰潭市</option>
+<option value="126">漳州市</option>
+<option value="101">舟山市</option>
+<option value="118">亳州市</option>
+<option value="121">福州市</option>
+<option value="84">苏州市</option>
+<option value="72">伊春市</option>
+<option value="79">上海</option>
+<option value="179">襄樊市</option>
+<option value="156">滨州市</option>
+<option value="188">长沙市</option>
+<option value="194">常德市</option>
+<option value="197">郴州市</option>
+<option value="154">德州市</option>
+<option value="180">鄂州市</option>
+<option value="187">恩施土家族苗族自治州</option>
+<option value="207">佛山市</option>
+<option value="139">抚州市</option>
+<option value="202">广州市</option>
+<option value="157">菏泽市</option>
+<option value="163">鹤壁市</option>
+<option value="191">衡阳市</option>
+<option value="199">怀化市</option>
+<option value="184">黄冈市</option>
+<option value="141">济南市</option>
+<option value="148">济宁市</option>
+<option value="165">焦作市</option>
+<option value="181">荆门市</option>
+<option value="183">荆州市</option>
+<option value="159">开封市</option>
+<option value="152">莱芜市</option>
+<option value="155">聊城市</option>
+<option value="153">临沂市</option>
+<option value="160">洛阳市</option>
+<option value="168">漯河市</option>
+<option value="170">南阳市</option>
+<option value="161">平顶山市</option>
+<option value="166">濮阳市</option>
+<option value="142">青岛市</option>
+<option value="151">日照市</option>
+<option value="169">三门峡市</option>
+<option value="206">汕头市</option>
+<option value="140">上饶市</option>
+<option value="203">韶关市</option>
+<option value="192">邵阳市</option>
+<option value="204">深圳市</option>
+<option value="177">十堰市</option>
+<option value="186">随州市</option>
+<option value="149">泰安市</option>
+<option value="150">威海市</option>
+<option value="147">潍坊市</option>
+<option value="175">武汉市</option>
+<option value="190">湘潭市</option>
+<option value="201">湘西土家族苗族自治州</option>
+<option value="182">孝感市</option>
+<option value="164">新乡市</option>
+<option value="172">信阳市</option>
+<option value="167">许昌市</option>
+<option value="146">烟台市</option>
+<option value="178">宜昌市</option>
+<option value="196">益阳市</option>
+<option value="193">岳阳市</option>
+<option value="144">枣庄市</option>
+<option value="195">张家界市</option>
+<option value="158">郑州市</option>
+<option value="173">周口市</option>
+<option value="189">株洲市</option>
+<option value="205">珠海市</option>
+<option value="174">驻马店市</option>
+<option value="143">淄博市</option>
+<option value="264">安顺市</option>
+<option value="256">巴中市</option>
+<option value="232">百色市</option>
+<option value="273">保山市</option>
+<option value="227">北海市</option>
+<option value="220">潮州市</option>
+<option value="240">成都市</option>
+<option value="236">崇左市</option>
+<option value="244">德阳市</option>
+<option value="218">东莞市</option>
+<option value="228">防城港市</option>
+<option value="259">甘孜藏族自治州</option>
+<option value="253">广安市</option>
+<option value="246">广元市</option>
+<option value="230">贵港市</option>
+<option value="261">贵阳市</option>
+<option value="225">桂林市</option>
+<option value="237">海口市</option>
+<option value="215">河源市</option>
+<option value="233">贺州市</option>
+<option value="212">惠州市</option>
+<option value="208">江门市</option>
+<option value="221">揭阳市</option>
+<option value="270">昆明市</option>
+<option value="235">来宾市</option>
+<option value="249">乐山市</option>
+<option value="275">丽江市</option>
+<option value="224">柳州市</option>
+<option value="262">六盘水市</option>
+<option value="243">泸州市</option>
+<option value="210">茂名市</option>
+<option value="251">眉山市</option>
+<option value="213">梅州市</option>
+<option value="245">绵阳市</option>
+<option value="248">内江市</option>
+<option value="250">南充市</option>
+<option value="223">南宁市</option>
+<option value="242">攀枝花市</option>
+<option value="269">黔南布依族苗族自治州</option>
+<option value="266">黔西南布依族苗族自治州</option>
+<option value="229">钦州市</option>
+<option value="217">清远市</option>
+<option value="271">曲靖市</option>
+<option value="238">三亚市</option>
+<option value="214">汕尾市</option>
+<option value="247">遂宁市</option>
+<option value="265">铜仁地区</option>
+<option value="226">梧州市</option>
+<option value="255">雅安市</option>
+<option value="216">阳江市</option>
+<option value="272">玉溪市</option>
+<option value="222">云浮市</option>
+<option value="209">湛江市</option>
+<option value="274">昭通市</option>
+<option value="211">肇庆市</option>
+<option value="219">中山市</option>
+<option value="239">重庆市</option>
+<option value="257">资阳市</option>
+<option value="241">自贡市</option>
+<option value="263">遵义市</option>
+<option value="267">毕节地区</option>
+<option value="336">巴音郭楞蒙古自治州</option>
+<option value="291">阿里地区</option>
+<option value="301">安康市</option>
+<option value="306">白银市</option>
+<option value="335">博尔塔拉蒙古自治州</option>
+<option value="287">昌都地区</option>
+<option value="334">昌吉回族自治州</option>
+<option value="278">楚雄彝族自治州</option>
+<option value="282">大理白族自治州</option>
+<option value="283">德宏傣族景颇族自治州</option>
+<option value="285">迪庆藏族自治州</option>
+<option value="313">定西市</option>
+<option value="328">固原市</option>
+<option value="322">果洛藏族自治州</option>
+<option value="333">哈密地区</option>
+<option value="319">海北藏族自治州</option>
+<option value="318">海东地区</option>
+<option value="321">海南藏族自治州</option>
+<option value="324">海西蒙古族藏族自治州</option>
+<option value="299">汉中市</option>
+<option value="340">和田地区</option>
+<option value="279">红河哈尼族彝族自治州</option>
+<option value="320">黄南藏族自治州</option>
+<option value="304">嘉峪关市</option>
+<option value="305">金昌市</option>
+<option value="339">喀什地区</option>
+<option value="331">克拉玛依市</option>
+<option value="338">克孜勒苏柯尔克孜自治州</option>
+<option value="286">拉萨市</option>
+<option value="303">兰州市</option>
+<option value="292">林芝地区</option>
+<option value="277">临沧市</option>
+<option value="314">陇南市</option>
+<option value="290">那曲地区</option>
+<option value="284">怒江傈僳族自治州</option>
+<option value="310">平凉市</option>
+<option value="312">庆阳市</option>
+<option value="289">日喀则地区</option>
+<option value="288">山南地区</option>
+<option value="302">商洛市</option>
+<option value="326">石嘴山市</option>
+<option value="276">普洱市</option>
+<option value="307">天水市</option>
+<option value="294">铜川市</option>
+<option value="332">吐鲁番地区</option>
+<option value="297">渭南市</option>
+<option value="330">乌鲁木齐市</option>
+<option value="327">吴忠市</option>
+<option value="308">武威市</option>
+<option value="293">西安市</option>
+<option value="317">西宁市</option>
+<option value="281">西双版纳傣族自治州</option>
+<option value="296">咸阳市</option>
+<option value="298">延安市</option>
+<option value="325">银川市</option>
+<option value="300">榆林市</option>
+<option value="309">张掖市</option>
+<option value="329">中卫市</option>
+<option value="344">台北市</option>
+<option value="345">香港</option>
+<option value="346">澳门</option>
+<option value="389">安国市</option>
+<option value="390">清苑县</option>
+<option value="391">广阳区</option>
+<option value="392">安次区</option>
+<option value="393">大城县</option>
+<option value="394">香河县</option>
+<option value="395">文安县</option>
+<option value="396">霸州市</option>
+<option value="397">市辖区</option>
+<option value="398">大厂回族自治县</option>
+<option value="399">三河市</option>
+<option value="400">固安县</option>
+<option value="401">永清县</option>
+<option value="258">阿坝藏族羌族自治州</option>
+<option value="337">阿克苏地区</option>
+<option value="42">阿拉善盟</option>
+<option value="343">阿勒泰地区</option>
+<option value="111">安庆市</option>
+<option value="162">安阳市</option>
+<option value="32">包头市</option>
+<option value="295">宝鸡市</option>
+<option value="413">常熟市</option>
+<option value="254">达州市</option>
+<option value="21">大同市</option>
+<option value="145">东营市</option>
+<option value="316">甘南藏族自治州</option>
+<option value="421">海门市</option>
+<option value="104">合肥市</option>
+<option value="234">河池市</option>
+<option value="37">呼伦贝尔市</option>
+<option value="176">黄石市</option>
+<option value="406">即墨市</option>
+<option value="420">江阴市</option>
+<option value="426">胶南市</option>
+<option value="427">胶州市</option>
+<option value="433">金坛市</option>
+<option value="407">句容市</option>
+<option value="415">库尔勒市</option>
+<option value="419">昆山市</option>
+<option value="429">莱州市</option>
+<option value="422">溧阳市</option>
+<option value="402">临安市</option>
+<option value="431">蓬莱市</option>
+<option value="414">平度市</option>
+<option value="428">荣成市</option>
+<option value="404">乳山市</option>
+<option value="424">石河子市</option>
+<option value="412">寿光市</option>
+<option value="409">太仓市</option>
+<option value="423">瓦房店市</option>
+<option value="418">文登市</option>
+<option value="408">吴江市</option>
+<option value="405">五家渠市</option>
+<option value="432">襄阳市</option>
+<option value="341">伊犁哈萨克自治州</option>
+<option value="410">宜兴市</option>
+<option value="403">义乌市</option>
+<option value="416">张家港市</option>
+<option value="417">招远市</option>
+<option value="411">富阳市</option>
+<option value="99">金华市</option>
+<option value="311">酒泉市</option>
+<option value="430">莱西市</option>
+<option value="260">凉山彝族自治州</option>
+<option value="315">临夏回族自治州</option>
+<option value="200">娄底市</option>
+<option value="80">南京市</option>
+<option value="53">盘锦市</option>
+<option value="268">黔东南苗族侗族自治州</option>
+<option value="171">商丘市</option>
+<option value="98">绍兴市</option>
+<option value="342">塔城地区</option>
+<option value="54">铁岭市</option>
+<option value="280">文山壮族苗族自治州</option>
+<option value="105">芜湖市</option>
+<option value="185">咸宁市</option>
+<option value="65">延边朝鲜族自治州</option>
+<option value="252">宜宾市</option>
+<option value="198">永州市</option>
+<option value="323">玉树藏族自治州</option>
+<option value="425">章丘市</option>
+<option value="90">镇江市</option>
+<option value="231">玉林市</option></select>
+    <label for="start_date">开始日期：</label>
+    <select id="start_date_year" name="start_date[year]">
+<option value="2011">2011</option>
+<option value="2012">2012</option>
+<option value="2013">2013</option>
+<option value="2014">2014</option>
+<option value="2015">2015</option>
+<option selected="selected" value="2016">2016</option>
+<option value="2017">2017</option>
+<option value="2018">2018</option>
+<option value="2019">2019</option>
+<option value="2020">2020</option>
+<option value="2021">2021</option>
+</select>
+<select id="start_date_month" name="start_date[month]">
+<option selected="selected" value="1">January</option>
+<option value="2">February</option>
+<option value="3">March</option>
+<option value="4">April</option>
+<option value="5">May</option>
+<option value="6">June</option>
+<option value="7">July</option>
+<option value="8">August</option>
+<option value="9">September</option>
+<option value="10">October</option>
+<option value="11">November</option>
+<option value="12">December</option>
+</select>
+<select id="start_date_day" name="start_date[day]">
+<option value="1">1</option>
+<option selected="selected" value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select>
+
+    <label for="end_date">结束日期：</label>
+    <select id="end_date_year" name="end_date[year]">
+<option value="2011">2011</option>
+<option value="2012">2012</option>
+<option value="2013">2013</option>
+<option value="2014">2014</option>
+<option value="2015">2015</option>
+<option selected="selected" value="2016">2016</option>
+<option value="2017">2017</option>
+<option value="2018">2018</option>
+<option value="2019">2019</option>
+<option value="2020">2020</option>
+<option value="2021">2021</option>
+</select>
+<select id="end_date_month" name="end_date[month]">
+<option selected="selected" value="1">January</option>
+<option value="2">February</option>
+<option value="3">March</option>
+<option value="4">April</option>
+<option value="5">May</option>
+<option value="6">June</option>
+<option value="7">July</option>
+<option value="8">August</option>
+<option value="9">September</option>
+<option value="10">October</option>
+<option value="11">November</option>
+<option value="12">December</option>
+</select>
+<select id="end_date_day" name="end_date[day]">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option selected="selected" value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select>
+
+    <button id="subbtn" type="submit" class="btn btn-default" >Submit</button>
+</form>
+  <div id="line_chart1">
+	<div id="chart-1" style="height: 600px; text-align: center; color: #999; line-height: 600px; font-size: 14px; font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif;">Loading...</div><script type="text/javascript">
+  new Chartkick.LineChart("chart-1", [{"name":"丰台区","data":[["2016-01-06T21:00:00.000+08:00",72.0],["2016-01-06T22:00:00.000+08:00",67.0],["2016-01-06T23:00:00.000+08:00",58.0],["2016-01-07T00:00:00.000+08:00",63.0],["2016-01-07T01:00:00.000+08:00",60.0],["2016-01-07T02:00:00.000+08:00",56.0],["2016-01-07T03:00:00.000+08:00",55.0],["2016-01-07T04:00:00.000+08:00",53.0],["2016-01-07T05:00:00.000+08:00",51.0],["2016-01-07T06:00:00.000+08:00",54.0],["2016-01-07T07:00:00.000+08:00",59.0],["2016-01-07T08:00:00.000+08:00",59.0],["2016-01-07T09:00:00.000+08:00",72.0],["2016-01-07T10:00:00.000+08:00",78.0],["2016-01-07T11:00:00.000+08:00",45.0],["2016-01-07T12:00:00.000+08:00",35.0],["2016-01-07T13:00:00.000+08:00",35.0],["2016-01-07T14:00:00.000+08:00",40.0],["2016-01-07T15:00:00.000+08:00",46.0],["2016-01-07T16:00:00.000+08:00",66.0],["2016-01-07T17:00:00.000+08:00",89.0],["2016-01-07T18:00:00.000+08:00",106.0],["2016-01-07T19:00:00.000+08:00",117.0],["2016-01-07T20:00:00.000+08:00",112.0],["2016-01-07T21:00:00.000+08:00",97.0],["2016-01-07T22:00:00.000+08:00",81.0],["2016-01-07T23:00:00.000+08:00",71.0],["2016-01-08T00:00:00.000+08:00",66.0],["2016-01-08T01:00:00.000+08:00",62.0],["2016-01-08T02:00:00.000+08:00",63.0],["2016-01-08T03:00:00.000+08:00",55.0],["2016-01-08T04:00:00.000+08:00",50.0],["2016-01-08T05:00:00.000+08:00",50.0],["2016-01-08T06:00:00.000+08:00",54.0],["2016-01-08T07:00:00.000+08:00",60.0],["2016-01-08T08:00:00.000+08:00",60.0],["2016-01-08T09:00:00.000+08:00",73.0],["2016-01-08T10:00:00.000+08:00",90.0],["2016-01-08T11:00:00.000+08:00",51.0],["2016-01-08T12:00:00.000+08:00",36.0],["2016-01-08T13:00:00.000+08:00",34.0],["2016-01-08T14:00:00.000+08:00",35.0],["2016-01-08T15:00:00.000+08:00",40.0],["2016-01-08T16:00:00.000+08:00",77.0],["2016-01-08T17:00:00.000+08:00",140.0],["2016-01-08T18:00:00.000+08:00",158.0],["2016-01-08T19:00:00.000+08:00",160.0],["2016-01-08T20:00:00.000+08:00",150.0],["2016-01-08T21:00:00.000+08:00",133.0],["2016-01-08T22:00:00.000+08:00",133.0],["2016-01-08T23:00:00.000+08:00",140.0],["2016-01-09T00:00:00.000+08:00",142.0],["2016-01-09T01:00:00.000+08:00",146.0],["2016-01-09T02:00:00.000+08:00",143.0],["2016-01-09T03:00:00.000+08:00",140.0],["2016-01-09T04:00:00.000+08:00",140.0],["2016-01-09T05:00:00.000+08:00",147.0],["2016-01-09T06:00:00.000+08:00",153.0],["2016-01-09T07:00:00.000+08:00",178.0],["2016-01-09T08:00:00.000+08:00",187.0],["2016-01-09T09:00:00.000+08:00",187.0],["2016-01-09T10:00:00.000+08:00",180.0],["2016-01-09T11:00:00.000+08:00",194.0],["2016-01-09T12:00:00.000+08:00",150.0],["2016-01-09T13:00:00.000+08:00",143.0],["2016-01-09T14:00:00.000+08:00",160.0],["2016-01-09T15:00:00.000+08:00",166.0],["2016-01-09T16:00:00.000+08:00",191.0],["2016-01-09T17:00:00.000+08:00",155.0],["2016-01-09T18:00:00.000+08:00",161.0],["2016-01-09T19:00:00.000+08:00",157.0],["2016-01-09T20:00:00.000+08:00",150.0],["2016-01-09T21:00:00.000+08:00",192.0],["2016-01-09T22:00:00.000+08:00",155.0],["2016-01-09T23:00:00.000+08:00",172.0],["2016-01-10T00:00:00.000+08:00",193.0],["2016-01-10T01:00:00.000+08:00",209.0],["2016-01-10T02:00:00.000+08:00",210.0],["2016-01-10T03:00:00.000+08:00",193.0],["2016-01-10T04:00:00.000+08:00",190.0],["2016-01-10T05:00:00.000+08:00",172.0],["2016-01-10T06:00:00.000+08:00",160.0],["2016-01-10T07:00:00.000+08:00",189.0],["2016-01-10T08:00:00.000+08:00",157.0],["2016-01-10T09:00:00.000+08:00",143.0],["2016-01-10T10:00:00.000+08:00",143.0],["2016-01-10T11:00:00.000+08:00",92.0],["2016-01-10T12:00:00.000+08:00",55.0],["2016-01-10T13:00:00.000+08:00",43.0],["2016-01-10T14:00:00.000+08:00",40.0],["2016-01-10T15:00:00.000+08:00",43.0],["2016-01-10T16:00:00.000+08:00",59.0],["2016-01-10T17:00:00.000+08:00",86.0],["2016-01-10T18:00:00.000+08:00",126.0],["2016-01-10T19:00:00.000+08:00",153.0],["2016-01-10T20:00:00.000+08:00",187.0],["2016-01-10T21:00:00.000+08:00",185.0],["2016-01-10T22:00:00.000+08:00",156.0],["2016-01-10T23:00:00.000+08:00",136.0],["2016-01-11T00:00:00.000+08:00",130.0],["2016-01-11T01:00:00.000+08:00",129.0],["2016-01-11T02:00:00.000+08:00",117.0],["2016-01-11T03:00:00.000+08:00",109.0],["2016-01-11T04:00:00.000+08:00",106.0],["2016-01-11T05:00:00.000+08:00",107.0],["2016-01-11T06:00:00.000+08:00",112.0],["2016-01-11T07:00:00.000+08:00",121.0],["2016-01-11T08:00:00.000+08:00",136.0],["2016-01-11T09:00:00.000+08:00",162.0],["2016-01-11T10:00:00.000+08:00",163.0],["2016-01-11T11:00:00.000+08:00",130.0],["2016-01-11T12:00:00.000+08:00",69.0],["2016-01-11T13:00:00.000+08:00",53.0],["2016-01-11T14:00:00.000+08:00",53.0],["2016-01-11T15:00:00.000+08:00",61.0],["2016-01-11T16:00:00.000+08:00",74.0],["2016-01-11T17:00:00.000+08:00",97.0],["2016-01-11T18:00:00.000+08:00",120.0],["2016-01-11T19:00:00.000+08:00",147.0],["2016-01-11T20:00:00.000+08:00",150.0]]},{"name":"监测值","data":[]}], {"library":{"chart":{"backgroundColor":"#eee"},"title":{"text":" City_AQI      CUACE (CAMS)"}}});
+</script>
+
+  </div>
+
+  <div id='fore_compare' class="col-xs-12">
+
+	  <div id="chart-2" style="height: 600px; text-align: center; color: #999; line-height: 600px; font-size: 14px; font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif;">Loading...</div><script type="text/javascript">
+  new Chartkick.ColumnChart("chart-2", [{"name":"丰台区监测值","data":[["01Jan",0],["02Jan",0],["03Jan",0],["04Jan",0],["05Jan",0],["06Jan",0],["07Jan",0]]},{"name":"03Jan","data":[["01Jan",0],["02Jan",0],["03Jan",138],["04Jan",54],["05Jan",97],["06Jan",101],["07Jan",72],["08Jan",76],["09Jan",0],["10Jan",0],["11Jan",0]]},{"name":"02Jan","data":[["01Jan",0],["02Jan",163],["03Jan",137],["04Jan",78],["05Jan",153],["06Jan",96],["07Jan",57],["08Jan",0],["09Jan",0],["10Jan",0],["11Jan",0]]},{"name":"04Jan","data":[["01Jan",0],["02Jan",0],["03Jan",0],["04Jan",90],["05Jan",98],["06Jan",89],["07Jan",76],["08Jan",85],["09Jan",128],["10Jan",0],["11Jan",0]]},{"name":"01Jan","data":[["01Jan",156],["02Jan",175],["03Jan",118],["04Jan",98],["05Jan",154],["06Jan",67],["07Jan",0],["08Jan",0],["09Jan",0],["10Jan",0],["11Jan",0]]},{"name":"05Jan","data":[["01Jan",0],["02Jan",0],["03Jan",0],["04Jan",0],["05Jan",128],["06Jan",83],["07Jan",67],["08Jan",83],["09Jan",142],["10Jan",154],["11Jan",0]]},{"name":"06Jan","data":[["01Jan",0],["02Jan",0],["03Jan",0],["04Jan",0],["05Jan",0],["06Jan",66],["07Jan",67],["08Jan",82],["09Jan",162],["10Jan",138],["11Jan",112]]}], {"library":{"title":{"text":"City_forecast_AQI_day_compare"}}});
+</script>
+
+  </div>
+
+  <!--
+  <table class="table table-striped" id="fore_avg_aqi">
+	  <tr>
+		  <th>发布时间</th>
+		  <th>预报时间</th>
+		  <th>AQI</th>
+	  </tr>
+
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+			  <td>03Jan</td>
+			  <td>03Jan </td>
+			  <td>138</td>
+		  </tr>
+		  <tr>
+			  <td>03Jan</td>
+			  <td>04Jan </td>
+			  <td>54</td>
+		  </tr>
+		  <tr>
+			  <td>03Jan</td>
+			  <td>05Jan </td>
+			  <td>97</td>
+		  </tr>
+		  <tr>
+			  <td>03Jan</td>
+			  <td>06Jan </td>
+			  <td>101</td>
+		  </tr>
+		  <tr>
+			  <td>03Jan</td>
+			  <td>07Jan </td>
+			  <td>72</td>
+		  </tr>
+		  <tr>
+			  <td>03Jan</td>
+			  <td>08Jan </td>
+			  <td>76</td>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+			  <td>02Jan</td>
+			  <td>02Jan </td>
+			  <td>163</td>
+		  </tr>
+		  <tr>
+			  <td>02Jan</td>
+			  <td>03Jan </td>
+			  <td>137</td>
+		  </tr>
+		  <tr>
+			  <td>02Jan</td>
+			  <td>04Jan </td>
+			  <td>78</td>
+		  </tr>
+		  <tr>
+			  <td>02Jan</td>
+			  <td>05Jan </td>
+			  <td>153</td>
+		  </tr>
+		  <tr>
+			  <td>02Jan</td>
+			  <td>06Jan </td>
+			  <td>96</td>
+		  </tr>
+		  <tr>
+			  <td>02Jan</td>
+			  <td>07Jan </td>
+			  <td>57</td>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+			  <td>04Jan</td>
+			  <td>04Jan </td>
+			  <td>90</td>
+		  </tr>
+		  <tr>
+			  <td>04Jan</td>
+			  <td>05Jan </td>
+			  <td>98</td>
+		  </tr>
+		  <tr>
+			  <td>04Jan</td>
+			  <td>06Jan </td>
+			  <td>89</td>
+		  </tr>
+		  <tr>
+			  <td>04Jan</td>
+			  <td>07Jan </td>
+			  <td>76</td>
+		  </tr>
+		  <tr>
+			  <td>04Jan</td>
+			  <td>08Jan </td>
+			  <td>85</td>
+		  </tr>
+		  <tr>
+			  <td>04Jan</td>
+			  <td>09Jan </td>
+			  <td>128</td>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+			  <td>01Jan</td>
+			  <td>01Jan </td>
+			  <td>156</td>
+		  </tr>
+		  <tr>
+			  <td>01Jan</td>
+			  <td>02Jan </td>
+			  <td>175</td>
+		  </tr>
+		  <tr>
+			  <td>01Jan</td>
+			  <td>03Jan </td>
+			  <td>118</td>
+		  </tr>
+		  <tr>
+			  <td>01Jan</td>
+			  <td>04Jan </td>
+			  <td>98</td>
+		  </tr>
+		  <tr>
+			  <td>01Jan</td>
+			  <td>05Jan </td>
+			  <td>154</td>
+		  </tr>
+		  <tr>
+			  <td>01Jan</td>
+			  <td>06Jan </td>
+			  <td>67</td>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+			  <td>05Jan</td>
+			  <td>05Jan </td>
+			  <td>128</td>
+		  </tr>
+		  <tr>
+			  <td>05Jan</td>
+			  <td>06Jan </td>
+			  <td>83</td>
+		  </tr>
+		  <tr>
+			  <td>05Jan</td>
+			  <td>07Jan </td>
+			  <td>67</td>
+		  </tr>
+		  <tr>
+			  <td>05Jan</td>
+			  <td>08Jan </td>
+			  <td>83</td>
+		  </tr>
+		  <tr>
+			  <td>05Jan</td>
+			  <td>09Jan </td>
+			  <td>142</td>
+		  </tr>
+		  <tr>
+			  <td>05Jan</td>
+			  <td>10Jan </td>
+			  <td>154</td>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+		  </tr>
+		  <tr>
+			  <td>06Jan</td>
+			  <td>06Jan </td>
+			  <td>66</td>
+		  </tr>
+		  <tr>
+			  <td>06Jan</td>
+			  <td>07Jan </td>
+			  <td>67</td>
+		  </tr>
+		  <tr>
+			  <td>06Jan</td>
+			  <td>08Jan </td>
+			  <td>82</td>
+		  </tr>
+		  <tr>
+			  <td>06Jan</td>
+			  <td>09Jan </td>
+			  <td>162</td>
+		  </tr>
+		  <tr>
+			  <td>06Jan</td>
+			  <td>10Jan </td>
+			  <td>138</td>
+		  </tr>
+		  <tr>
+			  <td>06Jan</td>
+			  <td>11Jan </td>
+			  <td>112</td>
+		  </tr>
+  </table>
+  -->
+
+  <h2>当天的预报均值和监测均值对比表</h2>
+  <table class="display" id="fore_monitor_compare" cellspacing="0" width="100%">
+	  <thead>
+	  <tr>
+		  <th>城市</th>
+		  <th>今天的监测日均值</th>
+		  <th>今天到目前的预报均值</th>
+		  <th>预报偏差</th>
+		  <th>预报发布时间</th>
+		  <!--<th>综合指数</th>-->
+	  </tr>
+	  </thead>
+
+	  <tbody>
+
+	  </tbody>
+  </table>
+
+</div>
+
+<script>
+	$(document).ready(function() {
+
+		$('#fore_monitor_compare').DataTable( {
+			"order": [[ 3, "desc" ]]
+		} );
+	});
+</script>
+
+		<div class="container">
+			<hr>
+			<footer class="footer">
+				<p class="pull-right"><a href="#">返回顶部</a></p>
+				<div class="col-xs-4">
+				</div>
+				<div class="col-xs-8">
+					<dl>
+						<dt>
+							服务电话：13906145733
+						</dt>
+						<dd>
+							联系人：倪经理
+						</dd>
+					</dl>
+					<script type="text/javascript">//var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254317176'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1254317176%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>  
+				</div>
+			</footer>
+		</div>
+		<script type="text/javascript" charset="utf-8">
+			$(function() {
+				$('#toptitle a').each(function(){
+					$(this).click(function(event){
+						$('#toptitle a').removeClass('current-link');
+						$(this).addClass('current-link');
+					});
+				});
+			});
+/*
+   $(document).on("page:change", function() {
+   var page;
+   page = $("body").attr("class");
+   $(".nav li").removeClass("active");
+   return $("#"+page).addClass("active");
+   });
+ */
+function showLtjc(type){
+	if(type==1){
+		$("#ltjcDiv").css("display","");
+	}else{
+		$("#ltjcDiv").css("display","none");
+	}
+}
+		</script>
+	</body>
+</html>
+
+

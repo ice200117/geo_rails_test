@@ -20,7 +20,7 @@ save_db(hs,TempBdHour) if hour_data_common(hs,TempBdHour)
 
 #廊坊实时数据
 hs=ten_times_test(TempLfHour,'shishi_rank_data','LANGFANGRANK','HOUR',nil)
-save_db(change_diff_cityname(hs),TempLfHour) if hour_data_common(hs,TempLfHour)
+save_db(hs,TempLfHour) if hour_data_common(hs,TempLfHour)
 
 #河北实时数据
 hs=ten_times_test(TempHbHour,'shishi_rank_data','HEBEIRANK','HOUR',nil)
