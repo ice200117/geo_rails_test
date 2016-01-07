@@ -5,14 +5,14 @@ def calculate
 	yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
 	strtime = Time.now.strftime("%Y%m%d")
 	save_path = "/mnt/share/Temp/calculate/#{strtime[0,8]}/"
-	write_path = "/mnt/share/Temp/station_9km_orig/#{strtime[0,8]}/"
+	read_path = "/mnt/share/Temp/station_9km_orig/#{strtime[0,8]}/"
 	Dir::mkdir(save_path) if !Dir.exists?(save_path)
 	City.all.each do |c|
 		puts c.city_name.strip
 		py = c.city_name_pinyin.strip
 		fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_orig"
 		fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
-		f = File.open(write_path+fn) if File::exists?(write_path+fn) 
+		f = File.open(save_path+fn) if File::exists?(save_path+fn) 
 		next unless f
 		f_save = File.open(save_path+fn,'w')
 		puts fnout+' successful'

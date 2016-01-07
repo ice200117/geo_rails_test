@@ -2,15 +2,17 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 	belongs_to :city
 
 	def city_forecast_by_id(cityid)
-		c=City.find_by_post_number(cityid)
+		c = City.find_by_cityid(cityid)
 		return nil unless c
 		city_forecast(c)
 	end
+
 	def city_forecast_by_pinyin(pinyin)
-		c = City.find_by city_name_pinyin: pinyin
+		c = City.find_by_city_name_pinyin(pinyin)
 		return nil unless c
 		city_forecast(c)
 	end
+
 	def city_forecast(c)
 		cf = Hash.new
 		hf = []
@@ -45,6 +47,7 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 	def air_quality_forecast(pinyin)
 		tmp = City.find_by_city_name_pinyin(pinyin).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
 		fore_data = Hash.new
+		puts tmp
 		tmp.each do |time,data|
 			temp = Hash.new 
 			sum = 0

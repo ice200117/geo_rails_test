@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151216110138) do
+ActiveRecord::Schema.define(version: 20160106134405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20151216110138) do
     t.float   "longitude"
     t.string  "province"
     t.string  "district"
+    t.integer "cityid"
   end
 
   create_table "counties", force: true do |t|
