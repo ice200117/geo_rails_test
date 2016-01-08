@@ -3,9 +3,14 @@ require 'rubygems'
 require 'mailfactory'
 
 strtime = Time.now.strftime("%Y%m%d")
+time = strtime.to_time.yesterday.strftime("%Y%m%d")+'20'
 puts strtime
+
 filename = Time.now.strftime("%Y%m%d").to_s+'.txt'
 puts filename
+path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
+fn = "XJ_ENVAQFC_langfangshi_#{time}_00000-07200.TXT"
+puts path+fn
 
 mail = MailFactory.new()
 mail.to = 'wangyanchao@hh12369.com','zhouqinqian@hh12369.com'
@@ -15,6 +20,8 @@ mail.subject = 'Rank'
 #mail.attach("/mnt/share/Temp/Rank/20151215.txt")
 if File.exists?("/mnt/share/Temp/Rank/#{filename}")
 	mail.attach("/mnt/share/Temp/Rank/#{filename}")
+# else if File.exists?(path+fn)
+	mail.attach(path+fn)
 else
 	mail.text = "#{filename} is null!"
 end

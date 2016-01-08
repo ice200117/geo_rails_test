@@ -23,7 +23,7 @@
 
   <%= form_tag(bar_welcome_path, method: "get", html: { class: 'form-inline' }, remote: true) do %>
     <%= label_tag(:d, "城市：") %>
-    <%= collection_select(:c, :city_id, City.all, :id, :city_name, {:selected => 18}) %>
+    <%= collection_select(:c, :city_id, City.order(:id), :id, :city_name, {:selected => 18}) %>
     <%= label_tag(:start_date, "开始日期：") %>
     <%= select_date Date.today-5.days, prefix: :start_date %>
     <%= label_tag(:end_date, "结束日期：") %>

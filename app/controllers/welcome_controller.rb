@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
-	caches_page :pinggu, :bar
+#	caches_page :pinggu, :bar
 	#cache_sweeper :welcome_sweeper
 
 	include NumRu

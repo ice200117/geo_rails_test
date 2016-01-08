@@ -1,5 +1,5 @@
 class QuerysController < ApplicationController
-	caches_page :get_weather_air_data
+	#caches_page :get_weather_air_data
 
 	require 'open-uri'
 	require 'nokogiri'

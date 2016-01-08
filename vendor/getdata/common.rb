@@ -266,23 +266,9 @@ end
 
 #保存数据到数据库
 def save_db_common(model,t,time)
-	#天气获取
-	# key = ''
-	# IO.foreach("vendor/getdata/citykey.txt") do |line|
-	# 	city_name = line[0,11].strip
-	# 	# byebug if t['city'] == '七台河'
-	# 	if city_name == t['city']
-	# 		key = line[12..-1].strip
-	# 		break
-	# 	end
-	# end
-	# if model.name == 'ChinaCitiesHour'
-	# 	hs = weather_api(key)
-	# end
 	city = City.find_by_city_name(t['city'].to_s+'市')
 	city = City.find_by_city_name(t['city']) if city.nil?
 	city = City.find_by_city_name(CityEnum.city_short(t['city'])) if city.nil?
-	out_log(t['city']) if city.nil?	
 	return if city.nil?	
 	day_city=model.new
 	day_city.city_id=city.id
@@ -317,6 +303,7 @@ def save_db_common(model,t,time)
 		set_change_rate_to_db(model,city.id,time) if model.new.respond_to?("zongheindex_change_rate")
 	end
 	puts '=='+model.name+'=='+time.to_s+'=Save OK!==='
+	out_log(model.name+time.to_s+t['city']) if city.nil?	
 end
 
 #通用方法
