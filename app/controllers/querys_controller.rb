@@ -134,7 +134,7 @@ class QuerysController < ApplicationController
 
 	def all_cities2
 		achf = []
-		ac = City.where("id < 388").pluck(:city_name_pinyin)
+		ac = City.where("id < 388")#.pluck(:city_name_pinyin)
 		h = HourlyCityForecastAirQuality.new
 		ac.each do |c|
 			ch = h.city_forecast(c) 

@@ -4,20 +4,21 @@
 
 
 def parse_line(line, c)
-  
   #hc = HourlyCityForecastAirQuality.new
-  #c.HourlyCityForecastAirQuality.destroy_all
   sd = line[0,10]
   delta_hour = line[11,3]
   sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
 
+  
   #hc.city_id = c.id
   #hc.publish_datetime = sdate
   #hc.forecast_datetime = sdate+delta_hour.to_i*3600
-  
+
   hc = HourlyCityForecastAirQuality.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
 
+
   hc.AQI = line[14,4]
+ # hc.AQI = hc.AQI*2.51   # liubin 10/5/2015
   hc.main_pol = line[18,13].strip
   hc.grade = line[31,1]
   hc.pm25 = line[99,6]
@@ -47,18 +48,14 @@ def parse_line(line, c)
 end
 
 #strtime = Time.mktime(Time.new.strftime("%Y%m%d")+'08')
-if Time.new.hour >18
-	strtime = Time.new.strftime("%Y%m%d")+'08'
-else
-	strtime = (Time.new-1.day).strftime("%Y%m%d")+'08'
-end
-#strtime = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
-puts 'deal date = ', strtime
+yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
+strtime = Time.new.strftime("%Y%m%d")+'20'
+puts strtime
 
-#strtime = '2016010808'
+#strtime = '2015040808'
 #puts strtime
 
-path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
+path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 
 # Read hua bei city, do not read data of these city.
 firstline = true
@@ -75,22 +72,21 @@ IO.foreach("vendor/station_hb.EXT") do |line|
   hb_city << city_name_pinyin
   #  city_name  = line[46..-4].strip
 end
-  
 
-cs = City.all
+cs = Array.new
+cs << City.find_by_city_name_pinyin('panjinshi')
+#cs = City.all
 cs.each do |c|
   puts c.city_name_pinyin
   #if c.city_name_pinyin.rstrip.eql?('langfangshi')
   py = c.city_name_pinyin.strip
-
-  next if hb_city.include?(py)
-
-
-  fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
+  fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
+  # puts fn
+  next unless hb_city.include?(py)
   f = File.open(path+fn) if File::exists?(path+fn) 
   next unless f
   f.readlines[2..-1].each do |line| 
-    parse_line(line, c)
+  parse_line(line, c)
   end
   f.close
   puts fn+" update database successful!"

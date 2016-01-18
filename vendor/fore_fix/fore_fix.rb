@@ -171,7 +171,7 @@ def default_25km
 	#end 东北
 	#
 	#shangdongshen 山东
-	shandongsheng = {'you' =>0.9,'yellow' =>0.78,'qingdu'=>0.52,'zhong'=>0.75,'zhongdu'=>0.75,'yanzhong'=>0.75 }
+	shandongsheng = {'you' =>0.8,'yellow' =>0.68,'qingdu'=>0.82,'zhong'=>0.85,'zhongdu'=>0.85,'yanzhong'=>0.75 }
 	cities_default['jinanshi'] = {'you' =>0.9,'yellow' =>0.91,'qingdu'=>0.7,'zhong'=>0.85,'zhongdu'=>0.95,'yanzhong'=>0.85 }
 	# for e in (142..157)
 		# next if e == 57
@@ -180,6 +180,8 @@ def default_25km
 		puts e.to_s+' '+city_index[e]
 	# end	
 	 cities_default['dezhoushi'] = shandongsheng
+	 cities_default['linyishi'] = shandongsheng
+	 cities_default['rizhaoshi'] = shandongsheng
 	 cities_default['binzhoushi'] = shandongsheng
 	 cities_default['dongyingshi'] = shandongsheng
 	 cities_default['shouguangshi'] = shandongsheng
@@ -211,7 +213,7 @@ def default_25km
 	#end
 	#
 	#henansheng 河南
-	hennansheng = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.08,'zhongdu'=>1.05,'yanzhong' => 1.15}
+	hennansheng = {'you' =>0.8,'yellow' =>0.65,'qingdu'=>0.69,'zhong'=>0.78,'zhongdu'=>0.85,'yanzhong' => 1.05}
 	cities_default['zhengzhoushi'] = {'you' =>0.8,'yellow' =>1,'qingdu'=>1,'zhong'=>1.18,'zhongdu'=>1.15,'yanzhong' => 1.25}
 	for e in (159..174)
 		# next if e == 57

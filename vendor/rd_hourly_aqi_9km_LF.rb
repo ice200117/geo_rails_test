@@ -48,12 +48,12 @@ end
 yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
 strtime = Time.new.strftime("%Y%m%d")+'20'
 # puts strtime
-
-#strtime = '2015040808'
+# yesterday_str= '2016011020'
+# strtime = '2016011120'
 puts strtime
 
 path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
-
+puts path
 # Read hua bei city, do not read data of these city.
 firstline = true
 hb_city = Array.new
@@ -78,8 +78,10 @@ end
 #puts c.city_name_pinyin
 #if c.city_name_pinyin.rstrip.eql?('langfangshi')
 # py = c.city_name_pinyin.strip
- py = 'langfangshi'
- # py = 'handanshi'
+py = 'langfangshi'
+# py = 'handanshi'
+# py = 'tianjinshi'
+# py = 'cangzhoushi'
 c = City.find_by_city_name_pinyin(py)
 fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
 puts fn
