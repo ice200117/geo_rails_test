@@ -4,7 +4,7 @@ require_relative 'daliy_avg'
 
 #start---------------
 puts "--start--"
-yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
+yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
 strtime = Time.now.yesterday.strftime("%Y%m%d")
 
 # strtime = '20160108' 
@@ -13,11 +13,11 @@ puts strtime
 puts yesterday_str
 
 #path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
-path = "/mnt/share/Temp/station_orig/#{strtime[0,8]}/"
+path = "/mnt/share/Temp/station_15km_orig/#{strtime[0,8]}/"
 
 # path_fix = "/vagrant/fix/station_25km/#{strtime[0,8]}/"
 #path_fix = "/mnt/share/Temp/station_orig/#{strtime[0,8]}/"
-path_fix = "/mnt/share/Temp/station/#{strtime[0,8]}/"
+path_fix = "/mnt/share/Temp/station_15km/#{strtime[0,8]}/"
 
 Dir::mkdir(path_fix) if !Dir.exists?(path_fix)
 f_avg=File.new(path_fix+"avg.txt","w")
@@ -31,10 +31,10 @@ cs = City.all
 cs.each do |c|
 	puts c.city_name.strip
 	py = c.city_name_pinyin.strip
-	# fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
-	fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_orig"
-	# fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_adjust"
-	fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
+	fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
+	# fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_orig"
+	fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_adjust"
+	# fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
 	# next unless hb_city.include?(py)
 	f = File.open(path+fn) if File::exists?(path+fn) 
 	next unless f
@@ -121,5 +121,5 @@ end
 f_avg.close
 after_avg.close
 # puts "--start--25km--"
-DaliyAvg.avg_25
+# DaliyAvg.avg_25
 puts "OK"
