@@ -6,11 +6,12 @@
 # Distributed under terms of the MIT license.
 #
 def parse_lines(line)
-	sd = line[0,10]
-	delta_hour = line[11,3].to_i
-	sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
+	# sd = line[0,10]
+	sd = line[0,2]
+	delta_hour = line[0,2].to_i
+	# sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
 	if delta_hour>28&&delta_hour<53
-		return line[14,4].to_i
+		return line[3,4].to_i
 	elsif delta_hour<29
 		return "small" 
 	elsif delta_hour>52

@@ -78,8 +78,17 @@ end
 # py = 'jinanshi'
 # py = 'songyuanshi'
 # py = 'wuhanshi'
+# py = 'wulumuqishi'
 # py = 'linyishi'
-py = 'rizhaoshi'
+py = 'linfenshi'
+# py = 'rizhaoshi'
+# py = 'anyangshi'
+# py = 'hezeshi'
+# py = 'changchunshi'
+# py = 'haerbinshi'
+# py = 'zhengzhoushi'
+# py = 'hetiandiqu'
+# py = 'kashidiqu'
 
 c = City.find_by_city_name_pinyin(py)
 # puts c

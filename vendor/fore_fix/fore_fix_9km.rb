@@ -17,7 +17,7 @@ path = "/mnt/share/Temp/station_9km_orig/#{strtime[0,8]}/"
 
 # path_fix = "/vagrant/fix/station_9km/#{strtime[0,8]}/"
  # path_fix = "/mnt/share/Temp/station_9km_orig/#{strtime[0,8]}/"
- path_fix = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
+path_fix = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 
 Dir::mkdir(path_fix) if !Dir.exists?(path_fix)
 f_avg=File.open(path_fix+"avg.txt","w")

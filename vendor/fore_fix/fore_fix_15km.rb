@@ -7,14 +7,14 @@ puts "--start--"
 yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
 strtime = Time.now.yesterday.strftime("%Y%m%d")
 
-# strtime = '20160108' 
-# yesterday_str = '2016010808' 
+# strtime = '20160122' 
+# yesterday_str = '2016012208' 
 puts strtime
 puts yesterday_str
 
 #path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
 path = "/mnt/share/Temp/station_15km_orig/#{strtime[0,8]}/"
-
+puts path
 # path_fix = "/vagrant/fix/station_25km/#{strtime[0,8]}/"
 #path_fix = "/mnt/share/Temp/station_orig/#{strtime[0,8]}/"
 path_fix = "/mnt/share/Temp/station_15km/#{strtime[0,8]}/"

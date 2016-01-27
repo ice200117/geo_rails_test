@@ -6,25 +6,25 @@
 # Distributed under terms of the MIT license.
 #
 def parse_lines(line, factor="AQI")
-	sd = line[0,10]
-	delta_hour = line[11,3].to_i
-	sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
+	# sd = line[0,10]
+	delta_hour = line[0,4].to_i
+	# sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
 	if delta_hour>28&&delta_hour<53
 		case factor
 		when "AQI"
-			return line[14,4].to_f
+			return line[4,4].to_f
 		when "pm25"
-			return line[99,6].to_f
+			return line[83,6].to_f
 		when "pm10"
-			return line[87,6].to_f
+			return line[71,6].to_f
 		when "SO2"
-			return line[39,6].to_f
+			return line[23,6].to_f
 		when "CO"
-			return line[63,6].to_f
+			return line[47,6].to_f
 		when "O3"
-			return line[75,6].to_f
+			return line[59,6].to_f
 		when "NO2"
-			return line[51,6].to_f
+			return line[35,6].to_f
 		else
 			puts "else"
 		end
@@ -36,8 +36,7 @@ def parse_lines(line, factor="AQI")
 end
 
 puts "---begin---"
-path="/mnt/share/Temp/station_9km_orig/201511/"
-# path="/mnt/share/Temp/station_9km/2014/"
+path="/mnt/share/Temp/station_9km/2014-new/"
 #path = "/mnt/share/Temp/station_9km_orig/"
 w = File.open(path+"0.txt","w")
 factors = ["AQI", "pm25", "pm10", "SO2", "CO", "O3", "NO2"]
@@ -47,10 +46,11 @@ Dir::entries(path).each do |dirname|
 	next if dirname.size < 6
 	puts dirname
 	sdate = Time.local(dirname[0,4],dirname[4,2],dirname[6,2])
-	sdate=sdate-1.day
+	# sdate=sdate-1.day
 	str_date=sdate.strftime("%Y%m%d")
-    # filename = "XJ_ENVAQFC_0052_HEBE_Langfang_#{dirname}20_00000-07200.TXT"
-    filename = "XJ_ENVAQFC_langfangshi_#{str_date}20_00000-07200.TXT_orig"
+	# puts  str_date
+    filename = "XJ_ENVAQFC_0052_HEBE_Langfang_#{dirname}20_00000-07200.TXT"
+    # filename = "XJ_ENVAQFC_langfangshi_#{str_date}20_00000-07200.TXT_orig"
 	f = File.open(path+dirname+"/"+filename,"r") if File.exists?(path+dirname+"/"+filename)
 	next unless f
 	# puts f
