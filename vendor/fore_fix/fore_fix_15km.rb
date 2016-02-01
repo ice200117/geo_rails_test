@@ -7,8 +7,8 @@ puts "--start--"
 yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
 strtime = Time.now.yesterday.strftime("%Y%m%d")
 
-# strtime = '20160122' 
-# yesterday_str = '2016012208' 
+ # strtime = '20160126' 
+ # yesterday_str = '2016012608' 
 puts strtime
 puts yesterday_str
 
@@ -100,7 +100,7 @@ cs.each do |c|
 			tmp = default_25km_city[c.city_name_pinyin][k]
 		end
 		if v!=nil
-			avg[k] = (tmp*2+v)/3
+			avg[k] = (tmp*1+v*1)/2
 		else
 			avg[k] = tmp
 		end

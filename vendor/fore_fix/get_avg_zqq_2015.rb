@@ -68,32 +68,35 @@ end
 
 
 puts "---begin---"
-path="/mnt/share/Temp/station_9km/201411/"
-# path="/mnt/share/Temp/station_9km/201412/"
-path1="/mnt/share/Temp/station_9km/201411/201411/"
-# path1="/mnt/share/Temp/station_9km/201412/201412/"
+path="/mnt/share/Temp/station_9km_orig/201511/"
+# path="/mnt/share/Temp/station_9km_orig/201512/"
+path1="/mnt/share/Temp/station_9km_orig/201511/201511/"
+# path1="/mnt/share/Temp/station_9km_orig/201512/201512/"
+#path = "/mnt/share/Temp/station_9km_orig/"
+# path_w="/vagrant/201412/"
 
 # Read hua bei city, do not read data of these city.
 firstline = true
 hb_city = Array.new
-IO.foreach("vendor/station_60.EXT") do |line| 
+IO.foreach("vendor/station.EXT_9km") do |line| 
 	if firstline
 		firstline = false
 		next
 	end
-	post_number = line[1,5]
-	latitude = line[6,8]
-	longitude = line[14,8]
-	city_name_pinyin = line[23,18].strip
+	post_number = line[1,7]
+	latitude = line[8,8]
+	longitude = line[16,8]
+	city_name_pinyin = line[25,18].strip
 	hb_city << city_name_pinyin
 	#  city_name  = line[46..-4].strip
 end
 
 # file_time=Time.local(2014,11,1) #月数据文件夹名字
 
-w2 = File.open(path1+'201511.txt',"w")
-w2.puts("date    AQI    pm25     pm10   SO2     CO     O3    NO2")
 
+w2 = File.open(path1+'201512.txt',"w")
+w2.puts("date    AQI    pm25     pm10   SO2     CO     O3    NO2")
+	
 hb_city.each do |c|
 	puts c
 	filename = "#{c}.txt"
@@ -101,7 +104,6 @@ hb_city.each do |c|
 	w1 = File.open(path1+filename+'_m',"w")
 	factors = ["AQI", "pm25", "pm10", "SO2", "CO", "O3", "NO2"]
 	w.puts("date    AQI    pm25     pm10   SO2     CO     O3    NO2")
-	w1.puts("date    AQI    pm25     pm10   SO2     CO     O3    NO2")
 	month_ary={}
 	month_ary["AQI"] = []
 	month_ary["pm25"] = []
@@ -117,23 +119,28 @@ hb_city.each do |c|
 		# puts dirname
 		sdate = Time.local(dirname[0,4],dirname[4,2],dirname[6,2])
 		# sdate=sdate-1.day
-		str_date=sdate.strftime("%Y%m%d")
+		str_date=sdate.yesterday.strftime("%Y%m%d")
 		# puts  str_date
-		filename = "XJ_ENVAQFC_#{c}_#{dirname}20_00000-07200.TXT"
-		# filename = "XJ_ENVAQFC_#{c}_#{dirname}20_00000-07200.TXT_orig"
+		#filename = "XJ_ENVAQFC_0052_HEBE_Langfang_#{dirname}20_00000-07200.TXT"
+		#filename = "XJ_ENVAQFC_0001_BEIJ_Nanjiao_#{dirname}20_00000-07200.TXT"
+		#filename = "XJ_ENVAQFC_0002_BEIJ_Nanjiao_#{dirname}20_00000-07200.TXT"
+		# filename = "XJ_ENVAQFC_#{c}_#{dirname}20_00000-07200.TXT"
+		filename = "XJ_ENVAQFC_#{c}_#{str_date}20_00000-07200.TXT_orig"
+		# filename = "XJ_ENVAQFC_langfangshi_#{str_date}20_00000-07200.TXT_orig"
 		f = File.open(path+dirname+"/"+filename,"r") if File.exists?(path+dirname+"/"+filename)
 		next unless f
 		path_sum+=1
 	end
+	# puts path_sum
 	# while()
 	Dir::entries(path).each do |dirname|
 		next if dirname.size < 7
 		# puts dirname
 		sdate = Time.local(dirname[0,4],dirname[4,2],dirname[6,2])
 		# sdate=sdate-1.day
-		str_date=sdate.strftime("%Y%m%d")
+		str_date=sdate.yesterday.strftime("%Y%m%d")
 		# puts  str_date
-		filename = "XJ_ENVAQFC_#{c}_#{dirname}20_00000-07200.TXT"
+		filename = "XJ_ENVAQFC_#{c}_#{str_date}20_00000-07200.TXT_orig"
 		# filename = "XJ_ENVAQFC_langfangshi_#{str_date}20_00000-07200.TXT_orig"
 		f = File.open(path+dirname+"/"+filename,"r") if File.exists?(path+dirname+"/"+filename)
 		next unless f
@@ -150,7 +157,7 @@ hb_city.each do |c|
 		datalines = f.readlines
 		datalines[25..55].each do |line|
 			factors.each do |f|
-				tmp = parse_lines_2014(line, f)
+				tmp = parse_lines_2015(line, f)
 				if tmp.class == 0.0.class
 					# puts sdate.to_s+delta_hour.to_s
 					ary << tmp if f == "AQI"
@@ -176,7 +183,12 @@ hb_city.each do |c|
 			w.puts(dirname+" "+"数据个数有错误！")
 		end
 
-		if path_sum==month_ary["AQI"].length
+		# puts 'zqq mon',month_ary["AQI"].length
+		# puts 'zqq path',path_sum
+
+		# if path_sum==month_ary["AQI"].length
+		if path_sum==month_ary['AQI'].length
+			puts 'OK'
 			month_ary_temp={}
 			factors.each do |f|
 				month_ary_temp[f]=month_ary[f].inject(0){|sum,x| sum+=x}/month_ary[f].length

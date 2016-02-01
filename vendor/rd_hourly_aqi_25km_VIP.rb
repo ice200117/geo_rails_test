@@ -45,7 +45,7 @@ end
 strtime = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
 # puts strtime
 
-# strtime = '2015122108'
+# strtime = '2016012708'
 puts strtime
 # byebuy
 path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
@@ -67,28 +67,32 @@ IO.foreach("vendor/station_hb.EXT") do |line|
 end
 
 
-#cs = City.all
-#cs = City.find_by_city_name_pinyin('shanghaishi')
+
 # cs.each do |c|
 # puts c.city_name_pinyin
 #if c.city_name_pinyin.rstrip.eql?('langfangshi')
 # py = c.city_name_pinyin.strip
 # py = 'hangzhoushi'
-#py = 'pingdingshanshi'
+# py = 'pingdingshanshi'
 # py = 'jinanshi'
 # py = 'songyuanshi'
 # py = 'wuhanshi'
-# py = 'wulumuqishi'
 # py = 'linyishi'
-py = 'linfenshi'
+# py = 'linfenshi'
 # py = 'rizhaoshi'
 # py = 'anyangshi'
 # py = 'hezeshi'
+
 # py = 'changchunshi'
 # py = 'haerbinshi'
-# py = 'zhengzhoushi'
+
+# py = 'hanzhongshi'
+py = 'zhengzhoushi'
+
+# py = 'wulumuqishi'
 # py = 'hetiandiqu'
 # py = 'kashidiqu'
+# py = 'changjihuizuzizhiz'
 
 c = City.find_by_city_name_pinyin(py)
 # puts c
