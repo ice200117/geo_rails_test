@@ -170,9 +170,9 @@ class WelcomeController < ApplicationController
 		@city_name=''
 		id = 18
 		if params[:c] 
-			(id =  params[:c][:city_id]) 
+			id =  params[:c][:city_id] 
 		end
-		
+
 		# Table 1: 全国城市当天监测与预报日均值差值
 		monitor_today_avg = ChinaCitiesHour.today_avg
 		forecast_today_avg = HourlyCityForecastAirQuality.today_avg
