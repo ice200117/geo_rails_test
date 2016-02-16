@@ -81,19 +81,22 @@ end
 # py = 'linfenshi'
 # py = 'rizhaoshi'
 # py = 'anyangshi'
-# py = 'hezeshi'
+py = 'hezeshi'
+# py = 'taianshi'
 
 # py = 'changchunshi'
 # py = 'haerbinshi'
 
 # py = 'hanzhongshi'
-py = 'zhengzhoushi'
+# py = 'zhengzhoushi'
 # py = 'liuanshi'
 
 # py = 'wulumuqishi'
 # py = 'hetiandiqu'
 # py = 'kashidiqu'
 # py = 'changjihuizuzizhiz'
+# py = 'kezilesukeerkezizi'
+# py = 'tulufandiqu'
 
 c = City.find_by_city_name_pinyin(py)
 # puts c

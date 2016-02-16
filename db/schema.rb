@@ -44,16 +44,17 @@ ActiveRecord::Schema.define(version: 20160106134405) do
     t.timestamp "updated_at",     precision: 6
   end
 
-  create_table "cities", force: true do |t|
-    t.string  "city_name"
-    t.string  "city_name_pinyin"
-    t.integer "post_number"
-    t.float   "latitude"
-    t.spatial "lonlat",           limit: {:srid=>4326, :type=>"geometry", :geographic=>true}
-    t.float   "longitude"
-    t.string  "province"
-    t.string  "district"
-    t.integer "cityid"
+  create_table "cities", id: false, force: true do |t|
+    t.string "id"
+    t.string "city_name"
+    t.string "city_name_pinyin"
+    t.string "post_number"
+    t.string "latitude"
+    t.string "lonlat"
+    t.string "longitude"
+    t.string "province"
+    t.string "district"
+    t.string "cityid"
   end
 
   create_table "counties", force: true do |t|

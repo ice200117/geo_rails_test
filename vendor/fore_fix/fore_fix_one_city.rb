@@ -15,23 +15,21 @@ def city(c)
 	#start---------------
 	puts "--#{c.city_name}--"
 	strtime = Time.now.yesterday.strftime("%Y%m%d")
-	yesterday_str = strtime+'08'
+	yesterday_str = strtime+'20'
 	
-	path = "/mnt/share/Temp/station_orig/#{strtime[0,8]}/"
-
-	path_fix = "/mnt/share/Temp/station/#{strtime[0,8]}/"
+	path = "/mnt/share/Temp/station_15km/#{strtime[0,8]}/"
+	path_fix = path
 
 	default_25km_city = default_25km() #调用缺省系数
 	py = c.city_name_pinyin.strip
 
-	fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_orig"
-	fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
+	fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_adjust"
+	fnout = ".XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_adjust.swap"
 	f = File.open(path+fn) if File::exists?(path+fn) 
 	return unless f
 
 	#判断预报城市是否与观测城市匹配
 	if ChinaCitiesHour.find_by_city_id(c.id).nil?
-		# FileUtils.cp f,path_fix+fnout
 		file = File.open(path_fix+fnout,"w")
 		f.rewind
 		first_line = f.readlines
@@ -59,7 +57,7 @@ def city(c)
 
 	f.readlines[2..-1].each do |line|
 		hs=get_aqi(line)
-		next if hs[:forecast_datetime]<Time.now.beginning_of_hour||hs[:forecast_datetime]>Time.now.end_of_day
+		next if hs[:forecast_datetime]<Time.now.beginning_of_day||hs[:forecast_datetime]>Time.now.end_of_hour
 		tmp = Array.new
 		tmp << "data_real_time >= ? and data_real_time <= ? and city_id = ?"
 		tmp << hs[:forecast_datetime].beginning_of_hour
@@ -105,4 +103,5 @@ def city(c)
 	end
 	file.close
 	f.close()
+	FileUtils.mv path+fnout,path+fn if File::exists?(path+fnout)
 end

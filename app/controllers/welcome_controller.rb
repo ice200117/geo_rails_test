@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
-#	caches_page :pinggu, :bar
+	#	caches_page :pinggu, :bar
 	#cache_sweeper :welcome_sweeper
 
 	include NumRu
@@ -112,7 +112,7 @@ class WelcomeController < ApplicationController
 		if params[:c] 
 			(id =  params[:c][:city_id]) 
 		else
-      # Table 1: 全国城市当天监测与预报日均值差值
+			# Table 1: 全国城市当天监测与预报日均值差值
 			(id = City.find_by city_name_pinyin: 'langfangshi')
 			monitor_today_avg = ChinaCitiesHour.today_avg
 			forecast_today_avg = HourlyCityForecastAirQuality.today_avg
@@ -123,7 +123,7 @@ class WelcomeController < ApplicationController
 			end
 		end
 
-    # Table 2: 城市监测与预报值小时值对比
+		# Table 2: 城市监测与预报值小时值对比
 		c = City.find(id)
 		if params[:start_date] && params[:end_date]
 			sd = Time.local(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
@@ -141,16 +141,16 @@ class WelcomeController < ApplicationController
 		@chart << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.AQI] } }
 
 
-    # Table 3: 过去一星期城市监测与预报值日均值对比
+		# Table 3: 过去一星期城市监测与预报值日均值对比
 		@fore_group_day = {}
 
 		# 获取过去几天的监测值
 		@fore_group_day = ChinaCitiesHour.history_data(c, 6.days.ago.beginning_of_day)
 
 		# 获取过去几天发布的预报值
-    md = {}
+		md = {}
 		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime >= ?", 6.days.ago.beginning_of_day).group_by_day(:forecast_datetime).average(:AQI)
-    h.each {|k,v| k.map!{|x| x.strftime("%d%b")}; md[k] = v.round}
+		h.each {|k,v| k.map!{|x| x.strftime("%d%b")}; md[k] = v.round}
 
 		@fore_group_day.merge!(md)
 
@@ -164,6 +164,88 @@ class WelcomeController < ApplicationController
 		end
 	end
 
+	#显示分指数
+	def subindex
+		@diff_monitor_forecast = []
+		@city_name=''
+		if params[:c] 
+			(id =  params[:c][:city_id]) 
+			@city_name=params[:city_name]
+		else
+			# Table 1: 全国城市当天监测与预报日均值差值
+			(id = City.find_by city_name_pinyin: 'langfangshi')
+			@city_name=id.city_name
+			monitor_today_avg = ChinaCitiesHour.today_avg
+			forecast_today_avg = HourlyCityForecastAirQuality.today_avg
+			monitor_today_avg.each do |k,v|
+				next unless forecast_today_avg[k]
+				d = monitor_today_avg[k] - forecast_today_avg[k].values[0]
+				@diff_monitor_forecast << [ k, monitor_today_avg[k], forecast_today_avg[k].values[0], d.abs, forecast_today_avg[k].keys[0]]
+			end
+		end
+
+		# Table 2: 城市监测与预报值小时值对比
+		c = City.find(id)
+		if params[:start_date] && params[:end_date]
+			sd = Time.local(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
+			ed = Time.local(params[:end_date][:year].to_i, params[:end_date][:month].to_i, params[:end_date][:day].to_i,23)
+			return 'error: start date can not later than end date!' if sd > ed
+			hss = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
+			hs = []
+			hss.each {|h| hs << h if h.forecast_datetime >= sd && h.forecast_datetime <= ed }
+		else
+			hs = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
+		end 
+
+		md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
+
+		@chart_aqi = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime, h.AQI]} }]
+		@chart_aqi << {name: '监测值', data: md.map { |h| [ h.data_real_time,h.AQI ] } }
+
+		@chart_so2 = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.SO2]} }]
+		@chart_so2 << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.SO2] } }
+
+		@chart_no2 = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.NO2]} }]
+		@chart_no2 << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.NO2] } }
+
+		@chart_co = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.CO]} }]
+		@chart_co << {name:'监测值', data: md.map { |h| [ h.data_real_time,  h.CO] } }
+
+		@chart_o3 = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.O3]} }]
+		@chart_o3 << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.O3] } }
+
+		@chart_pm10 = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.pm10]} }]
+		@chart_pm10 << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.pm10]} }
+
+		@chart_pm25 = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.pm25]} }]
+		@chart_pm25 << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.pm25] } }
+
+		@chart_vis = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.VIS]} }]
+		# @chart_vis << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.VIS] } }
+
+		# Table 3: 过去一星期城市监测与预报值日均值对比
+		@fore_group_day = {}
+
+		# 获取过去几天的监测值
+		@fore_group_day = ChinaCitiesHour.history_data(c, 6.days.ago.beginning_of_day)
+
+		# 获取过去几天发布的预报值
+		md = {}
+		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime >= ?", 6.days.ago.beginning_of_day).group_by_day(:forecast_datetime).average(:AQI)
+		h.each {|k,v| k.map!{|x| x.strftime("%d%b")}; md[k] = v.round}
+
+		@fore_group_day.merge!(md)
+
+
+		respond_to do |format|
+			format.html { }
+			format.js   { }
+			format.json {
+				render json: @diff_monitor_forecast
+			}
+		end
+	end
+	
 	def get_history_data
 		model = params[:model]
 		time = params[:time].to_time
@@ -514,7 +596,7 @@ class WelcomeController < ApplicationController
 		dw = f1['day_wind_power']
 		nw = f1['night_wind_power']
 		def wind_power(wp)
-      return '' unless wp
+			return '' unless wp
 			return wp[0,2] if wp[0,2] == '微风'
 			for e in (0...wp.size)
 				return wp[0,e+1] if wp[e] == '级'

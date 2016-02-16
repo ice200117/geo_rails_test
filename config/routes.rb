@@ -41,6 +41,7 @@ Rails.application.routes.draw do
    #get '/show' => 'welcome#show'
    get '/map' => 'welcome#map'
    get '/bar' => 'welcome#bar', as: :bar_welcome
+   get '/subindex' => 'welcome#subindex', as: :subindex_welcome
    get '/pinggu' => 'welcome#pinggu', as: :pinggu_welcome
    get '/visits_by_day' => 'welcome#visits_by_day', as: :visits_by_day_welcome
 
