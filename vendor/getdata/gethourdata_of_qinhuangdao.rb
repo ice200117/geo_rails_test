@@ -42,7 +42,7 @@ module Qinhuangdao
 					linedata.level = l['Level']
 					linedata.main_pol = l['MaxPoll']
 					linedata.save
-					puts Time.now+' '+l['Name']+' Save OK!'
+					puts Time.now.to_s+' '+l['Name']+' Save OK!'
 				end
 			end
 		end
