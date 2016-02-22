@@ -1,0 +1,2 @@
+module QinhuangdaoHelper
+end
