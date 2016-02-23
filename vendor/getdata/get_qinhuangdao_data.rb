@@ -8,7 +8,7 @@
 
 module Qinhuangdao
 	class Qinhuangdao
-		def request
+		def hour
 			data = Hash.new
 			begin
 				response = HTTParty.get('http://121.28.49.85:8080/datas/hour/130000.xml')
@@ -39,11 +39,28 @@ module Qinhuangdao
 					linedata.pm25 = tmp['PM2.5']
 					linedata.O3 = tmp['O3']
 					linedata.O3_8h = tmp['O3-8h']
-					linedata.level = l['Level']
+					linedata.quality = l['Level']
 					linedata.main_pol = l['MaxPoll']
 					linedata.save
 					puts Time.now.to_s+' '+l['Name']+' Save OK!'
 				end
+			end
+		end
+
+		#真气网的小时数据
+		def hour_by_zq
+			
+		end
+		def day
+
+		end
+
+		def request_zq(typestr)
+			begin
+				option = {secret:'5d68a3d26f2d62209cd8bf05d7dae8cd',type:typestr,date:datestr,method:'GETQHDHISTORYDATA',key:Digest::MD5.hexdigest(secretstr+typestr+datestr)}
+				response = HTTParty.post('http://www.izhenqi.cn/api/getdata_history.php', :body => option)
+			rescue
+				
 			end
 		end
 	end
