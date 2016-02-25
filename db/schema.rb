@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160223062420) do
+ActiveRecord::Schema.define(version: 20160224162139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,7 +141,7 @@ ActiveRecord::Schema.define(version: 20160223062420) do
   end
 
   create_table "monitor_point_days", force: true do |t|
-    t.integer  "point_id"
+    t.integer  "monitor_point_id"
     t.float    "SO2"
     t.float    "NO2"
     t.float    "CO"
@@ -171,10 +171,11 @@ ActiveRecord::Schema.define(version: 20160223062420) do
     t.datetime "data_real_time"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "city_id"
   end
 
   create_table "monitor_point_hours", force: true do |t|
-    t.integer  "point_id"
+    t.integer  "monitor_point_id"
     t.float    "SO2"
     t.float    "NO2"
     t.float    "CO"
@@ -196,10 +197,11 @@ ActiveRecord::Schema.define(version: 20160223062420) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "O3_8h"
+    t.integer  "city_id"
   end
 
   create_table "monitor_point_months", force: true do |t|
-    t.integer  "point_id"
+    t.integer  "monitor_point_id"
     t.float    "SO2"
     t.float    "NO2"
     t.float    "CO"
@@ -229,10 +231,11 @@ ActiveRecord::Schema.define(version: 20160223062420) do
     t.datetime "data_real_time"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "city_id"
   end
 
   create_table "monitor_point_years", force: true do |t|
-    t.integer  "point_id"
+    t.integer  "monitor_point_id"
     t.float    "SO2"
     t.float    "NO2"
     t.float    "CO"
@@ -262,6 +265,7 @@ ActiveRecord::Schema.define(version: 20160223062420) do
     t.datetime "data_real_time"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "city_id"
   end
 
   create_table "monitor_points", force: true do |t|

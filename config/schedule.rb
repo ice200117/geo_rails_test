@@ -16,6 +16,6 @@ set :output, "/vagrant/geo_rails_test/cron_log.log"
 # every 4.days do
 #   runner "AnotherModel.prune_old_records"
 # end
-every "10 */1 * * *" do
-	command "cd /vagrant/geo_rails_test/ && /home/vagrant/.rbenv/shims/rails r vendor/getdata/gethourdata_of_qinhuangdao.rb -e development"
+every "* * * * *" do
+	command "cd /vagrant/geo_rails_test/ && /home/vagrant/.rbenv/shims/rails r vendor/getdata/gethourdata.rb -e development"
 end

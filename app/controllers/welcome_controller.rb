@@ -73,7 +73,6 @@ class WelcomeController < ApplicationController
 		h.each {|k,v| k.map!{|x| x.strftime("%d%b")}; md[k] = v.round}
 
 		@fore_group_day.merge!(md)
-ni
 
 		respond_to do |format|
 			format.html { }
@@ -92,7 +91,7 @@ ni
 		if params[:c] 
 			(id =  params[:c][:city_id]) 
 		end
-		
+
 		# Table 1: 全国城市当天监测与预报日均值差值
 		monitor_today_avg = ChinaCitiesHour.today_avg
 		forecast_today_avg = HourlyCityForecastAirQuality.today_avg
@@ -162,11 +161,11 @@ ni
 			}
 		end
 	end
-	
+
 	def get_history_data
 		model = params[:model]
 		time = params[:time].to_time
-		data = change_data_type(get_db_data(model.constantize,time))
+		data = change_data_type(get_db_data(model.constantize,time),0)
 		render :json=>data
 	end
 
@@ -291,26 +290,26 @@ ni
 	def pinggu
 		#秦皇岛数据
 		# @bddatabyhour=del_some_points(change_data_type(get_db_data(TempBdHour,TempBdHour.last.data_real_time))) 
-		@bddatabyday=del_some_points(change_data_type(get_db_data(TempBdDay,TempBdDay.last.data_real_time))) 
-		@bddatabymonth=del_some_points(change_data_type(get_db_data(TempBdMonth,TempBdMonth.last.data_real_time)))
-		@bddatabyyear=del_some_points(change_data_type(get_db_data(TempBdYear,TempBdYear.last.data_real_time)))
-		@qhdbyhour=change_data_type(MonitorPointHour.today_one_city_by_cityid(11))
+		@qhdbyday=change_data_type(MonitorPointDay.new.yesterday_by_cityid(11),1)
+		@bddatabymonth=del_some_points(change_data_type(get_db_data(TempBdMonth,TempBdMonth.last.data_real_time),0))
+		@bddatabyyear=del_some_points(change_data_type(get_db_data(TempBdYear,TempBdYear.last.data_real_time),0))
+		@qhdbyhour=change_data_type(MonitorPointHour.new.last_hour_by_cityid(11),1)
 
 		#河北数据
-		@hebeidatabyhour=change_data_type(get_db_data(TempHbHour,TempHbHour.last.data_real_time)) 
-		hebeidatabyday=change_data_type(get_db_data(TempJjjDay,TempJjjDay.last.data_real_time))
-		hebeidatabyday[:cities] = hebeidatabyday[:cities].delete_if{|item| (item['city']=='北京市')||(item['city']=='天津市')}
+		@hebeidatabyhour=change_data_type(get_db_data(TempHbHour,TempHbHour.last.data_real_time),0) 
+		hebeidatabyday=change_data_type(get_db_data(TempJjjDay,TempJjjDay.last.data_real_time),0)
+		hebeidatabyday[:cities] = hebeidatabyday[:cities].delete_if{|item| (item['city']=='北京')||(item['city']=='天津')}
 		@hebeidatabyday=hebeidatabyday
 
 		#京津冀
-		@jjjdatabyday=change_data_type(get_db_data(TempJjjDay,TempJjjDay.last.data_real_time))
-		@jjjdatabymonth=change_data_type(get_db_data(TempJjjMonth,TempJjjMonth.last.data_real_time))
-		@jjjdatabyyear=change_data_type(get_db_data(TempJjjYear,TempJjjYear.last.data_real_time))
+		@jjjdatabyday=change_data_type(get_db_data(TempJjjDay,TempJjjDay.last.data_real_time),0)
+		@jjjdatabymonth=change_data_type(get_db_data(TempJjjMonth,TempJjjMonth.last.data_real_time),0)
+		@jjjdatabyyear=change_data_type(get_db_data(TempJjjYear,TempJjjYear.last.data_real_time),0)
 
 		#74城市
-		@sfcitiesrankbyday=change_data_type(change_74_main_pol(get_db_data(TempSfcitiesDay,TempSfcitiesDay.last.data_real_time)))
-		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth,TempSfcitiesMonth.last.data_real_time))
-		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear,TempSfcitiesYear.last.data_real_time))
+		@sfcitiesrankbyday=change_data_type(change_74_main_pol(get_db_data(TempSfcitiesDay,TempSfcitiesDay.last.data_real_time)),0)
+		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth,TempSfcitiesMonth.last.data_real_time),0)
+		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear,TempSfcitiesYear.last.data_real_time),0)
 
 		@banner = banner()
 
@@ -359,7 +358,7 @@ ni
 	end
 
 	#修改小数点位数
-	def change_data_type(data)			
+	def change_data_type(data,flag)			
 		float_round={"SO2"=>0,"NO2"=>0,"CO"=>1,"O3"=>0,"pm10"=>0,"pm25"=>0,"zonghezhishu"=>2,"AQI"=>0,
 			   "SO2_change_rate"=>4,"NO2_change_rate"=>4,"CO_change_rate"=>4,"O3_change_rate"=>4,"pm10_change_rate"=>4,
 			   "pm25_change_rate"=>4,"zongheindex_change_rate"=>4}
@@ -368,7 +367,11 @@ ni
 		data_ary=Array.new
 		(0...data.length).each do |t|
 			data_hash=Hash.new
-			data_hash['city']=City.find(data[t].city_id).city_name
+			if flag == 0
+				data_hash['city']=City.find(data[t].city_id).city_name
+			elsif flag == 1
+				data_hash['city']=MonitorPoint.find(data[t].monitor_point_id).pointname
+			end
 			float_round.each do |k,v|
 				if /change_rate/.match(k)
 					d="%.#{v}f"%data[t][k].to_f if data[t].respond_to?(k)
@@ -659,9 +662,9 @@ ni
 	#74城市全部展示
 	def rank1503
 		#74城市
-		@sfcitiesrankbyday=change_data_type(get_db_data(TempSfcitiesDay))
-		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth))
-		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear))
+		@sfcitiesrankbyday=change_data_type(get_db_data(TempSfcitiesDay),0)
+		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth),0)
+		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear),0)
 		@banner=banner()
 	end
 
@@ -706,7 +709,7 @@ ni
 		# forecast data
 		aqis = []
 		pri_pol = []
-		c = City.find_by_city_name_pinyin('baodingshi')
+		c = City.find_by_city_name_pinyin('qinhuangdaoshi')
 		ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
 		ch.each do |time,fds|
 			t = Time.now
@@ -746,7 +749,7 @@ ni
 		hs["day_fdata"] = day_fdata
 		#实时天气预报
 		begin
-			response = HTTParty.get('http://www.weather.com.cn/adat/sk/101090201.html')	
+			response = HTTParty.get('http://www.weather.com.cn/adat/sk/101091101.html')	
 			json_data = JSON.parse(response.body)
 			hs = hs.merge(json_data['weatherinfo'])	
 		rescue
