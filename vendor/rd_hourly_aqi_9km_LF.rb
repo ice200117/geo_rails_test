@@ -78,8 +78,8 @@ end
 #puts c.city_name_pinyin
 #if c.city_name_pinyin.rstrip.eql?('langfangshi')
 # py = c.city_name_pinyin.strip
-# py = 'langfangshi'
-py = 'baodingshi'
+py = 'langfangshi'
+# py = 'baodingshi'
 # py = 'tangshanshi'
 # py = 'handanshi'
 # py = 'tianjinshi'

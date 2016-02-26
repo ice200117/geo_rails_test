@@ -18,6 +18,7 @@ default: &default
   adapter: postgis
   schema_search_path: "public,postgis"
   su_username: postgres
+  su_password: postgres
   encoding: unicode
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling

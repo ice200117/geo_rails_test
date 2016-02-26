@@ -81,14 +81,14 @@ end
 # py = 'linfenshi'
 # py = 'rizhaoshi'
 # py = 'anyangshi'
-py = 'hezeshi'
+# py = 'hezeshi'
 # py = 'taianshi'
 
 # py = 'changchunshi'
 # py = 'haerbinshi'
 
 # py = 'hanzhongshi'
-# py = 'zhengzhoushi'
+py = 'zhengzhoushi'
 # py = 'liuanshi'
 
 # py = 'wulumuqishi'
