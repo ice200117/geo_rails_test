@@ -1,6 +1,7 @@
 class MonitorPointDay < ActiveRecord::Base
 	belongs_to:city
 	belongs_to:monitor_point
+	validates :monitor_point_id, uniqueness: { scope: :data_real_time,message: "数据重复！" }
 	def yesterday_by_cityid(cityid)
 		time_start=Time.now.yesterday.beginning_of_day
 		time_end=Time.now.yesterday.end_of_day

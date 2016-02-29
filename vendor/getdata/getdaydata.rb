@@ -58,3 +58,5 @@ time=Time.now.yesterday
 
 #秦皇岛日数据
 Qinhuangdao::Qinhuangdao.new.day
+Qinhuangdao::Qinhuangdao.new.month
+Qinhuangdao::Qinhuangdao.new.year

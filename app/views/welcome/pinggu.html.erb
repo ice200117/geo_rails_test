@@ -100,7 +100,7 @@ function ChartQuery(){
 	$.get("/welcome/chartway.json?exact="+pExact+"&type="+pType+"&starttime="+pStartTime+"&endtime="+pEndTime,function(result){
 		var titleText='';
 		if('d'==pTime){
-			titleText = '保定市各项天气指数实时变化图表（更新于 '+result.categories[result.categories.length-1]+'时）'
+			titleText = '秦皇岛市市各项天气指数实时变化图表（更新于 '+result.categories[result.categories.length-1]+'时）'
 		}
 		else{
 			titleText = '保定市各项天气指数实时变化图表（更新于 '+result.categories[result.categories.length-1]+'）'
@@ -386,10 +386,10 @@ $(document).ready(function(){
 				</div>
 				<div class="tab-content">
 					<div class="tab-pane fade in active" id="lfgqxyue">
-						<%= render partial:'welcome/data_table',locals:{data:@bddatabymonth,flag:'bd'} %>
+						<%= render partial:'welcome/data_table',locals:{data:@qhdbymonth,flag:'bd'} %>
 					</div>
 					<div class="tab-pane fade" id="lfgqxnian">
-						<%= render partial:'welcome/data_table',locals:{data:@bddatabyyear,flag:'bd'} %>
+						<%= render partial:'welcome/data_table',locals:{data:@qhdbyyear,flag:'bd'} %>
 					</div>
 				</div>
 			</div>

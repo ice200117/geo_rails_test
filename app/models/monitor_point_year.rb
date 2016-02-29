@@ -1,6 +1,13 @@
 class MonitorPointYear < ActiveRecord::Base
 	belongs_to :monitor_point
 	belongs_to :city
+	validates :monitor_point_id, uniqueness: { scope: :data_real_time,message: "数据重复！" }
+
+	def yesterday_by_cityid(cityid)
+		time_start=Time.now.yesterday.beginning_of_day
+		time_end=Time.now.yesterday.end_of_day
+		City.find(cityid).monitor_point_years.where("data_real_time >= ? AND data_real_time <=?",time_start,time_end)
+	end
 	#重写保存(参数类型为哈希)
 	def save_with_arg(d)
 		return 'id or time is nil' if d['id'] == nil || d['time'] == nil

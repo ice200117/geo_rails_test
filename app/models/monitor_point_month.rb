@@ -1,6 +1,12 @@
 class MonitorPointMonth < ActiveRecord::Base
 	belongs_to :monitor_point
 	belongs_to :city
+	validates :monitor_point_id, uniqueness: { scope: :data_real_time,message: "数据重复！" }
+	def yesterday_by_cityid(cityid)
+		time_start=Time.now.yesterday.beginning_of_day
+		time_end=Time.now.yesterday.end_of_day
+		City.find(cityid).monitor_point_months.where("data_real_time >= ? AND data_real_time <=?",time_start,time_end)
+	end
 	#重写保存(参数类型为哈希)
 	def save_with_arg(d)
 		return 'id or time is nil' if d['id'] == nil || d['time'] == nil
@@ -26,7 +32,7 @@ class MonitorPointMonth < ActiveRecord::Base
 			linedata.winddirection = d['winddirection'] if !d['winddirection'].nil?
 			linedata.windspeed = d['windspeed'] if !d['windspeed'].nil?
 			linedata.windscale = d['windscale'] if !d['windscale'].nil?
-			if !d['so2'].nil? && !d['no2'].nil?&&!d['co'].nil?&&!d['pm10'].nil?&&!d['pm25'].nil?&&!d['o3_8h'].nil?
+			if !d['so2'].nil? && !d['no2'].nil?&&!d['co'].nil?&&!d['pm10'].nil?&&!d['pm25'].nil?&&!d['o3'].nil?
 				linedata.zonghezhishu = d['so2'].to_f/60+d['no2'].to_f/40+d['pm10'].to_f/70+d['pm25'].to_f/35+d['co'].to_f/4+d['o3_8h'].to_f/160 
 			end
 			#计算同期对比

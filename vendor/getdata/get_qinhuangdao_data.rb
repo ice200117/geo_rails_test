@@ -73,6 +73,7 @@ module Qinhuangdao
 					linedata['aqi'] = l['AQI']
 					linedata['quality'] = l['Level']
 					linedata['level'] = l['LevelIndex']
+					linedata['pointname'] = pointname
 					linedata['main_pol'] = l['MaxPoll']
 					linedata['city_id'] = 11
 					MonitorPointDay.new.save_with_arg(linedata)
@@ -82,13 +83,15 @@ module Qinhuangdao
 
 		def month
 			mp=MonitorPoint.where("city_id = 11")
-			# byebug
 			mp.each do |l|
 				line = nil
 				tmp = someday_data('month',Time.now.yesterday,l.id)
+				# byebug
 				line=tmp if !tmp.nil?
-				line['monitor_point_id'] = l.id
-				line['data_real_time'] = Time.now.yesterday
+				line['id'] = l.id
+				line['time'] = Time.now.yesterday
+				line['pointname']=l.pointname
+				line['city_id'] = 11
 				MonitorPointMonth.new.save_with_arg(line)
 			end
 		end
@@ -99,8 +102,10 @@ module Qinhuangdao
 				line = nil
 				tmp = someday_data('year',Time.now.yesterday,l.id)
 				line=tmp if !tmp.nil?
-				line['monitor_point_id'] = l.id
-				line['data_real_time'] = Time.now.yesterday
+				line['id'] = l.id
+				line['time'] = Time.now.yesterday
+				line['pointname']=l.pointname
+				line['city_id'] = 11
 				MonitorPointYear.new.save_with_arg(line)
 			end
 		end
@@ -114,8 +119,9 @@ module Qinhuangdao
 				while stime<etime
 					tmp = someday_data('year',stimey,l.id)
 					line=tmp if !tmp.nil?
-					line['monitor_point_id'] = l.id
-					line['data_real_time'] = stime
+					line['id'] = l.id
+					line['time'] = stime
+					line['city_id'] = 11
 					stime+=3600*24
 				end
 			end
@@ -130,8 +136,9 @@ module Qinhuangdao
 				while stime<etime
 					tmp = someday_data('year',stimey,l.id)
 					line=tmp if !tmp.nil?
-					line['monitor_point_id'] = l.id
-					line['data_real_time'] = stime
+					line['id'] = l.id
+					line['time'] = stime
+					line['city_id'] = 11
 					stime+=3600*24
 				end
 			end
@@ -156,11 +163,10 @@ module Qinhuangdao
 			temp.each do |t|
 				so2<<t.SO2 if !t.SO2.nil?
 				no2<<t.NO2 if !t.NO2.nil?
-				if flag=='day'
-					o3<<t.O3_8h if !t.O3.nil?
-				else
-					o3<<t.O3 if !t.O3.nil?
+				if !t.O3_8h.nil?
+					o3<<t.O3_8h if t.data_real_time>=time.beginning_of_day+8*3600
 				end
+				# o3<<t.O3 if !t.O3.nil?
 				co<<t.CO if !t.CO.nil?
 				pm10<<t.pm10 if !t.pm10.nil?
 				pm25<<t.pm25 if !t.pm25.nil?
@@ -169,7 +175,7 @@ module Qinhuangdao
 			mpd['so2']=avg(so2)
 			mpd['no2']=avg(no2)
 			if flag=='day'
-				mpd['o3']=avg(o3)
+				mpd['o3']=o3.max
 				mpd['co']=avg(co)
 			else
 				mpd['o3']=percentile(o3,0.9)
@@ -219,7 +225,7 @@ module Qinhuangdao
 			end
 		end
 		def history_day
-			mp=MonitorPoint.where(11)
+			mp=MonitorPoint.where("city_id = 11")
 			nameid=Hash.new
 			mp.each do |t|
 				nameid[t.pointname] = t.id
@@ -237,6 +243,7 @@ module Qinhuangdao
 				tmp['time']
 				data=data['rows']
 				data.each do |l|
+					temp=someday_data('day',stime,nameid[l['pointname']])
 					tmp['id']=nameid[l['pointname']]
 					tmp['aqi']=l['aqi']
 					tmp['pm25']=l['pm2_5']
