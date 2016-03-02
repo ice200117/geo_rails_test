@@ -289,8 +289,8 @@ DEPENDENCIES
   rails-perftest
   rb-readline
   redis
+  redis-rack-cache
   redis-rails
-  redis-store
   rgeo-geojson
   rgeo-shapefile
   rspec-rails

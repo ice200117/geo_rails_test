@@ -87,7 +87,8 @@ gem 'chinese_lunar'
 
 gem 'redis'
 gem 'redis-rails'
-gem 'redis-store'
+gem 'redis-rack-cache'
+# gem 'redis-store'
 
 gem 'jquery-datatables-rails' 
 
