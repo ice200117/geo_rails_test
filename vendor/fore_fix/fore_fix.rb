@@ -177,7 +177,7 @@ def default_25km
 		# next if e == 57
 		# next if e == 66
 		# cities_default[city_index[e]] = shandongsheng
-		puts e.to_s+' '+city_index[e]
+		puts e.to_s+' --- '+city_index[e]
 	# end	
 	 cities_default['dezhoushi'] = shandongsheng
 	 cities_default['linyishi'] = shandongsheng
