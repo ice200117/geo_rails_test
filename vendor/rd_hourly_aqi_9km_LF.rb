@@ -84,6 +84,7 @@ py = 'langfangshi'
 # py = 'handanshi'
 # py = 'tianjinshi'
 # py = 'cangzhoushi'
+# py = 'beijingshi'
 c = City.find_by_city_name_pinyin(py)
 fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
 puts fn

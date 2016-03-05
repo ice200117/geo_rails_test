@@ -4,7 +4,7 @@ require_relative 'daliy_avg'
 
 #start---------------
 puts "--start--"
-yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
+yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
 strtime = Time.now.yesterday.strftime("%Y%m%d")
 
  # strtime = '20160126' 
@@ -36,6 +36,7 @@ cs.each do |c|
 	fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_adjust"
 	# fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
 	# next unless hb_city.include?(py)
+	puts path+fn
 	f = File.open(path+fn) if File::exists?(path+fn) 
 	next unless f
 	puts fnout+' fix successful'
