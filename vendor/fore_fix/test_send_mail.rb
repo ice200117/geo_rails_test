@@ -13,7 +13,7 @@ fn = "XJ_ENVAQFC_langfangshi_#{time}_00000-07200.TXT"
 puts path+fn
 
 mail = MailFactory.new()
-mail.to = 'wangyanchao@hh12369.com','zhouqinqian@hh12369.com'
+mail.to = 'wangyanchao@hh12369.com','libaoxi@hh12369.com'
 mail.from = 'libaoxi@hh12369.com'
 mail.subject = 'Rank'
 #mail.attach("/mnt/share/Temp/Rank/city.txt")
@@ -21,7 +21,7 @@ mail.subject = 'Rank'
 if File.exists?("/mnt/share/Temp/Rank/#{filename}")
 	mail.attach("/mnt/share/Temp/Rank/#{filename}")
 # else if File.exists?(path+fn)
-	mail.attach(path+fn)
+	mail.attach(path+fn) if File.exist?(path+fn)
 else
 	mail.text = "#{filename} is null!"
 end
@@ -30,5 +30,5 @@ Net::SMTP.start('smtp.mxhichina.com',25,'mail.hh12369.com','libaoxi@hh12369.com'
 	open_timeout=(300)
 	read_timeout=(300)
 	smtp.sendmail(mail.to_s, 'libaoxi@hh12369.com',
-				  'wangyanchao@hh12369.com','zhouqinqian@hh12369.com')
+				  'wangyanchao@hh12369.com','libaoxi@hh12369.com')
 end

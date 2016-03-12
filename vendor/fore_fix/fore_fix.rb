@@ -110,10 +110,10 @@ def default_9km
 	cities_default['qinhuangdaoshi'] = {'you' =>0.8,'yellow' =>0.8,'qingdu'=>0.80,'zhong'=>0.80,'zhongdu'=>1.00,'yanzhong'=>1.51}
 	# end
 	# centre of JJJ
-	cities_default['beijingshi'] = {'you' =>0.70,'yellow' =>0.74,'qingdu'=>0.99,'zhong'=>0.80,'zhongdu'=>0.80,'yanzhong'=>1.05 }
+	cities_default['beijingshi'] = {'you' =>0.80,'yellow' =>0.84,'qingdu'=>0.99,'zhong'=>0.80,'zhongdu'=>0.80,'yanzhong'=>1.05 }
 	cities_default['baodingshi'] = {'you' =>0.80,'yellow' => 0.84,'qingdu'=>0.99,'zhong'=>1.05,'zhongdu'=>1.10,'yanzhong'=>1.11 }
 	cities_default['langfangshi'] = {'you' =>0.70,'yellow' =>0.95,'qingdu'=>0.85,'zhong'=>0.91,'zhongdu'=>1.05,'yanzhong'=>0.95 }
-	cities_default['tianjinshi'] = {'you' =>0.80,'yellow' =>0.80,'qingdu'=>0.95,'zhong'=>0.99,'zhongdu'=>0.95,'yanzhong'=>0.95 }
+	cities_default['tianjinshi'] = {'you' =>0.90,'yellow' =>0.90,'qingdu'=>0.95,'zhong'=>0.99,'zhongdu'=>0.95,'yanzhong'=>0.95 }
 	
 	# end 
 	# south of JJJ
@@ -136,6 +136,9 @@ def default_9km
 	# shanxi 山西
 	cities_default['taiyuanshi'] = {'you' =>0.90,'yellow' => 1.04,'qingdu'=>1.11,'zhong'=>1.45,'zhongdu'=>1.68,'yanzhong'=>1.81 }
 	cities_default['datongshi'] = {'you' =>0.8,'yellow' =>0.9,'qingdu'=>0.90,'zhong'=>1.01,'zhongdu'=>1.34,'yanzhong'=>1.51}
+	# end
+	# henan 河南
+	cities_default['zhengzhoushi'] = {'you' =>0.9,'yellow' =>0.95,'qingdu'=>0.90,'zhong'=>1.01,'zhongdu'=>1.34,'yanzhong'=>1.51}
 	# end
 
 	cities_default['other'] = {'you' =>0.8,'yellow' =>0.9,'qingdu'=>0.90,'zhong'=>1.01,'zhongdu'=>1.34,'yanzhong'=>1.51}

@@ -88,7 +88,7 @@ cs.each do |c|
   next if hb_city.include?(py)
 
 
-  fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
+  fn = "CN_ENVAQFC_#{py}_#{strtime}_00000-12000.TXT"
   f = File.open(path+fn) if File::exists?(path+fn) 
   next unless f
   f.readlines[2..-1].each do |line| 

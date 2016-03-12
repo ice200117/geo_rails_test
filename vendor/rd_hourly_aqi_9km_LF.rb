@@ -78,13 +78,14 @@ end
 #puts c.city_name_pinyin
 #if c.city_name_pinyin.rstrip.eql?('langfangshi')
 # py = c.city_name_pinyin.strip
-py = 'langfangshi'
+# py = 'langfangshi'
 # py = 'baodingshi'
 # py = 'tangshanshi'
 # py = 'handanshi'
 # py = 'tianjinshi'
 # py = 'cangzhoushi'
 # py = 'beijingshi'
+py = 'zhengzhoushi'
 c = City.find_by_city_name_pinyin(py)
 fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
 puts fn
