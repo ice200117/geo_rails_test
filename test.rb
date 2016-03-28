@@ -7,6 +7,5 @@
 #
 
 if true
-	(a='a')
+	puts 'aaaaaaaaaaa'.color(:blue)
 end
-puts a

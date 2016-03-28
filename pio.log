@@ -1,0 +1,6 @@
+2016-03-23 10:59:37,496 INFO  io.prediction.tools.console.Console$ [main] - Creating Event Server at 0.0.0.0:7070
+2016-03-23 10:59:46,365 INFO  spray.can.server.HttpListener [EventServerSystem-akka.actor.default-dispatcher-5] - Bound to /0.0.0.0:7070
+2016-03-23 10:59:46,372 INFO  io.prediction.data.api.EventServerActor [EventServerSystem-akka.actor.default-dispatcher-5] - Bound received. EventServer is ready.
+2016-03-25 10:42:01,591 INFO  io.prediction.tools.console.Console$ [main] - Creating Event Server at 0.0.0.0:7070
+2016-03-25 10:42:10,260 INFO  spray.can.server.HttpListener [EventServerSystem-akka.actor.default-dispatcher-4] - Bound to /0.0.0.0:7070
+2016-03-25 10:42:10,261 INFO  io.prediction.data.api.EventServerActor [EventServerSystem-akka.actor.default-dispatcher-4] - Bound received. EventServer is ready.

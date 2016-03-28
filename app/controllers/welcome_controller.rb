@@ -30,7 +30,11 @@ class WelcomeController < ApplicationController
 	def bar
 		@diff_monitor_forecast = []
 		if params[:c] 
-			(id =  params[:c][:city_id]) 
+			city_name = params[:c][:city_name]
+			c =  City.find_by_city_name(city_name)
+			c = City.find_by_city_name(city_name+'市') unless c
+			c = City.find_by city_name_pinyin: 'qinhuangdaoshi' unless c
+			id = c.id
 		else
 			# Table 1: 全国城市当天监测与预报日均值差值
 			(id = City.find_by city_name_pinyin: 'qinhuangdaoshi')
@@ -57,6 +61,7 @@ class WelcomeController < ApplicationController
 		end 
 
 		md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
+		
 		@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime,  h.AQI]} }]
 		@chart << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.AQI] } }
 
