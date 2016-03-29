@@ -13,7 +13,7 @@ def parse_line(line, c)
 	# hc.publish_datetime = sdate
 	# hc.forecast_datetime = sdate+delta_hour.to_i*3600
 	hc = HourlyCityForecastAirQuality.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
-	hc.AQI = line[14,4]
+	hc.AQI = line[14,4].to_i #+ 50
 	# hc.AQI = hc.AQI*2.51   # liubin 10/5/2015
 	hc.main_pol = line[18,13].strip
 	hc.grade = line[31,1]
@@ -70,34 +70,34 @@ IO.foreach("vendor/station_hb.EXT") do |line|
 	#  city_name  = line[46..-4].strip
 end
 
-# cs = Array.new
-# cs << City.find_by_city_name_pinyin('langfangshi')
-# cs << City.find_by_city_name_pinyin('huzhoushi')
-#cs = City.all
-# cs.each do |c|
-#puts c.city_name_pinyin
-#if c.city_name_pinyin.rstrip.eql?('langfangshi')
-# py = c.city_name_pinyin.strip
-# py = 'langfangshi'
-# py = 'baodingshi'
-# py = 'tangshanshi'
-# py = 'handanshi'
-# py = 'tianjinshi'
-# py = 'cangzhoushi'
-# py = 'beijingshi'
-py = 'zhengzhoushi'
-c = City.find_by_city_name_pinyin(py)
-fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
-puts fn
-# next unless hb_city.include?(py)
-f = File.open(path+fn) if File::exists?(path+fn) 
-exit unless f
-f.readlines[2..-1].each do |line| 
-	# puts line
-	parse_line(line, c)
+cs = Array.new
+cs << City.find_by_city_name_pinyin('langfangshi')
+cs << City.find_by_city_name_pinyin('baodingshi')
+cs << City.find_by_city_name_pinyin('zhengzhoushi')
+cs.each do |c|
+	puts c.city_name_pinyin
+	#if c.city_name_pinyin.rstrip.eql?('langfangshi')
+	py = c.city_name_pinyin.strip
+	# py = 'langfangshi'
+	# py = 'baodingshi'
+	# py = 'tangshanshi'
+	# py = 'handanshi'
+	# py = 'tianjinshi'
+	# py = 'cangzhoushi'
+	# py = 'beijingshi'
+	# py = 'zhengzhoushi'
+	c = City.find_by_city_name_pinyin(py)
+	fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
+	puts fn
+	# next unless hb_city.include?(py)
+	f = File.open(path+fn) if File::exists?(path+fn) 
+	exit unless f
+	f.readlines[2..-1].each do |line| 
+		# puts line
+		parse_line(line, c)
+	end
+	f.close
+	puts fn+" update database successful!"
 end
-f.close
-puts fn+" update database successful!"
-#end
 # end
 

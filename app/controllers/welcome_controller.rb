@@ -720,7 +720,8 @@ class WelcomeController < ApplicationController
 		"public/adj/zz/xuchang.txt",
 		"public/adj/zz/zhengzhou.txt",
 		"public/adj/zz/zhoukou.txt",
-		"public/adj/zz/zhumadian.txt"
+		"public/adj/zz/zhumadian.txt",
+		"public/adj/zz/puyang.txt"
 	]
 	CL_ZZ = [
 		"安阳",
@@ -738,7 +739,8 @@ class WelcomeController < ApplicationController
 		"许昌",
 		"郑州",
 		"周口",
-		"驻马店"
+		"驻马店",
+		"濮阳"
 	]
 
 	def adj_pie

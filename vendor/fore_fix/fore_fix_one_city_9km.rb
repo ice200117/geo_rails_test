@@ -14,17 +14,17 @@ def city(c)
 	return if c == nil
 	#start---------------
 	puts "--#{c.city_name}--"
-	strtime = Time.now.yesterday.strftime("%Y%m%d")
-	yesterday_str = strtime+'20'
+	strtime = Time.now.strftime("%Y%m%d")
+	yesterday_str = Time.now.yesterday.strftime("%Y%m%d")+'20'
 	
-	path = "/mnt/share/Temp/station_15km/#{strtime[0,8]}/"
+	path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 	path_fix = path
 
-	default_25km_city = default_25km() #调用缺省系数
+	default_9km_city = default_9km() #调用缺省系数
 	py = c.city_name_pinyin.strip
 
-	fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_adjust"
-	fnout = ".XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_adjust.swap"
+	fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
+	fnout = ".XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT.swap"
 	f = File.open(path+fn) if File::exists?(path+fn) 
 	return unless f
 
@@ -34,10 +34,10 @@ def city(c)
 		f.rewind
 		first_line = f.readlines
 		file.puts(first_line[0])
-		if default_25km_city[py] == nil
-			tmp = default_25km_city['other']
+		if default_9km_city[py] == nil
+			tmp = default_9km_city['other']
 		else
-			tmp = default_25km_city[py]
+			tmp = default_9km_city[py]
 		end
 		first_line[1..-1].each do |line|
 			file.puts(fixed_write_txt(line,tmp))
@@ -76,10 +76,10 @@ def city(c)
 	avg_s = 1
 	avg.each do |k,v|
 		tmp = nil
-		if default_25km_city[c.city_name_pinyin] == nil
-			tmp = default_25km_city['other'][k]
-		elsif default_25km_city[c.city_name_pinyin] != nil
-			tmp = default_25km_city[c.city_name_pinyin][k]
+		if default_9km_city[c.city_name_pinyin] == nil
+			tmp = default_9km_city['other'][k]
+		elsif default_9km_city[c.city_name_pinyin] != nil
+			tmp = default_9km_city[c.city_name_pinyin][k]
 		end
 		if v != nil
 			avg[k] = (tmp*6+v*1)/7
