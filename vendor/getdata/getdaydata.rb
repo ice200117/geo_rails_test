@@ -16,24 +16,24 @@ hs=Hash.new
 time=Time.now.yesterday
 
 #保定日数据
-hs=ten_times_test(TempBdDay,'shishi_rank_data','BAODINGRANK','DAY',nil)
-save_db(hs,TempBdDay) if day_data_common(hs,TempBdDay) 
+# hs=ten_times_test(TempBdDay,'shishi_rank_data','BAODINGRANK','DAY',nil)
+# save_db(hs,TempBdDay) if day_data_common(hs,TempBdDay) 
 
 #保定月数据
-common_get_month_year('baoding',TempBdMonth,time)
+# common_get_month_year('baoding',TempBdMonth,time)
 
 #保定年数据
-common_get_month_year('baoding',TempBdYear,time)
+# common_get_month_year('baoding',TempBdYear,time)
 
 #廊坊日数据
-hs=ten_times_test(TempLfDay,'shishi_rank_data','LANGFANGRANK','DAY',nil)
-save_db(change_diff_cityname(hs),TempLfDay) if day_data_common(hs,TempLfDay)
+# hs=ten_times_test(TempLfDay,'shishi_rank_data','LANGFANGRANK','DAY',nil)
+# save_db(change_diff_cityname(hs),TempLfDay) if day_data_common(hs,TempLfDay)
 
 #廊坊月数据
-common_get_month_year('langfang',TempLfMonth,time)
+# common_get_month_year('langfang',TempLfMonth,time)
 
 #廊坊年数据
-common_get_month_year('langfang',TempLfYear,time)
+# common_get_month_year('langfang',TempLfYear,time)
 
 #京津冀日数据
 hs=ten_times_test(TempJjjDay,'china_history_data','JINGJINJIDATA','DAY',time)
