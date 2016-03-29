@@ -7,14 +7,11 @@
 #
 require 'rainbow/ext/string'
 require 'predictionio'
-namespace :import do
+namespace :predictionio do
 	desc 'Send the data to PredictionIO'
-	task :predictionio => :environment do
+	task :import => :environment do
 		puts 'Starting import...'.color(:blue)
-		PIO_ACCESS_KEY = 'bvBb63K0L34grAX23yzOfRLFbs6emKGHWoJMZbs7o8zhH1eTf8Lmqk03Y43vVg3H'
-		PIO_EVENT_SERVER_URL = 'http://localhost:7070'
-		PIO_THREADS = 50
-		client = PredictionIO::EventClient.new(PIO_ACCESS_KEY, PIO_EVENT_SERVER_URL,PIO_THREADS)
+		client = PredictionIO::EventClient.new(ENV['PIO_ACCESS_KEY'],ENV['PIO_EVENT_SERVER_URL'],ENV['PIO_THREADS'].to_i)
 		path = "/mnt/share/Temp/station_15km_orig" #气象文件目录
 		folders = (20160309..20160314).to_a.map{|x| x.to_s} #气象文件文件夹的名字
 		stime = '20160309'.to_time
@@ -25,7 +22,6 @@ namespace :import do
 		lines=Array.new #所有内容,每一行都是一个hash
 		count = 0
 		folders.each do |foldername|
-			# byebug
 			kv=Hash.new #每一行的数据都写成一个哈希
 			filename="CN_MET_langfangshi_#{foldername}20_00000-12000.TXT"
 			next if !File.exists?(path+'/'+foldername+'/'+filename)
@@ -68,7 +64,7 @@ namespace :import do
 						"attr25"=> attr[26].to_f,
 						"attr26"=> attr[27].to_f,
 						"attr27"=> attr[28].to_f,
-						# "attr2=>08"  attr[28].to_f,
+						"attr28"=> attr[29].to_f,
 						"plan" => aqi_time[time].to_f
 					]
 
@@ -78,4 +74,13 @@ namespace :import do
 			print "%s events are imported.\n" % count
 		end
 	end
+
+	desc 'Require PredictionIO Event'
+	task :require => :environment do
+		puts 'Require Event...'
+		client = predictionio.EngineClient(url=ENV['PIO_ENGINE_URL'])
+		tmp=Hash[]
+		print client.send_query()
+	end
+
 end
