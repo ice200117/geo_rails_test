@@ -79,9 +79,13 @@ end
 #if c.city_name_pinyin.rstrip.eql?('langfangshi')
 # py = c.city_name_pinyin.strip
 # py = 'langfangshi'
+<<<<<<< HEAD
+py = 'handanshi'
+=======
 py = 'baodingshi'
 # py = 'tangshanshi'
 # py = 'handanshi'
+>>>>>>> master
 # py = 'tianjinshi'
 # py = 'cangzhoushi'
 c = City.find_by_city_name_pinyin(py)

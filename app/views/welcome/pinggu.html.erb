@@ -100,7 +100,7 @@ function ChartQuery(){
 	$.get("/welcome/chartway.json?exact="+pExact+"&type="+pType+"&starttime="+pStartTime+"&endtime="+pEndTime,function(result){
 		var titleText='';
 		if('d'==pTime){
-			titleText = '保定市各项天气指数实时变化图表（更新于 '+result.categories[result.categories.length-1]+'时）'
+			titleText = '秦皇岛市市各项天气指数实时变化图表（更新于 '+result.categories[result.categories.length-1]+'时）'
 		}
 		else{
 			titleText = '保定市各项天气指数实时变化图表（更新于 '+result.categories[result.categories.length-1]+'）'
@@ -220,7 +220,7 @@ $(document).ready(function(){
 				<div class="row">
 					<div class="col-xs-6">
 						<table class="table table-striped">
-							<caption>保定市各区县小时排名&nbsp&nbsp<%= @bddatabyhour[:time].strftime("%Y-%m-%d %H:00:00") %></caption>
+							<caption>秦皇岛市各区县小时排名&nbsp&nbsp<%= @qhdbyhour[:time].strftime("%Y-%m-%d %H:00:00") %></caption>
 							<thead>
 								<tr class="top11-color-title bluegreen">
 									<th>排名</th>
@@ -231,15 +231,15 @@ $(document).ready(function(){
 								</tr>
 							</thead>
 							<tbody>
-								<% bddatabyhour=@bddatabyhour[:cities].sort_by{|a| a['AQI'].to_i} %>
-								<% for i in (0...bddatabyhour.length) %>
-									<% tmp=bddatabyhour[i] %>
+								<% qhdbyhour=@qhdbyhour[:cities].sort_by{|a| a['AQI'].to_i} %>
+								<% for i in (0...qhdbyhour.length) %>
+									<% tmp=qhdbyhour[i] %>
 
 									<tr>
 										<td><%= i+1 %></td>
 										<td><%= tmp['city'] %></td>
 										<td><%= tmp['AQI'] %></td>
-										<td><%= tmp['level']%></td>
+										<td><%= tmp['quality'] %></td>
 										<td><%= tmp['main_pol']%></td>
 									</tr>
 								<% end %>
@@ -248,7 +248,7 @@ $(document).ready(function(){
 					</div>
 					<div class="col-xs-6">
 						<table class="table table-striped">
-							<caption>保定市各区县空气质量日均排名&nbsp&nbsp<%= @bddatabyday[:time].strftime("%Y-%m-%d") %></caption>
+							<caption>秦皇岛市各区县空气质量日均排名&nbsp&nbsp<%= @qhdbyday[:time].strftime("%Y-%m-%d") %></caption>
 							<thead>
 								<tr class="top11-color-title bluegreen">
 									<th>排名</th>
@@ -259,9 +259,9 @@ $(document).ready(function(){
 								</tr>
 							</thead>
 							<tbody>
-								<% bddatabyday=@bddatabyday[:cities].sort_by{|a| a['AQI'].to_i} %>
-								<% for i in (0...bddatabyday.length) %>
-									<% tmp=bddatabyday[i]%>
+								<% qhdbyday=@qhdbyday[:cities].sort_by{|a| a['AQI'].to_i} %>
+								<% for i in (0...qhdbyday.length) %>
+									<% tmp=qhdbyday[i]%>
 									<tr>
 										<td><%= i+1 %></td>
 										<td><%= tmp['city']%></td>
@@ -347,7 +347,7 @@ $(document).ready(function(){
 						<% sfcitiesrankbyday=@sfcitiesrankbyday[:cities].sort_by{|a| a["AQI"].to_i}%>
 						<% for i in (0...sfcitiesrankbyday.length)%>
 							<% tmp=sfcitiesrankbyday[sfcitiesrankbyday.length-1 -i]%>
-							<% break if i==35 %>
+							<% break if i==21 %>
 							<tr>
 								<td><%= i+1 %></td>
 								<td><%= tmp['city'] %></td>
@@ -386,10 +386,10 @@ $(document).ready(function(){
 				</div>
 				<div class="tab-content">
 					<div class="tab-pane fade in active" id="lfgqxyue">
-						<%= render partial:'welcome/data_table',locals:{data:@bddatabymonth,flag:'bd'} %>
+						<%= render partial:'welcome/data_table',locals:{data:@qhdbymonth,flag:'bd'} %>
 					</div>
 					<div class="tab-pane fade" id="lfgqxnian">
-						<%= render partial:'welcome/data_table',locals:{data:@bddatabyyear,flag:'bd'} %>
+						<%= render partial:'welcome/data_table',locals:{data:@qhdbyyear,flag:'bd'} %>
 					</div>
 				</div>
 			</div>

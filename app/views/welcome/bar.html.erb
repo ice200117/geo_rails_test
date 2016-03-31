@@ -18,12 +18,17 @@
   </div>
   -->
   
-
-
-
   <%= form_tag(bar_welcome_path, method: "get", html: { class: 'form-inline' }, remote: true) do %>
-    <%= label_tag(:d, "城市：") %>
-    <%= collection_select(:c, :city_id, City.order(:id), :id, :city_name, {:selected => 18}) %>
+
+    <%#= label_tag(:d, "城市：") %>
+    <%#= collection_select(:c, :city_id, City.order(:id), :id, :city_name, {:selected => 18}) %>
+
+ 	<div class="cityinputBox">
+        <span style="vertical-align:middle">区县1</span> 
+        <input type="text" class="cityinput" id="city1" name="c[city_name]"/>
+	</div>
+
+
     <%= label_tag(:start_date, "开始日期：") %>
     <%= select_date Date.today-5.days, prefix: :start_date %>
     <%= label_tag(:end_date, "结束日期：") %>
@@ -100,9 +105,11 @@
 
 <script>
 	$(document).ready(function() {
-
 		$('#fore_monitor_compare').DataTable( {
 			"order": [[ 3, "desc" ]]
 		} );
 	});
+  }); 
 </script>
+
+<%= javascript_include_tag "bootstrap.min","respond","citySelector","barcity" %>

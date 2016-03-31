@@ -46,6 +46,9 @@ group :development, :test do
   gem 'cucumber-rails', :require => false
   # database_cleaner is not required, but highly recommended
   gem 'database_cleaner'
+
+  #Load .env file!
+  gem 'dotenv-rails'
 end
 
 gem 'highcharts-rails', '~> 4.0.4.1'
@@ -87,7 +90,8 @@ gem 'chinese_lunar'
 
 gem 'redis'
 gem 'redis-rails'
-gem 'redis-store'
+gem 'redis-rack-cache'
+# gem 'redis-store',:git=>'git://github.com/jodosha/redis-store.git'
 
 gem 'jquery-datatables-rails' 
 
@@ -99,3 +103,6 @@ gem 'mailfactory'
 gem 'actionpack-page_caching', '~> 1.0', '>= 1.0.2'
 gem 'actionpack-action_caching', '~> 1.1', '>= 1.1.1'
 gem 'rails-observers'
+gem 'dalli'
+gem 'predictionio'
+gem 'rainbow'
