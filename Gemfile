@@ -91,7 +91,11 @@ gem 'chinese_lunar'
 gem 'redis'
 gem 'redis-rails'
 gem 'redis-rack-cache'
+<<<<<<< HEAD
 # gem 'redis-store',:git=>'git://github.com/jodosha/redis-store.git'
+=======
+# gem 'redis-store'
+>>>>>>> b90ede2214dc96a31b36e092746c86f7d13002de
 
 gem 'jquery-datatables-rails' 
 

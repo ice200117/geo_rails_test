@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.spatial  "latlon",     limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.datetime "created_at"
     t.datetime "updated_at"
+<<<<<<< HEAD
   end
 
   create_table "monitor_point_days", force: true do |t|
@@ -266,18 +267,20 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "city_id"
+=======
+>>>>>>> b90ede2214dc96a31b36e092746c86f7d13002de
   end
 
   create_table "monitor_points", force: true do |t|
-    t.string    "region"
-    t.string    "pointname"
-    t.string    "level"
-    t.float     "latitude"
-    t.float     "longitude"
-    t.timestamp "created_at",  precision: 6
-    t.timestamp "updated_at",  precision: 6
-    t.integer   "city_id"
-    t.integer   "post_number"
+    t.string   "region"
+    t.string   "pointname"
+    t.string   "level"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "city_id"
+    t.integer  "post_number"
   end
 
   create_table "temp_bd_days", force: true do |t|

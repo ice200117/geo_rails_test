@@ -31,11 +31,12 @@ cs = City.all
 cs.each do |c|
 	puts c.city_name.strip
 	py = c.city_name_pinyin.strip
-	fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
+	fn = "CN_ENVAQFC_#{py}_#{yesterday_str}_00000-12000.TXT"
 	# fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_orig"
-	fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_adjust"
+	fnout = "CN_ENVAQFC_#{py}_#{yesterday_str}_00000-12000.TXT_adjust"
 	# fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
 	# next unless hb_city.include?(py)
+	puts path+fn
 	f = File.open(path+fn) if File::exists?(path+fn) 
 	next unless f
 	puts fnout+' fix successful'

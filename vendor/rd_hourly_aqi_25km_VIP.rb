@@ -82,9 +82,13 @@ end
 # py = 'rizhaoshi'
 # py = 'anyangshi'
 <<<<<<< HEAD
+<<<<<<< HEAD
 # py = 'hezeshi'
 =======
 py = 'hezeshi'
+=======
+# py = 'hezeshi'
+>>>>>>> b90ede2214dc96a31b36e092746c86f7d13002de
 # py = 'taianshi'
 >>>>>>> master
 
@@ -93,9 +97,13 @@ py = 'hezeshi'
 
 # py = 'hanzhongshi'
 <<<<<<< HEAD
+<<<<<<< HEAD
 py = 'zhengzhoushi'
 =======
 # py = 'zhengzhoushi'
+=======
+py = 'zhengzhoushi'
+>>>>>>> b90ede2214dc96a31b36e092746c86f7d13002de
 # py = 'liuanshi'
 >>>>>>> master
 

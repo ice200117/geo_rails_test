@@ -10,6 +10,7 @@ class ChinaCitiesHour < ActiveRecord::Base
 			city_avg[c.city_name] = f.round if f
 		else
       cs = City.includes(:china_cities_hours).where(china_cities_hours: {data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day})
+			print cs.length
 			cs.each do |cl|
         f = (cl.china_cities_hours.collect(&spe).sum / cl.china_cities_hours.length).to_i
         city_avg[cl.city_name] = f

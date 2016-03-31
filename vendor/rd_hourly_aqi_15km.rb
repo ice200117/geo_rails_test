@@ -55,7 +55,7 @@ end
 #strtime = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
 puts 'deal date = ', strtime
 
-strtime = '2016012720'
+#strtime = '2016012720'
 puts strtime
 
 # path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
@@ -88,7 +88,7 @@ cs.each do |c|
   next if hb_city.include?(py)
 
 
-  fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
+  fn = "CN_ENVAQFC_#{py}_#{strtime}_00000-12000.TXT"
   f = File.open(path+fn) if File::exists?(path+fn) 
   next unless f
   f.readlines[2..-1].each do |line| 

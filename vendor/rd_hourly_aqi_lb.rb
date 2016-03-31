@@ -19,9 +19,6 @@ def parse_line(line, c)
 
   hc.AQI = line[14,4]
   puts sdate+delta_hour.to_i*3600
-  puts line[14,4]
-  puts hc.AQI
-  puts '---------'
   hc.main_pol = line[18,13].strip
   hc.grade = line[31,1]
   hc.pm25 = line[99,6]
@@ -32,7 +29,19 @@ def parse_line(line, c)
   hc.O3 = line[75,6]
   hc.VIS = line[32,7]
 
-  hc.save
+  puts 'AQI', hc.AQI
+  puts 'main_pol', hc.main_pol
+  puts 'grade', hc.grade
+  puts 'pm25', hc.pm25
+  puts 'pm10', hc.pm10
+  puts 'SO2', hc.SO2
+  puts 'CO', hc.CO
+  puts 'NO2', hc.NO2
+  puts 'O3', hc.O3
+  puts 'VIS', hc.VIS
+  puts '---------'
+
+  #hc.save
 
   #puts '----------'
   #puts hc.city_id
@@ -57,12 +66,13 @@ else
 	strtime = (Time.new-1.day).strftime("%Y%m%d")+'08'
 end
 #strtime = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
-puts 'deal date = ', strtime
+#puts 'deal date = ', strtime
 
-#strtime = '2015040808'
-#puts strtime
+strtime = '2016032120'
+puts strtime
 
-path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
+#path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
+path = "/mnt/share/Temp/CUACE_ANN_REVISE/"
 
 # Read hua bei city, do not read data of these city.
 firstline = true
@@ -81,24 +91,27 @@ IO.foreach("vendor/station.EXT_lb") do |line|
   #  city_name  = line[46..-4].strip
 end
   
-puts hb_city
+#puts hb_city
 puts '-------'
 #hb_city << 'hangzhoushi'
 #hb_city << 'hulunbeiershi'
 
-cs = City.all
+#cs = City.all
+cs = Array.new
+cs << City.find_by_city_name_pinyin('langfangshi')
 cs.each do |c|
   puts c.city_name_pinyin
   #if c.city_name_pinyin.rstrip.eql?('langfangshi')
   py = c.city_name_pinyin.strip
 
-  next unless hb_city.include?(py)
+#  next unless hb_city.include?(py)
 
 
-  fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
+  fn = "CN_ENVAQFC_#{py}_#{strtime}_00000-12000.TXT"
   f = File.open(path+fn) if File::exists?(path+fn) 
   next unless f
   f.readlines[2..-1].each do |line| 
+	puts line
     parse_line(line, c)
   end
   f.close

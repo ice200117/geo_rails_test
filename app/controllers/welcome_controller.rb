@@ -33,8 +33,14 @@ class WelcomeController < ApplicationController
 			city_name = params[:c][:city_name]
 			c =  City.find_by_city_name(city_name)
 			c = City.find_by_city_name(city_name+'市') unless c
+<<<<<<< HEAD
 			c = City.find_by city_name_pinyin: 'qinhuangdaoshi' unless c
 			id = c.id
+=======
+			c = City.find_by city_name_pinyin: 'langfangshi' unless c
+			id = c.id
+			# (id =  params[:c][:city_id]) 
+>>>>>>> b90ede2214dc96a31b36e092746c86f7d13002de
 		else
 			# Table 1: 全国城市当天监测与预报日均值差值
 			(id = City.find_by city_name_pinyin: 'qinhuangdaoshi')
@@ -558,15 +564,61 @@ class WelcomeController < ApplicationController
 		"张家口" 
 	]
 
+	CITY_LIST_ZZ = [
+		"public/adj/zz/anyang.txt",
+		"public/adj/zz/hebi.txt",
+		"public/adj/zz/jiaozuo.txt",
+		"public/adj/zz/kaifeng.txt",
+		"public/adj/zz/luohe.txt",
+		"public/adj/zz/luoyang.txt",
+		"public/adj/zz/nanyang.txt",
+		"public/adj/zz/pingdingshan.txt",
+		"public/adj/zz/sanmenxia.txt",
+		"public/adj/zz/shangqiu.txt",
+		"public/adj/zz/xinxiang.txt",
+		"public/adj/zz/xinyang.txt",
+		"public/adj/zz/xuchang.txt",
+		"public/adj/zz/zhengzhou.txt",
+		"public/adj/zz/zhoukou.txt",
+		"public/adj/zz/zhumadian.txt",
+		"public/adj/zz/puyang.txt"
+	]
+	CL_ZZ = [
+		"安阳",
+		"鹤壁",
+		"焦作",
+		"开封",
+		"漯河",
+		"洛阳",
+		"南阳",
+		"平顶山",
+		"三门峡",
+		"商丘",
+		"新乡",
+		"信阳",
+		"许昌",
+		"郑州",
+		"周口",
+		"驻马店",
+		"濮阳"
+	]
+
 	def adj_pie
 		city_dir = 'ADJ_baoding'
+		force = "bd"
 		if params[:city_name]
-			city_dir = 'ADJ_baoding' if params[:city_name] == 'baodingshi'
+			if params[:city_name] == 'baodingshi'
+				city_dir = 'ADJ_baoding' 
+				force ="bd"
+			elsif params[:city_name] == 'zhengzhoushi'
+				city_dir = 'ADJ_zhengzhou'
+				force ="zz"
+			end
 		end
 		adj_bd = {}
 		var_list = ["CO_120", "NOX_120", "SO2_120"]
 		var_list.each { |var_name|
-			adj_per = adj_percent(var_name,city_dir)
+			adj_per = adj_percent(var_name,city_dir,force)
 			adj_bd[var_name] = adj_per
 		}
 		respond_to do |format|
@@ -575,7 +627,8 @@ class WelcomeController < ApplicationController
 			}
 		end
 	end
-	def adj_percent(type="", city='ADJ_baoding')
+
+	def adj_percent(type="", city='ADJ_baoding', force = "bd")
 		nt = Time.now
 		i = 0
 		path = 'public/images/ftproot/Temp/Backup'+city+'/'
@@ -599,11 +652,15 @@ class WelcomeController < ApplicationController
 		end
 		adj_per = {}
 		var_list.each { |var_name|
-			pl = (cal_var ncfile, var_name)
+			pl = (cal_var ncfile, var_name, force)
 			# puts var_name
 			pl.sort.reverse.each { |p|
-				print CL[pl.index(p)], "   ", p, "\n"
-				adj_per[CL[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
+				#print CL[pl.index(p)], "   ", p, "\n"
+				if force == "bd"
+					adj_per[CL[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
+				elsif force == "zz"
+					adj_per[CL_ZZ[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
+				end
 			}
 		}
 		adj_per
@@ -627,11 +684,17 @@ class WelcomeController < ApplicationController
 		end
 	end
 
-	def cal_var ( ncfile, var_name )
+	def cal_var ( ncfile, var_name, force)
 		pl = Array.new
-		CITY_LIST.each { |city_file|
-			pl << (read_adj ncfile, city_file, var_name)
-		}
+		if force == "bd" then
+			CITY_LIST.each { |city_file|
+				pl << (read_adj ncfile, city_file, var_name)
+			}
+		elsif force == "zz" then
+			CITY_LIST_ZZ.each { |city_file|
+				pl << (read_adj ncfile, city_file, var_name)
+			}
+		end
 		return pl
 	end
 

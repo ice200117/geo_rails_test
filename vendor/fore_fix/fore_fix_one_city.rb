@@ -105,3 +105,4 @@ def city(c)
 	f.close()
 	FileUtils.mv path+fnout,path+fn if File::exists?(path+fnout)
 end
+city(City.find_by_city_name_pinyin('langfangshi'))
