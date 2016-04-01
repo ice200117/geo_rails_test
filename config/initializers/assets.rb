@@ -33,8 +33,4 @@ Rails.application.config.assets.precompile += %w( css/bootstrap-table.min.css )
 Rails.application.config.assets.precompile += %w( respond.js )
 Rails.application.config.assets.precompile += %w( bdqxSelector.js )
 Rails.application.config.assets.precompile += %w( bdqx_compare_chart.js )
-<<<<<<< HEAD
 Rails.application.config.assets.precompile += %w( barcity.js )
-=======
-Rails.application.config.assets.precompile += %w( barcity.js )
->>>>>>> b90ede2214dc96a31b36e092746c86f7d13002de
