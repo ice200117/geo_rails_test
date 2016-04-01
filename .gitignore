@@ -14,5 +14,5 @@
 /config/database.yml
 /vendor/rd_hourly_aqi.rb
 *.swp
-cron_log.log
+*.log
 .env
