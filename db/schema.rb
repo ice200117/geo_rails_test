@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160224162139) do
+ActiveRecord::Schema.define(version: 20160401072557) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -138,7 +138,6 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.spatial  "latlon",     limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.datetime "created_at"
     t.datetime "updated_at"
-<<<<<<< HEAD
   end
 
   create_table "monitor_point_days", force: true do |t|
@@ -173,6 +172,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "city_id"
+    t.integer  "rank"
   end
 
   create_table "monitor_point_hours", force: true do |t|
@@ -199,6 +199,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.datetime "updated_at"
     t.float    "O3_8h"
     t.integer  "city_id"
+    t.integer  "rank"
   end
 
   create_table "monitor_point_months", force: true do |t|
@@ -233,6 +234,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "city_id"
+    t.integer  "rank"
   end
 
   create_table "monitor_point_years", force: true do |t|
@@ -267,20 +269,19 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "city_id"
-=======
->>>>>>> b90ede2214dc96a31b36e092746c86f7d13002de
+    t.integer  "rank"
   end
 
   create_table "monitor_points", force: true do |t|
-    t.string   "region"
-    t.string   "pointname"
-    t.string   "level"
-    t.float    "latitude"
-    t.float    "longitude"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "city_id"
-    t.integer  "post_number"
+    t.string    "region"
+    t.string    "pointname"
+    t.string    "level"
+    t.float     "latitude"
+    t.float     "longitude"
+    t.timestamp "created_at",  precision: 6
+    t.timestamp "updated_at",  precision: 6
+    t.integer   "city_id"
+    t.integer   "post_number"
   end
 
   create_table "temp_bd_days", force: true do |t|
@@ -311,6 +312,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.integer  "windscale"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "rank"
   end
 
   create_table "temp_bd_hours", force: true do |t|
@@ -334,6 +336,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.integer  "temp"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "rank"
   end
 
   create_table "temp_bd_months", force: true do |t|
@@ -358,6 +361,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.datetime "data_real_time"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "rank"
   end
 
   create_table "temp_bd_years", force: true do |t|
@@ -382,6 +386,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.datetime "data_real_time"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "rank"
   end
 
   create_table "temp_hb_hours", force: true do |t|
@@ -405,6 +410,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.integer  "windspeed"
     t.integer  "humi"
     t.integer  "temp"
+    t.integer  "rank"
   end
 
   create_table "temp_hourly_forecasts", force: true do |t|
@@ -453,6 +459,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.string   "winddirection"
     t.integer  "windspeed"
     t.integer  "windscale"
+    t.integer  "rank"
   end
 
   create_table "temp_jjj_months", force: true do |t|
@@ -478,6 +485,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.datetime "updated_at"
     t.datetime "data_real_time"
     t.integer  "maxindex"
+    t.integer  "rank"
   end
 
   create_table "temp_jjj_years", force: true do |t|
@@ -503,6 +511,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.datetime "updated_at"
     t.datetime "data_real_time"
     t.integer  "maxindex"
+    t.integer  "rank"
   end
 
   create_table "temp_lf_days", force: true do |t|
@@ -533,6 +542,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.string   "winddirection"
     t.integer  "windspeed"
     t.integer  "windscale"
+    t.integer  "rank"
   end
 
   create_table "temp_lf_hours", force: true do |t|
@@ -556,6 +566,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.integer  "windspeed"
     t.integer  "humi"
     t.integer  "temp"
+    t.integer  "rank"
   end
 
   create_table "temp_lf_months", force: true do |t|
@@ -580,6 +591,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "data_real_time"
+    t.integer  "rank"
   end
 
   create_table "temp_lf_years", force: true do |t|
@@ -604,6 +616,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "data_real_time"
+    t.integer  "rank"
   end
 
   create_table "temp_sfcities_days", force: true do |t|
@@ -634,6 +647,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.string   "winddirection"
     t.integer  "windspeed"
     t.integer  "windscale"
+    t.integer  "rank"
   end
 
   create_table "temp_sfcities_hours", force: true do |t|
@@ -657,6 +671,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.integer  "windspeed"
     t.integer  "humi"
     t.integer  "temp"
+    t.integer  "rank"
   end
 
   create_table "temp_sfcities_months", force: true do |t|
@@ -682,6 +697,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.datetime "updated_at"
     t.datetime "data_real_time"
     t.integer  "maxindex"
+    t.integer  "rank"
   end
 
   create_table "temp_sfcities_years", force: true do |t|
@@ -707,6 +723,7 @@ ActiveRecord::Schema.define(version: 20160224162139) do
     t.datetime "updated_at"
     t.datetime "data_real_time"
     t.integer  "maxindex"
+    t.integer  "rank"
   end
 
   create_table "weather_days", force: true do |t|
