@@ -33,14 +33,8 @@ class WelcomeController < ApplicationController
 			city_name = params[:c][:city_name]
 			c =  City.find_by_city_name(city_name)
 			c = City.find_by_city_name(city_name+'市') unless c
-<<<<<<< HEAD
 			c = City.find_by city_name_pinyin: 'qinhuangdaoshi' unless c
 			id = c.id
-=======
-			c = City.find_by city_name_pinyin: 'langfangshi' unless c
-			id = c.id
-			# (id =  params[:c][:city_id]) 
->>>>>>> b90ede2214dc96a31b36e092746c86f7d13002de
 		else
 			# Table 1: 全国城市当天监测与预报日均值差值
 			(id = City.find_by city_name_pinyin: 'qinhuangdaoshi')
@@ -286,17 +280,6 @@ class WelcomeController < ApplicationController
 		end    
 	end
 
-
-	#去掉保定部分监测点
-	def del_some_points(data)
-		del_point=['地表水厂','游泳馆','接待中心', '华电二区', '定兴县政府', '市监测站', '胶片厂']
-		del_point.each do |t|
-			data[:cities].each do |n|
-				data[:cities].delete(n) if n['city'].strip == t.strip 
-			end
-		end
-		data
-	end
 
 	def pinggu
 		#秦皇岛数据
