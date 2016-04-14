@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>module WelcomeHelper - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-banner">#banner</a>
+    
+    <li ><a href="#method-i-get_lev">#get_lev</a>
+    
+    <li ><a href="#method-i-hb_real">#hb_real</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-WelcomeHelper">
+  <h1 id="module-WelcomeHelper" class="module">
+    module WelcomeHelper
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-banner" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">banner</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="banner-source">
+            <pre><span class="ruby-comment"># File app/helpers/welcome_helper.rb, line 2</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">banner</span>
+        <span class="ruby-identifier">hs</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+        <span class="ruby-comment"># monitor data</span>
+        <span class="ruby-identifier">md</span> = <span class="ruby-identifier">hb_real</span>
+        <span class="ruby-identifier">hs</span>[<span class="ruby-value">:rt</span>]= <span class="ruby-identifier">md</span>[<span class="ruby-value">:time</span>]
+        <span class="ruby-identifier">md</span>[<span class="ruby-value">:cities</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>[<span class="ruby-string">&#39;city&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;保定&#39;</span>
+                        <span class="ruby-identifier">puts</span> <span class="ruby-identifier">c</span>
+                        <span class="ruby-identifier">hs</span> = <span class="ruby-identifier">hs</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">c</span>)
+                        <span class="ruby-keyword">break</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-comment"># forecast data</span>
+        <span class="ruby-identifier">aqis</span> = []
+        <span class="ruby-identifier">pri_pol</span> = []
+        <span class="ruby-identifier">c</span> = <span class="ruby-constant">City</span>.<span class="ruby-identifier">find_by_city_name_pinyin</span>(<span class="ruby-string">&#39;baodingshi&#39;</span>)
+        <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">hourly_city_forecast_air_qualities</span>.<span class="ruby-identifier">last</span>(<span class="ruby-value">120</span>).<span class="ruby-identifier">group_by_day</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:forecast_datetime</span>)
+        <span class="ruby-identifier">ch</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">time</span>,<span class="ruby-identifier">fds</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">t</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span> <span class="ruby-operator">&gt;</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">local</span>(<span class="ruby-identifier">t</span>.<span class="ruby-identifier">year</span>,<span class="ruby-identifier">t</span>.<span class="ruby-identifier">month</span>,<span class="ruby-identifier">t</span>.<span class="ruby-identifier">day</span>)
+                        <span class="ruby-comment">#if time &gt;= Time.local(2015,4,24)</span>
+                        <span class="ruby-identifier">sum</span> = []
+                        <span class="ruby-identifier">fds</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">fd</span><span class="ruby-operator">|</span>
+                                <span class="ruby-identifier">sum</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">fd</span>.<span class="ruby-constant">AQI</span>
+                        <span class="ruby-keyword">end</span>
+                        <span class="ruby-identifier">aqis</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">sum</span>.<span class="ruby-identifier">min</span>, <span class="ruby-identifier">sum</span>.<span class="ruby-identifier">max</span>]
+                        <span class="ruby-identifier">pri_pol</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">fds</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">main_pol</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">lev_hs</span> = {<span class="ruby-string">&quot;you&quot;</span>=<span class="ruby-operator">&gt;</span><span class="ruby-string">&quot;优&quot;</span>, <span class="ruby-string">&quot;yellow&quot;</span>=<span class="ruby-operator">&gt;</span><span class="ruby-string">&quot;良&quot;</span>, <span class="ruby-string">&quot;qingdu&quot;</span>=<span class="ruby-operator">&gt;</span><span class="ruby-string">&quot;轻度&quot;</span>, <span class="ruby-string">&quot;zhong&quot;</span>=<span class="ruby-operator">&gt;</span><span class="ruby-string">&quot;中度&quot;</span>,<span class="ruby-string">&quot;zhongdu&quot;</span>=<span class="ruby-operator">&gt;</span><span class="ruby-string">&quot;重度&quot;</span>, <span class="ruby-string">&quot;yanzhong&quot;</span>=<span class="ruby-operator">&gt;</span><span class="ruby-string">&quot;严重&quot;</span>}
+
+        <span class="ruby-identifier">hs</span>[<span class="ruby-value">:lev</span>] = <span class="ruby-identifier">get_lev</span>(<span class="ruby-identifier">hs</span>[<span class="ruby-value">:aqi</span>])
+        <span class="ruby-identifier">hs</span>[<span class="ruby-value">:lev_han</span>] = <span class="ruby-identifier">lev_hs</span>[<span class="ruby-identifier">hs</span>[<span class="ruby-value">:lev</span>]]
+
+        <span class="ruby-comment">#实时天气预报</span>
+        <span class="ruby-keyword">begin</span>
+                <span class="ruby-identifier">response</span> = <span class="ruby-constant">HTTParty</span>.<span class="ruby-identifier">get</span>(<span class="ruby-string">&#39;http://www.weather.com.cn/adat/sk/101090201.html&#39;</span>)  
+                <span class="ruby-identifier">json_data</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">response</span>.<span class="ruby-identifier">body</span>)
+                <span class="ruby-identifier">hs</span> = <span class="ruby-identifier">hs</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">json_data</span>[<span class="ruby-string">&#39;weatherinfo&#39;</span>])      
+        <span class="ruby-keyword">rescue</span>
+                <span class="ruby-identifier">hs</span>[<span class="ruby-value">:real_time_weather</span>] = <span class="ruby-keyword">false</span>       
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">hs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_lev" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_lev</span><span
+            class="method-args">(a)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_lev-source">
+            <pre><span class="ruby-comment"># File app/helpers/welcome_helper.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_lev</span>(<span class="ruby-identifier">a</span>)
+        <span class="ruby-keyword">if</span> (<span class="ruby-value">0</span> <span class="ruby-operator">..</span> <span class="ruby-value">50</span>) <span class="ruby-operator">===</span> <span class="ruby-identifier">a</span>
+                <span class="ruby-identifier">lev</span> = <span class="ruby-string">&#39;you&#39;</span>
+        <span class="ruby-keyword">elsif</span> (<span class="ruby-value">50</span> <span class="ruby-operator">..</span> <span class="ruby-value">100</span>) <span class="ruby-operator">===</span> <span class="ruby-identifier">a</span>
+                <span class="ruby-identifier">lev</span> = <span class="ruby-string">&#39;yellow&#39;</span>
+        <span class="ruby-keyword">elsif</span> (<span class="ruby-value">100</span> <span class="ruby-operator">..</span> <span class="ruby-value">150</span>) <span class="ruby-operator">===</span> <span class="ruby-identifier">a</span>
+                <span class="ruby-identifier">lev</span> = <span class="ruby-string">&#39;qingdu&#39;</span>
+        <span class="ruby-keyword">elsif</span> (<span class="ruby-value">150</span> <span class="ruby-operator">..</span> <span class="ruby-value">200</span>) <span class="ruby-operator">===</span> <span class="ruby-identifier">a</span>
+                <span class="ruby-identifier">lev</span> = <span class="ruby-string">&#39;zhong&#39;</span>
+        <span class="ruby-keyword">elsif</span> (<span class="ruby-value">200</span> <span class="ruby-operator">..</span> <span class="ruby-value">300</span>) <span class="ruby-operator">===</span> <span class="ruby-identifier">a</span>
+                <span class="ruby-identifier">lev</span> = <span class="ruby-string">&#39;zhongdu&#39;</span>
+        <span class="ruby-keyword">elsif</span> (<span class="ruby-value">300</span> <span class="ruby-operator">..</span> <span class="ruby-value">500</span>) <span class="ruby-operator">===</span> <span class="ruby-identifier">a</span>
+                <span class="ruby-identifier">lev</span> = <span class="ruby-string">&#39;yanzhong&#39;</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-hb_real" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">hb_real</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="hb_real-source">
+            <pre><span class="ruby-comment"># File app/helpers/welcome_helper.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">hb_real</span>
+        <span class="ruby-identifier">hs</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+        <span class="ruby-keyword">begin</span>
+                <span class="ruby-identifier">response</span> = <span class="ruby-constant">HTTParty</span>.<span class="ruby-identifier">get</span>(<span class="ruby-string">&#39;http://www.izhenqi.cn/api/getdata_cityrank.php?secret=CHINARANK&amp;type=HOUR&amp;key=&#39;</span><span class="ruby-operator">+</span><span class="ruby-constant">Digest</span><span class="ruby-operator">::</span><span class="ruby-constant">MD5</span>.<span class="ruby-identifier">hexdigest</span>(<span class="ruby-string">&#39;CHINARANKHOUR&#39;</span>))
+                <span class="ruby-identifier">d</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">response</span>.<span class="ruby-identifier">body</span>)
+                <span class="ruby-identifier">hs</span>[<span class="ruby-value">:time</span>] = (<span class="ruby-identifier">d</span>[<span class="ruby-string">&#39;time&#39;</span>]).<span class="ruby-identifier">to_time</span>
+                <span class="ruby-identifier">hs</span>[<span class="ruby-value">:cities</span>] =  <span class="ruby-identifier">d</span>[<span class="ruby-string">&#39;rows&#39;</span>]
+        <span class="ruby-keyword">rescue</span>
+                <span class="ruby-identifier">puts</span> <span class="ruby-string">&#39;Can not get data from izhenqi, please check network!&#39;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">hs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

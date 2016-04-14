@@ -26,12 +26,12 @@ oneday=60*60*24
 # save_db(hs,TempLfHour) if hour_data_common(hs,TempLfHour)
 
 #河北实时数据
-hs=ten_times_test(TempHbHour,'shishi_rank_data','HEBEIRANK','HOUR',nil)
-save_db(hs,TempHbHour) if hour_data_common(hs,TempHbHour)
+# hs=ten_times_test(TempHbHour,'shishi_rank_data','HEBEIRANK','HOUR',nil)
+# save_db(hs,TempHbHour) if hour_data_common(hs,TempHbHour)
 
 #74城市实时数据
-hs=ten_times_test(TempSfcitiesHour,'shishi_rank_data','CHINARANK','HOUR',nil)
-save_db(hs,TempSfcitiesHour) if hour_data_common(hs,TempSfcitiesHour) 
+# hs=ten_times_test(TempSfcitiesHour,'shishi_rank_data','CHINARANK','HOUR',nil)
+# save_db(hs,TempSfcitiesHour) if hour_data_common(hs,TempSfcitiesHour) 
 
 #全国城市实时数据
 # hs = Hash.new
