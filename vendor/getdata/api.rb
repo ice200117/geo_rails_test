@@ -42,6 +42,8 @@ class Api
 		option = {secret:secretstr,method:methodstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+methodstr+typestr) }
 		response = HTTParty.post('http://www.izhenqi.cn/api/dataapi.php',:body => option)
 	end
+	hs
+end
 	def get_rank_json(web_flag,secretstr,typestr,datestr)
 		datestr=datestr.strftime("%Y-%m-%d") if datestr != nil
 		methodstr = ''
@@ -64,6 +66,4 @@ class Api
 	rescue
 		hs=false
 	end 
-	hs
-end
 end
