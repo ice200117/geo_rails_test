@@ -9,26 +9,26 @@ def get_rank_json(web_flag,secretstr,typestr,datestr)
 	end
 	hs = Hash.new
 	begin
-		if web_flag == 'shishi_china_rank_data'
+		if web_flag == 'shishi_rank_74'
 			#真气网74城市实时/日排名
 			response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+secretstr+'&type='+typestr+'&key='+Digest::MD5.hexdigest(secretstr+typestr))
-		elsif web_flag == 'china_history_data' 
+		elsif web_flag == 'history_74' 
 			#74城市和京津冀历史日接口
 			option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr)}
 			response = HTTParty.post('http://www.izhenqi.cn/api/getdata_history.php', :body => option)
-		elsif web_flag == 'shishi_rank_data' 
+		elsif web_flag == 'shishi_74' 
 			#74城市 京津冀 廊坊实时数据
 			option = {secret:secretstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+typestr) }
 			response = HTTParty.post('http://www.izhenqi.cn/api/getrank.php', :body => option)
-		elsif web_flag == 'china_rank_data_of_month'
+		elsif web_flag == 'rank_74_of_month'
 			#74城市月排名数据
 			option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
 			response = HTTParty.post('http://www.izhenqi.cn/api/getrank_month.php', :body => option)
-		elsif web_flag == 'sfcitiesrankbymonthoryear'
+		elsif web_flag == 'zhzs_74'
 			#74 城市当月和当年综合指数排名
 			option = {secret:secretstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+typestr) }
 			response = HTTParty.post('http://www.izhenqi.cn/api/getrank_forecast.php', :body => option)
-		elsif web_flag == 'lf_history_data'
+		elsif web_flag == 'history_74'
 			#廊坊区县历史数据排名
 			response  = HTTParty.get('http://115.28.227.231:8082/api/data/day-qxday?date='+datestr)
 		elsif web_flag == 'all_city_by_hour'

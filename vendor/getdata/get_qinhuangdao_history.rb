@@ -7,6 +7,6 @@ require_relative "./get_qinhuangdao_data.rb"
 # Distributed under terms of the MIT license.
 #
 
-Qinhuangdao::Qinhuangdao.new.history_day
 Qinhuangdao::Qinhuangdao.new.history_hour
+Qinhuangdao::Qinhuangdao.new.history_day
 

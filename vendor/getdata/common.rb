@@ -41,11 +41,23 @@ def get_rank_json(web_flag,option)
 		hs[:cities] = column_name_modify(json_data['rows'])
 		hs[:total]=json_data['total']
 	rescue
+		byebug
 		hs=false
 	end 
 	hs
 end
-def
+def rank(hs)
+	for i in (0..hs.length)
+		for j in ((i+1)..hs.length)
+			if hs[i]>hs[j]
+				tmp=hs[i]
+				hs[i]=hs[j]
+				hs[j]=tmp
+			end
+		end		
+		hs[i]['rank']=i+1
+	end
+end
 #接口中不符合统一字段名，进行处理后再使用
 def column_name_modify(hs)
 	for i in (0...hs.length)

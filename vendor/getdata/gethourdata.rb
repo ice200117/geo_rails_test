@@ -1,19 +1,5 @@
 require_relative './common.rb'
-# require_relative '../fore_fix/fore_fix_one_city.rb'
-# require_relative '../rd_hourly_aqi_every_hour.rb'
 require_relative './get_qinhuangdao_data.rb'
-def hour_data_common(hs,model)
-	if hs != false 
-		if model.last.nil? || hs[:time].to_time>model.last.data_real_time
-			return true
-		else
-			return false
-		end
-	else
-		return false
-	end
-end
-(1..2)
 hs=Hash.new
 oneday=60*60*24
 
@@ -24,13 +10,16 @@ oneday=60*60*24
 #廊坊实时数据
 # hs=ten_times_test(TempLfHour,'shishi_rank_data','LANGFANGRANK','HOUR',nil)
 # save_db(hs,TempLfHour) if hour_data_common(hs,TempLfHour)
+#
+# 秦皇岛小时数据
+Qinhuangdao::Qinhuangdao.new.hour
 
 #河北实时数据
-hs=ten_times_test(TempHbHour,'shishi_rank_data',{secret:'HEBEIRANK',type:'HOUR'})
+hs=ten_times_test(TempHbHour,'shishi_74',{secret:'HEBEIRANK',type:'HOUR'})
 save_db(hs,TempHbHour)
 
 #74城市实时数据
-hs=ten_times_test(TempSfcitiesHour,'shishi_rank_data',{secret:'CHINARANK',type:'HOUR'})
+hs=ten_times_test(TempSfcitiesHour,'shishi_74',{secret:'CHINARANK',type:'HOUR'})
 save_db(hs,TempSfcitiesHour)
 
 #全国城市实时数据
@@ -55,5 +44,3 @@ if data != nil
 end
 
 
-# 秦皇岛小时数据
-Qinhuangdao::Qinhuangdao.new.hour

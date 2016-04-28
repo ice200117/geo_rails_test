@@ -193,7 +193,8 @@ module Qinhuangdao
 			mp.each do |t|
 				nameid[t.pointname] = t.id
 			end
-			stime="20150501".to_time
+			# stime="20150501".to_time
+			stime="20160428".to_time
 			etime=Time.now
 			while stime<etime
 				data=request_zq("HOUR",stime)
@@ -202,6 +203,7 @@ module Qinhuangdao
 					puts stime.to_s+' total=0' 
 					next
 				end
+
 				tmp = Hash.new
 				tmp['time'] = data['time'].to_time
 				data=data['rows']
