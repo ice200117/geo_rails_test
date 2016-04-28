@@ -26,18 +26,19 @@ oneday=60*60*24
 # save_db(hs,TempLfHour) if hour_data_common(hs,TempLfHour)
 
 #河北实时数据
-hs=ten_times_test(TempHbHour,'shishi_rank_data','HEBEIRANK','HOUR',nil)
-save_db(hs,TempHbHour) if hour_data_common(hs,TempHbHour)
+hs=ten_times_test(TempHbHour,'shishi_rank_data',{secret:'HEBEIRANK',type:'HOUR'})
+save_db(hs,TempHbHour)
 
 #74城市实时数据
-hs=ten_times_test(TempSfcitiesHour,'shishi_rank_data','CHINARANK','HOUR',nil)
-save_db(hs,TempSfcitiesHour) if hour_data_common(hs,TempSfcitiesHour) 
+hs=ten_times_test(TempSfcitiesHour,'shishi_rank_data',{secret:'CHINARANK',type:'HOUR'})
+save_db(hs,TempSfcitiesHour)
 
 #全国城市实时数据
 hs = Hash.new
 hs[:secret] = "70ad4cb02984355c0f08f2e84be72c9c"
 hs[:method] = "GETCITYDATA"
-hs = ten_times_test(ChinaCitiesHour,'all_city_by_hour',hs,'HOUR',nil)
+hs[:type]='HOUR'
+hs = ten_times_test(ChinaCitiesHour,'all_city_by_hour',hs)
 save_db(hs,ChinaCitiesHour)
 
 #获取当前全国城市后，调用修正算法
