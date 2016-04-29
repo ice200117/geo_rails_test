@@ -1,3 +1,3 @@
 $('#line_chart1').html("<%= j line_chart @chart,  height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text:" City_AQI      CUACE (CAMS)"}}%>");
-$('#fore_compare').html("<%= j column_chart @fore_group_day, height: "600px", library: {title:{text:"City_forecast_AQI_day_compare"}} %>");
+$('#fore_compare').html("<%= j column_chart @fore_group_day, height: "600px", library: {chart:{zoomType:"x"},title:{text:"City_forecast_AQI_day_compare"}} %>");
 //$('#fore_avg_aqi').html("");

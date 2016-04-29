@@ -50,10 +50,10 @@ end
 #strtime = Time.mktime(Time.new.strftime("%Y%m%d")+'08')
 yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
 strtime = Time.new.strftime("%Y%m%d")+'20'
-puts strtime
 
-#strtime = '2015040808'
-#puts strtime
+#strtime = '20160403'
+#yesterday_str  = '2016040220'
+puts strtime
 
 path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 

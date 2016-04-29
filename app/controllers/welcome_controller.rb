@@ -150,11 +150,11 @@ class WelcomeController < ApplicationController
 		@fore_group_day = {}
 
 		# 获取过去几天的监测值
-		@fore_group_day = ChinaCitiesHour.history_data(c, 6.days.ago.beginning_of_day)
+		@fore_group_day = ChinaCitiesHour.history_data(c, 9.days.ago.beginning_of_day)
 
 		# 获取过去几天发布的预报值
 		md = {}
-		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime >= ?", 6.days.ago.beginning_of_day).group_by_day(:forecast_datetime).average(:AQI)
+		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime >= ?", 9.days.ago.beginning_of_day).group_by_day(:forecast_datetime).average(:AQI)
 		h.each {|k,v| k.map!{|x| x.strftime("%d%b")}; md[k] = v.round}
 
 		@fore_group_day.merge!(md)
@@ -688,6 +688,23 @@ class WelcomeController < ApplicationController
 		"public/adj/xingtai.txt",
 		"public/adj/zhangjiakou.txt"
 	]
+
+	CITY_LIST_QHD = [
+		"public/adj/qhd/baoding.txt",
+		"public/adj/qhd/beijing.txt",
+		"public/adj/qhd/cangzhou.txt",
+		"public/adj/qhd/chengde.txt",
+		"public/adj/qhd/handan.txt",
+		"public/adj/qhd/hengshui.txt",
+		"public/adj/qhd/langfang.txt",
+		"public/adj/qhd/qinhuangdao.txt",
+		"public/adj/qhd/shijiazhuang.txt",
+		"public/adj/qhd/tangshan.txt",
+		"public/adj/qhd/tianjin.txt",
+		"public/adj/qhd/xingtai.txt",
+		"public/adj/qhd/zhangjiakou.txt"
+	]
+
 	CL = [
 		"保定",
 		"北京",
@@ -750,9 +767,15 @@ class WelcomeController < ApplicationController
 			if params[:city_name] == 'baodingshi'
 				city_dir = 'ADJ_baoding' 
 				force ="bd"
+			elsif params[:city_name] == 'langfangshi'
+				city_dir = 'ADJ'
+				force ="bd"
 			elsif params[:city_name] == 'zhengzhoushi'
 				city_dir = 'ADJ_zhengzhou'
 				force ="zz"
+			elsif params[:city_name] == 'qinhuangdao'
+				city_dir = 'ADJ_qinhuangdao'
+				force ="qhd"
 			end
 		end
 		adj_bd = {}
@@ -800,6 +823,8 @@ class WelcomeController < ApplicationController
 					adj_per[CL[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
 				elsif force == "zz"
 					adj_per[CL_ZZ[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
+				elsif force == "qhd"
+					adj_per[CL[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
 				end
 			}
 		}
@@ -832,6 +857,10 @@ class WelcomeController < ApplicationController
 			}
 		elsif force == "zz" then
 			CITY_LIST_ZZ.each { |city_file|
+				pl << (read_adj ncfile, city_file, var_name)
+			}
+		elsif force == "qhd" then
+			CITY_LIST_QHD.each { |city_file|
 				pl << (read_adj ncfile, city_file, var_name)
 			}
 		end
