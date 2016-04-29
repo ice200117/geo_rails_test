@@ -8,7 +8,7 @@ class WelcomeController < ApplicationController
 	def map
 		system('ls')
 		r = `rails r vendor/test.rb`
-		puts r
+		# puts r
 	end
 
 	def visits_by_day
@@ -392,14 +392,14 @@ class WelcomeController < ApplicationController
 
 	#获取预测数据
 	def get_forecast
-		city_name_encode = ERB::Util.url_encode("保定市")
+		city_name_encode = ERB::Util.url_encode("秦皇岛")
 		options = Hash.new
 		headers={'apikey' => 'f8484c1661a905c5ca470b0d90af8d9f'}
 		options[:headers] = headers
 		url = "http://apis.baidu.com/showapi_open_bus/weather_showapi/address?area=#{city_name_encode}&needMoreDay=1"
 		response = HTTParty.get(url,options)
 		json = JSON.parse(response.body)
-		puts 0 if json['showapi_res_error'] == 0
+		# puts 0 if json['showapi_res_error'] == 0
 		@weather = Hash.new
 		json['showapi_res_body'].each do |k,v|
 			if k[-1].to_i > 0 
@@ -407,16 +407,15 @@ class WelcomeController < ApplicationController
 				@weather[tq['day']] = tq
 			end
 		end
-		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('baodingshi')
-		@ret = {}
+		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('qinhuangdaoshi')
 		temp.each do |k,v|
 			v["fore_lev"] = get_lev(v["AQI"])
-			time = k.strftime("%Y%m%d")
-			if @weather[time] != nil
-				@ret[time]=@weather[time].merge(v)
+			key = k.strftime("%Y%m%d")
+			if @weather[key] != nil
+				@weather[key]=@weather[key].merge(v)
 			end
 		end
-		@ret
+		@ret=@weather
 	end
 	#天气处理与get_forecast合作使用
 	def get_tq(f1)
@@ -438,7 +437,7 @@ class WelcomeController < ApplicationController
 			if f1['day_wind_direction'] == f1['night_wind_direction'] 
 				tq['wd'] = f1['day_wind_direction']
 			elsif f1['day_wind_direction'] != f1['night_wind_direction'] 
-				#tq['wd'] = f1['day_wind_direction']+'~'+f1['night_wind_direction']
+				tq['wd'] = f1['day_wind_direction']+'~'+f1['night_wind_direction']
 			end
 		end
 		dw = f1['day_wind_power']
@@ -456,6 +455,16 @@ class WelcomeController < ApplicationController
 			tq['ws'] = dw
 		elsif dw != nw
 			dw[0].to_i > nw[0].to_i ? tq['ws'] = nw + '~' + dw : tq['ws'] = dw + '~' + nw
+		end
+		date = f1['day'].to_time
+		if date.day==Time.now.day
+			tq['date']= date.month.to_s.to_s+date.strftime("月%d日")+' '+'今天'
+		elsif date.day==1.days.from_now.day
+			tq['date']= date.month.to_s.to_s+date.strftime("月%d日")+' '+'明天'
+		elsif date.day==2.days.from_now.day
+			tq['date']= date.month.to_s.to_s+date.strftime("月%d日")+' '+'后天'
+		else
+			tq['date']= date.month.to_s.to_s+date.strftime("月%d日")+' '+'星期'+Custom::Week.week_of_time(date)
 		end
 		tq['day'] = f1['day'].to_time.strftime("%Y%m%d")
 		tq
@@ -662,7 +671,7 @@ class WelcomeController < ApplicationController
 		@adj_per = adj_percent(@type, @city_adj)
 		respond_to do |format|
 			format.js   {
-				puts @adj_per
+				# puts @adj_per
 			}
 		end
 	end

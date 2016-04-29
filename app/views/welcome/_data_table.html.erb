@@ -25,9 +25,9 @@
 		<% data = data[:cities].sort_by{|a| a['zonghezhishu']}%>
 		<% for i in (0...data.length)%>
 		<% break if flag == 'sf' && i == 20%>
-		<% tmp=data[i] %>
+		<% tmp=data[data.length-1-i] %>
 		<tr>
-			<td><%= i %></td>
+			<td><%= i+1 %></td>
 			<td><%= tmp['city']%></td>
 			<td>
 				<%= tmp['SO2']==nil ? '——' : tmp['SO2'] %>
