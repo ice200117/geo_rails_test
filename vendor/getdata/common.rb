@@ -41,7 +41,6 @@ def get_rank_json(web_flag,option)
 		hs[:cities] = column_name_modify(json_data['rows'])
 		hs[:total]=json_data['total']
 	rescue
-		byebug
 		hs=false
 	end 
 	hs
@@ -73,13 +72,12 @@ def column_name_modify(hs)
 	hs
 end
 
-#计算综合指数 需要6项指标的数据
-#先将当天的数据存储到数据库，再调用综合指数计算方法
-#年平均二级标准SO2:60,NO2:40,PM10:70,PM2.5:35
-#二级标准:CO 24小时平均4,O3日最大8小时平均160
-#参数
-#id=城市id
 def get_zonghezhishu(model)
+	#计算综合指数 需要6项指标的数据
+	#先将当天的数据存储到数据库，再调用综合指数计算方法
+	#年平均二级标准SO2:60,NO2:40,PM10:70,PM2.5:35
+	#二级标准:CO 24小时平均4,O3日最大8小时平均160
+	#参数 id=城市id
 	dayCity=model.last
 	tmp = dayCity.SO2.to_f/60+dayCity.NO2.to_f/40+dayCity.pm10.to_f/70+dayCity.pm25.to_f/35+dayCity.CO.to_f/4+dayCity.O3.to_f/160
 	tmp

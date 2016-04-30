@@ -78,6 +78,7 @@ background: url(searchlogo.png) no-repeat 60px 3px;
 .future-list ul li table td{ padding:0px 10px;}
 .list-weatherbar{ padding-top:15px;}
 .small{ font-size:12px; padding:1px 10px; color:#fff;}
+.small1{ font-size:12px; padding:1px 10px; color:#000;}
 .list-weather{ line-height:21px; font-size:12px;}
 
 .yellow,.qingdu,.you,.zhongdu,.yanzhong,.zhong{ padding:1px 10px;}

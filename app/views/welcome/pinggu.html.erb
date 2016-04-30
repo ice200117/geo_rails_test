@@ -15,17 +15,18 @@
 								<% time = i.day.from_now.strftime("%Y%m%d")%>
 								<% t = @forecast_data[time] %>
 								<% next unless t %>
+								<% dnil='暂无数据'%>
 								<li>
 									<h4 class="list-title"><%= t["date"] %></h4>  
 									<table cellpadding="0" cellspacing="0">
 										<tbody>
 											<tr>
 												<td><span class="gray">级别</span></td>
-												<td><span class="list-alue"><span class="<%= t["fore_lev"] != nil ? t["fore_lev"] : '-'%> small"><%= t['level'] !=nil ? t["level"] : '-'%></span></span></td>
+												<td><span class="list-alue" style="<%='font-size:12px' if t['fore_lev'].nil? %>"><span class="<%= t['fore_lev'] if t["fore_lev"] != nil %> <%= t['fore_lev'] != nil ? 'small' : 'small1'%>"><%= t['level'] !=nil ? t["level"] : dnil%></span></span></td>
 											</tr>
 											<tr>
 												<td style="width:88px;"><span class="gray">首要污染物</span></td>
-												<td><span class="list-alue"><%= t["main_pol"] != nil ? t["main_pol"] : '-'%></span></td>
+												<td><span class="list-alue" style="<%='font-size:12px' if t['main_pol'].nil?%>"><%= t["main_pol"] != nil ? t["main_pol"] : dnil%></span></td>
 											</tr>
 											<tr>
 												<td style="padding-top:15px;"><span class="gray">天气</span></td>
