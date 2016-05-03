@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160401072557) do
+ActiveRecord::Schema.define(version: 20160430085023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,29 @@ ActiveRecord::Schema.define(version: 20160401072557) do
     t.spatial "lonlat",           limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.float   "longitude"
     t.integer "cityid"
+  end
+
+  create_table "city_days", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "city_hours", force: true do |t|
+    t.string   "CityDay"
+    t.string   "CityMonth"
+    t.string   "CityYear"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "city_months", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "city_years", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "day_cities", force: true do |t|
@@ -282,6 +305,11 @@ ActiveRecord::Schema.define(version: 20160401072557) do
     t.timestamp "updated_at",  precision: 6
     t.integer   "city_id"
     t.integer   "post_number"
+  end
+
+  create_table "sources", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "temp_bd_days", force: true do |t|

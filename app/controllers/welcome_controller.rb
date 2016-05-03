@@ -437,7 +437,7 @@ class WelcomeController < ApplicationController
 			if f1['day_wind_direction'] == f1['night_wind_direction'] 
 				tq['wd'] = f1['day_wind_direction']
 			elsif f1['day_wind_direction'] != f1['night_wind_direction'] 
-				tq['wd'] = f1['day_wind_direction']+'~'+f1['night_wind_direction']
+				# tq['wd'] = f1['day_wind_direction']+'~'+f1['night_wind_direction']
 			end
 		end
 		dw = f1['day_wind_power']
@@ -760,8 +760,9 @@ class WelcomeController < ApplicationController
 		# monitor data
 		md = hb_real
 		hs['rt']= md[:time]
+		byebug
 		md[:cities].each do |c|
-			if c['city'] == '保定'
+			if c['city'] == '秦皇岛'
 				hs = hs.merge(c)
 				break
 			end
