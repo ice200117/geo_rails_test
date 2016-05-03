@@ -4,10 +4,10 @@ class MonitorPointHour < ActiveRecord::Base
 	# validates_uniqueness_of :monitor_point_id, :scope => :data_real_time
 	validates :monitor_point_id, uniqueness: { scope: :data_real_time,message: "数据重复！" }
 	def last_hour_by_cityid(cityid)
-		time_start=Time.now.beginning_of_hour-3600
-		time_end=Time.now.end_of_hour-3600
-		# MonitorPoint.find_by_city_id(cityid).monitor_point_hours.where("data_real_time >= ? AND data_real_time <=?",time_start,time_end)
-		City.find(cityid).monitor_point_hours.where("data_real_time >= ? AND data_real_time <=?",time_start,time_end)
+		tmp=MonitorPointHour.last.data_real_time
+		stime=tmp.beginning_of_hour
+		etime=tmp.end_of_hour
+		City.find(cityid).monitor_point_hours.where("data_real_time >= ? AND data_real_time <=?",stime,etime)
 	end
 
 	#重写保存(参数类型为哈希)
