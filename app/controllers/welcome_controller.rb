@@ -160,7 +160,7 @@ class WelcomeController < ApplicationController
 		monitor_data_hour = ChinaCitiesHour.history_data_hour(c, 30.days.ago.beginning_of_day)
     # 获取过去一个月的预报24,48,72,96小时值
     forecast_data_hour = HourlyCityForecastAirQuality.history_data_hour(c, 30.days.ago.beginning_of_day, 0)
-    forecast_data_hour_ann = HourlyCityForecastAirQuality.history_data_hour(c, 30.days.ago.beginning_of_day, 0)
+    forecast_data_hour_ann = AnnForecastData.history_data_hour(c, 30.days.ago.beginning_of_day, 0)
     @monitor_forecast_hour_month_diff = [ {name: '监测值', data: (monitor_data_hour),:discrete => true } ]
     forecast_data_hour.each_index do |i|
       @monitor_forecast_hour_month_diff << {name: (24*(i+1)).to_s+'小时预报', data: forecast_data_hour[i], :discrete => true }
