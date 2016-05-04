@@ -85,10 +85,11 @@ cs.each do |c|
   #if c.city_name_pinyin.rstrip.eql?('langfangshi')
   py = c.city_name_pinyin.strip
 
-  next if hb_city.include?(py)
+#  next if hb_city.include?(py)
 
 
   fn = "CN_ENVAQFC_#{py}_#{strtime}_00000-12000.TXT"
+  f = nil
   f = File.open(path+fn) if File::exists?(path+fn) 
   next unless f
   f.readlines[2..-1].each do |line| 

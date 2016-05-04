@@ -14,7 +14,7 @@ def parse_line(line, c)
   #hc.publish_datetime = sdate
   #hc.forecast_datetime = sdate+delta_hour.to_i*3600
 
-  hc = HourlyCityForecastAirQuality.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
+  hc = AnnForecastData.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
 
 
   hc.AQI = line[14,4]
@@ -48,13 +48,13 @@ def parse_line(line, c)
 end
 
 #strtime = Time.mktime(Time.new.strftime("%Y%m%d")+'08')
-t = Time.now - 30.days.ago
+t = 30.days.ago
 yesterday_str = t.strftime("%Y%m%d")+'20'
 strtime = Time.new.strftime("%Y%m%d")+'20'
 
 #strtime = '20160403'
 #yesterday_str  = '2016040220'
-puts strtime
+puts #strtime
 
 path = "/mnt/share/Temp/CUACE_ANN_REVISE/"
 
@@ -81,24 +81,26 @@ cs << City.find_by_city_name_pinyin('langfangshi')
 cs.each do |c|
   while t < Time.now
     yesterday_str = t.strftime("%Y%m%d")+'20'
+    t = t + 1.days
+	puts yesterday_str
     
-    
-    puts c.city_name_pinyin
+    #puts c.city_name_pinyin
     #if c.city_name_pinyin.rstrip.eql?('langfangshi')
     py = c.city_name_pinyin.strip
-    fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
+    fn = "CN_ENVAQFC_#{py}_#{yesterday_str}_00000-12000.TXT"
     #  next unless hb_city.include?(py)
+    puts path+fn
+	f = nil
     f = File.open(path+fn) if File::exists?(path+fn) 
     next unless f
-    puts fn
     f.readlines[2..-1].each do |line| 
-    parse_line(line, c)
+		puts line
+		parse_line(line, c)
     end
     f.close
     puts fn+" update database successful!"
     #end
   
-    t = t + 1.days
   end
 end
 

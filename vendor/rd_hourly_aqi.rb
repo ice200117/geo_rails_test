@@ -87,6 +87,7 @@ cs.each do |c|
 
 
   fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
+  f = nil
   f = File.open(path+fn) if File::exists?(path+fn) 
   next unless f
   f.readlines[2..-1].each do |line| 
