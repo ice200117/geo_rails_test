@@ -285,8 +285,8 @@ class WelcomeController < ApplicationController
 		#秦皇岛数据
 		# @bddatabyhour=del_some_points(change_data_type(get_db_data(TempBdHour,TempBdHour.last.data_real_time))) 
 		@qhdbyday=change_data_type(MonitorPointDay.new.yesterday_by_cityid(11),1)
-		@qhdbymonth=change_data_type(MonitorPointMonth.new.yesterday_by_cityid(11),1)
-		@qhdbyyear=change_data_type(MonitorPointYear.new.yesterday_by_cityid(11),1)
+		# @qhdbymonth=change_data_type(MonitorPointMonth.new.yesterday_by_cityid(11),1)
+		# @qhdbyyear=change_data_type(MonitorPointYear.new.yesterday_by_cityid(11),1)
 		@qhdbyhour=change_data_type(MonitorPointHour.new.last_hour_by_cityid(11),1)
 
 		#河北数据

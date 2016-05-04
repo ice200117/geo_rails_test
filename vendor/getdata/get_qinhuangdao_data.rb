@@ -110,14 +110,22 @@ module Qinhuangdao
 		end
 
 		def history_month
-			mp=MonitorPoint.find_by_city_id(11)
+			mp=MonitorPoint.where(city_id:11)
 			mp.each do |l|
 				line = nil
 				stime = '20150501'.to_time
 				etime = Time.now.yesterday.end_of_day
 				while stime<etime
-					tmp = someday_data('year',stimey,l.id)
-					line=tmp if !tmp.nil?
+					tmp = someday_data('month',stime,l.id)
+					if tmp.nil?
+						puts stime.strftime("%Y-%m-%d")+'MonitorPointMonth total=0'
+						stime+=3600*24
+						next
+					else
+						line = tmp
+						puts tmp
+					end
+					# line=tmp if !tmp.nil?
 					line['id'] = l.id
 					line['time'] = stime
 					line['pointname']=l.pointname
@@ -159,6 +167,8 @@ module Qinhuangdao
 				temp=MonitorPointHour.where("monitor_point_id = ? AND data_real_time >= ? AND data_real_time <=?",id,time.beginning_of_day,time.end_of_day)
 			elsif flag =='month'
 				temp=MonitorPointDay.where("monitor_point_id = ? AND data_real_time >= ? AND data_real_time <=?",id,time.beginning_of_month,time.end_of_day)
+				puts time
+				byebug
 			elsif flag =='year'
 				temp=MonitorPointDay.where("monitor_point_id = ? AND data_real_time >= ? AND data_real_time <=?",id,time.beginning_of_year,time.end_of_day)
 			end
@@ -271,7 +281,7 @@ module Qinhuangdao
 			mp.each do |t|
 				nameid[t.pointname] = t.id
 			end
-			stime="20150505".to_time.beginning_of_day
+			stime="20150105".to_time.beginning_of_day
 			etime=Time.now.yesterday.end_of_day
 			while stime<etime
 				tmp = Hash.new
@@ -287,15 +297,14 @@ module Qinhuangdao
 					temp=someday_data('day',stime,nameid[l['pointname']])
 					tmp['id']=nameid[l['pointname']]
 					tmp['aqi']=l['aqi']
-					tmp['pm25']=temp['pm2_5']
-					tmp['pm10']=temp['pm10']
-					tmp['so2']=temp['so2']
-					tmp['no2']=temp['no2']
-					tmp['o3']=temp['o3']
-					# tmp['o3_8h']=['o3_8h']
-					tmp['co']=temp['co']
-					tmp['quality']=l['quality']
-					tmp['main_pol']=l['main_pollutant']
+					tmp['pm25']=temp['pm25'] if temp['pm25']!=nil
+					tmp['pm10']=temp['pm10'] if temp['pm10']!=nil
+					tmp['so2']=temp['so2'] if temp['so2']!=nil
+					tmp['no2']=temp['no2'] if temp['no2']!=nil
+					tmp['o3']=temp['o3'] if temp['o3']!=nil
+					tmp['co']=temp['co'] if temp['co']!=nil
+					tmp['quality']=l['quality'] if temp['quality']!=nil
+					tmp['main_pol']=l['main_pollutant']  if temp['main_pollutant']!=nil
 					tmp['city_id'] = 11
 					MonitorPointDay.new.save_with_arg(tmp)
 				end

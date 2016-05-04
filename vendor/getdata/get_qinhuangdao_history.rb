@@ -8,7 +8,7 @@ require_relative "./get_qinhuangdao_data.rb"
 #
 
 # Qinhuangdao::Qinhuangdao.new.history_hour
-Qinhuangdao::Qinhuangdao.new.history_day
+# Qinhuangdao::Qinhuangdao.new.history_day
 Qinhuangdao::Qinhuangdao.new.history_month
 Qinhuangdao::Qinhuangdao.new.history_year
 

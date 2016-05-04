@@ -37,8 +37,8 @@ require_relative './get_qinhuangdao_data.rb'
 # common_get_month_year('jjj',TempJjjYear,time)
 
 #74城市日数据
-hs=ten_times_test('TempSfcitiesDay','shishi_rank_74',{secret:'CHINARANK',type:'DAY'})
-save_db(hs,TempSfcitiesDay) if hs
+# hs=ten_times_test('TempSfcitiesDay','shishi_rank_74',{secret:'CHINARANK',type:'DAY'})
+# save_db(hs,TempSfcitiesDay) if hs
 
 #74城市月数据
 # common_get_month_year('china_city_74',TempSfcitiesMonth,time)

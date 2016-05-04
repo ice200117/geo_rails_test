@@ -380,16 +380,16 @@ $(document).ready(function(){
 			<div class="col-xs-12">
 				<div class="tab-title">
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#lfgqxyue" data-toggle="tab"><strong>污染物浓度（月报）</strong></a></li>
-						<li><a href="#lfgqxnian" data-toggle="tab"><strong>污染物浓度（年报）</strong></a></li>
+						<li class="active"><a href="#lfgqxyue" data-toggle="tab"><strong>污染物浓度（时报）</strong></a></li>
+						<li><a href="#lfgqxnian" data-toggle="tab"><strong>污染物浓度（日报）</strong></a></li>
 					</ul>
 				</div>
 				<div class="tab-content">
 					<div class="tab-pane fade in active" id="lfgqxyue">
-						<%= render partial:'welcome/data_table',locals:{data:@qhdbymonth,flag:'bd'} %>
+						<%= render partial:'welcome/data_table',locals:{data:@qhdbyhour,flag:'bd'} %>
 					</div>
 					<div class="tab-pane fade" id="lfgqxnian">
-						<%= render partial:'welcome/data_table',locals:{data:@qhdbyyear,flag:'bd'} %>
+						<%= render partial:'welcome/data_table',locals:{data:@qhdbyday,flag:'bd'} %>
 					</div>
 				</div>
 			</div>
