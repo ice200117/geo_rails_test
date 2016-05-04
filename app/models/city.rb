@@ -9,6 +9,7 @@ class City < ActiveRecord::Base
   has_many :weather_hours
   has_many :weather_forecasts
   has_many :weather_days
+  has_many :ann_forecast_data
   
 #  validates_uniqueness_of :post_number
 

@@ -50,6 +50,14 @@
 	  <%= column_chart @fore_group_day, height: "600px", library: {chart:{zoomType:"x"},title:{text:"City_forecast_AQI_day_compare"}}  %>
   </div>
 
+  <div id='fore_month_hour_diff' class="col-xs-12">
+
+	  <%# c = City.find_by_city_name_pinyin('langfangshi') %>
+	  <%# h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime > ?", 4.days.ago).group_by_day(:forecast_datetime, format: "%HZ\n %d%b").average(:AQI) %>
+	  <%# h.each {|k,v| h[k] = v.round}%>
+	  <%= line_chart @monitor_forecast_hour_month_diff , height: "300px", library: {chart:{zoomType:"x", backgroundColor: "#eee"},title:{text:"Monitor_forecast_hour_AQI_month_compare"}}  %>
+  </div>
+
   <!--
   <table class="table table-striped" id="fore_avg_aqi">
 	  <tr>

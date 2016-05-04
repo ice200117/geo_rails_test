@@ -109,7 +109,7 @@ class WelcomeController < ApplicationController
 
 	def bar
 		@diff_monitor_forecast = []
-		if params[:c] 
+		if params[:c]
 			city_name = params[:c][:city_name]
 			c =  City.find_by_city_name(city_name)
 			c = City.find_by_city_name(city_name+'市') unless c
@@ -140,7 +140,6 @@ class WelcomeController < ApplicationController
 		else
 			hs = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
 		end 
-
 		md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
 		@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime,  h.AQI]} }]
 		@chart << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.AQI] } }
@@ -148,17 +147,23 @@ class WelcomeController < ApplicationController
 
 		# Table 3: 过去一星期城市监测与预报值日均值对比
 		@fore_group_day = {}
-
 		# 获取过去几天的监测值
 		@fore_group_day = ChinaCitiesHour.history_data(c, 9.days.ago.beginning_of_day)
-
 		# 获取过去几天发布的预报值
 		md = {}
 		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime >= ?", 9.days.ago.beginning_of_day).group_by_day(:forecast_datetime).average(:AQI)
 		h.each {|k,v| k.map!{|x| x.strftime("%d%b")}; md[k] = v.round}
-
 		@fore_group_day.merge!(md)
 
+    # Table 4: 预报准确性月小时值评估
+    # 获取过去一个月的监测小时值
+		monitor_data_hour = ChinaCitiesHour.history_data_hour(c, 30.days.ago.beginning_of_day)
+    # 获取过去一个月的预报24,48,72,96小时值
+    forecast_data_hour = HourlyCityForecastAirQuality.history_data_hour(c, 30.days.ago.beginning_of_day, 0)
+    @monitor_forecast_hour_month_diff = [ {name: '监测值', data: (monitor_data_hour),:discrete => true } ]
+    forecast_data_hour.each_index do |i|
+      @monitor_forecast_hour_month_diff << {name: (24*(i+1)).to_s+'小时预报', data: forecast_data_hour[i], :discrete => true }
+    end
 
 		respond_to do |format|
 			format.html { }
@@ -168,6 +173,22 @@ class WelcomeController < ApplicationController
 			}
 		end
 	end
+
+  # Not Use, since highchart can not display line with data nil
+  def add_loss_hour_data(data)
+    ret_data = []
+    data.each_index do |i|
+      ret_data << data[i]
+      if i < data.length-1 and data[i+1][0] - data[i][0] > 1.hours
+        st = data[i][0]+1.hours
+        while st<data[i+1][0]
+          ret_data << [st, nil]
+          st = st + 1.hours
+        end
+      end
+    end
+    ret_data
+  end
 
 	#显示分指数
 	def subindex
