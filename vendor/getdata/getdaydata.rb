@@ -1,11 +1,8 @@
 require_relative './common.rb'
 require_relative './get_qinhuangdao_data.rb'
 
-hs=Hash.new
-time=Time.now.yesterday
-
 #秦皇岛日数据
-Qinhuangdao::Qinhuangdao.new.day
+# Qinhuangdao::Qinhuangdao.new.day
 # Qinhuangdao::Qinhuangdao.new.month
 # Qinhuangdao::Qinhuangdao.new.year
 
@@ -40,8 +37,8 @@ Qinhuangdao::Qinhuangdao.new.day
 # common_get_month_year('jjj',TempJjjYear,time)
 
 #74城市日数据
-# hs=ten_times_test('TempSfcitiesDay','shishi_china_rank_data',{secret:'CHINARANK',type:'DAY'})
-# save_db(hs,TempSfcitiesDay)
+hs=ten_times_test('TempSfcitiesDay','shishi_rank_74',{secret:'CHINARANK',type:'DAY'})
+save_db(hs,TempSfcitiesDay) if hs
 
 #74城市月数据
 # common_get_month_year('china_city_74',TempSfcitiesMonth,time)

@@ -207,16 +207,16 @@ def set_change_rate_to_db(model,id,time)
 end
 
 #调用接口最多进行10次尝试，如有数据则返回数据，没有数据返回false
-def ten_times_test(model,url,option)
+def ten_times_test(name,url,option)
 	hs=Hash.new
 	(0..10).each do
 		hs=get_rank_json(url,option)  
 		break if hs!=false
 	end
 	if hs == false
-		out_log(Time.now.to_s+" "+model.name+"ERROR！")
+		out_log(Time.now.to_s+" "+name+"ERROR！")
 	elsif hs[:total].to_i == 0
-		out_log(Time.now.to_s+" "+model.name+"total is 0")
+		out_log(Time.now.to_s+" "+name+"total is 0")
 		hs=false
 	end
 	hs

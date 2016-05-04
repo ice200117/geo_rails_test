@@ -120,8 +120,10 @@ module Qinhuangdao
 					line=tmp if !tmp.nil?
 					line['id'] = l.id
 					line['time'] = stime
+					line['pointname']=l.pointname
 					line['city_id'] = 11
 					stime+=3600*24
+					MonitorPointMonth.new.save_with_arg(line)
 				end
 			end
 		end
@@ -137,8 +139,10 @@ module Qinhuangdao
 					line=tmp if !tmp.nil?
 					line['id'] = l.id
 					line['time'] = stime
+					line['pointname']=l.pointname
 					line['city_id'] = 11
 					stime+=3600*24
+					MonitorPointYear.new.save_with_arg(line)
 				end
 			end
 		end
@@ -162,8 +166,10 @@ module Qinhuangdao
 			temp.each do |t|
 				so2<<t.SO2 if !t.SO2.nil?
 				no2<<t.NO2 if !t.NO2.nil?
-				if !t.O3_8h.nil?
+				if flag=='day'
 					o3<<t.O3_8h if t.data_real_time>=time.beginning_of_day+8*3600
+				else
+					o3<<t.O3 if !t.O3.nil?
 				end
 				# o3<<t.O3 if !t.O3.nil?
 				co<<t.CO if !t.CO.nil?
@@ -228,8 +234,7 @@ module Qinhuangdao
 			mp.each do |t|
 				nameid[t.pointname] = t.id
 			end
-			# stime="20150501".to_time
-			stime="20160428".to_time
+			stime="20150501".to_time
 			etime=Time.now
 			while stime<etime
 				data=request_zq("HOUR",stime)
@@ -266,29 +271,29 @@ module Qinhuangdao
 			mp.each do |t|
 				nameid[t.pointname] = t.id
 			end
-			stime="20140101".to_time
-			etime=Time.now
+			stime="20150505".to_time.beginning_of_day
+			etime=Time.now.yesterday.end_of_day
 			while stime<etime
 				tmp = Hash.new
-				data=request_zq("DAY",time)
-				stime+=3600
+				data=request_zq("DAY",stime)
+				stime+=3600*24
 				if data['total'] == 0
 					puts stime.to_s+' total=0'
 					next
 				end
-				tmp['time']
+				tmp['time'] = data['time'].to_time
 				data=data['rows']
 				data.each do |l|
 					temp=someday_data('day',stime,nameid[l['pointname']])
 					tmp['id']=nameid[l['pointname']]
 					tmp['aqi']=l['aqi']
-					tmp['pm25']=l['pm2_5']
-					tmp['pm10']=l['pm10']
-					tmp['so2']=l['so2']
-					tmp['no2']=l['no2']
-					tmp['o3']=l['o3']
-					tmp['o3_8h']=['o3_8h']
-					tmp['co']=['co']
+					tmp['pm25']=temp['pm2_5']
+					tmp['pm10']=temp['pm10']
+					tmp['so2']=temp['so2']
+					tmp['no2']=temp['no2']
+					tmp['o3']=temp['o3']
+					# tmp['o3_8h']=['o3_8h']
+					tmp['co']=temp['co']
 					tmp['quality']=l['quality']
 					tmp['main_pol']=l['main_pollutant']
 					tmp['city_id'] = 11

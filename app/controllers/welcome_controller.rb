@@ -760,7 +760,6 @@ class WelcomeController < ApplicationController
 		# monitor data
 		md = hb_real
 		hs['rt']= md[:time]
-		byebug
 		md[:cities].each do |c|
 			if c['city'] == '秦皇岛'
 				hs = hs.merge(c)

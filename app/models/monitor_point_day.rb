@@ -11,14 +11,8 @@ class MonitorPointDay < ActiveRecord::Base
 	#重写保存(参数类型为哈希)
 	def save_with_arg(d)
 		return 'id or time is nil' if d['id'] == nil || d['time'] == nil
-		tmp = MonitorPointDay.where("monitor_point_id =? AND data_real_time >= ? AND data_real_time <= ?",d['id'], d['time'].beginning_of_day,d['time'].end_of_day)
-		linedata=nil
-		if tmp.length == 0
-			linedata=MonitorPointDay.new
-		else
-			linedata=tmp[0]
-		end
-		linedata.monitor_point_id = d['id']
+		linedata = MonitorPointDay.find_or_create_by(monitor_point_id: d['id'],data_real_time: (d['time'].beginning_of_day..d['time'].end_of_day))
+		# tmp = MonitorPointDay.where("monitor_point_id =? AND data_real_time >= ? AND data_real_time <= ?",d['id'], d['time'].beginning_of_day,d['time'].end_of_day)
 		linedata.data_real_time = d['time']
 		linedata.city_id = d['city_id'] if !d['city_id'].nil?
 		linedata.AQI = d['aqi'] if !d['aqi'].nil?
