@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160504125348) do
+ActiveRecord::Schema.define(version: 20160505022737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,6 +134,26 @@ ActiveRecord::Schema.define(version: 20160504125348) do
     t.float    "longitude"
     t.float    "latitude"
   end
+
+  create_table "forecast_real_data", force: true do |t|
+    t.integer  "city_id"
+    t.datetime "publish_datetime"
+    t.datetime "forecast_datetime"
+    t.float    "AQI"
+    t.string   "main_pol"
+    t.integer  "grade"
+    t.float    "pm25"
+    t.float    "pm10"
+    t.float    "SO2"
+    t.float    "CO"
+    t.float    "NO2"
+    t.float    "O3"
+    t.float    "VIS"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "forecast_real_data", ["city_id", "publish_datetime", "forecast_datetime"], :name => "index_real_forecast_aqi_city_pubtime_foretime", :unique => true
 
   create_table "forecasts", force: true do |t|
     t.integer  "city_id"

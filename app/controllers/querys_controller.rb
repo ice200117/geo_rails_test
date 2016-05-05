@@ -113,10 +113,10 @@ class QuerysController < ApplicationController
 
 	def aqis_by_city
 		pinyin = params[:city]
-		h = HourlyCityForecastAirQuality.new
-		chf = h.city_forecast_by_pinyin(pinyin)
+		chf = ForecastRealDatum.city_forecast_by_pinyin(pinyin)
 		render json: chf
 	end
+
 	#获取预报信息 参数：cityid
 	def aqis_by_cityid
 		cityid = params[:cityid]
@@ -146,37 +146,7 @@ class QuerysController < ApplicationController
 	end
 
 	def all_cities
-		achf = []
-		cs = City.where("id < 388")
-		cs.each do |c|
-			cf = Hash.new
-			hf = []
-			#hs = c.hourly_city_forecast_air_qualities.order(publish_datetime: :desc).limit(120).where("forecast_datetime > ?", Time.now)
-			hs = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
-			return nil unless hs.first
-			cf[:city_name] = c.city_name
-			cf[:publish_datetime] = hs.first.publish_datetime.strftime('%Y-%m-%d_%H')
-			#      cf[:update_time] = Time.now.strftime('%Y-%m-%d_%H')
-			hs.each do |ch|
-				if ch.forecast_datetime > Time.now
-					#    ch.AQI = (ch.AQI**2 *0.0004 + 0.3314*ch.AQI - 32.231 ).round if c.city_name_pinyin=='taiyuanshi'
-					hf << {forecast_datetime: ch.forecast_datetime.strftime('%Y-%m-%d_%H'), 
-			AQI: ch.AQI.round, 
-			main_pol: ch.main_pol, 
-			grade: ch.grade,
-			pm2_5: ch.pm25,
-			pm10: ch.pm10,
-			SO2: ch.SO2,
-			CO: ch.CO,
-			NO2: ch.NO2,
-			O3: ch.O3,
-			VIS: ch.VIS }
-				end
-			end
-			cf[:forecast_data] = hf
-			achf << cf
-		end
-
+		achf = ForecastRealDatum.all_cities
 		render json: achf
 	end
 
