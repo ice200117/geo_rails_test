@@ -157,16 +157,28 @@ class WelcomeController < ApplicationController
 
     # Table 4: 预报准确性月小时值评估
     # 获取过去一个月的监测小时值
-		monitor_data_hour = ChinaCitiesHour.history_data_hour(c, 30.days.ago.beginning_of_day)
+    num_day = 40
+		monitor_data_hour = ChinaCitiesHour.history_data_hour(c, num_day.days.ago.beginning_of_day)
     # 获取过去一个月的预报24,48,72,96小时值
-    forecast_data_hour = HourlyCityForecastAirQuality.history_data_hour(c, 30.days.ago.beginning_of_day, 0)
-    forecast_data_hour_ann = AnnForecastData.history_data_hour(c, 30.days.ago.beginning_of_day, 0)
+    forecast_data_hour = HourlyCityForecastAirQuality.history_data_hour(c, num_day.days.ago.beginning_of_day, 0)
+    forecast_data_hour_ann = AnnForecastData.history_data_hour(c, num_day.days.ago.beginning_of_day, 0)
     @monitor_forecast_hour_month_diff = [ {name: c.city_name+'监测值', data: (monitor_data_hour),:discrete => true } ]
     forecast_data_hour.each_index do |i|
       @monitor_forecast_hour_month_diff << {name: (24*(i+1)).to_s+'小时预报', data: forecast_data_hour[i], :discrete => true }
     end
     forecast_data_hour_ann.each_index do |i|
       @monitor_forecast_hour_month_diff << {name: (24*(i+1)).to_s+'小时预报ANN', data: forecast_data_hour_ann[i], :discrete => true }
+    end
+
+    # 计算监测和预报的相关系数
+    @correlation = []
+    forecast_data_hour.each_index do |i|
+      v = data_to_vector(add_loss_hour_data(monitor_data_hour),add_loss_hour_data(forecast_data_hour[i]))
+      @correlation << r(v[0], v[1])
+    end
+    forecast_data_hour_ann.each_index do |i|
+      v = data_to_vector(add_loss_hour_data(monitor_data_hour),add_loss_hour_data(forecast_data_hour_ann[i]))
+      @correlation << r(v[0], v[1])
     end
 
 		respond_to do |format|
@@ -192,6 +204,32 @@ class WelcomeController < ApplicationController
       end
     end
     ret_data
+  end
+
+
+  def r(v1, v2)
+    a = v1.to_vector
+    b = v2.to_vector
+    pearson = Statsample::Bivariate::Pearson.new(a,b)
+    pearson.r
+  end
+
+  def data_to_vector(data1, data2)
+    st = data1[0][0]>data2[0][0] ? data1[0][0] : data2[0][0]
+    et = data1.last[0]<data2.last[0] ? data1.last[0] : data2.last[0]
+    ret1 = []
+    ret2 = []
+    data1.each do |d|
+      if d[0] >= st and d[0] <= et
+        ret1 << d[1]
+      end
+    end
+    data2.each do |d|
+      if d[0] >= st and d[0] <= et
+        ret2 << d[1]
+      end
+    end
+    [ret1,ret2]
   end
 
 	#显示分指数

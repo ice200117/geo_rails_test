@@ -13,7 +13,7 @@ class AnnForecastData < ActiveRecord::Base
     fore_data_48 = []
     fore_data_72 = []
     fore_data_96 = []
-    data =  city.ann_forecast_data.where(publish_datetime: start_time..Time.now)
+    data =  city.ann_forecast_data.where(publish_datetime: start_time..Time.now).order(:publish_datetime)
     
     data.each do |d|
       if d.forecast_datetime >= d.publish_datetime+12.hours and d.forecast_datetime < d.publish_datetime+36.hours

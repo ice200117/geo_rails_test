@@ -15,7 +15,7 @@ def parse_line(line, c)
   #hc.publish_datetime = sdate
   #hc.forecast_datetime = sdate+delta_hour.to_i*3600
 
-  hc = AnnForecastData.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
+  hc = HourlyCityForecastAirQuality.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
   hc.AQI = line[14,4]
  # hc.AQI = hc.AQI*2.51   # liubin 10/5/2015
   hc.main_pol = line[18,13].strip
@@ -28,6 +28,20 @@ def parse_line(line, c)
   hc.O3 = line[75,6]
   hc.VIS = line[32,7]
   hc.save
+
+  ac = AnnForecastData.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
+  ac.AQI = line[14,4]
+ #ahc.AQI = hc.AQI*2.51   # liubin 10/5/2015
+  ac.main_pol = line[18,13].strip
+  ac.grade = line[31,1]
+  ac.pm25 = line[99,6]
+  ac.pm10 = line[87,6]
+  ac.SO2 = line[39,6]
+  ac.CO = line[63,6]
+  ac.NO2 = line[51,6]
+  ac.O3 = line[75,6]
+  ac.VIS = line[32,7]
+  ac.save
 
   rc = ForecastRealDatum.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
   rc.AQI = line[14,4]
