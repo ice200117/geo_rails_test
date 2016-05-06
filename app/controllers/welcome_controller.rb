@@ -172,12 +172,13 @@ class WelcomeController < ApplicationController
 
     # 计算监测和预报的相关系数
     @correlation = []
+	mld = add_loss_hour_data(monitor_data_hour)
     forecast_data_hour.each_index do |i|
-      v = data_to_vector(add_loss_hour_data(monitor_data_hour),add_loss_hour_data(forecast_data_hour[i]))
+      v = data_to_vector(mld,add_loss_hour_data(forecast_data_hour[i]))
       @correlation << r(v[0], v[1])
     end
     forecast_data_hour_ann.each_index do |i|
-      v = data_to_vector(add_loss_hour_data(monitor_data_hour),add_loss_hour_data(forecast_data_hour_ann[i]))
+      v = data_to_vector(mld,add_loss_hour_data(forecast_data_hour_ann[i]))
       @correlation << r(v[0], v[1])
     end
 
@@ -186,6 +187,9 @@ class WelcomeController < ApplicationController
 			format.js   { }
 			format.json {
 				render json: @diff_monitor_forecast
+			}
+			format.xls {
+				send_data [monitor_data_hour, forecast_data_hour, forecast_data_hour_ann].to_xls
 			}
 		end
 	end

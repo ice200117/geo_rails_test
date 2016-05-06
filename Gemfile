@@ -103,3 +103,4 @@ gem 'actionpack-action_caching', '~> 1.1', '>= 1.1.1'
 gem 'rails-observers'
 
 gem 'statsample'
+gem 'to_xls'
