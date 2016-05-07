@@ -150,15 +150,31 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
     fore_data_96 = []
     data =  city.hourly_city_forecast_air_qualities.where(publish_datetime: start_time..Time.now).order(:publish_datetime)
     
+    tmp1 = []
+    tmp2 = []
+    tmp3 = []
+    tmp4 = []
     data.each do |d|
       if d.forecast_datetime >= d.publish_datetime+12.hours and d.forecast_datetime < d.publish_datetime+36.hours
-        fore_data_24 << [d.forecast_datetime, d.AQI]
+        unless tmp1.include? d.forecast_datetime
+          fore_data_24 << [d.forecast_datetime, d.AQI]
+          tmp1 << d.forecast_datetime
+        end
       elsif d.forecast_datetime >= d.publish_datetime+36.hours and d.forecast_datetime < d.publish_datetime+60.hours
-        fore_data_48 << [d.forecast_datetime, d.AQI]
+        unless tmp2.include? d.forecast_datetime
+          fore_data_48 << [d.forecast_datetime, d.AQI]
+          tmp2 << d.forecast_datetime
+        end
       elsif d.forecast_datetime >= d.publish_datetime+60.hours and d.forecast_datetime < d.publish_datetime+84.hours
-        fore_data_72 << [d.forecast_datetime, d.AQI]
+        unless tmp3.include? d.forecast_datetime
+          fore_data_72 << [d.forecast_datetime, d.AQI]
+          tmp3 << d.forecast_datetime
+        end
       elsif d.forecast_datetime >= d.publish_datetime+84.hours and d.forecast_datetime < d.publish_datetime+108.hours
-        fore_data_96 << [d.forecast_datetime, d.AQI]
+        unless tmp4.include? d.forecast_datetime
+          fore_data_96 << [d.forecast_datetime, d.AQI]
+          tmp4 << d.forecast_datetime
+        end
       end
     end
 

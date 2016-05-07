@@ -1,4 +1,6 @@
 class WelcomeController < ApplicationController
+  include WelcomeHelper
+
 	#	caches_page :pinggu, :bar
 	#cache_sweeper :welcome_sweeper
 
@@ -157,6 +159,21 @@ class WelcomeController < ApplicationController
 
     # Table 4: 预报准确性月小时值评估
     # 获取过去一个月的监测小时值
+    get_lf_hour_data
+
+		respond_to do |format|
+			format.html { }
+			format.js   { }
+			format.json {
+				render json: @diff_monitor_forecast
+			}
+		end
+	end
+
+  def get_lf_hour_data
+    c = City.find 18
+    # Table 4: 预报准确性月小时值评估
+    # 获取过去一个月的监测小时值
     num_day = 40
 		monitor_data_hour = ChinaCitiesHour.history_data_hour(c, num_day.days.ago.beginning_of_day)
     # 获取过去一个月的预报24,48,72,96小时值
@@ -172,68 +189,31 @@ class WelcomeController < ApplicationController
 
     # 计算监测和预报的相关系数
     @correlation = []
-	mld = add_loss_hour_data(monitor_data_hour)
+	  mld = add_loss_hour_data(monitor_data_hour)
     forecast_data_hour.each_index do |i|
       v = data_to_vector(mld,add_loss_hour_data(forecast_data_hour[i]))
-      @correlation << r(v[0], v[1])
+      @correlation << r(Hash(*v[0].flatten).values, Hash(*v[1].flatten).values)
     end
     forecast_data_hour_ann.each_index do |i|
       v = data_to_vector(mld,add_loss_hour_data(forecast_data_hour_ann[i]))
-      @correlation << r(v[0], v[1])
+      @correlation << r(Hash(*v[0].flatten).values, Hash(*v[1].flatten).values)
     end
 
+    monitor_data_hour
+
+  end
+
+  def export_lfdata_xls
+    monitor_data_hour = get_lf_hour_data
 		respond_to do |format|
-			format.html { }
-			format.js   { }
-			format.json {
-				render json: @diff_monitor_forecast
-			}
+      format.json {
+				render json: @monitor_forecast_hour_month_diff
+      }
 			format.xls {
-				send_data [monitor_data_hour, forecast_data_hour, forecast_data_hour_ann].to_xls
+        #send_data [monitor_data_hour, forecast_data_hour, forecast_data_hour_ann].to_xls
+        send_data  monitor_data_hour.to_xls
 			}
 		end
-	end
-
-  # Not Use, since highchart can not display line with data nil
-  def add_loss_hour_data(data)
-    ret_data = []
-    data.each_index do |i|
-      ret_data << data[i]
-      if i < data.length-1 and data[i+1][0] - data[i][0] > 1.hours
-        st = data[i][0]+1.hours
-        while st<data[i+1][0]
-          ret_data << [st, nil]
-          st = st + 1.hours
-        end
-      end
-    end
-    ret_data
-  end
-
-
-  def r(v1, v2)
-    a = v1.to_vector
-    b = v2.to_vector
-    pearson = Statsample::Bivariate::Pearson.new(a,b)
-    pearson.r
-  end
-
-  def data_to_vector(data1, data2)
-    st = data1[0][0]>data2[0][0] ? data1[0][0] : data2[0][0]
-    et = data1.last[0]<data2.last[0] ? data1.last[0] : data2.last[0]
-    ret1 = []
-    ret2 = []
-    data1.each do |d|
-      if d[0] >= st and d[0] <= et
-        ret1 << d[1]
-      end
-    end
-    data2.each do |d|
-      if d[0] >= st and d[0] <= et
-        ret2 << d[1]
-      end
-    end
-    [ret1,ret2]
   end
 
 	#显示分指数

@@ -53,6 +53,7 @@ Rails.application.routes.draw do
    get 'welcome/get_history_data/:model/:time' => 'welcome#get_history_data'
    get 'welcome/get_forecast_baoding' => 'welcome#get_forecast_baoding' 
    get 'welcome/get_city_point' => 'welcome#get_city_point'  
+   get 'welcome/export_lfdata_xls' => 'welcome#export_lfdata_xls'  
 
 
    get '/adj_pie' => 'welcome#adj_pie'
