@@ -1,5 +1,5 @@
 <span>更新时间: 
-<%= data[:time].strftime("%Y-%m-%d") %>
+<%= data[:time].to_time.strftime("%Y-%m-%d") %>
 </span> 
 <table class="table">
 	<thead>

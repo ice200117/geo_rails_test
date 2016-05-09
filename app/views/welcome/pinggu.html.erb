@@ -220,7 +220,7 @@ $(document).ready(function(){
 				<div class="row">
 					<div class="col-xs-6">
 						<table class="table table-striped">
-							<caption>秦皇岛市各区县小时排名&nbsp&nbsp<%= @qhdbyhour[:time].strftime("%Y-%m-%d %H:00:00") %></caption>
+							<caption>秦皇岛市各区县小时排名&nbsp&nbsp<%= @qhdbyhour[:time].to_time.strftime("%Y-%m-%d %H:00:00") %></caption>
 							<thead>
 								<tr class="top11-color-title bluegreen">
 									<th>排名</th>
@@ -248,7 +248,7 @@ $(document).ready(function(){
 					</div>
 					<div class="col-xs-6">
 						<table class="table table-striped">
-							<caption>秦皇岛市各区县空气质量日均排名&nbsp&nbsp<%= @qhdbyday[:time].strftime("%Y-%m-%d") %></caption>
+							<caption>秦皇岛市各区县空气质量日均排名&nbsp&nbsp<%= @qhdbyday[:time].to_time.strftime("%Y-%m-%d") %></caption>
 							<thead>
 								<tr class="top11-color-title bluegreen">
 									<th>排名</th>

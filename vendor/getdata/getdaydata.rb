@@ -2,7 +2,7 @@ require_relative './common.rb'
 require_relative './get_qinhuangdao_data.rb'
 
 #秦皇岛日数据
-# Qinhuangdao::Qinhuangdao.new.day
+Qinhuangdao::Qinhuangdao.new.day
 # Qinhuangdao::Qinhuangdao.new.month
 # Qinhuangdao::Qinhuangdao.new.year
 
@@ -37,7 +37,7 @@ require_relative './get_qinhuangdao_data.rb'
 # common_get_month_year('jjj',TempJjjYear,time)
 
 #74城市日数据
-hs=ten_times_test('TempSfcitiesDay','shishi_rank_74',{secret:'CHINARANK',type:'DAY'})
+# hs=ten_times_test('TempSfcitiesDay','shishi_rank_74',{secret:'CHINARANK',type:'DAY'})
 # save_db(hs,TempSfcitiesDay) if hs
 
 #74城市月数据

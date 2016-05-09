@@ -45,21 +45,25 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 
 	#未来五天城市预报
 	def air_quality_forecast(pinyin)
-		tmp = City.find_by_city_name_pinyin(pinyin).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
+		if $redis[pinyin].nil?
+			tmp = City.find_by_city_name_pinyin(pinyin).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
+			Custom::Redis.set(pinyin,tmp)
+		else 
+			tmp=Custom::Redis.get(pinyin)
+		end
 		fore_data = Hash.new
-		puts tmp
 		tmp.each do |time,data|
 			temp = Hash.new 
 			sum = 0
 			num = 0
 			tmpd = Hash.new
 			data.each do |t|
-				sum += t.AQI;num += 1 if t.AQI != 0
+				sum += t['AQI'];num += 1 if t['AQI'] != 0
 				td = false
-				if tmpd[t.main_pol] == nil
-					tmpd[t.main_pol] = 1
+				if tmpd[t['main_pol']] == nil
+					tmpd[t['main_pol']] = 1
 				else
-					tmpd[t.main_pol] += 1
+					tmpd[t['main_pol']] += 1
 				end
 			end
 			temp["main_pol"]=tmpd.sort{|a,b| a[1] <=> b[1]}.last.first.to_s

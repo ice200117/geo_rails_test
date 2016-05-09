@@ -343,12 +343,16 @@ class WelcomeController < ApplicationController
 			stime = time.beginning_of_day
 			etime = time.end_of_day
 		end
-		sql_str=Array.new
-		sql_str<<"data_real_time >= ? AND data_real_time <= ?"
-		sql_str<<stime
-		sql_str<<etime
-		data = model.where(sql_str)
-		data[0].nil? ? [] : data.uniq
+		if $redis[model.name].nil?
+			sql_str=Array.new
+			sql_str<<"data_real_time >= ? AND data_real_time <= ?"
+			sql_str<<stime
+			sql_str<<etime
+			data = model.where(sql_str)
+			data[0].nil? ? [] : data.uniq
+		else
+			Custom::Redis.get(model.name)
+		end
 	end
 
 	#修改小数点位数
@@ -362,17 +366,17 @@ class WelcomeController < ApplicationController
 		(0...data.length).each do |t|
 			data_hash=Hash.new
 			if flag == 0
-				data_hash['city']=City.find(data[t].city_id).city_name
+				data_hash['city']=City.find(data[t]['city_id']).city_name
 			elsif flag == 1
-				data_hash['city']=MonitorPoint.find(data[t].monitor_point_id).pointname
+				data_hash['city']=MonitorPoint.find(data[t]['monitor_point_id']).pointname
 			end
 			float_round.each do |k,v|
 				if /change_rate/.match(k)
-					d="%.#{v}f"%data[t][k].to_f if data[t].respond_to?(k)
+					d="%.#{v}f"%data[t][k].to_f if data[t][k]!=nil
 					d.to_f>0 ? data_hash['img']='arrow_up' : data_hash['img']='arrow_down'
 					data_hash[k]=(d.to_f*100).abs.round(v).to_s
 				else
-					data_hash[k]="%.#{v}f"%data[t][k].to_f if data[t].respond_to?(k)
+					data_hash[k]="%.#{v}f"%data[t][k].to_f if data[t][k] != nil
 				end
 			end
 			model_column.each do |i|
@@ -382,7 +386,7 @@ class WelcomeController < ApplicationController
 		end
 		re_hs=Hash.new
 		if data[0]
-			re_hs[:time]=data[0].data_real_time
+			re_hs[:time]=data[0]['data_real_time']
 		else
 			re_hs[:time]=Time.now
 		end
@@ -410,7 +414,7 @@ class WelcomeController < ApplicationController
 		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('qinhuangdaoshi')
 		temp.each do |k,v|
 			v["fore_lev"] = get_lev(v["AQI"])
-			key = k.strftime("%Y%m%d")
+			key = k.to_time.strftime("%Y%m%d")
 			if @weather[key] != nil
 				@weather[key]=@weather[key].merge(v)
 			end
@@ -769,18 +773,25 @@ class WelcomeController < ApplicationController
 		# forecast data
 		aqis = []
 		pri_pol = []
-		c = City.find_by_city_name_pinyin('qinhuangdaoshi')
-		ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
+		ch=nil
+		if $redis['qhd_hour_forecast'].nil?
+			c = City.find_by_city_name_pinyin('qinhuangdaoshi')
+			ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
+			Custom::Redis.set('qhd_hour_forecast',ch)
+		else
+			ch = Custom::Redis.get('qhd_hour_forecast')
+		end
+
 		ch.each do |time,fds|
 			t = Time.now
 			if time > Time.local(t.year,t.month,t.day)
 				#if time >= Time.local(2015,4,24)
 				sum = []
 				fds.each do |fd|
-					sum << fd.AQI
+					sum << fd['AQI']
 				end
 				aqis << [sum.min, sum.max]
-				pri_pol << fds[0].main_pol
+				pri_pol << fds[0]['main_pol']
 			end
 		end
 

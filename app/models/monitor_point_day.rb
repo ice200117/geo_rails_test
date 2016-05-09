@@ -3,10 +3,14 @@ class MonitorPointDay < ActiveRecord::Base
 	belongs_to:monitor_point
 	validates :monitor_point_id, uniqueness: { scope: :data_real_time,message: "数据重复！" }
 	def yesterday_by_cityid(cityid)
-		tmp=MonitorPointDay.last.data_real_time
-		stime=tmp.beginning_of_day
-		etime=tmp.end_of_day
-		City.find(cityid).monitor_point_days.where("data_real_time >= ? AND data_real_time <=?",stime,etime)
+		if $redis['qhd_day'].nil?
+			tmp=MonitorPointDay.last.data_real_time
+			stime=tmp.beginning_of_day
+			etime=tmp.end_of_day
+			Custom::Redis.set('qhd_day',City.find(cityid).monitor_point_days.where("data_real_time >= ? AND data_real_time <=?",stime,etime))
+		else
+			Custom::Redis.get('qhd_day')
+		end
 	end
 	#重写保存(参数类型为哈希)
 	def save_with_arg(d)
