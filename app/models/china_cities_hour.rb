@@ -76,8 +76,7 @@ class ChinaCitiesHour < ActiveRecord::Base
 	end
 
   def self.history_data_hour(city, start_time)
-    d = []
-    d = city.china_cities_hours.where(data_real_time: start_time..Time.now).order(:data_real_time).pluck(:data_real_time, :AQI)
+    city.china_cities_hours.where(data_real_time: start_time..Time.now).order(:data_real_time).pluck(:data_real_time, :AQI)
   end
 
 end
