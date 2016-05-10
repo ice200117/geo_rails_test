@@ -351,6 +351,7 @@ class WelcomeController < ApplicationController
 			data = model.where(sql_str)
 			tmpd = /\w*Hour/.match(model.name) ? 3600 : 3600*24
 			Custom::Redis.set(model.name,data,tmpd)
+			data
 		else
 			Custom::Redis.get(model.name)
 		end

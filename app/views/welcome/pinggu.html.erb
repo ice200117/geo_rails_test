@@ -277,7 +277,7 @@ $(document).ready(function(){
 				<div class="row">
 					<div class="col-xs-6">
 						<table class="table table-striped">
-							<caption>省内城市小时排名&nbsp&nbsp<%= @hebeidatabyhour[:time].strftime("%Y-%m-%d %H:00:00") %></caption>
+							<caption>省内城市小时排名&nbsp&nbsp<%= @hebeidatabyhour[:time].to_time.strftime("%Y-%m-%d %H:00:00") %></caption>
 							<thead>
 								<tr class="top11-color-title blue">
 									<th>排名</th>
@@ -304,7 +304,7 @@ $(document).ready(function(){
 					</div>
 					<div class="col-xs-6">
 						<table class="table table-striped">
-							<caption>省内城市日均排名&nbsp&nbsp<%= @hebeidatabyday[:time].strftime("%Y-%m-%d") %></caption>
+							<caption>省内城市日均排名&nbsp&nbsp<%= @hebeidatabyday[:time].to_time.strftime("%Y-%m-%d") %></caption>
 							<thead>
 								<tr class="top11-color-title blue">
 									<th>排名</th>
@@ -333,7 +333,7 @@ $(document).ready(function(){
 			</div>
 			<div class="col-xs-4">
 				<table class="table table-striped">
-					<caption>全国74城市空气质量日均排名<%= @sfcitiesrankbyday[:time].strftime("%Y-%m-%d") %></caption>
+					<caption>全国74城市空气质量日均排名<%= @sfcitiesrankbyday[:time].to_time.strftime("%Y-%m-%d") %></caption>
 					<thead>
 						<tr class="top11-color-title green">
 							<th>倒数排名</th>
