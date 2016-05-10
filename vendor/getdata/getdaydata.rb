@@ -3,6 +3,21 @@ require_relative './get_qinhuangdao_data.rb'
 
 #秦皇岛日数据
 Qinhuangdao::Qinhuangdao.new.day
+
+tmp=MonitorPointDay.last.data_real_time
+stime=tmp.beginning_of_day
+etime=tmp.end_of_day
+Custom::Redis.set('qhd_hour',MonitorPointDay.where("city_id = ? AND data_real_time => ? AND data_real_time <= ?",11,stime,etime))
+
+# Qinhuangdao::Qinhuangdao.new.month
+# Qinhuangdao::Qinhuangdao.new.year
+
+#保定日数据
+# hs=ten_times_test('TempBdDay','shishi_74',{secret:'BAODINGRANK',type:'DAY'})
+# save_db(hs,TempBdDay)
+
+#保定月数据
+# common_get_month_year('baoding',TempBdMonth,time)
 # Qinhuangdao::Qinhuangdao.new.month
 # Qinhuangdao::Qinhuangdao.new.year
 

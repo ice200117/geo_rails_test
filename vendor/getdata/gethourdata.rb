@@ -13,7 +13,10 @@ oneday=60*60*24
 #
 # 秦皇岛小时数据
 Qinhuangdao::Qinhuangdao.new.hour
-Custom::Redis.set('qhd_hour',)
+tmp=MonitorPointHour.last.data_real_time
+stime=tmp.beginning_of_hour
+etime=tmp.end_of_hour
+Custom::Redis.set('qhd_hour',MonitorPointHour.where("city_id = ? AND data_real_time => ? AND data_real_time <= ?",11,stime,etime))
 
 #河北实时数据
 # hs=ten_times_test(TempHbHour,'shishi_74',{secret:'HEBEIRANK',type:'HOUR'})

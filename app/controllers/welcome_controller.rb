@@ -349,7 +349,8 @@ class WelcomeController < ApplicationController
 			sql_str<<stime
 			sql_str<<etime
 			data = model.where(sql_str)
-			data[0].nil? ? [] : data.uniq
+			tmpd = /\w*Hour/.match(model.name) ? 3600 : 3600*24
+			Custom::Redis.set(model.name,data,tmpd)
 		else
 			Custom::Redis.get(model.name)
 		end
@@ -777,7 +778,7 @@ class WelcomeController < ApplicationController
 		if $redis['qhd_hour_forecast'].nil?
 			c = City.find_by_city_name_pinyin('qinhuangdaoshi')
 			ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
-			Custom::Redis.set('qhd_hour_forecast',ch)
+			Custom::Redis.set('qhd_hour_forecast',ch,3600)
 		else
 			ch = Custom::Redis.get('qhd_hour_forecast')
 		end

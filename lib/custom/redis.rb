@@ -7,7 +7,7 @@
 #
 
 module Custom::Redis
-	#缓存公用方法
+	#缓存公用方法,time==0时永不过期
 	def self.set(name,data,time=0)
 		$redis.del(name)
 		if $redis.set(name,data.to_json)=='OK'
