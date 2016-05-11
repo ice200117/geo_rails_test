@@ -301,9 +301,16 @@ class WelcomeController < ApplicationController
 		@jjjdatabyyear=change_data_type(get_db_data(TempJjjYear,TempJjjYear.last.data_real_time),0)
 
 		#74城市
+		@sfcitiesrankbyhour=get_db_data(TempSfcitiesHour,TempSfcitiesHour.last.data_real_time)
 		@sfcitiesrankbyday=change_data_type(change_74_main_pol(get_db_data(TempSfcitiesDay,TempSfcitiesDay.last.data_real_time)),0)
 		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth,TempSfcitiesMonth.last.data_real_time),0)
 		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear,TempSfcitiesYear.last.data_real_time),0)
+
+
+		@rank={'hour'=>get_rank(@sfcitiesrankbyhour)}
+		@rank['day']=get_rank(@sfcitiesrankbyday)
+		@rank['month']=get_rank(@sfcitiesrankbymonth)
+		@rank['year']=get_rank(@sfcitiesrankbyyear)
 
 		@banner = banner()
 
@@ -312,6 +319,15 @@ class WelcomeController < ApplicationController
 		# adj data
 		@city_adj = 'ADJ_baoding/'
 
+	end
+	def get_rank(data)
+		tmp=data.sort_by{|a| a['zonghezhishu']}
+		(0...tmp.length).each do |n|
+			if tmp[n]['city_id'] == 11
+				return tmp.length-n-1
+			end
+		end
+		return '--'
 	end
 
 	#修改74城市首要污染物

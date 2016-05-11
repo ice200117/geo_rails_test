@@ -1,4 +1,4 @@
-<%= render partial:"welcome/banner",locals:{banner:@banner}%>
+<%= render partial:"welcome/banner",locals:{banner:@banner,rank:@rank}%>
 <div class="container">
 	<table cellpadding="0" cellspacing="0" class="content" width="100%">
 		<tbody>
@@ -432,7 +432,7 @@ $(document).ready(function(){
 			<strong>74城市空气质量综合指数排名</strong>
 		</h3>
 	</div>
-	<div class="panel-body">
+	<div class="panel-body" name='sfcity'>
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="tab-title">
@@ -461,6 +461,7 @@ $(document).ready(function(){
 	</div>
 </div>
 <script>
+	$(document).ready()
 	$(function(){
 		$(".change").click(function(){
 			if($(this).is(".active")){
