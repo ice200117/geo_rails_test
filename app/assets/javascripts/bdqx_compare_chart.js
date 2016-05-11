@@ -1,8 +1,8 @@
 /*bdqx_compare_chart.js*/
 
-var city1 = '白沟新城';
-var city2 = '满城县';
-var city3 = '清苑县';
+var city1 = '卢龙县';
+var city2 = '北戴河区';
+var city3 = '海关区';
 
 var type = 'HOUR';
 var ITEM = 'AQI';
@@ -317,7 +317,7 @@ function getData()
 
         for(i=0;i<data.rows.length;i++)
         {
-          citynum = data.rows[i].alldata.city_id;
+          citynum = data.rows[i].alldata.monitor_point_id;
           time = data.rows[i].timeformatted;
           aqi = parseInt(data.rows[i].alldata.AQI);
           pm2_5 = parseInt(data.rows[i].alldata.pm25);

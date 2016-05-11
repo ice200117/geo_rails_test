@@ -254,19 +254,19 @@ class WelcomeController < ApplicationController
 
 	def bdqx_compare_chart
 
-		bdqx_monitorpoint={"白沟新城"=>"白沟新城行政中心楼","满城县"=>"满城税务局","清苑县"=>"清苑县政府","涞水县"=>"涞水县环境监测站","阜平县"=>"阜平县环保局","定兴县"=>"定兴县政府","高阳县"=>"高阳县环保局","容城县"=>"容城县环境保护局","涞源县"=>"涞源县环保局","望都县"=>"望都县环境监测站","安新县"=>"安新民政局","易县"=>"易县环境保护局","曲阳县"=>"曲阳县环保局","蠡县"=>"蠡县县政府","顺平县"=>"顺平县环保局","博野县"=>"博野县招生办","雄县"=>"雄县环境保护局","涿州市"=>"涿州监测站","安国市"=>"安国市政府","高碑店市"=>"高碑店环保局","徐水县"=>"徐水环保局","定州市"=>"定州武装部","唐县"=>"唐县政府楼"}
-		city1=City.find_by city_name: bdqx_monitorpoint[params[:city1]]
-		city2=City.find_by city_name: bdqx_monitorpoint[params[:city2]]
-		city3=City.find_by city_name: bdqx_monitorpoint[params[:city3]]
-		cityidarray=Array[city1.id,city2.id,city3.id]
+		bdqx_monitorpoint={"海港建设大厦"=>"建设大厦","北戴河区"=>"北戴河","海关区"=>"第一关","海港市政府"=>"市政府","青龙满族自治县"=>"青龙环保局","昌黎县"=>"昌黎环保局","抚宁县"=>"抚宁党校","卢龙县"=>"卢龙县气象局","海港市监测站"=>"市监测站"}
+		city1=MonitorPoint.where("pointname =? AND city_id = 11",bdqx_monitorpoint[params[:city1]])
+		city2=MonitorPoint.where("pointname =? AND city_id = 11",bdqx_monitorpoint[params[:city2]])
+		city3=MonitorPoint.where("pointname =? AND city_id = 11",bdqx_monitorpoint[params[:city3]])
+		cityidarray=Array[city1[0].id,city2[0].id,city3[0].id]
 		startdate=Time.local(params[:startTime][0,4].to_i,params[:startTime][5,2].to_i,params[:startTime][8,2].to_i,0)
 		enddate=Time.local(params[:endTime][0,4].to_i,params[:endTime][5,2].to_i,params[:endTime][8,2].to_i,23)
 		if params[:type]=='HOUR'
-			querydata=TempBdHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc') 
+			querydata=MonitorPointHour.where("data_real_time>=? AND data_real_time<=? AND monitor_point_id IN (?,?,?)",startdate,enddate,city1[0].id,city2[0].id,city3[0].id).order('data_real_time asc') 
 		elsif params[:type]=='DAY'
-			querydata=TempBdDay.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')
+			querydata=MonitorPointDay.where("data_real_time>=? AND data_real_time<=? AND monitor_point_id IN (?,?,?)",startdate,enddate,city1[0].id,city2[0].id,city3[0].id).order('data_real_time asc')
 		else
-			querydata=TempBdMonth.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')      
+			querydata=MonitorPointMonth.where("data_real_time>=? AND data_real_time<=? AND monitor_point_id IN (?,?,?)",startdate,enddate,city1[0].id,city2[0].id,city3[0].id).order('data_real_time asc')      
 		end  
 		@bdqxcompare={citynum: cityidarray,rows: querydata.map{ |data| { alldata: data,timeformatted: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S")}}}
 		#pp querydata.map{ |data| data.city_id}.uniq.length
@@ -414,6 +414,8 @@ class WelcomeController < ApplicationController
 			end
 		end
 		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('qinhuangdaoshi')
+
+
 		temp.each do |k,v|
 			v["fore_lev"] = get_lev(v["AQI"])
 			key = k.to_time.strftime("%Y%m%d")
@@ -740,6 +742,7 @@ class WelcomeController < ApplicationController
 		@post='130600'
 		@city_adj = @banner["city_adj"]
 		@adj_per1 = @banner["adj_per1"]
+		@forecast_data = get_forecast()
 	end
 	def compare
 		@banner = banner()
@@ -834,6 +837,21 @@ class WelcomeController < ApplicationController
 		hs["adj_per2"] = adj_percent('NOX_120', hs["city_adj"])
 		hs["adj_per3"] = adj_percent('CO_120', hs['city_adj'])
 
-		hs
+		return hs
 	end 
+	#周边城市
+	def cities_around_fun
+		cities_hash={1=>"北京",8=>"天津",10=>"唐山",18=>"廊坊",14=>"保定",56=>"葫芦岛",49=>"锦州",16=>"承德"}
+		starttime=Time.mktime((Time.now-3600).year,(Time.now-3600).month,(Time.now-3600).day,(Time.now-3600).hour,0,0)
+		endtime=Time.mktime((Time.now-3600).year,(Time.now-3600).month,(Time.now-3600).day,(Time.now-3600).hour,59,59)
+		querydata=ChinaCitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (1,8,10,18,14,56,49,16)",starttime,endtime)
+		@cities_around=querydata.map{ |data| { time: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S"),cityname: cities_hash[data.city_id],aqi: data.AQI,pm2_5: data.pm25,pm10: data.pm10,so2: data.SO2,no2: data.NO2,co: data.CO,o3: data.O3,quality: data.level,primary_pollutant: data.main_pol,weather: data.weather,temp: data.temp,humi: data.humi,windspeed: data.windspeed,winddirection: data.winddirection}}
+		respond_to do |format|
+			format.html { }
+			format.js   { }
+			format.json {
+				render json: @cities_around
+			}
+		end
+	end
 end
