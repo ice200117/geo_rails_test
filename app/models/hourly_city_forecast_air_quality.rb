@@ -53,8 +53,10 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 			sum = 0
 			num = 0
 			tmpd = Hash.new
+			ary=Array.new
 			data.each do |t|
 				sum += t.AQI;num += 1 if t.AQI != 0
+				ary << t.AQI
 				td = false
 				if tmpd[t.main_pol] == nil
 					tmpd[t.main_pol] = 1
@@ -62,6 +64,8 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 					tmpd[t.main_pol] += 1
 				end
 			end
+			temp['max']=ary.max
+			temp['min']=ary.min
 			temp["main_pol"]=tmpd.sort{|a,b| a[1] <=> b[1]}.last.first.to_s
 			temp["AQI"] = sum/num
 			temp["level"] = get_lev(sum/num)

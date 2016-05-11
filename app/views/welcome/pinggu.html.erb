@@ -207,6 +207,33 @@ $(document).ready(function(){
 
 
 
+<!-- 历史排名曲线模块 -->
+<%= javascript_include_tag 'rank_chart' %>
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="containerbd" id="md-qx" style="margin-top:20px;">
+	<div class="dtipbd"></div>
+	<div class="subtitlebd">郑州市历史排名曲线</div>
+	<hr>
+	<div class="row">
+		<div class="col-xs-12">
+		    <div class="btngroupbd">
+		    	<div class="btnbd-group btnbd-group-sm" style="float:right">
+				  <button type="button" class="btnbd btnbd-default btndategroup3" value="DAY">日排名</button>
+				  <button type="button" class="btnbd btnbd-default btndategroup3" value="MONTH">月排名</button>
+				</div>
+				<div class="btnbd-group btnbd-group-sm">
+				  <button type="button" class="btnbd btnbd-default btnitemgroup3" value="ASC">正排</button>
+				  <button type="button" class="btnbd btnbd-default btnitemgroup3" value="DESC">倒排</button>
+				</div>
+			</div>
+			<div id="rankchart" class="aqichartbd"></div>
+		</div>
+	</div>
+</div>
+
+
+
+
 <div class="panel panel-primary">
 	<div class="panel-heading">
 		<h3 >
