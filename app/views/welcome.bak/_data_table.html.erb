@@ -1,5 +1,5 @@
 <span>更新时间: 
-<%= data[:time].strftime("%Y-%m-%d") %>
+<%= data[:time].to_time.strftime("%Y-%m-%d") %>
 </span> 
 <table class="table">
 	<thead>
@@ -24,10 +24,10 @@
 	<tbody>
 		<% data = data[:cities].sort_by{|a| a['zonghezhishu']}%>
 		<% for i in (0...data.length)%>
-		<% break if flag == 'sf' && i == 20%>
-		<% tmp=data[i] %>
+		<%# <% break if flag == 'sf' && i == 20 %>
+		<% tmp=data[data.length-1-i] %>
 		<tr>
-			<td><%= i %></td>
+			<td><%= i+1 %></td>
 			<td><%= tmp['city']%></td>
 			<td>
 				<%= tmp['SO2']==nil ? '——' : tmp['SO2'] %>

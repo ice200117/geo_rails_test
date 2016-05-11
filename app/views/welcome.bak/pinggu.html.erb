@@ -1,4 +1,4 @@
-<%= render partial:"welcome/banner",locals:{banner:@banner}%>
+<%= render partial:"welcome/banner",locals:{banner:@banner,rank:@rank}%>
 <div class="container">
 	<table cellpadding="0" cellspacing="0" class="content" width="100%">
 		<tbody>
@@ -12,25 +12,25 @@
 					<div class="future-list">
 						<ul>
 							<% for i in (0..4) %>
-								<% time = (Time.now.strftime("%Y%m%d").to_i+i).to_s%>
+								<% time = i.day.from_now.strftime("%Y%m%d")%>
 								<% t = @forecast_data[time] %>
 								<% next unless t %>
+								<% dnil='暂无数据'%>
 								<li>
-									<%# <h4 class="list-title"><%= t["day"]+"(#{DateTime.now.next_day(i).month}月#{DateTime.now.next_day(i).day}日)" %1></h4> %> 
-									<h4 class="list-title"><%= t["day"] %></h4>  
+									<h4 class="list-title"><%= t["date"] %></h4>  
 									<table cellpadding="0" cellspacing="0">
 										<tbody>
 											<tr>
 												<td><span class="gray">级别</span></td>
-												<td><span class="list-alue"><span class="<%= t["fore_lev"] if t["fore_lev"] != nil %> small"><%= t["level"] if t['level'] !=nil %></span></span></td>
+												<td><span class="list-alue" style="<%='font-size:12px' if t['fore_lev'].nil? %>"><span class="<%= t['fore_lev'] if t["fore_lev"] != nil %> <%= t['fore_lev'] != nil ? 'small' : 'small1'%>"><%= t['level'] !=nil ? t["level"] : dnil%></span></span></td>
 											</tr>
 											<tr>
 												<td style="width:88px;"><span class="gray">首要污染物</span></td>
-												<td><span class="list-alue"><%= t["main_pol"]%></span></td>
+												<td><span class="list-alue" style="<%='font-size:12px' if t['main_pol'].nil?%>"><%= t["main_pol"] != nil ? t["main_pol"] : dnil%></span></td>
 											</tr>
 											<tr>
 												<td style="padding-top:15px;"><span class="gray">天气</span></td>
-												<td class="list-weather" style="padding-top:10px;"><span ><%= t["tq"] %>&nbsp;<br><%= t["temp2"] %>℃~<%= t["temp1"] %>℃<br><%= t["wd"]%>&nbsp;<%= t["ws"] %></span></td>
+												<td class="list-weather" style="padding-top:10px;"><span ><%= t["tq"] != nil ? t["tp"] : '-' %>&nbsp;<br><%= t["temp2"] !=nil ? t['temp2'] : '-' %>℃~<%= t["temp1"] !=nil ? t['temp1'] : '-' %>℃<br><%= t["wd"] !=nil ? t['wd'] : '-'%>&nbsp<%= t["ws"] !=nil ? t['ws'] : '-' %></span></td>
 											</tr>
 										</tbody>
 									</table>
@@ -100,42 +100,42 @@ function ChartQuery(){
 	$.get("/welcome/chartway.json?exact="+pExact+"&type="+pType+"&starttime="+pStartTime+"&endtime="+pEndTime,function(result){
 		var titleText='';
 		if('d'==pTime){
-			titleText = '保定市各项天气指数实时变化图表（更新于 '+result.categories[result.categories.length-1]+'时）'
+			titleText = '秦皇岛市市各项天气指数实时变化图表（更新于 '+result.categories[result.categories.length-1]+'时）'
 		}
 		else{
 			titleText = '保定市各项天气指数实时变化图表（更新于 '+result.categories[result.categories.length-1]+'）'
 		}
-		$('#container').highcharts({
-			title: {
-				text:titleText,
-				x: -20 //center
-			},
-			credits : { enabled:false },
-			subtitle: {
-				text: '',
-				x: -20
-			},
-			xAxis: {categories: result.categories},
-			yAxis: {
-				title: { text:'浓度'},
-				plotLines: [{
-					value: 0,
-					width: 1,
-					color: '#808080'
-				}]
-			},
-			tooltip: { 
-				shared: true,
-				crosshairs: true
-			},
-			legend: {
-				layout: 'vertical',
-				align: 'right',
-				verticalAlign: 'middle',
-				borderWidth: 0
-			},
-			series: result.series             
-		});
+	$('#container').highcharts({
+		title: {
+			text:titleText,
+		x: -20 //center
+		},
+		credits : { enabled:false },
+		subtitle: {
+			text: '',
+		x: -20
+		},
+		xAxis: {categories: result.categories},
+		yAxis: {
+			title: { text:'浓度'},
+		plotLines: [{
+			value: 0,
+		width: 1,
+		color: '#808080'
+		}]
+		},
+		tooltip: { 
+			shared: true,
+			crosshairs: true
+		},
+		legend: {
+			layout: 'vertical',
+			align: 'right',
+			verticalAlign: 'middle',
+			borderWidth: 0
+		},
+		series: result.series             
+	});
 	});   
 } 
 function datePicked(){
@@ -208,6 +208,33 @@ $(document).ready(function(){
 
 
 
+<!-- 历史排名曲线模块 -->
+<%= javascript_include_tag 'rank_chart' %>
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="containerbd" id="md-qx" style="margin-top:20px;">
+	<div class="dtipbd"></div>
+	<div class="subtitlebd">郑州市历史排名曲线</div>
+	<hr>
+	<div class="row">
+		<div class="col-xs-12">
+		    <div class="btngroupbd">
+		    	<div class="btnbd-group btnbd-group-sm" style="float:right">
+				  <button type="button" class="btnbd btnbd-default btndategroup3" value="DAY">日排名</button>
+				  <button type="button" class="btnbd btnbd-default btndategroup3" value="MONTH">月排名</button>
+				</div>
+				<div class="btnbd-group btnbd-group-sm">
+				  <button type="button" class="btnbd btnbd-default btnitemgroup3" value="ASC">正排</button>
+				  <button type="button" class="btnbd btnbd-default btnitemgroup3" value="DESC">倒排</button>
+				</div>
+			</div>
+			<div id="rankchart" class="aqichartbd"></div>
+		</div>
+	</div>
+</div>
+
+
+
+
 <div class="panel panel-primary">
 	<div class="panel-heading">
 		<h3 >
@@ -220,7 +247,7 @@ $(document).ready(function(){
 				<div class="row">
 					<div class="col-xs-6">
 						<table class="table table-striped">
-							<caption>保定市各区县小时排名&nbsp&nbsp<%= @bddatabyhour[:time].strftime("%Y-%m-%d %H:00:00") %></caption>
+							<caption>秦皇岛市各区县小时排名&nbsp&nbsp<%= @qhdbyhour[:time].to_time.strftime("%Y-%m-%d %H:00:00") %></caption>
 							<thead>
 								<tr class="top11-color-title bluegreen">
 									<th>排名</th>
@@ -231,15 +258,15 @@ $(document).ready(function(){
 								</tr>
 							</thead>
 							<tbody>
-								<% bddatabyhour=@bddatabyhour[:cities].sort_by{|a| a['AQI'].to_i} %>
-								<% for i in (0...bddatabyhour.length) %>
-									<% tmp=bddatabyhour[i] %>
+								<% qhdbyhour=@qhdbyhour[:cities].sort_by{|a| a['AQI'].to_i} %>
+								<% for i in (0...qhdbyhour.length) %>
+									<% tmp=qhdbyhour[i] %>
 
 									<tr>
 										<td><%= i+1 %></td>
 										<td><%= tmp['city'] %></td>
 										<td><%= tmp['AQI'] %></td>
-										<td><%= tmp['level']%></td>
+										<td><%= tmp['quality'] %></td>
 										<td><%= tmp['main_pol']%></td>
 									</tr>
 								<% end %>
@@ -248,7 +275,7 @@ $(document).ready(function(){
 					</div>
 					<div class="col-xs-6">
 						<table class="table table-striped">
-							<caption>保定市各区县空气质量日均排名&nbsp&nbsp<%= @bddatabyday[:time].strftime("%Y-%m-%d") %></caption>
+							<caption>秦皇岛市各区县空气质量日均排名&nbsp&nbsp<%= @qhdbyday[:time].to_time.strftime("%Y-%m-%d") %></caption>
 							<thead>
 								<tr class="top11-color-title bluegreen">
 									<th>排名</th>
@@ -259,9 +286,9 @@ $(document).ready(function(){
 								</tr>
 							</thead>
 							<tbody>
-								<% bddatabyday=@bddatabyday[:cities].sort_by{|a| a['AQI'].to_i} %>
-								<% for i in (0...bddatabyday.length) %>
-									<% tmp=bddatabyday[i]%>
+								<% qhdbyday=@qhdbyday[:cities].sort_by{|a| a['AQI'].to_i} %>
+								<% for i in (0...qhdbyday.length) %>
+									<% tmp=qhdbyday[i]%>
 									<tr>
 										<td><%= i+1 %></td>
 										<td><%= tmp['city']%></td>
@@ -277,7 +304,7 @@ $(document).ready(function(){
 				<div class="row">
 					<div class="col-xs-6">
 						<table class="table table-striped">
-							<caption>省内城市小时排名&nbsp&nbsp<%= @hebeidatabyhour[:time].strftime("%Y-%m-%d %H:00:00") %></caption>
+							<caption>省内城市小时排名&nbsp&nbsp<%= @hebeidatabyhour[:time].to_time.strftime("%Y-%m-%d %H:00:00") %></caption>
 							<thead>
 								<tr class="top11-color-title blue">
 									<th>排名</th>
@@ -304,7 +331,7 @@ $(document).ready(function(){
 					</div>
 					<div class="col-xs-6">
 						<table class="table table-striped">
-							<caption>省内城市日均排名&nbsp&nbsp<%= @hebeidatabyday[:time].strftime("%Y-%m-%d") %></caption>
+							<caption>省内城市日均排名&nbsp&nbsp<%= @hebeidatabyday[:time].to_time.strftime("%Y-%m-%d") %></caption>
 							<thead>
 								<tr class="top11-color-title blue">
 									<th>排名</th>
@@ -333,7 +360,7 @@ $(document).ready(function(){
 			</div>
 			<div class="col-xs-4">
 				<table class="table table-striped">
-					<caption>全国74城市空气质量日均排名<%= @sfcitiesrankbyday[:time].strftime("%Y-%m-%d") %></caption>
+					<caption>全国74城市空气质量日均排名<%= @sfcitiesrankbyday[:time].to_time.strftime("%Y-%m-%d") %></caption>
 					<thead>
 						<tr class="top11-color-title green">
 							<th>倒数排名</th>
@@ -347,7 +374,7 @@ $(document).ready(function(){
 						<% sfcitiesrankbyday=@sfcitiesrankbyday[:cities].sort_by{|a| a["AQI"].to_i}%>
 						<% for i in (0...sfcitiesrankbyday.length)%>
 							<% tmp=sfcitiesrankbyday[sfcitiesrankbyday.length-1 -i]%>
-							<% break if i==35 %>
+							<% break if i==21 %>
 							<tr>
 								<td><%= i+1 %></td>
 								<td><%= tmp['city'] %></td>
@@ -361,7 +388,7 @@ $(document).ready(function(){
 							<td></td>
 							<td></td>
 							<td></td>
-							<td colspan="0"><a href="/rank1503" target="_blank" class='btn-link'>更多</a></td>
+							<td colspan="0"><a href="#sfcity" class='btn-link'>更多</a></td>
 						</tr>
 					</tbody>
 				</table>
@@ -380,16 +407,16 @@ $(document).ready(function(){
 			<div class="col-xs-12">
 				<div class="tab-title">
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#lfgqxyue" data-toggle="tab"><strong>污染物浓度（月报）</strong></a></li>
-						<li><a href="#lfgqxnian" data-toggle="tab"><strong>污染物浓度（年报）</strong></a></li>
+						<li class="active"><a href="#lfgqxyue" data-toggle="tab"><strong>污染物浓度（时报）</strong></a></li>
+						<li><a href="#lfgqxnian" data-toggle="tab"><strong>污染物浓度（日报）</strong></a></li>
 					</ul>
 				</div>
 				<div class="tab-content">
 					<div class="tab-pane fade in active" id="lfgqxyue">
-						<%= render partial:'welcome/data_table',locals:{data:@bddatabymonth,flag:'bd'} %>
+						<%= render partial:'welcome/data_table',locals:{data:@qhdbyhour,flag:'bd'} %>
 					</div>
 					<div class="tab-pane fade" id="lfgqxnian">
-						<%= render partial:'welcome/data_table',locals:{data:@bddatabyyear,flag:'bd'} %>
+						<%= render partial:'welcome/data_table',locals:{data:@qhdbyday,flag:'bd'} %>
 					</div>
 				</div>
 			</div>
@@ -427,12 +454,12 @@ $(document).ready(function(){
 
 
 <div class="panel panel-primary">
-	<div class="panel-heading">
+	<div class="panel-heading" id='sfcity'>
 		<h3 >
 			<strong>74城市空气质量综合指数排名</strong>
 		</h3>
 	</div>
-	<div class="panel-body">
+	<div class="panel-body" name='sfcity'>
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="tab-title">
@@ -457,10 +484,11 @@ $(document).ready(function(){
 		</div>
 	</div>
 	<div class="panel-footer">
-		<a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a>
+		<%# <a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a> %>
 	</div>
 </div>
 <script>
+	$(document).ready()
 	$(function(){
 		$(".change").click(function(){
 			if($(this).is(".active")){

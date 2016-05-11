@@ -21,40 +21,28 @@
 	</ul>
 	<div id="subIndexTabContent" class="tab-content">
 		<div class="tab-pane fade in active" id="aqi" >
-			<%= line_chart @chart_aqi,width:"1140px",height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name+"_AQI CUACE (CAMS)"} } %>
+			<%= line_chart @chart_aqi,height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name.to_s+"_AQI CUACE (CAMS)"} } %>
 		</div>
 		<div class="tab-pane fade" id="so2" >
-			<div style="width:1140px">
-				<%= line_chart @chart_so2,height: "600px",width:"1140px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name+"_SO2 CUACE (CAMS)"} } %>
-			</div>
+			<%= line_chart @chart_so2,height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name.to_s+"_SO2 CUACE (CAMS)"} } %>
 		</div>
 		<div class="tab-pane fade" id="no2">
-			<div style="width:1140px">
-				<%= line_chart @chart_no2, height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name+"_NO2 CUACE (CAMS)"} } %>
-			</div>
+			<%= line_chart @chart_no2, height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name.to_s+"_NO2 CUACE (CAMS)"} } %>
 		</div>
 		<div class="tab-pane fade" id="co">
-			<div style="width:1140px">
-				<%= line_chart @chart_co, height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name+"_CO CUACE (CAMS)"} } %>
-			</div>
+			<%= line_chart @chart_co, height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name.to_s+"_CO CUACE (CAMS)"} } %>
 		</div>
 		<div class="tab-pane fade" id="o3">
-			<div style="width:1140px">
-				<%= line_chart @chart_o3, height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name+"_O3 CUACE (CAMS)"} } %>
-			</div>
+			<%= line_chart @chart_o3, height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name.to_s+"_O3 CUACE (CAMS)"} } %>
 		</div>
 		<div class="tab-pane fade" id="pm10">
-			<div style="width:1140px">
-				<%= line_chart @chart_pm10, height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name+"_PM10 CUACE (CAMS)"} } %>
-			</div>
+			<%= line_chart @chart_pm10, height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name.to_s+"_PM10 CUACE (CAMS)"} } %>
 		</div>
 		<div class="tab-pane fade" id="pm25">
-			<div style="width:1140px">
-				<%= line_chart @chart_pm25, height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name+"_PM25 CUACE (CAMS)"} } %>
-			</div>
+			<%= line_chart @chart_pm25, height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name.to_s+"_PM25 CUACE (CAMS)"} } %>
 		</div>
 		<div class="tab-pane fade" id="vis">
-			<%= line_chart @chart_vis, height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name+"_VIS CUACE (CAMS)"} } %>
+			<%= line_chart @chart_vis, height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text: @city_name.to_s+"_VIS CUACE (CAMS)"} } %>
 		</div>
 	</div>
 

@@ -1,0 +1,24 @@
+<div class="container">
+  <div id="map3" style="height:430px" class="col-xs-6">
+  </div>
+  <div id='map4' style="height:430px" class="col-xs-6">
+  </div>
+  <% strnow1 = (Time.now).strftime('%Y%m%d') %>
+<%= image_tag 'china_fc09/'+strnow1+'/Hourly/Animate_CUACE_09km_AQI_'+strnow1+'.gif', alt: 'China forecast' %>
+<%= image_tag 'china_fc09/'+strnow1+'/Hourly/Animate_CUACE_09km_PM10_'+strnow1+'.gif', alt: 'China forecast' %>
+<%= image_tag 'china_fc09/'+strnow1+'/Hourly/Animate_CUACE_09km_CO_'+strnow1+'.gif', alt: 'China forecast' %>
+<%= image_tag 'china_fc09/'+strnow1+'/Hourly/Animate_CUACE_09km_NO2_'+strnow1+'.gif', alt: 'China forecast' %>
+<%= image_tag 'china_fc09/'+strnow1+'/Hourly/Animate_CUACE_09km_O3_'+strnow1+'.gif', alt: 'China forecast' %>
+<%= image_tag 'china_fc09/'+strnow1+'/Hourly/Animate_CUACE_09km_SO2_'+strnow1+'.gif', alt: 'China forecast' %>
+<%= image_tag 'china_fc09/'+strnow1+'/Hourly/Animate_CUACE_09km_VIS_'+strnow1+'.gif', alt: 'China forecast' %>
+<%= image_tag 'china_fc09/'+strnow1+'/Hourly/Animate_CUACE_09km_PM2.5_'+strnow1+'.gif', alt: 'China forecast' %>
+
+</div>
+<!--
+<script src="assets/map_welcome.js"></script>
+-->
+<script>
+  <% strnow = (Time.now - 60*60*24).strftime('%Y%m%d') %>
+  $('#map4').backstretch("<%= image_url 'china_fc/'+strnow+'/Hourly/Animate_CUACE_25km_AQI_'+strnow+'.gif', alt: 'China forecast' %>");
+</script>
+<%= javascript_include_tag 'map_welcome', 'data-turbolinks-track' => true %>

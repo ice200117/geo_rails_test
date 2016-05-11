@@ -1,6 +1,5 @@
 
-
-<!--保定区县空气质量比较曲线模块-->
+<!--城市空气质量比较曲线模块-->
 <%= stylesheet_link_tag "css/daterangepicker-bs3.css" %>
 <!--<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>-->
 <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -9,18 +8,18 @@
   <div class="row" >
     <div class="col-xs-12" >
       <div class="dtipbd"></div>
-      <div class="subtitlebd" >保定区县空气质量比较</div> 
+      <div class="subtitlebd" >城市空气质量比较</div> 
     </div>  
   </div>
   <hr class="subtitlebdhr" />
   <div class="row">
     <div class="col-xs-12">
       <div class="cityinputBox">
-          <span style="vertical-align:middle">区县1</span> 
+          <span style="vertical-align:middle">城市1</span> 
               <input type="text" class="cityinput" id="city1" />
-              <span style="vertical-align:middle">区县2</span> 
+              <span style="vertical-align:middle">城市2</span> 
               <input type="text" class="cityinput" id="city2" />
-              <span style="vertical-align:middle">区县3</span> 
+              <span style="vertical-align:middle">城市3</span> 
               <input type="text" class="cityinput" id="city3" />
       </div>
       <div class="btngroupbd btnbd-toolbar">
@@ -58,4 +57,4 @@
     </div>
   </div>
 </div>
-<%= javascript_include_tag 'bootstrap.min','respond','bdqxSelector','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','bdqx_compare_chart' %>
+<%= javascript_include_tag 'bootstrap.min','respond','citySelector','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','city_compare_chart' %>

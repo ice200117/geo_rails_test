@@ -1,4 +1,4 @@
-<%= render partial:"welcome/banner",locals:{banner:@banner}%>
+<%= render partial:"qinhuangdao/banner",locals:{banner:@banner}%>
 <div class="container">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
@@ -9,7 +9,7 @@
 		<div class="panel-body">
 			<div class="tabbable" id="tabs-922331">
 				<ul class="nav nav-tabs">
-					<li><a contenteditable="true" data-toggle="tab" href="#panel-437763">趋势预报</a></li>
+					<li><a contenteditable="true" data-toggle="tab" href="#panel-437763">未来5天趋势预报</a></li>
 					<li class="active"><a contenteditable="true" data-toggle="tab" href="#panel-55716">源追踪</a></li>
 				</ul>
 				<div class="tab-content">
@@ -26,35 +26,66 @@
 						end until File::exists?(file)
 					%>
 				<%= image_tag 'china_fc09/'+strtime+'/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif', class:'col-xs-8' %>
-				<div class="col-xs-4">
-					<div> <%=@city_name%>未来五天趋势预报</div>
-					<table class="table table-striped">
-						<tr>
-							<th>时间</th>
-							<th>污染级别</th>
-							<th>首要污染物</th>
-							<!--<th>综合指数</th>-->
-						</tr>
-						<% @day_fdata.each do |row| %>
-							<tr>
-								<td><%=row[:w]%></td>
-								<td>
-									<span class="<%=row[:start]%>" style='width:40px;color:#fff;'><%=row[:start_han]%></span>
-									~
-									<span class="<%=row[:end]%>" style='width:40px;color:#fff;'><%=row[:end_han]%></span>
-								</td>
-								<td><%=row[:pol]%></td>
-							</tr>
-						<% end %>
-					</table>
-				</div>
+				<!--未来5天趋势预报和气象预报-->
+				  <div style="border:1px solid #dfdfdf;">
+    				<div><span class="aftertime-title" >未来5天趋势预报和气象预报</span></div>
+      				<div>
+            			<table cellpadding="0" cellspacing="0"  >
+            			<% for i in (0..4) %>
+            			<% time = i.day.from_now.strftime("%Y%m%d")%>
+						<% t = @forecast_data[time] %>
+						<% next unless t %>
+                    	<tr>
+                          <th style="border:1px solid #dfdfdf;"class="aftertime-title"><%= t["date"] %></th>
+                        <td>
+                            <table cellpadding="0" cellspacing="0"  width="100%" border="0" style="border:1px solid #dfdfdf;">
+                              <tr>
+                                <td>AQI日均值</td>
+                                <td><strong><%= t["AQI"] != nil ? t["AQI"].to_i : '-'%></strong></td>
+                                <td>平均级别</td>
+                                <td><span class="<%= t["fore_lev"] != nil ? t["fore_lev"] : '-'%> small"><%= t['level'] !=nil ? t["level"] : '-'%></span></td>
+                                </tr>
+                                <tr>
+                                  <td>AQI范围</td>
+                                  <td><strong><%= t["min"] != nil ? t["min"] : '-'%>~<%= t["max"] != nil ? t["max"] : '-'%></strong></td>
+                                  <td>首要污染物</td>
+                                  <td><strong><%= t["main_pol"] != nil ? t["main_pol"] : '-'%></strong></td>
+                                 </tr>
+                          </table>
+                          <div>
+                                <span><%= t["temp2"] !=nil ? t['temp2'] : '-' %>℃~<%= t["temp1"] !=nil ? t['temp1'] : '-' %>℃</span>    
+                                <span><%= t["tq"] != nil ? t["tp"] : '-' %></span>     
+                                <span><%= t["ws"] !=nil ? t['ws'] : '-' %> <%= t["wd"] !=nil ? t['wd'] : '-'%></span>
+                          </div>
+                       </td>
+                  </tr>
+                  <% end %>
+                  
+
+            	<tr>
+            		<td class="aftertime-title">秦皇岛重污染天气预警</td>
+                	<td>
+
+             			<div style="background: url(<%= image_url 'lanse.png' %>) no-repeat scroll 5px 10px rgba(0, 0, 0, 0);width:327px;height:60px;padding-top:8px;">
+              				<table style="height:100%;width:100%;margin-left:60px">
+                				<tr><td>无预警信息</td></tr>
+              				</table>
+             			</div>
+            		</td>
+            	</tr>
+              </table>
+            </div>
+ 
+         </div>   
+
+
 			</div>
 
 			<div class="tab-pane active" contenteditable="true" id="panel-55716">
 				<div class="zc-map-labels col-xs-12 row" >
-					<%= link_to 'SO2', adj_ajax_welcome_path(type: "SO2_120", post: @post), remote: true, class: "active change" %>
-					<%= link_to 'NOX', adj_ajax_welcome_path(type: "NOX_120", post: @post), remote: true , class: "change" %>
-					<%= link_to 'CO', adj_ajax_welcome_path(type: "CO_120", post: @post), remote: true , class: "change" %>
+					<%= link_to 'SO2', adj_ajax_qinhuangdao_path(type: "SO2_120", post: @post), remote: true, class: "active change" %>
+					<%= link_to 'NOX', adj_ajax_qinhuangdao_path(type: "NOX_120", post: @post), remote: true , class: "change" %>
+					<%= link_to 'CO', adj_ajax_qinhuangdao_path(type: "CO_120", post: @post), remote: true , class: "change" %>
 				</div>
 				<div class="row">
 					<div class="yuanzhuizong col-xs-8">
