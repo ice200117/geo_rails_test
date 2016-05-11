@@ -50,4 +50,5 @@ Rails.application.routes.draw do
 	get 'welcome/get_forecast_baoding' => 'welcome#get_forecast_baoding' 
 	get 'welcome/get_city_point' => 'welcome#get_city_point'  
 	get '/adj_pie' => 'welcome#adj_pie'
+	get '/welcome/cities_around_fun' => 'welcome#cities_around_fun'
 end
