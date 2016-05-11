@@ -5,6 +5,8 @@
 
 def parse_line(line, c)
   #hc = HourlyCityForecastAirQuality.new
+  c.forecast_real_data.destroy_all
+
   sd = line[0,10]
   delta_hour = line[11,3]
   sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
@@ -15,8 +17,6 @@ def parse_line(line, c)
   #hc.forecast_datetime = sdate+delta_hour.to_i*3600
 
   hc = HourlyCityForecastAirQuality.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
-
-
   hc.AQI = line[14,4]
  # hc.AQI = hc.AQI*2.51   # liubin 10/5/2015
   hc.main_pol = line[18,13].strip
@@ -28,8 +28,20 @@ def parse_line(line, c)
   hc.NO2 = line[51,6]
   hc.O3 = line[75,6]
   hc.VIS = line[32,7]
-
   hc.save
+
+  rc = ForecastRealDatum.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
+  rc.AQI = line[14,4]
+  rc.main_pol = line[18,13].strip
+  rc.grade = line[31,1]
+  rc.pm25 = line[99,6]
+  rc.pm10 = line[87,6]
+  rc.SO2 = line[39,6]
+  rc.CO = line[63,6]
+  rc.NO2 = line[51,6]
+  rc.O3 = line[75,6]
+  rc.VIS = line[32,7]
+  rc.save
 
   #puts '----------'
   #puts hc.city_id
@@ -50,10 +62,10 @@ end
 #strtime = Time.mktime(Time.new.strftime("%Y%m%d")+'08')
 yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
 strtime = Time.new.strftime("%Y%m%d")+'20'
-puts strtime
 
-#strtime = '2015040808'
-#puts strtime
+#strtime = '20160403'
+#yesterday_str  = '2016040220'
+puts strtime
 
 path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 
@@ -84,6 +96,7 @@ cs.each do |c|
   fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
   # puts fn
   next unless hb_city.include?(py)
+  f = nil
   f = File.open(path+fn) if File::exists?(path+fn) 
   next unless f
   f.readlines[2..-1].each do |line| 

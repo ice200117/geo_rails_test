@@ -1,4 +1,6 @@
 class WelcomeController < ApplicationController
+  include WelcomeHelper
+
 	#	caches_page :pinggu, :bar
 	#cache_sweeper :welcome_sweeper
 
@@ -155,19 +157,9 @@ class WelcomeController < ApplicationController
 		h.each {|k,v| k.map!{|x| x.strftime("%d%b")}; md[k] = v.round}
 		@fore_group_day.merge!(md)
 
-    # Table 4: 预报准确性月小时值评估
-    # 获取过去一个月的监测小时值
-		monitor_data_hour = ChinaCitiesHour.history_data_hour(c, 30.days.ago.beginning_of_day)
-    # 获取过去一个月的预报24,48,72,96小时值
-    forecast_data_hour = HourlyCityForecastAirQuality.history_data_hour(c, 30.days.ago.beginning_of_day, 0)
-    forecast_data_hour_ann = AnnForecastData.history_data_hour(c, 30.days.ago.beginning_of_day, 0)
-    @monitor_forecast_hour_month_diff = [ {name: '监测值', data: (monitor_data_hour),:discrete => true } ]
-    forecast_data_hour.each_index do |i|
-      @monitor_forecast_hour_month_diff << {name: (24*(i+1)).to_s+'小时预报', data: forecast_data_hour[i], :discrete => true }
-    end
-    forecast_data_hour_ann.each_index do |i|
-      @monitor_forecast_hour_month_diff << {name: (24*(i+1)).to_s+'小时预报ANN', data: forecast_data_hour_ann[i], :discrete => true }
-    end
+		# Table 4: 预报准确性月小时值评估
+		# 获取过去一个月的监测小时值
+    get_lf_hour_data
 
 		respond_to do |format|
 			format.html { }
@@ -178,20 +170,85 @@ class WelcomeController < ApplicationController
 		end
 	end
 
-  # Not Use, since highchart can not display line with data nil
-  def add_loss_hour_data(data)
-    ret_data = []
-    data.each_index do |i|
-      ret_data << data[i]
-      if i < data.length-1 and data[i+1][0] - data[i][0] > 1.hours
-        st = data[i][0]+1.hours
-        while st<data[i+1][0]
-          ret_data << [st, nil]
-          st = st + 1.hours
-        end
-      end
+#   # Not Use, since highchart can not display line with data nil
+#   def add_loss_hour_data(data)
+#     ret_data = []
+#     data.each_index do |i|
+#       ret_data << data[i]
+#       if i < data.length-1 and data[i+1][0] - data[i][0] > 1.hours
+#         st = data[i][0]+1.hours
+#         while st<data[i+1][0]
+#           ret_data << [st, nil]
+#           st = st + 1.hours
+#         end
+#       end
+#     end
+#     ret_data
+# =======
+  def get_lf_hour_data
+    c = City.find 18
+    # Table 4: 预报准确性月小时值评估
+    # 获取过去一个月的监测小时值
+    num_day = 40
+		monitor_data_hour = ChinaCitiesHour.history_data_hour(c, num_day.days.ago.beginning_of_day)
+    # 获取过去一个月的预报24,48,72,96小时值
+    forecast_data_hour = HourlyCityForecastAirQuality.history_data_hour(c, num_day.days.ago.beginning_of_day, 0)
+    forecast_data_hour_ann = AnnForecastData.history_data_hour(c, num_day.days.ago.beginning_of_day, 0)
+    @monitor_forecast_hour_month_diff = [ {name: c.city_name+'监测值', data: (monitor_data_hour),:discrete => true } ]
+    forecast_data_hour.each_index do |i|
+      @monitor_forecast_hour_month_diff << {name: (24*(i+1)).to_s+'小时预报', data: forecast_data_hour[i], :discrete => true }
     end
-    ret_data
+    forecast_data_hour_ann.each_index do |i|
+      @monitor_forecast_hour_month_diff << {name: (24*(i+1)).to_s+'小时预报ANN', data: forecast_data_hour_ann[i], :discrete => true }
+    end
+
+    # 计算监测和预报的相关系数
+	@corr_data = []
+    @correlation = []
+	mld = add_loss_hour_data(monitor_data_hour)
+    forecast_data_hour.each_index do |i|
+      v = data_to_vector(mld,add_loss_hour_data(forecast_data_hour[i]))
+      #@correlation << r(Hash(*v[0].flatten).values, Hash(*v[1].flatten).values)
+      @correlation << r(v[0].map {|d| d[1]}, v[1].map {|d| d[1]})
+	  @corr_data << v
+    end
+    forecast_data_hour_ann.each_index do |i|
+      v = data_to_vector(mld,add_loss_hour_data(forecast_data_hour_ann[i]))
+      @correlation << r(v[0].map {|d| d[1]}, v[1].map {|d| d[1]})
+	  @corr_data << v
+      #@correlation << r(Hash(*v[0].flatten).values, Hash(*v[1].flatten).values)
+    end
+
+    mld
+
+  end
+
+  def export_lfdata_xls
+	  get_lf_hour_data
+	  book = Spreadsheet::Workbook.new
+	  @corr_data.each_index do |tdi|
+		  sheet = book.create_worksheet :name => 'sheet'+(tdi+1).to_s
+		  sheet[0,0] = '监测时间'; sheet[0,1] = '监测AQI'
+		  sheet[0,2] = '预报时间'; sheet[0,3] = ((tdi+1)*24).to_s+'小时预报AQI' if tdi < 4
+		  sheet[0,2] = '预报时间'; sheet[0,3] = ((tdi-4+1)*24).to_s+'小时ANN预报AQI' if tdi >= 4
+		  @corr_data[tdi][0].each_index do |i| 
+			  sheet[i+1,0] = @corr_data[tdi][0][i][0]; sheet[i+1,1] = @corr_data[tdi][0][i][1] 
+		  end
+		  @corr_data[tdi][1].each_index do |i| 
+			  sheet[i+1,2] = @corr_data[tdi][1][i][0]; sheet[i+1,3] = @corr_data[tdi][1][i][1] 
+		  end
+	  end
+      file_path = "#{Rails.root}/public/data.xls"
+	  `rm *.xls`
+	  book.write(file_path)
+
+	  send_file file_path, :filename => 'data.xls'
+#	  respond_to do |format|
+#		  format.xls {
+#			  send_file file_path, :filename => 'data.xls'
+#		  #send_data  [ChinaCitiesHour.new(data_real_time: Time.now, AQI: 88),ChinaCitiesHour.new(data_real_time: Time.now, AQI: 77)].to_xls, :filename =>'city.xls'
+#		  }
+#	  end
   end
 
 	#显示分指数

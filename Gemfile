@@ -63,6 +63,7 @@ gem 'groupdate'
 gem 'chartkick', '~> 1.3.2'
 
 #gem 'baidumap'
+gem 'leaflet-rails'
 gem "activerecord-postgis-adapter"
 gem "rgeo-shapefile"
 gem "dbf"
@@ -101,6 +102,7 @@ gem 'mailfactory'
 gem 'actionpack-page_caching', '~> 1.0', '>= 1.0.2'
 gem 'actionpack-action_caching', '~> 1.1', '>= 1.1.1'
 gem 'rails-observers'
-gem 'dalli'
 gem 'predictionio'
 gem 'rainbow'
+gem 'statsample'
+gem 'to_xls'

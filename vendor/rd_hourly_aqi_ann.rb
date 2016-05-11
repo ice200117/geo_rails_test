@@ -4,9 +4,9 @@
 
 
 def parse_line(line, c)
-  
   #hc = HourlyCityForecastAirQuality.new
   c.forecast_real_data.destroy_all
+
   sd = line[0,10]
   delta_hour = line[11,3]
   sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
@@ -14,9 +14,10 @@ def parse_line(line, c)
   #hc.city_id = c.id
   #hc.publish_datetime = sdate
   #hc.forecast_datetime = sdate+delta_hour.to_i*3600
-  
+
   hc = HourlyCityForecastAirQuality.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
   hc.AQI = line[14,4]
+ # hc.AQI = hc.AQI*2.51   # liubin 10/5/2015
   hc.main_pol = line[18,13].strip
   hc.grade = line[31,1]
   hc.pm25 = line[99,6]
@@ -28,7 +29,20 @@ def parse_line(line, c)
   hc.VIS = line[32,7]
   hc.save
 
-  # Put data to real time table.
+  ac = AnnForecastData.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
+  ac.AQI = line[14,4]
+ #ahc.AQI = hc.AQI*2.51   # liubin 10/5/2015
+  ac.main_pol = line[18,13].strip
+  ac.grade = line[31,1]
+  ac.pm25 = line[99,6]
+  ac.pm10 = line[87,6]
+  ac.SO2 = line[39,6]
+  ac.CO = line[63,6]
+  ac.NO2 = line[51,6]
+  ac.O3 = line[75,6]
+  ac.VIS = line[32,7]
+  ac.save
+
   rc = ForecastRealDatum.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
   rc.AQI = line[14,4]
   rc.main_pol = line[18,13].strip
@@ -41,6 +55,7 @@ def parse_line(line, c)
   rc.O3 = line[75,6]
   rc.VIS = line[32,7]
   rc.save
+
   #puts '----------'
   #puts hc.city_id
   #puts hc.publish_datetime.
@@ -58,20 +73,15 @@ def parse_line(line, c)
 end
 
 #strtime = Time.mktime(Time.new.strftime("%Y%m%d")+'08')
-if Time.new.hour >18
-	strtime = Time.new.strftime("%Y%m%d")+'20'
-else
-	strtime = (Time.new-1.day).strftime("%Y%m%d")+'20'
-end
-#strtime = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
-puts 'deal date = ', strtime
+t = 1.days.ago
+yesterday_str = t.strftime("%Y%m%d")+'20'
+strtime = Time.new.strftime("%Y%m%d")+'20'
 
-#strtime = '2016012720'
-puts strtime
+#strtime = '20160403'
+#yesterday_str  = '2016040220'
+puts #strtime
 
-# path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
-path = "/mnt/share/Temp/station_15km_orig/#{strtime[0,8]}/"
-# path = "/mnt/share/Temp/station_15km/#{strtime[0,8]}/"
+path = "/mnt/share/Temp/CUACE_ANN_REVISE/"
 
 # Read hua bei city, do not read data of these city.
 firstline = true
@@ -88,26 +98,34 @@ IO.foreach("vendor/station_hb.EXT") do |line|
   hb_city << city_name_pinyin
   #  city_name  = line[46..-4].strip
 end
-  
 
-cs = City.all
+cs = Array.new
+cs << City.find_by_city_name_pinyin('langfangshi')
+#cs << City.find_by_city_name_pinyin('huzhoushi')
+#cs = City.all
 cs.each do |c|
-  puts c.city_name_pinyin
-  #if c.city_name_pinyin.rstrip.eql?('langfangshi')
-  py = c.city_name_pinyin.strip
-
-#  next if hb_city.include?(py)
-
-
-  fn = "CN_ENVAQFC_#{py}_#{strtime}_00000-12000.TXT"
-  f = nil
-  f = File.open(path+fn) if File::exists?(path+fn) 
-  next unless f
-  f.readlines[2..-1].each do |line| 
-    parse_line(line, c)
+  while t < Time.now
+    yesterday_str = t.strftime("%Y%m%d")+'20'
+    t = t + 1.days
+	puts yesterday_str
+    
+    #puts c.city_name_pinyin
+    #if c.city_name_pinyin.rstrip.eql?('langfangshi')
+    py = c.city_name_pinyin.strip
+    fn = "CN_ENVAQFC_#{py}_#{yesterday_str}_00000-12000.TXT"
+    #  next unless hb_city.include?(py)
+    puts path+fn
+	f = nil
+    f = File.open(path+fn) if File::exists?(path+fn) 
+    next unless f
+    f.readlines[2..-1].each do |line| 
+		#puts line
+		parse_line(line, c)
+    end
+    f.close
+    puts fn+" update database successful!"
+    #end
+  
   end
-  f.close
-  puts fn+" update database successful!"
-  #end
 end
 

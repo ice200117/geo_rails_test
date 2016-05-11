@@ -1,77 +1,58 @@
 module WelcomeHelper
-	def banner
-		hs = Hash.new
-		# monitor data
-		md = hb_real
-		hs[:rt]= md[:time]
-		md[:cities].each do |c|
-			if c['city'] == '保定'
-				puts c
-				hs = hs.merge(c)
-				break
-			end
-		end
-		# forecast data
-		aqis = []
-		pri_pol = []
-		c = City.find_by_city_name_pinyin('baodingshi')
-		ch = c.hourly_city_forecast_air_qualities.last(120).group_by_day(&:forecast_datetime)
-		ch.each do |time,fds|
-			t = Time.now
-			if time > Time.local(t.year,t.month,t.day)
-				#if time >= Time.local(2015,4,24)
-				sum = []
-				fds.each do |fd|
-					sum << fd.AQI
-				end
-				aqis << [sum.min, sum.max]
-				pri_pol << fds[0].main_pol
-			end
-		end
 
-		lev_hs = {"you"=>"优", "yellow"=>"良", "qingdu"=>"轻度", "zhong"=>"中度","zhongdu"=>"重度", "yanzhong"=>"严重"}
+  def add_loss_hour_data(data)
+    ret_data = []
+    st = data[0][0]
+    data.each_index do |i|
+	  puts data[i], st
+      if data[i][0] < st
+		  next
+	  elsif data[i][0] == st
+		ret_data << data[i]
+		st = data[i][0]+1.hours
+        if i < data.length-1 and data[i+1][0] - data[i][0] > 1.hours
+          st = data[i][0]+1.hours
+          while st<data[i+1][0]
+            ret_data << [st, nil]
+            st = st + 1.hours
+          end
+        end
+	  else
+        while st<data[i][0]
+          ret_data << [st, nil]
+          st = st + 1.hours
+        end
+        ret_data << data[i]
+        st = st + 1.hours
+	  end
+    end
+    ret_data
+  end
 
-		hs[:lev] = get_lev(hs[:aqi])
-		hs[:lev_han] = lev_hs[hs[:lev]]
 
-		#实时天气预报
-		begin
-			response = HTTParty.get('http://www.weather.com.cn/adat/sk/101090201.html')	
-			json_data = JSON.parse(response.body)
-			hs = hs.merge(json_data['weatherinfo'])	
-		rescue
-			hs[:real_time_weather] = false	
-		end
+  def r(v1, v2)
+    a = v1.to_vector
+    b = v2.to_vector
+    pearson = Statsample::Bivariate::Pearson.new(a,b)
+    pearson.r
+  end
 
-		return hs
-	end 
-
-	def get_lev(a)
-		if (0 .. 50) === a
-			lev = 'you'
-		elsif (50 .. 100) === a
-			lev = 'yellow'
-		elsif (100 .. 150) === a
-			lev = 'qingdu'
-		elsif (150 .. 200) === a
-			lev = 'zhong'
-		elsif (200 .. 300) === a
-			lev = 'zhongdu'
-		elsif (300 .. 500) === a
-			lev = 'yanzhong'
-		end
-	end
-
-	def hb_real
-		hs = Hash.new
-		begin
-			response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret=CHINARANK&type=HOUR&key='+Digest::MD5.hexdigest('CHINARANKHOUR'))
-			d = JSON.parse(response.body)
-			hs[:time] = (d['time']).to_time
-			hs[:cities] =  d['rows']
-		rescue
-			puts 'Can not get data from izhenqi, please check network!'
-		end
-		hs
-	end
+  def data_to_vector(data1, data2)
+	[[], []] if data1.empty? or data2.empty?
+    st = data1[0][0]>data2[0][0] ? data1[0][0] : data2[0][0]
+    et = data1.last[0]<data2.last[0] ? data1.last[0] : data2.last[0]
+    ret1 = []
+    ret2 = []
+    data1.each do |d|
+      if d[0] >= st and d[0] <= et
+        ret1 << d
+      end
+    end
+    data2.each do |d|
+      if d[0] >= st and d[0] <= et
+        ret2 << d
+      end
+    end
+    [ret1,ret2]
+  end
 end

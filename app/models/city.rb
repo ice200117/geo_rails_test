@@ -13,6 +13,8 @@ class City < ActiveRecord::Base
   has_many :monitor_point_days
   has_many :monitor_point_months
   has_many :monitor_point_years
+  has_many :ann_forecast_data, :class_name => 'AnnForecastData'
+  has_many :forecast_real_data
   
 #  validates_uniqueness_of :post_number
 

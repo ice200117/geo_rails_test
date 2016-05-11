@@ -16,7 +16,7 @@ class ChinaCitiesHour < ActiveRecord::Base
         city_avg[cl.city_name] = f
 			end
 		end
-		puts city_avg
+		#puts city_avg
 		city_avg
 	end
 
@@ -74,5 +74,9 @@ class ChinaCitiesHour < ActiveRecord::Base
 		end
 		hs
 	end
+
+  def self.history_data_hour(city, start_time)
+    city.china_cities_hours.where(data_real_time: start_time..Time.now).order(:data_real_time).pluck(:data_real_time, :AQI)
+  end
 
 end

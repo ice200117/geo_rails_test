@@ -11,7 +11,7 @@ class DaliyAvg
 		#路径设定
 		# path = "/mnt/share/Temp/station_orig/#{strtime[0,8]}/"
 		path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
-		puts path
+		#puts path
 		filename = '25km_daliy.txt'
 		Dir::mkdir(path) if !Dir.exists?(path)
 		File.delete(path+filename) if File.exists?(path+filename)
@@ -24,7 +24,7 @@ class DaliyAvg
 			fn = "XJ_ENVAQFC_#{c}_#{time}_00000-07200.TXT"
 			f = File.open(path+fn) if File::exists?(path+fn)
 			next unless f
-			puts c
+			#puts c
 			num = 0 #初始化计数器
 			tmp = Array.new
 			tmp_time = Time.now
@@ -51,7 +51,7 @@ class DaliyAvg
 		#路径设定
 		# path = "/mnt/share/Temp/station_9km_orig/#{strtime[0,8]}/"
 		path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
-		puts path
+		#puts path
 		filename = '9km_daliy.txt'
 		Dir::mkdir(path) if !Dir.exists?(path)
 		File.delete(path+filename) if File.exists?(path+filename)
@@ -64,7 +64,7 @@ class DaliyAvg
 			fn = "XJ_ENVAQFC_#{c}_#{time}_00000-07200.TXT"
 			f = File.open(path+fn) if File::exists?(path+fn)
 			next unless f
-			puts c
+			#puts c
 			num = 0 #初始化计数器
 			tmp = Array.new
 			tmp_time = Time.now

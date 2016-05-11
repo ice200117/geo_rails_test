@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
 	#get 'counties/lookup'
 	get 'querys/aqis_by_city' => 'querys#aqis_by_city'
-	# get 'querys/aqis_by_city/:city' => 'querys#aqis_by_city'
-	get 'querys/aqis_by_city/city' => 'querys#aqis_by_cityid'
-	get 'querys/aqis_by_city/city/id/:cityid' => 'querys#aqis_by_cityid'
+	get 'querys/aqis_by_city/:city' => 'querys#aqis_by_city'
+	# get 'querys/aqis_by_city/city' => 'querys#aqis_by_cityid'
+	# get 'querys/aqis_by_city/city/id/:cityid' => 'querys#aqis_by_cityid'
 	get 'querys' => 'querys#cities'
 	get 'querys/all_cities' => 'querys#all_cities2'
 	get 'querys/adj' => 'querys#adj'
@@ -49,6 +49,7 @@ Rails.application.routes.draw do
 	get 'welcome/get_history_data/:model/:time' => 'welcome#get_history_data'
 	get 'welcome/get_forecast_baoding' => 'welcome#get_forecast_baoding' 
 	get 'welcome/get_city_point' => 'welcome#get_city_point'  
+	get 'welcome/export_lfdata_xls' => 'welcome#export_lfdata_xls'  
 	get '/adj_pie' => 'welcome#adj_pie'
 	get '/welcome/cities_around_fun' => 'welcome#cities_around_fun'
 
@@ -77,4 +78,54 @@ Rails.application.routes.draw do
 	get 'qinhuangdao/get_city_point' => 'qinhuangdao#get_city_point'  
 	get '/adj_pie' => 'qinhuangdao#adj_pie'
 	get '/qinhuangdao/cities_around_fun' => 'qinhuangdao#cities_around_fun'
+
+
+	# Example of regular route:
+	#   get 'products/:id' => 'catalog#view'
+
+	# Example of named route that can be invoked with purchase_url(id: product.id)
+	#   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
+
+	# Example resource route (maps HTTP verbs to controller actions automatically):
+	#   resources :products
+
+	# Example resource route with options:
+	#   resources :products do
+	#     member do
+	#       get 'short'
+	#       post 'toggle'
+	#     end
+	#
+	#     collection do
+	#       get 'sold'
+	#     end
+	#   end
+
+	# Example resource route with sub-resources:
+	#   resources :products do
+	#     resources :comments, :sales
+	#     resource :seller
+	#   end
+
+	# Example resource route with more complex sub-resources:
+	#   resources :products do
+	#     resources :comments
+	#     resources :sales do
+	#       get 'recent', on: :collection
+	#     end
+	#   end
+
+	# Example resource route with concerns:
+	#   concern :toggleable do
+	#     post 'toggle'
+	#   end
+	#   resources :posts, concerns: :toggleable
+	#   resources :photos, concerns: :toggleable
+
+	# Example resource route within a namespace:
+	#   namespace :admin do
+	#     # Directs /admin/products/* to Admin::ProductsController
+	#     # (app/controllers/admin/products_controller.rb)
+	#     resources :products
+	#   end
 end
