@@ -26,22 +26,22 @@ Rails.application.routes.draw do
 	# You can have the root of your site routed with "root"
 	#root 'welcome#index'
 	#root 'welcome#map'
-	root 'welcome#pinggu'
-	get '/compare' => 'welcome#compare'
-	get '/bdqx_compare' => 'welcome#bdqx_compare'  
-	get '/sfcities_compare' => 'welcome#sfcities_compare' 
-	get '/real_time_monitoring' => 'welcome#real_time_monitoring'
-	get '/history_data' => 'welcome#history_data'
-	get '/forecast' => 'welcome#forecast'
-	get '/real_map' => 'welcome#real_map'
-	get '/case' => 'welcome#case'
-	get '/about' => 'welcome#about'
-	get '/rank1503' => 'welcome#rank1503'
-	get '/map' => 'welcome#map'
-	get '/bar' => 'welcome#bar', as: :bar_welcome
-	get '/subindex' => 'welcome#subindex', as: :subindex_welcome
-	get '/pinggu' => 'welcome#pinggu', as: :pinggu_welcome
-	get '/visits_by_day' => 'welcome#visits_by_day', as: :visits_by_day_welcome
+	root 'qinhuangdao#pinggu'
+#	get '/compare' => 'welcome#compare'
+	#get '/bdqx_compare' => 'welcome#bdqx_compare'  
+	#get '/sfcities_compare' => 'welcome#sfcities_compare' 
+	#get '/real_time_monitoring' => 'welcome#real_time_monitoring'
+	#get '/history_data' => 'welcome#history_data'
+	#get '/forecast' => 'welcome#forecast'
+	#get '/real_map' => 'welcome#real_map'
+	#get '/case' => 'welcome#case'
+	#get '/about' => 'welcome#about'
+	#get '/rank1503' => 'welcome#rank1503'
+	#get '/map' => 'welcome#map'
+	#get '/bar' => 'welcome#bar', as: :bar_welcome
+	#get '/subindex' => 'welcome#subindex', as: :subindex_welcome
+	#get '/pinggu' => 'welcome#pinggu', as: :pinggu_welcome
+	#get '/visits_by_day' => 'welcome#visits_by_day', as: :visits_by_day_welcome
 	get 'welcome/adj_ajax/:type/:post' => 'welcome#adj_ajax', as: :adj_ajax_welcome
 	get 'welcome/chartway' => 'welcome#chartway'
 	get 'welcome/city_compare_chart' => 'welcome#city_compare_chart'
@@ -50,7 +50,7 @@ Rails.application.routes.draw do
 	get 'welcome/get_forecast_baoding' => 'welcome#get_forecast_baoding' 
 	get 'welcome/get_city_point' => 'welcome#get_city_point'  
 	get 'welcome/export_lfdata_xls' => 'welcome#export_lfdata_xls'  
-	get '/adj_pie' => 'welcome#adj_pie'
+	#get '/adj_pie' => 'welcome#adj_pie'
 	get '/welcome/cities_around_fun' => 'welcome#cities_around_fun'
 
 	#秦皇岛路由
