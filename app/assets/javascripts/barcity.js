@@ -1,9 +1,6 @@
 /*bdqx_compare_chart.js*/
 
-<<<<<<< HEAD
-=======
 
->>>>>>> b90ede2214dc96a31b36e092746c86f7d13002de
 var city1 = '廊坊';
 
 $(function() 
