@@ -126,6 +126,9 @@ GEM
     jquery-rails (3.1.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jquery-turbolinks (2.1.0)
+      railties (>= 3.1.0)
+      turbolinks
     json (1.8.3)
     leaflet-rails (0.7.7)
     mail (2.5.4)
@@ -147,6 +150,7 @@ GEM
       numru-narray
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    nprogress-rails (0.1.6.7)
     numru-narray (1.0.3)
     pg (0.18.4)
     polyglot (0.3.5)
@@ -335,9 +339,11 @@ DEPENDENCIES
   jquery-datatables-rails
   jquery-migrate-rails (~> 1.2.1)
   jquery-rails
+  jquery-turbolinks
   leaflet-rails
   mailfactory
   multipart-post (~> 2.0.0)
+  nprogress-rails
   pg
   predictionio
   rails (= 4.1.0)
