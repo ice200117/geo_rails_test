@@ -81,6 +81,35 @@ IO.foreach("vendor/station_hb.EXT") do |line|
 	#  city_name  = line[46..-4].strip
 end
 
+<<<<<<< HEAD
+# cs = Array.new
+# cs << City.find_by_city_name_pinyin('langfangshi')
+# cs << City.find_by_city_name_pinyin('huzhoushi')
+#cs = City.all
+# cs.each do |c|
+#puts c.city_name_pinyin
+#if c.city_name_pinyin.rstrip.eql?('langfangshi')
+# py = c.city_name_pinyin.strip
+# py = 'langfangshi'
+<<<<<<< HEAD
+py = 'handanshi'
+=======
+py = 'baodingshi'
+# py = 'tangshanshi'
+# py = 'handanshi'
+>>>>>>> master
+# py = 'tianjinshi'
+# py = 'cangzhoushi'
+c = City.find_by_city_name_pinyin(py)
+fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
+puts fn
+# next unless hb_city.include?(py)
+f = File.open(path+fn) if File::exists?(path+fn) 
+exit unless f
+f.readlines[2..-1].each do |line| 
+	# puts line
+	parse_line(line, c)
+=======
 cs = Array.new
 cs << City.find_by_city_name_pinyin('langfangshi')
 cs << City.find_by_city_name_pinyin('baodingshi')
@@ -109,6 +138,7 @@ cs.each do |c|
 	end
 	f.close
 	puts fn+" update database successful!"
+>>>>>>> b90ede2214dc96a31b36e092746c86f7d13002de
 end
 # end
 

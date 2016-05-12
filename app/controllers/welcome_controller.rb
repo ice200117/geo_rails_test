@@ -157,8 +157,8 @@ class WelcomeController < ApplicationController
 		h.each {|k,v| k.map!{|x| x.strftime("%d%b")}; md[k] = v.round}
 		@fore_group_day.merge!(md)
 
-    # Table 4: 预报准确性月小时值评估
-    # 获取过去一个月的监测小时值
+		# Table 4: 预报准确性月小时值评估
+		# 获取过去一个月的监测小时值
     get_lf_hour_data
 
 		respond_to do |format|
@@ -170,6 +170,21 @@ class WelcomeController < ApplicationController
 		end
 	end
 
+#   # Not Use, since highchart can not display line with data nil
+#   def add_loss_hour_data(data)
+#     ret_data = []
+#     data.each_index do |i|
+#       ret_data << data[i]
+#       if i < data.length-1 and data[i+1][0] - data[i][0] > 1.hours
+#         st = data[i][0]+1.hours
+#         while st<data[i+1][0]
+#           ret_data << [st, nil]
+#           st = st + 1.hours
+#         end
+#       end
+#     end
+#     ret_data
+# =======
   def get_lf_hour_data
     c = City.find 18
     # Table 4: 预报准确性月小时值评估
@@ -632,7 +647,7 @@ class WelcomeController < ApplicationController
 		@ret = {}
 		temp.each do |k,v|
 			v["fore_lev"] = get_lev(v["AQI"])
-			time = k.strftime("%Y%m%d")
+			time = k.to_time.strftime("%Y%m%d")
 			if @weather[time] != nil
 				@ret[time]=@weather[time].merge(v)
 			end

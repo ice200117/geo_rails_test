@@ -1,0 +1,279 @@
+<%= render "qinhuangdao/banner"%>
+<!--城市空气质量比较曲线模块-->
+
+<%= stylesheet_link_tag "css/button","css/wdatepicker" %>
+
+<!--<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>-->
+
+<script type="text/javascript"> 
+  var city1='北京',city2='上海',city3='廊坊';
+  var pType='zonghezhishu',pTime='d',pExact='eh',pStartTime=GetDateStr(0),pEndTime=GetDateStr(0);
+  function GetDateStr(AddDayCount) {
+      var dd = new Date();
+      dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+      var y = dd.getFullYear();
+      var m = dd.getMonth()+1;//获取当前月份的日期
+      var d = dd.getDate();
+      if(m<10){m="0"+m}
+      if(d<10){d="0"+d}
+      return y+"-"+m+"-"+d;
+  }
+  
+  function changeType(type){
+    pType=type;
+    ChartQuery();
+  }
+  
+  function changeTimeQuick(time){
+    pTime=time;
+    if(time=='w'){
+      pStartTime =GetDateStr(-7);
+      pEndTime = GetDateStr(0);
+    }else if(time=='m'){
+        pStartTime =GetDateStr(-31);
+      pEndTime = GetDateStr(0);   
+    }else if(time=='y'){
+      pStartTime =GetDateStr(-361);
+      pEndTime = GetDateStr(0);
+    }else{
+      pStartTime = GetDateStr(0);
+      pEndTime = GetDateStr(0);
+    }
+    $("#beginTime").val(pStartTime); 
+    $("#stopTime").val(pEndTime);
+    ChartQuery();
+  }
+  
+  function changeExact(exact){
+    pExact=exact;
+    ChartQuery();
+  }  
+
+  function ChartQuery(){
+
+    city1=$('#city1').val();
+    $.cookie('dcity1', city1, {expires : 30});
+    city2=$('#city2').val();
+    $.cookie('dcity2', city2, {expires : 30});
+    city3=$('#city3').val();
+    $.cookie('dcity3', city3, {expires : 30});
+
+    $("#toolbar :button").attr("class","btna btna-default btnitemgroup1");
+    $("#"+pType).attr("class","btna btna-default btnitemgroup1 btna-success");
+    $("#"+pTime).attr("class","btna btna-default btnitemgroup1 btna-success");     
+    $("#"+pExact).attr("class","btna btna-default btnitemgroup1 btna-success");  
+    $.get("/qinhuangdao/city_compare_chart.json?exact="+pExact+"&city1="+city1+"&city2="+city2+"&city3="+city3+"&type="+pType+"&starttime="+pStartTime+"&endtime="+pEndTime,function(result){
+
+    /*y轴标签*/
+    var labelStr=pType;
+    switch(pType)
+    {
+    case "AQI":unit="";break;
+    case "pm25":unit="ug/m<sup>3<sup/>";labelStr="PM2.5";break;
+    case "pm10":unit="ug/m<sup>3<sup/>";labelStr="PM10";break;
+    case "SO2":unit="ug/m<sup>3<sup/>";break;
+    case "NO2":unit="ug/m<sup>3<sup/>";break;
+    case "CO":unit="mg/m<sup>3<sup/>";break;
+    case "O3":unit="ug/m<sup>3<sup/>";break;
+    case "zonghezhishu":unit="";labelStr="综合指数";break;
+    case "temp":unit="℃";labelStr="温度";break;
+    case "humi":unit="%";labelStr="湿度";break;
+    case "windscale":unit="级";labelStr="风级";break;
+    }
+
+    /*按小时、按日时间格式封装*/
+    var dateTypeFormat;
+    if(pExact=='eh')
+    {
+     dateTypeFormat = '%Y-%m-%d %H:%M';
+    } 
+    else /*if(pExact=="DAY")*/
+    {
+     dateTypeFormat = '%Y-%m-%d';
+    } 
+    /*else if(type=="MONTH")
+    {
+     dateTypeFormat = '%Y-%m';
+    } */
+
+    /*以城市一为基准判断点数，若超过50，只显示线不显示点*/
+    var markerShowFlag;
+    if(result.series[0].data.length<50)
+    {
+     markerShowFlag = true;
+    }
+    else
+    {
+     markerShowFlag = false;
+    }
+
+    $('#container').highcharts({         
+    chart: {
+        type: 'spline',
+            zoomType: 'x',
+            spacingLeft: 0,
+            spacingRight: 0
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats:{
+                millisecond: '%H:%M:%S.%L',
+               
+              }               
+        },
+        yAxis:{
+            title: {
+                text: labelStr
+            }
+        },
+        tooltip: {
+            shared: true,
+            useHTML:true,
+            formatter: function() {
+                
+                tip = '' + Highcharts.dateFormat(dateTypeFormat, this.x) +'<br/><hr style="margin:3px 0;"/>'
+                    + "<table width='120px'>";
+                    for (i=0;i<this.points.length;i++)//this.points: In a shared tooltip, all properties except x, which is common for all points
+                    {
+                        if(this.points[i].point.winddirection!=null)//this.points[i].point (shared): The point object.
+                            winddirection = " " + this.points[i].point.winddirection;
+                        else
+                            winddirection = "";
+                        tip = tip +  "<tr><td style='color:" +  this.points[i].series.color  +  "'>" + this.points[i].series.name +": </td><td align='right'><b>"+ this.points[i].y + "</b>" + unit + winddirection + "</td></tr>";                    
+                    }
+                    tip = tip + "</table>";
+                    return tip;
+
+            }
+        },
+        plotOptions:{               
+            series:{
+                marker: {
+                    enabled: markerShowFlag,
+                    radius:5
+                },
+                enableMouseTracking:true,
+                turboThreshold: 0
+            } 
+        },
+        legend: {
+            enabled: true
+        },
+        credits: {
+            enabled:false
+        },
+        series: result.series
+    });
+    });   
+  } 
+  function datePicked(){
+    pTime='NONE';
+    aStartTime = document.getElementById("beginTime").value;  
+    aEndTime = document.getElementById("stopTime").value;
+    if(aStartTime>GetDateStr(0)||aEndTime>GetDateStr(0)){
+      alert("开始或结束日期大于当前日期！");
+    }else if(aStartTime>aEndTime){
+      alert("开始日期大于结束日期！");
+    }else{
+      pStartTime = aStartTime;  
+      pEndTime = aEndTime;
+      ChartQuery();
+    }
+  }
+  $(document).ready(function(){
+
+    Highcharts.setOptions({
+      global: {
+          useUTC: false
+      }
+   });
+
+    if($.cookie('dcity1')!=null)
+      {
+        city1 = $.cookie('dcity1');
+      }
+    if($.cookie('dcity2')!=null)
+      {
+        city2 = $.cookie('dcity2');
+      }
+    if($.cookie('dcity3')!=null)
+      {
+        city3 = $.cookie('dcity3');
+      }
+
+    $('#city1').attr('value',city1);
+    $('#city2').attr('value',city2);
+    $('#city3').attr('value',city3);
+
+    var citysel1=new Vcity.CitySelector({input:'city1'});  
+    var citysel2=new Vcity.CitySelector({input:'city2'});
+    var citysel3=new Vcity.CitySelector({input:'city3'});
+    $('#myTab1 a:first').tab('show');//初始化显示哪个tab 
+  
+    $('#myTab1 a').click(function (e) { 
+      e.preventDefault();//阻止a链接的跳转行为 
+      $(this).tab('show');//显示当前选中的链接及关联的content
+    });
+
+    $("#beginTime").datepicker({
+    onSelect: function(dateText,inst){
+      datePicked();
+    }
+    });
+
+     $("#stopTime").datepicker({
+    onSelect: function(dateText,inst){
+      datePicked();
+    }
+    });
+
+    $("#beginTime").val(pStartTime); 
+    $("#stopTime").val(pEndTime);
+    ChartQuery();
+  });
+</script>
+<div class="container1 box">
+  <h3 class="top11-title" style="display:table;"><div id="kqzlpm"align="left"><font style="color:black;"> 空气质量历史数据显示图</font></div></h3> 
+  <div class="cityinputBox">
+       <span style="vertical-align:middle">城市1</span> 
+       <input type="text" class="cityinput" id="city1" />
+       <span style="vertical-align:middle">城市2</span> 
+       <input type="text" class="cityinput" id="city2" />
+       <span style="vertical-align:middle">城市3</span> 
+       <input type="text" class="cityinput" id="city3" />
+  </div>        
+  <div id="toolbar" class="btngroup btn-toolbar" style="margin-top:20px,margin-left:20px;">
+     <div id="btn-group1" class="btna-group btna-group-sm ">
+      <button type="button" class="btna btna-default btnitemgroup1 btna-success"  id="zonghe" onclick="changeType('zonghezhishu')" style="width:19px;text">综合指数</button>
+      <button type="button" class="btna btna-default btnitemgroup1"  id="AQI" onclick="changeType('AQI')" style="width:15px">AQI</button>
+      <button type="button" class="btna btna-default btnitemgroup1"  id="PM25" onclick="changeType('pm25')" style="width:28px">PM2.5</button>
+      <button type="button" class="btna btna-default btnitemgroup1"  id="PM10" onclick="changeType('pm10')" style="width:25px">PM10</button>
+      <button type="button" class="btna btna-default btnitemgroup1"  id="SO2" onclick="changeType('SO2')" style="width:18px">SO2</button>
+      <button type="button" class="btna btna-default btnitemgroup1"  id="NO2" onclick="changeType('NO2')" style="width:18px">NO2</button>
+      <button type="button" class="btna btna-default btnitemgroup1"  id="CO" onclick="changeType('CO')" style="width:12px">CO</button>
+      <button type="button" class="btna btna-default btnitemgroup1"  id="O3" onclick="changeType('O3')" style="width:12px">O3</button>  
+      <button type="button" class="btna btna-default btnitemgroup1"  id="tem" onclick="changeType('temp')" style="width:18px">温度</button>        
+      <button type="button" class="btna btna-default btnitemgroup1"  id="wind" onclick="changeType('windscale')" style="width:18px">风级</button>        
+      <button type="button" class="btna btna-default btnitemgroup1"  id="hum" onclick="changeType('humi')" style="width:18px">湿度</button>              
+    </div>
+    <div id="btn-group2" class="btna-group btna-group-sm" style="float:left;margin-left:490px;margin-top:-32px;">
+      <button type="button" class="btna btna-default btndategroup1 btna-success" id="d"  value="DAY"onclick="changeTimeQuick('d')" style="width:43px">最近一天</button>
+      <button type="button" class="btna btna-default btndategroup1" id="w"  value="MONTH"onclick="changeTimeQuick('w')" style="width:43px">最近一周</button>
+      <button type="button" class="btna btna-default btndategroup1" id="m"  value="MONTH"onclick="changeTimeQuick('m')" style="width:43px">最近一月</button>
+      <button type="button" class="btna btna-default btndategroup1" id="y"  value="YEAR"onclick="changeTimeQuick('y')" style="width:43px">最近一年</button>
+    </div>
+    <div id="btn-group3" class="btna-group btna-group-sm" style="float:left;margin-left:764px;margin-top:-32px;">
+      <button type="button" class="btna btna-default btndategroup1 btna-success" id="eh" value="exactHour" onclick="changeExact('eh')" style="width:30px;">按小时</button>
+      <button type="button" class="btna btna-default btndategroup1" id="ed"value="exactDay" onclick="changeExact('ed')" style="width:30px">按天</button>
+    </div>
+    <div style="float:right;margin-top:-30px;">
+      <input name="starttime" id="beginTime" class="Wdate" type="text" style="width:110px"/>-
+      <input name="endtime" id="stopTime" class="Wdate" type="text" style="width:110px"/>
+    </div>
+  </div>
+  <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</div>
+

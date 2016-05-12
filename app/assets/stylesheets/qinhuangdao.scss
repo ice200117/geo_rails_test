@@ -1,0 +1,103 @@
+// Place all the styles related to the welcome controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+ 
+
+.home-banner .yuanzhuizong{
+  height: 450px;
+}
+ul,ul li{ margin:0px; padding:0px; list-style:none;}
+.forecast{ width:1100px; margin:0 auto; }
+.logo{ padding-top:44px;}
+.haze-forecast{ padding-top:55px; overflow:hidden;}
+.haze-grade{ width:275px; height:157px; float:left; margin-top:17px;}
+.haze-value{ float:right; padding-right:20px;}
+.haze-value-top{ overflow:hidden;}
+.haze-value-top li{ float:left;}
+.haze-numerical{ color:#000; font-size:100px; font-family:Arial; height:100px; line-height:100px; }
+.haze-level{height:33px; text-align:center; line-height:33px;font-family:"微软雅黑"; font-size:21px; color:#fff; border-radius:2px; background:#fac305; display:block; margin-left:15px;padding:0px 5px;}
+.haze-type{ font-family:'微软雅黑','Arial'; font-size:14px; color:#000; padding-left:15px;}
+.haze-value-bar{ padding-top:50px;}
+.haze-classification{ clear:both;}
+.haze-classification li{ float:left; width:60px; margin-right:1px;}
+.haze-classification li span{ display:block; text-align:center;font-family:Arial;font-size:18px;}
+.haze-classification-name{ color:#fff;  height:24px; line-height:24px;  }
+
+.yellow,.qingdu,.you,.zhongdu,.yanzhong,.zhong{ padding:0px 2px;}
+.yanzhong{background:#6f0474;}
+.zhong{ background:#ba1d26;}
+.yellow{ background:#fac305;}
+.qingdu{ background:#fd5b30;}
+.you{ background:#72ca29;}
+.zhongdu{background:#b414bb;}
+.yanzhong-font{color:#6f0474;background:none;border-color:none;}
+.zhong-font{ color:#ba1d26;background:none;border-color:none;}
+.yellow-font{ color:#fac305;background:none;border-color:none;}
+.qingdu-font{ color:#fd5b30;background:none;border-color:none;}
+.you-font{ color:#72ca29;background:none;border-color:none;}
+.zhongdu-font{color:#b414bb;background:none;border-color:none;}
+.haze-classification-value{ height:32px; line-height:32px; background:#ffffff; color:#333;}
+
+.weather{ margin-left:120px;margin-top:60px;background:#158dd7;font-family:"微软雅黑",Arial; width:290px;height:140px; font-size:16px; color:#fff;  padding:15px;}
+.weather img{ vertical-align:middle;}
+.top-weather-icon{ float:left; margin-right:10px;}
+.top-weather{ clear:both; overflow:hidden; line-height:30px;}
+.top-weather-text{ float:left;}
+.date{ margin-bottom:15px; font-size:12px; font-family:Verdana, Geneva, sans-serif; color:#fff; line-height:21px;  }
+.paiming{ margin-bottom:20px; margin-right:20px; line-height:30px; font-size:16px; font-family:"微软雅黑"; color:#fff;  margin-top:60px; text-align:right; color:#fff;  }
+.suggestions{ padding-top:70px; padding-left:33px;}
+.suggestions span{ display:block; padding-left:15px; float:left;}
+.surround{ height:70px; border-top:1px solid #3aa1d9; margin-top:50px; background:#50b2e7;}
+.surround ul{ overflow:hidden;  border-left:1px solid  #4eaddf; border-right:1px solid  #4eaddf;}
+.surround ul li{ height:42px; line-height:42px; padding:14px 20px; border-right:1px solid  #41a4dc; float:left; font-size:14px; font-family:Arial, Helvetica, sans-serif; color:#fff;}
+.surround ul li img{ vertical-align:middle;}
+
+ .zc-map-labels{
+  font-size: 18px;
+  /*margin-left: 14px;*/
+  margin-bottom: 20px;
+  /*width: 765px;*/
+  /*margin-top: 30px;*/
+}
+ .zc-map-labels span{
+  float: left;
+  margin-right: 15px;
+}
+ .zc-map-labels a{
+  background: #0b6bb6;
+  color: #fff;
+  font-size: 14px;
+  padding: 0 30px;
+  float: left;
+  height: 34px;
+  line-height: 34px;
+  /*width: 152px;*/
+  margin-right: 2px;
+  text-align: center;
+}
+.zc-map-labels a:hover{
+  text-decoration: none;
+  cursor:pointer;
+}
+ .zc-map-labels a.active{
+  background: #84c125;
+  color: #fff;
+  position: relative;
+}
+ .zc-map-labels a.active:after{
+  display: block;
+  width: 0;
+  height: 0;
+  margin-left: -4px;
+  vertical-align: middle;
+  border-top: 4px #84c125 dashed;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  content: " ";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+}
+.panel-body table{
+	font-size:12px;
+}

@@ -1,0 +1,67 @@
+<div class="row">
+
+  <!-- Line Chart - Single Series -->
+  <div class="col-xs-6">
+    <h3>Visits By Day</h3>
+    <%= line_chart @visits.group_by_day(:visited_at, format: "%B %d, %Y").count, discrete: true %>
+  </div>
+
+  <!-- Line Chart - Multiple Series -->
+  <div class="col-xs-6">
+    <h3>Visits By Country Per Day</h3>
+    <%= line_chart   Visit.pluck("country").uniq.map { |c| { name: c, data: @visits.where(country: c).group_by_day(:visited_at, format: "%B %d, %Y").count }  }, discrete: true %>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <!-- Pie Chart -->
+  <div class="col-xs-6">
+    <h3>Total Visits by Country</h3>
+    <%= pie_chart @visits.group(:country).count %>
+  </div>
+
+  <!-- Geo Chart --> 
+  <div class="col-xs-6">
+    <h3>Visits By Day</h3>
+
+  </div>
+
+</div>
+
+<!-- area chart --> 
+<div class="row">
+  <div class="col-xs-12">
+    <h3>Total Load Time By Day</h3>
+    <%= area_chart @visits.group_by_day(:visited_at).maximum(:load_time) %>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Column Chart --> 
+  <div class="col-xs-6">
+    <h3>Total Visits Per Country</h3>
+    <%= column_chart @visits.group(:country).count %>
+  </div>
+  <!-- Bar Chart --> 
+  <div class="col-xs-6">
+    <h3>Total Visits Per Country</h3>
+    <%= bar_chart @visits.group(:country).count %>
+  </div>
+</div>
+
+<!-- Line Chart - Single Series -->
+<div class="col-xs-12">
+  <h3>Visits By Day</h3>
+  <%= form_tag(visits_by_day_qinhuangdao_path, method: "get", remote: true) do %>
+    <select name="city_id" id="city_id" class="btn btn-default" onchange="");">
+      <%= options_for_select([['Lisbon', 1], ['Madrid', 2]]) %>
+    </select>
+    <button id="subbtn" type="submit" class="btn btn-default" >Submit</button>
+  <% end %>
+  <div class="line_chart">
+    <%= line_chart visits_by_day_qinhuangdao_path %>
+  </div>
+
+</div>

@@ -9,6 +9,10 @@ class City < ActiveRecord::Base
   has_many :weather_hours
   has_many :weather_forecasts
   has_many :weather_days
+  has_many :monitor_point_hours
+  has_many :monitor_point_days
+  has_many :monitor_point_months
+  has_many :monitor_point_years
   has_many :ann_forecast_data, :class_name => 'AnnForecastData'
   has_many :forecast_real_data
   

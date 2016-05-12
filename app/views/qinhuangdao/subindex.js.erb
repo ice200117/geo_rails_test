@@ -1,0 +1,9 @@
+$('#aqi').html("<%= j line_chart @chart_aqi,  height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text:@city_name.to_s+"_AQI CUACE (CAMS)"}}%>");
+$('#so2').html("<%= j line_chart @chart_so2,  height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text:@city_name.to_s+"_SO2 CUACE (CAMS)"}}%>");
+$('#no2').html("<%= j line_chart @chart_no2,  height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text:@city_name.to_s+"_NO2 CUACE (CAMS)"}}%>");
+$('#co').html("<%= j line_chart @chart_co,  height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text:@city_name.to_s+"_CO CUACE (CAMS)"}}%>");
+$('#o3').html("<%= j line_chart @chart_o3,  height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text:@city_name.to_s+"_O3 CUACE (CAMS)"}}%>");
+$('#pm10').html("<%= j line_chart @chart_pm10,  height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text:@city_name.to_s+"_PM10 CUACE (CAMS)"}}%>");
+$('#pm25').html("<%= j line_chart @chart_pm25,  height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text:@city_name.to_s+"_PM25 CUACE (CAMS)"}}%>");
+$('#vis').html("<%= j line_chart @chart_vis,  height: "600px", library: { chart:{backgroundColor: "#eee"}, title:{text:@city_name.to_s+"_VIS CUACE (CAMS)"}}%>");
+$('#fore_compare').html("<%= j column_chart @fore_group_day, height: "600px", library: {title:{text:"City_forecast_AQI_day_compare"}} %>");

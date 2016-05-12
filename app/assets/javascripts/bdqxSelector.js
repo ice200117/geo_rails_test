@@ -122,7 +122,7 @@ Vcity.allCity = ['北京|beijing|bj','上海|shanghai|sh', '重庆|chongqing|cq'
     '张家界|zhangjiajie|zjj', '舟山|zhoushan|zs', '郑州|zhengzhou|zz', '中卫|zhongwei|zw', '芷江|zhijiang|zj', '湛江|zhanjiang|zj'];
 */
 
-Vcity.allCity=['白沟新城|baigouxincheng|bgxc','满城县|manchengxian|mcx','清苑县|qingyuanxian|qyx','涞水县|laishuixian|lsx','阜平县|fupingxian|fpx','定兴县|dingxingxian|dxx','高阳县|gaoyangxian|gyx','容城县|rongchengxian|rcx','涞源县|laiyuanxian|lyx','望都县|wangduxian|wdx','安新县|anxinxian|axx','易县|yixian|yx','曲阳县|quyangxian|qyx','蠡县|lixian|lx','顺平县|shunpingxian|spx','博野县|boyexian|byx','雄县|xiongxian|xx','涿州市|zhuozhoushi|zzs','安国市|anguoshi|ags','高碑店市|gaobeidianshi|gbds','徐水县|xushuixian|xsx','定州市|dingzhoushi|dzs','唐县|tangxian|tx']
+Vcity.allCity=['海港建设大厦|haigangjianshedasha|hgjsds','北戴河区|beidaihequ|bdhq','海关区|haiguanqu|hgq','海港市政府|haigangshizhengfu|hgszf','青龙满族自治县|qinglongmanzuzizhixian|qlmzzzx','昌黎县|changlixian|clx','抚宁县|funingxian|fnx','卢龙县|lulongxian|llx','海港市监测站|haigangshijiancezhan|hgsjcz']
 
 /* 正则表达式 筛选中文城市名、拼音、首字母 */
 

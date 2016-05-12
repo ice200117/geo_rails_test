@@ -1,0 +1,496 @@
+<!--<iframe src="http://www.zq12369.com/langfangmap.php" width="100%" height="800px"></iframe> -->
+
+
+    <%= stylesheet_link_tag 'map','css/styles','css/jquery-ui', media: 'all', 'data-turbolinks-track' => true %>
+
+<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" type="text/css">
+
+
+<div id="checkbox-group3" style="float:right;font-size:20px;position:absolute;top:70px;right:0px;z-index:1000;background:rgba(255,255,255,0.7);"> 
+    <input type="checkbox" id="inlineCheckbox1" name="chkpoint" onchange="pointselect1()" value="国控点" checked>国控点
+    <input type="checkbox" id="inlineCheckbox2" name="chkpoint" onchange="pointselect2()" value="微环境" checked>微环境
+    <input type="checkbox" id="inlineCheckbox3" name="chkpoint" value="污染源" >污染源
+    <input type="checkbox" id="inlineCheckbox4" name="chkpoint" value="超级站" >超级站
+</div>
+<div id="btn-group2" class="btn-group btn-group-lg btn-group-vertical" style="position:absolute;top:250px;left:0;z-index:1000;">
+    <button type="button" class="btn btn-default btnitemgroup" value="AQI">AQI</button>
+    <button type="button" class="btn btn-default btnitemgroup" value="PM2.5">PM2.5</button>
+    <button type="button" class="btn btn-default btnitemgroup" value="PM10">PM10</button>
+    <button type="button" class="btn btn-default btnitemgroup" value="SO2">SO2</button>
+    <button type="button" class="btn btn-default btnitemgroup" value="NO2">NO2</button>
+    <button type="button" class="btn btn-default btnitemgroup" value="CO">CO</button>
+    <button type="button" class="btn btn-default btnitemgroup" value="O3">O3</button>        
+</div>
+
+<div id="allmap" style="width:100%;height:100%;overflow: hidden;margin:0;float:right;"></div>
+<div id="txtTime" class="textTime" style="position:absolute;top:0px;"></div>
+<div class="tips">
+    <table id="statustip" class="leveltip">
+            <tr>
+              <td style="background-color:#43ce17;color:#fff">优</td>
+              <td style="background-color:#efdc31;color:#fff">良</td>
+              <td style="background-color:#fa0;color:#fff">轻度污染</td>
+              <td style="background-color:#ff401a;color:#fff">中度污染</td>
+              <td style="background-color:#d20040;color:#fff">重度污染</td>
+              <td style="background-color:#9c0a4e;color:#fff">严重污染</td>
+            </tr>
+    </table> 
+</div>
+<div class="col-xs-3" style="padding:10px 0 0 0; ">
+      <table id="dg" class="table table-hover table-striped" ></table>
+    </div>  
+<script type="text/javascript" src="../resource/js/chart.js?v=1.0"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FovGfLyaU2eYMMQaiq8jEKIU"></script>
+
+<%= javascript_include_tag 'map', 'data-turbolinks-track' => true %>
+
+<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>   
+<script type="text/javascript" src="../resource/js/moment.js"></script>
+<script type="text/javascript" src="../resource/js/daterangepicker.js"></script>  
+<script type="text/javascript">
+
+var map1 = getMap();
+var map1len = 0;
+var map2 = getMap();
+var map2len = 0;
+var map3 = getMap();
+var map4 = getMap();
+
+var ITEM = "AQI";
+var city = "保定";
+var map = new BMap.Map("allmap",{minZoom:11,maxZoom:14});           
+map.centerAndZoom(city,14); 
+map.addControl(new BMap.NavigationControl());               
+map.addControl(new BMap.ScaleControl());                    
+map.addControl(new BMap.OverviewMapControl());    
+//map.addControl(new BMap.MapTypeControl());  
+map.enableScrollWheelZoom(true);     
+
+var data='[{"city":"\u5eca\u574a","pointname":"\u5317\u534e\u822a\u5929\u5b66\u9662","pointlevel":"\u56fd\u63a7\u70b9","region":"\u5e7f\u9633\u533a","latitude":"39.5343000000","longitude":"116.7464000000","time":"2015-09-23 14:00:00","aqi":"58","pm2_5":"41","pm10":"52","so2":"4","no2":"41","o3":"112","o3_8h":"62","co":"0.910","level":"\u4e8c\u7ea7","quality":"\u826f","primary_pollutant":"PM2.5"},{"city":"\u5eca\u574a","pointname":"\u73af\u5883\u76d1\u6d4b\u76d1\u7406\u4e2d\u5fc3","pointlevel":"\u56fd\u63a7\u70b9","region":"\u5e7f\u9633\u533a","latitude":"39.5571000000","longitude":"116.7150000000","time":"2015-09-23 14:00:00","aqi":"64","pm2_5":"40","pm10":"77","so2":"3","no2":"35","o3":"101","o3_8h":"55","co":"0.681","level":"\u4e8c\u7ea7","quality":"\u826f","primary_pollutant":"PM10"},{"city":"\u5eca\u574a","pointname":"\u836f\u6750\u516c\u53f8","pointlevel":"\u56fd\u63a7\u70b9","region":"\u5b89\u6b21\u533a","latitude":"39.5178000000","longitude":"116.6838000000","time":"2015-09-23 14:00:00","aqi":"64","pm2_5":"37","pm10":"78","so2":"8","no2":"53","o3":"101","o3_8h":"54","co":"0.792","level":"\u4e8c\u7ea7","quality":"\u826f","primary_pollutant":"PM10"},{"city":"\u5eca\u574a","pointname":"\u6c38\u6e05\u73af\u4fdd\u5c40","pointlevel":"\u7701\u63a7\u70b9","region":"\u6c38\u6e05\u53bf","latitude":"39.3280000000","longitude":"116.5050000000","time":"2015-09-23 14:00:00","aqi":"48","pm2_5":"33","pm10":"47","so2":"11","no2":"20","o3":"143","o3_8h":"68","co":"0.404","level":"\u4e00\u7ea7","quality":"\u4f18","primary_pollutant":null},{"city":"\u5eca\u574a","pointname":"\u9738\u5dde\u987a\u8fbe\u71c3\u6c14","pointlevel":"\u7701\u63a7\u70b9","region":"\u9738\u5dde\u5e02","latitude":"39.1320000000","longitude":"116.3980000000","time":"2015-09-23 14:00:00","aqi":"49","pm2_5":"19","pm10":"35","so2":"2","no2":"17","o3":"155","o3_8h":"71","co":"1.857","level":"\u4e00\u7ea7","quality":"\u4f18","primary_pollutant":null},{"city":"\u5eca\u574a","pointname":"\u4e09\u6cb3\u4ea4\u901a\u5c40","pointlevel":"\u7701\u63a7\u70b9","region":"\u4e09\u6cb3\u5e02","latitude":"39.9880000000","longitude":"117.0850000000","time":"2015-09-23 14:00:00","aqi":"55","pm2_5":"33","pm10":"60","so2":"9","no2":"19","o3":"138","o3_8h":"72","co":"0.493","level":"\u4e8c\u7ea7","quality":"\u826f","primary_pollutant":"PM10"},{"city":"\u5eca\u574a","pointname":"\u56fa\u5b89\u515a\u6821","pointlevel":"\u7701\u63a7\u70b9","region":"\u56fa\u5b89\u53bf","latitude":"39.4450000000","longitude":"116.3050000000","time":"2015-09-23 14:00:00","aqi":"56","pm2_5":"31","pm10":"62","so2":"32","no2":"36","o3":"133","o3_8h":"70","co":"0.602","level":"\u4e8c\u7ea7","quality":"\u826f","primary_pollutant":"PM10"},{"city":"\u5eca\u574a","pointname":"\u5927\u5382\u536b\u751f\u5c40","pointlevel":"\u7701\u63a7\u70b9","region":"\u5927\u5382\u56de\u65cf\u81ea\u6cbb\u53bf","latitude":"39.8900000000","longitude":"116.9980000000","time":"2015-09-23 14:00:00","aqi":"62","pm2_5":"44","pm10":"58","so2":"12","no2":"20","o3":"166","o3_8h":"78","co":"0.547","level":"\u4e8c\u7ea7","quality":"\u826f","primary_pollutant":"PM2.5"},{"city":"\u5eca\u574a","pointname":"\u6587\u5b89\u53bf\u73af\u4fdd\u5c40","pointlevel":"\u7701\u63a7\u70b9","region":"\u6587\u5b89\u53bf","latitude":"38.8800000000","longitude":"116.4640000000","time":"2015-09-23 14:00:00","aqi":"77","pm2_5":"56","pm10":"36","so2":"11","no2":"11","o3":"174","o3_8h":"80","co":"0.544","level":"\u4e8c\u7ea7","quality":"\u826f","primary_pollutant":"PM2.5"},{"city":"\u5eca\u574a","pointname":"\u9999\u6cb3\u73af\u4fdd\u5c40","pointlevel":"\u7701\u63a7\u70b9","region":"\u9999\u6cb3\u53bf","latitude":"39.7660000000","longitude":"117.0090000000","time":"2015-09-23 14:00:00","aqi":"80","pm2_5":"59","pm10":"81","so2":"12","no2":"32","o3":"167","o3_8h":"79","co":"1.322","level":"\u4e8c\u7ea7","quality":"\u826f","primary_pollutant":"PM2.5"},{"city":"\u5eca\u574a","pointname":"\u5927\u57ce\u73af\u4fdd\u5c40","pointlevel":"\u7701\u63a7\u70b9","region":"\u5927\u57ce\u53bf","latitude":"38.7120000000","longitude":"116.6600000000","time":"2015-09-23 14:00:00","aqi":"210","pm2_5":"160","pm10":"222","so2":"33","no2":"24","o3":"235","o3_8h":"91","co":"2.227","level":"\u4e94\u7ea7","quality":"\u91cd\u5ea6\u6c61\u67d3","primary_pollutant":"PM2.5"},{"city":"\u5eca\u574a","pointname":"\u5f00\u53d1\u533a","pointlevel":"\u56fd\u63a7\u70b9","region":"\u5f00\u53d1\u533a","latitude":"39.5747000000","longitude":"116.7729000000","time":"2015-09-23 14:00:00","aqi":"0","pm2_5":"0","pm10":"0","so2":"0","no2":"0","o3":"0","o3_8h":"0","co":"0.000","level":"-","quality":"-","primary_pollutant":null}]';
+data = eval('(' + data + ')');
+
+var selfpoints='[{"time":"2015-09-15 12:21:00","cityname":"\u5eca\u574a","pointgid":"4","pointname":"\u4e1c\u65e5\u745e\u666f\u793e\u533a","devicename":"LF4","aqi":"51","pm2_5":"36","quality":"\u826f","latitude":"39.5531390913","longitude":"116.6901603464","level":"\u5fae\u73af\u5883\u70b9","region":"\u5e7f\u9633\u533a"},{"time":"2015-09-23 14:42:00","cityname":"\u5eca\u574a","pointgid":"1","pointname":"\u7d2b\u91d1\u534e\u5e9c\u793e\u533a","devicename":"LF1","aqi":"96","pm2_5":"72","quality":"\u826f","latitude":"39.5511960237","longitude":"116.7291396074","level":"\u5fae\u73af\u5883\u70b9","region":"\u5e7f\u9633\u533a"},{"time":"2015-09-23 14:48:00","cityname":"\u5eca\u574a","pointgid":"7","pointname":"\u9f99\u6cb3\u76db\u90fd\u793e\u533a","devicename":"LF7","aqi":"102","pm2_5":"77","quality":"\u8f7b\u5ea6\u6c61\u67d3","latitude":"39.4996198483","longitude":"116.7193954863","level":"\u5fae\u73af\u5883\u70b9","region":"\u5e7f\u9633\u533a"},{"time":"2015-09-23 14:49:00","cityname":"\u5eca\u574a","pointgid":"5","pointname":"\u7b2c\u516b\u5927\u8857\u793e\u533a","devicename":"LF5","aqi":"80","pm2_5":"59","quality":"\u826f","latitude":"39.5377255582","longitude":"116.6819607404","level":"\u5fae\u73af\u5883\u70b9","region":"\u5e7f\u9633\u533a"},{"time":"2015-09-23 14:56:00","cityname":"\u5eca\u574a","pointgid":"13","pointname":"\u56fa\u5b89\u89c4\u5212\u5c40","devicename":"LFD","aqi":"38","pm2_5":"27","quality":"\u4f18","latitude":"39.4566670000","longitude":"116.2794440000","level":"\u5fae\u73af\u5883\u70b9","region":"\u56fa\u5b89\u53bf"},{"time":"2015-09-23 14:56:00","cityname":"\u5eca\u574a","pointgid":"14","pointname":"\u56fa\u5b89\u53bf\u4e00\u4e2d","devicename":"LFE","aqi":"22","pm2_5":"16","quality":"\u4f18","latitude":"39.4211110000","longitude":"116.2919440000","level":"\u5fae\u73af\u5883\u70b9","region":"\u56fa\u5b89\u53bf"},{"time":"2015-09-23 14:57:00","cityname":"\u5eca\u574a","pointgid":"3","pointname":"\u5174\u76db\u65b0\u533a\u793e\u533a","devicename":"LF3","aqi":"67","pm2_5":"49","quality":"\u826f","latitude":"39.5186106251","longitude":"116.7036022226","level":"\u5fae\u73af\u5883\u70b9","region":"\u5e7f\u9633\u533a"},{"time":"2015-09-23 15:00:00","cityname":"\u5eca\u574a","pointgid":"6","pointname":"\u7a7a\u4e2d\u82b1\u56ed\u793e\u533a","devicename":"LF6","aqi":"80","pm2_5":"59","quality":"\u826f","latitude":"39.5225062013","longitude":"116.7072762212","level":"\u5fae\u73af\u5883\u70b9","region":"\u5e7f\u9633\u533a"},{"time":"2015-09-23 15:09:00","cityname":"\u5eca\u574a","pointgid":"2","pointname":"\u9526\u745e\u5c1a\u57ce\u793e\u533a","devicename":"LF2","aqi":"101","pm2_5":"76","quality":"\u8f7b\u5ea6\u6c61\u67d3","latitude":"39.5226472487","longitude":"116.7443900933","level":"\u5fae\u73af\u5883\u70b9","region":"\u5e7f\u9633\u533a"},{"time":"2015-09-23 15:09:00","cityname":"\u5eca\u574a","pointgid":"9","pointname":"\u56fa\u5b89\u5b54\u96c0\u57ce\u5e7c\u513f\u56ed","devicename":"LF9","aqi":"34","pm2_5":"24","quality":"\u4f18","latitude":"39.4633330000","longitude":"116.2972220000","level":"\u5fae\u73af\u5883\u70b9","region":"\u56fa\u5b89\u53bf"},{"time":"2015-09-23 15:10:00","cityname":"\u5eca\u574a","pointgid":"10","pointname":"\u56fa\u5b89\u515a\u6821","devicename":"LFA","aqi":"53","pm2_5":"38","quality":"\u826f","latitude":"39.4336110000","longitude":"116.2938890000","level":"\u5fae\u73af\u5883\u70b9","region":"\u56fa\u5b89\u53bf"}]';
+selfpoints = eval('(' + selfpoints + ')');
+
+$(function() 
+{
+  Highcharts.setOptions({
+      global: {
+          useUTC: false
+      }
+   }); 
+  showMap(data);
+  showSelfPointMap(selfpoints);
+  //污染物选择
+  $(".btnitemgroup:first").addClass("btn-success");
+  $(".btnitemgroup").click(function()
+  {
+      ITEM = $(this).val();
+      $(".btnitemgroup").removeClass("btn-success");
+      $(this).addClass("btn-success");
+      showMap(data);
+  });
+
+  $("#ischange").change(function() { 
+    alert("checked"); 
+  }); 
+
+});
+
+function pointselect1()
+{
+   if($('#inlineCheckbox1').is(':checked')==true)
+   {
+    showPoint(true);
+   }
+   else
+   {
+    showPoint(false);
+   }
+   
+}
+
+function pointselect2()
+{
+  if($('#inlineCheckbox2').is(':checked')==true)
+   {
+    showSelfPoint(true);
+   }
+   else
+   {
+    showSelfPoint(false);
+   }
+}
+
+function showPoint(flag)
+{
+  if(flag)
+  {
+    for(var i=0;i<map1len;i++)
+    {
+      var label = map1.get(i);
+      label.show();
+    }
+  }
+  else
+  {
+    for(var i=0;i<map1len;i++)
+    {
+      var label = map1.get(i);
+      label.hide();
+    }
+  }
+}
+
+function clearPoint()
+{
+  for(var i=0;i<map1len;i++)
+  {
+    var label = map1.get(i);
+    map.removeOverlay(label);
+    map1.remove(i);
+  }
+}
+
+function showSelfPoint(flag)
+{
+  if(flag)
+  {
+    for(var i=0;i<map2len;i++)
+      {
+        var marker = map2.get(i);
+        marker.show();
+      }
+  }
+  else
+  {
+    for(var i=0;i<map2len;i++)
+      {
+        var marker = map2.get(i);
+        marker.hide();
+      }
+  }
+}
+
+function showMap(data)
+{
+  var aqi,lat,lng,icon,color;
+  clearPoint();
+  map1len = data.length;
+  for (var i = 0; i < data.length; i++) 
+  {
+    switch(ITEM)
+    {
+      case "AQI":  value=parseInt(data[i].aqi); unit="";index = getAQILevelIndex(value);break;
+      case "PM2.5":  value=parseInt(data[i].pm2_5); unit="ug/m3";index = getPM25LevelIndex(value);break;
+      case "PM10":  value=parseInt(data[i].pm10); unit="ug/m3";index = getPM10LevelIndex(value);break;
+      case "SO2":  value=parseInt(data[i].so2); unit="ug/m3";index = getSO2LevelIndex(value);break;
+      case "NO2":  value=parseInt(data[i].no2); unit="ug/m3";index = getNO2LevelIndex(value);break;
+      case "O3":  value=parseInt(data[i].o3); unit="ug/m3";index = getO3LevelIndex(value);break;
+      case "CO":  value=parseFloat(data[i].co); unit="mg/m3";index = getCOLevelIndex(value);break;
+    }
+    pointname = data[i].pointname;
+    color = getColorByIndex(index);  
+    lat = data[i].latitude;
+    lng = data[i].longitude;
+    time = data[i].time;
+    var point = new BMap.Point(lng,lat);
+    var content = 
+        "<table width='100%'><tr><td style='font-size:12px' valign='top'>"
+        +"<table width='100%' class='fitem'>"
+        +"<tr><th>AQI</th><td style='width:70px;text-align:center;background-color:" + getColorByIndex(getAQILevelIndex(data[i].aqi)) +";color:#fff'>" + data[i].aqi 
+        +"</td><th>首要污染</th><td style='text-align:center'>" + data[i].primary_pollutant
+        +"</td></tr><tr><th>PM2.5</th><td style='width:70px;text-align:center;background-color:" + getColorByIndex(getPM25LevelIndex(data[i].pm2_5)) +";color:#fff'>" + parseInt(data[i].pm2_5) 
+        +"</td><th>PM10</th><td style='width:70px;text-align:center;background-color:" + getColorByIndex(getPM10LevelIndex(data[i].pm10)) +";color:#fff'>" + parseInt(data[i].pm10)
+        +"</td></tr><tr><th>CO</th><td style='width:70px;text-align:center;background-color:" + getColorByIndex(getCOLevelIndex(data[i].co)) +";color:#fff'>" + data[i].co
+        +"</td><th>NO2</th><td style='width:70px;text-align:center;background-color:" + getColorByIndex(getNO2LevelIndex(data[i].no2)) +";color:#fff'>" + parseInt(data[i].no2)
+        +"</td></tr><tr><th>SO2</th><td style='width:70px;text-align:center;background-color:" + getColorByIndex(getSO2LevelIndex(data[i].so2)) +";color:#fff'>" + parseInt(data[i].so2)
+        +"</td><th>O3</th><td style='width:70px;text-align:center;background-color:" + getColorByIndex(getO3LevelIndex(data[i].o3)) +";color:#fff'>" + parseInt(data[i].o3)                    
+        +"</td></tr><tr><th>空气等级</th><td  style='text-align:center'>" +  getQualityByAqi(data[i].aqi)
+        +"</td><th>站点类型</th><td  style='text-align:center'>" + data[i].pointlevel
+        +"</td></tr><tr><th>更新时间</th><td colspan='3'  style='text-align:center'>" + data[i].time
+        +"</td></tr></table></div>"
+        +"</td>"
+        +"<td valign='top' align='right' style='padding-left:5px;'><img src='http://poster.weather.com.cn/p_files/base/101090601.jpg' width='80px' height='80px'/><td>"
+        +"</tr></table><div id='citychart_" + i + "' style='width:100%;height:130px'></div>";
+    showMapLabel(value,point,content,map1,i,'廊坊',pointname,color);   
+  }
+  $('#txtTime').html(time);
+}
+
+function showMapLabel(value,point,content,m,i,city,pointname,color)
+{
+   var opts = {
+      position : point,    // 指定文本标注所在的地理位置
+      offset   : new BMap.Size(-15, -10)    //设置文本偏移量
+    }
+    var label = new BMap.Label(value, opts);  // 创建文本标注对象
+    
+    label.setStyle({
+       color : "white",
+       background: color,
+       fontSize : "14px",
+       border:'',
+       width: "35px",
+       textAlign:"center",
+       height : "22px",
+       lineHeight : "22px"
+    });
+    map.addOverlay(label);
+    m.put(i,label);
+    var searchInfoWindow = new BMapLib.SearchInfoWindow(map,content,{
+          title: "<span style='font-size:14px'>" + pointname + "</span>", //标题
+          width: 300, //宽度
+          height: 240, //高度
+          panel : "panel", //检索结果面板
+          enableAutoPan : true, //自动平移
+          searchTypes :[]
+    });
+    label.addEventListener("mouseover",function(){      
+        searchInfoWindow.open(point);
+        showCityPointChart(i,city,pointname)
+    });
+    label.addEventListener("mouseout",function(){      
+        //searchInfoWindow.close();
+    });
+}
+
+//显示微环境点数据
+function showSelfPointMap(data)
+{
+  map2len = data.length;
+  for(i=0;i<data.length;i++)
+  {
+      var pointgid = data[i].pointgid;
+      var name = data[i].pointname;
+      var lat = data[i].latitude;
+      var lng = data[i].longitude;
+      var pm2_5 = data[i].pm2_5;
+      index = getPM25LevelIndex(pm2_5);
+      var quality = getQualityByIndex(index);
+      var title = data[i].pointname + ":" + pm2_5;                          
+      var desp = "<table width='100%' class='fitem'>"
+        +"<tr><th >AQI</th><td style='width:90px;text-align:center;color:#000'>" +  data[i].aqi
+        +"</td><th>PM2.5</th><td style='width:90px;text-align:center;'>" + parseInt(data[i].pm2_5) + " ug/m<sup>3</sup>"
+        +"</td></tr><tr><th>空气等级</th><td style='text-align:center;background-color:" + getColorByIndex(index) +";color:#fff'>" + quality
+        +"</td><th>站点类型</th><td style='text-align:center;'>" + "微环境点"
+        +"</td></tr><tr><th>更新时间</th><td style='text-align:center;' colspan='3'>" + data[i].time
+        +"</td></tr></table><div id='selfchart_" + pointgid + "' style='width:100%;height:150px'></div>";
+      var point = new BMap.Point(lng,lat);     
+      icon = "../resource/img/map/h" + index + ".png";
+      showMapMarker(name,point,title,desp,icon,pointgid,true,true,map2,i);
+  }
+}
+
+function showMapMarker(name,point,title,desp,icon,pointgid,labelFlag,markerFlag,m,i)
+{
+    //map.centerAndZoom(point, 5);  
+    var myIcon = new BMap.Icon(icon, new BMap.Size(25,32));
+    var marker = new BMap.Marker(point,{icon:myIcon});
+    var label = new BMap.Label(name);
+    var len = name.length;
+    var offset = new BMap.Size(28, 3);
+    label.setOffset(offset);
+    if(labelFlag)
+      marker.setLabel(label);
+    //marker.setTitle(title);
+    map.addOverlay(marker);
+    m.put(i,marker);
+    if(markerFlag==true)
+    {
+      var searchInfoWindow = new BMapLib.SearchInfoWindow(map,desp,{
+            title: "<span style='font-size:14px'>" + name + "</span>", //标题
+            width: 320, //宽度
+            height: 200, //高度
+            panel : "panel", //检索结果面板
+            enableAutoPan : true, //自动平移
+            searchTypes :[]
+      });
+      marker.addEventListener("mouseover",function(){      
+          searchInfoWindow.open(point);
+          showSelfPointChart(pointgid);
+      });
+      marker.addEventListener("mouseout",function(){      
+          //searchInfoWindow.close();
+      });
+    }
+}
+
+function showCityPointChart(i,city,pointname)
+{
+  
+  $.ajax({            
+      url: '../api/getdata_citypointperiod.php',
+      data:{'city':city,
+            'pointname':pointname},
+      type: "post",            
+      dataType: "json", 
+      success: function (data){
+        var dataCityPoint = [];
+        for(var j=0;j<data.total;j++)
+        {         
+          switch(ITEM)
+          {
+              case "AQI":  value=parseInt(data.rows[j].aqi); unit="";index = getAQILevelIndex(value);break;
+              case "PM2.5":  value=parseInt(data.rows[j].pm2_5); unit="ug/m3";index = getPM25LevelIndex(value);break;
+              case "PM10":  value=parseInt(data.rows[j].pm10); unit="ug/m3";index = getPM10LevelIndex(value);break;
+              case "SO2":  value=parseInt(data.rows[j].so2); unit="ug/m3";index = getSO2LevelIndex(value);break;
+              case "NO2":  value=parseInt(data.rows[j].no2); unit="ug/m3";index = getNO2LevelIndex(value);break;
+              case "O3":  value=parseInt(data.rows[j].o3); unit="ug/m3";index = getO3LevelIndex(value);break;
+              case "CO":  value=parseFloat(data.rows[j].co); unit="mg/m3";index = getCOLevelIndex(value);break;
+          }
+          dataCityPoint.push({
+               x: converTimeFormat(data.rows[j].time).getTime(),
+               y: value,
+               color: getColorByIndex(index)
+          });
+        }       
+        title = '最近24小时' + ITEM + '变化趋势';
+        showChart('citychart_' + i,ITEM,dataCityPoint,unit,title);
+      }
+  });
+}
+
+function showSelfPointChart(pointgid)
+{
+  $.ajax({            
+      url: '../api/getdata_selfpointperiod.php',
+      data:{'pointgid':pointgid},
+      type: "post",            
+      dataType: "json", 
+      success: function (data){
+        var dataSelfPoint = [];
+        for(var j=0;j<data.total;j++)
+        {
+          var pm2_5 = data.rows[j].pm2_5;
+          index = getPM25LevelIndex(pm2_5);
+          dataSelfPoint.push({
+               x: converTimeFormat(data.rows[j].time).getTime(),
+               y: parseInt(pm2_5),
+               color: getColorByIndex(index)
+          });
+        }
+        title = '最近24小时PM2.5变化趋势';
+        showChart('selfchart_' + pointgid,'PM2.5',dataSelfPoint,'ug/m3',title);
+      }
+  });
+}
+
+function showChart(container,name,data,unit,title)
+{ 
+   
+  var dateTypeFormat = '%Y-%m-%d %H:%M';
+  var markerShowFlag = false;
+
+  $('#' + container).highcharts({       
+    chart: {
+      type: 'column',
+            zoomType: 'x',
+            spacingLeft: 0,
+            spacingRight: 0
+        },
+        title: {
+            text: title,
+            style:{
+                fontSize:'12px'
+            }
+        },
+        xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats:{
+            millisecond: '%H:%M:%S.%L',
+            second: '%H:%M:%S',
+            minute: '%H:%M',
+            hour: '%H:%M',
+            day: '%m-%d',
+            week: '%m-%d',
+            month: '%Y-%m',
+            year: '%Y'
+            }               
+        },
+        yAxis:{
+            title: {
+                text: ''
+            },
+            min:0
+        },
+        tooltip: {
+            //shared: true,
+            enabled: true,
+            formatter: function() {
+                var tip = '' + Highcharts.dateFormat(dateTypeFormat, this.x) +'<br/>' + 
+                this.series.name +': <b>'+ this.y + '</b>' + unit;
+                if(this.point.primary_pollutant!=null)
+                {
+                    tip = tip + "<br/>首要污染物：" + this.point.primary_pollutant;
+                }
+                return tip;
+
+            }
+        },
+        plotOptions:{             
+          series:{
+            marker: {
+                  enabled: markerShowFlag,
+                    radius:5
+              },
+              enableMouseTracking:true,
+            turboThreshold: 0
+          } 
+        },
+        legend: {
+            enabled: false
+        },
+        credits: {
+            enabled:false
+        },
+        series: [{
+            name: name,
+            data: data
+        }]
+    });
+}
+
+function getLevel(aqival)
+{
+   var _color=null;
+   var _quality=null;
+   if(aqival<=0){
+     _color='#6E6E6E';
+     _quality="无";
+   }   
+   else if(aqival<=50){
+     _color='#43ce17';
+     _quality="优";
+   }
+   else if(aqival<=100){
+     _color='#efdc31';
+     _quality="良";
+   }
+   else if(aqival<=150){
+     _color='#fa0';
+     _quality="轻度污染";
+   }
+   else if(aqival<=200){
+     _color='#ff401a';
+     _quality="中度污染";
+   }
+   else if(aqival<=300){
+     _color='#d20040';
+     _quality="重度污染";
+   }
+   else{ 
+     _color='#9c0a4e';
+     _quality="严重污染";
+   } 
+   return {
+    color:_color,
+    quality:_quality
+  };  
+}
+
+</script>
+
+
+
+

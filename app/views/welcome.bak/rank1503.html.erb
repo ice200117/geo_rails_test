@@ -1,0 +1,195 @@
+<%= render partial:"weclome/banner",locals:{banner:@banner}%>
+<div class="container">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 >
+				<strong>74城市空气质量综合指数排名</strong>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="tab-title">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#sfri" data-toggle="tab"><strong>污染物浓度（日报）</strong></a></li> 
+							<li><a href="#sfyue" data-toggle="tab"><strong>污染物浓度（月报）</strong></a></li>
+							<li><a href="#sfnian" data-toggle="tab"><strong>污染物浓度（年报）</strong></a></li>
+						</ul>
+					</div>
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="sfri">
+							<span>更新时间: 
+								<%= @sfcitiesrankbyday[:time].strftime("%Y-%m-%d")
+							%>
+					</span> 
+					<table class="table">
+						<thead>
+							<tr>
+								<th>排名</th>
+								<th>城市</th>
+								<th>SO2(ug/m3)</th>
+								<th>NO2(ug/m3)</th>
+								<th>CO(mg/m3)</th>
+								<th>O3(ug/m3)</th>
+								<th>PM10(ug/m3)</th>
+								<th>PM2.5(ug/m3)</th>
+								<th>综合指数</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% sfcitiesrankbyday=@sfcitiesrankbyday[:cities].sort_by{|sfri| sfri['zonghezhishu']}%>
+							<% for i in (0...sfcitiesrankbyday.length)%>
+								<% tmp=sfcitiesrankbyday[sfcitiesrankbyday.length - 1 -i] %>
+								<tr>
+									<th><%= i+1 %></th>
+									<th><%= tmp['city'] %></th>
+									<th><%= tmp['SO2'] %></th>
+									<th><%= tmp['NO2'] %></th>
+									<th><%= tmp['CO'] %></th>
+									<th><%= tmp['O3'] %></th>
+									<th><%= tmp['pm10'] %></th>
+									<th><%= tmp['pm25'] %></th>
+									<th><%= tmp['zonghezhishu'] %></th>
+								</tr>
+							<% end %>
+						</tbody>
+					</table> 
+
+				</div>    
+				<div class="tab-pane fade" id="sfyue">
+					<span>更新时间: 
+						<%= @sfcitiesrankbymonth[:time].strftime("%Y-%m-%d")
+					%>
+			</span> 
+			<table class="table">
+				<thead>
+					<tr>
+						<th>排名</th>
+						<th>城市</th>
+						<th>SO2(ug/m3)</th>
+						<th>NO2(ug/m3)</th>
+						<th>CO(mg/m3)</th>
+						<th>O3(ug/m3)</th>
+						<th>PM10(ug/m3)</th>
+						<th>PM2.5(ug/m3)</th>
+						<th>综合指数</th>
+					</tr>
+				</thead>
+				<tbody>
+					<%  sfcitiesrankbymonth=@sfcitiesrankbymonth[:cities].sort_by{|sfyue| sfyue['zonghezhishu']}%>
+					<% for i in (0...sfcitiesrankbymonth.length)%>
+						<% tmp=sfcitiesrankbymonth[sfcitiesrankbymonth.length - 1 -i]%>
+						<tr>
+							<th><%= i+1 %></th>
+							<th><%= tmp['city'] %></th>
+							<th><%= tmp['SO2'] %></th>
+							<th><%= tmp['NO2'] %></th>
+							<th><%= tmp['CO'] %></th>
+							<th><%= tmp['O3'] %></th>
+							<th><%= tmp['pm10'] %></th>
+							<th><%= tmp['pm25'] %></th>
+							<th><%= tmp['zonghezhishu'] %></th>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+		<div class="tab-pane fade" id="sfnian">
+			<span>更新时间: 
+				<%= @sfcitiesrankbyyear[:time].strftime("%Y-%m-%d") %>
+			</span> 
+			<table class="table">
+				<thead>
+					<tr>
+						<th>排名</th>
+						<th>城市</th>
+						<th>SO2(ug/m3)</th>
+						<th>NO2(ug/m3)</th>
+						<th>CO(mg/m3)</th>
+						<th>O3(ug/m3)</th>
+						<th>PM10(ug/m3)</th>
+						<th>PM2.5(ug/m3)</th>
+						<th>综合指数</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% sfcitiesrankbyyear=@sfcitiesrankbyyear[:cities].sort_by{|sfnian| sfnian['zonghezhishu']}%>
+					<% for i in (0...sfcitiesrankbyyear.length)%>
+						<% tmp=sfcitiesrankbyyear[sfcitiesrankbyyear.length - 1 -i]%>
+						<tr>
+							<th><%= i+1 %></th>
+							<th><%= tmp['city'] %></th>
+							<th><%= tmp['SO2'] %></th>
+							<th><%= tmp['NO2'] %></th>
+							<th><%= tmp['CO'] %></th>
+							<th><%= tmp['O3'] %></th>
+							<th><%= tmp['pm10'] %></th>
+							<th><%= tmp['pm25'] %></th>
+							<th><%= tmp['zonghezhishu'] %></th>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+	$('.home-banner').backstretch("<%= image_url 'top.png' %>");
+	$(function(){
+		$(".change").click(function(){
+			if($(this).is(".active")){
+				return;
+			}
+			$(this).addClass("active").siblings().removeClass("active");
+
+			//change($(this).data("val"));
+			/*
+			   if($(this).data("type")=='CO')
+			   {
+			   $("#factor3").html($(this).data("type"))
+			   $("#001").css("display","none");
+			   $("#002").css("display","none");
+			   $("#003").css("display","block");
+
+			   }
+			   else if($(this).data("type")=='NOX')
+			   {
+			   $("#factor2").html($(this).data("type"))
+			   $("#001").css("display","none");
+			   $("#002").css("display","block");
+			   $("#003").css("display","none");
+			   }
+			   else
+			   {
+			   $("#factor1").html($(this).data("type"))
+			   $("#001").css("display","block");
+			   $("#002").css("display","none");
+			   $("#003").css("display","none");
+			   }
+			 */
+
+		});
+	});
+function change(img){
+	$('.yuanzhuizong').html(img);
+}
+
+<%
+		nt = Time.now
+i = 0
+path = '/mnt/share/Products/Web/'+@city_adj
+begin
+	strnow1 = (nt-60*60*24*i).strftime('%Y%m%d') 
+	strnow2 = (nt-60*60*24*i).strftime("%Y-%m-%d")
+	file = path + strnow1 + '/CUACE_09km_adj_SO2_120_'+strnow2+'.png'
+	i = i + 1
+	break if i == 7 
+end until File::exists?(file)
+%>
+					//change('<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>');
+change('<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
+</script>

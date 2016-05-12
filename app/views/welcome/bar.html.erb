@@ -56,7 +56,6 @@
 	  <%# h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime > ?", 4.days.ago).group_by_day(:forecast_datetime, format: "%HZ\n %d%b").average(:AQI) %>
 	  <%# h.each {|k,v| h[k] = v.round}%>
     <%= line_chart @monitor_forecast_hour_month_diff , height: "300px", library: {chart:{zoomType:"x", backgroundColor: "#eee"},title:{text:"Monitor_forecast_hour_AQI_month_compare"+@correlation.map {|r| r.round(2) }.to_s }}  %>
-    <%#= button_to "导出数据", {action: "export_lfdata_xls"}, remote: true, form: {"data-type" => "json" } %>
   </div>
 
   <!--

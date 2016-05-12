@@ -1,39 +1,34 @@
 require_relative './city_enum.rb'
 
-def get_rank_json(web_flag,secretstr,typestr,datestr)
-	datestr=datestr.strftime("%Y-%m-%d") if datestr != nil
-	methodstr = ''
-	if secretstr.class == Hash
-		methodstr=secretstr[:method]
-		secretstr=secretstr[:secret]
+def get_rank_json(web_flag,option)
+	option[:date]=option[:date].strftime("%Y-%m-%d") if option[:date] != nil
+	keystr=''
+	option.each do |k,v|
+		keystr+=v
 	end
+	option[:key]=Digest::MD5.hexdigest(keystr)
 	hs = Hash.new
 	begin
-		if web_flag == 'shishi_china_rank_data'
+		if web_flag == 'shishi_rank_74'
 			#真气网74城市实时/日排名
-			response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+secretstr+'&type='+typestr+'&key='+Digest::MD5.hexdigest(secretstr+typestr))
-		elsif web_flag == 'china_history_data' 
+			response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+option[:secret]+'&type='+option[:type]+'&key='+option[:key])
+		elsif web_flag == 'history_74' 
 			#74城市和京津冀历史日接口
-			option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr)}
 			response = HTTParty.post('http://www.izhenqi.cn/api/getdata_history.php', :body => option)
-		elsif web_flag == 'shishi_rank_data' 
+		elsif web_flag == 'shishi_74' 
 			#74城市 京津冀 廊坊实时数据
-			option = {secret:secretstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+typestr) }
 			response = HTTParty.post('http://www.izhenqi.cn/api/getrank.php', :body => option)
-		elsif web_flag == 'china_rank_data_of_month'
+		elsif web_flag == 'rank_74_of_month'
 			#74城市月排名数据
-			option = {secret:secretstr,type:typestr,date:datestr,key:Digest::MD5.hexdigest(secretstr+typestr+datestr) }
 			response = HTTParty.post('http://www.izhenqi.cn/api/getrank_month.php', :body => option)
-		elsif web_flag == 'sfcitiesrankbymonthoryear'
+		elsif web_flag == 'zhzs_74'
 			#74 城市当月和当年综合指数排名
-			option = {secret:secretstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+typestr) }
 			response = HTTParty.post('http://www.izhenqi.cn/api/getrank_forecast.php', :body => option)
-		elsif web_flag == 'lf_history_data'
+		elsif web_flag == 'history_74'
 			#廊坊区县历史数据排名
-			response  = HTTParty.get('http://115.28.227.231:8082/api/data/day-qxday?date='+datestr)
+			response  = HTTParty.get('http://115.28.227.231:8082/api/data/day-qxday?date='+option[:date])
 		elsif web_flag == 'all_city_by_hour'
 			#全国城市小时数据
-			option = {secret:secretstr,method:methodstr,type:typestr,key:Digest::MD5.hexdigest(secretstr+methodstr+typestr) }
 			response = HTTParty.post('http://www.izhenqi.cn/api/dataapi.php',:body => option)
 		end
 		json_data = ''
@@ -50,6 +45,18 @@ def get_rank_json(web_flag,secretstr,typestr,datestr)
 	end 
 	hs
 end
+def rank(hs)
+	for i in (0..hs.length)
+		for j in ((i+1)..hs.length)
+			if hs[i]>hs[j]
+				tmp=hs[i]
+				hs[i]=hs[j]
+				hs[j]=tmp
+			end
+		end		
+		hs[i]['rank']=i+1
+	end
+end
 #接口中不符合统一字段名，进行处理后再使用
 def column_name_modify(hs)
 	for i in (0...hs.length)
@@ -65,13 +72,12 @@ def column_name_modify(hs)
 	hs
 end
 
-#计算综合指数 需要6项指标的数据
-#先将当天的数据存储到数据库，再调用综合指数计算方法
-#年平均二级标准SO2:60,NO2:40,PM10:70,PM2.5:35
-#二级标准:CO 24小时平均4,O3日最大8小时平均160
-#参数
-#id=城市id
 def get_zonghezhishu(model)
+	#计算综合指数 需要6项指标的数据
+	#先将当天的数据存储到数据库，再调用综合指数计算方法
+	#年平均二级标准SO2:60,NO2:40,PM10:70,PM2.5:35
+	#二级标准:CO 24小时平均4,O3日最大8小时平均160
+	#参数 id=城市id
 	dayCity=model.last
 	tmp = dayCity.SO2.to_f/60+dayCity.NO2.to_f/40+dayCity.pm10.to_f/70+dayCity.pm25.to_f/35+dayCity.CO.to_f/4+dayCity.O3.to_f/160
 	tmp
@@ -116,40 +122,6 @@ def get_avg(model,id,time)
 		co_array << day_city.CO if !day_city.CO.nil? && day_city.CO != 0
 		o3_array << day_city.O3 if !day_city.O3.nil? && day_city.O3 != 0
 	end
-	#end
-=begin
-	while first_day<=this_day do
-		temp_day=first_day+second_in_day
-		sql_str=Array.new
-		sql_str<<"data_real_time >=? AND data_real_time <=? AND city_id=?"
-		sql_str<<first_day
-		sql_str<<temp_day
-		sql_str<<id
-		daycity=days_model_name.where(sql_str)	
-		if daycity.length>0
-			day_city=daycity[0]
-			if !day_city.SO2.nil? && day_city.SO2!=0
-				so2_array<<day_city.SO2
-			end
-			if !day_city.NO2.nil? && day_city.NO2!=0
-				no2_array<<day_city.NO2
-			end
-			if !day_city.pm10.nil? && day_city.pm10!=0
-				pm10_array<<day_city.pm10
-			end
-			if !day_city.pm25.nil? && day_city.pm25!=0
-				pm25_array<<day_city.pm25
-			end
-			if !day_city.CO.nil? && day_city.CO!=0
-				co_array<<day_city.CO
-			end
-			if !day_city.O3.nil? && day_city!=0
-				o3_array<<day_city.O3
-			end
-		end
-		first_day=temp_day
-	end
-=end
 	avg_co=percentile(co_array,0.95).to_f
 	avg_o3=percentile(o3_array,0.9).to_f
 
@@ -235,16 +207,16 @@ def set_change_rate_to_db(model,id,time)
 end
 
 #调用接口最多进行10次尝试，如有数据则返回数据，没有数据返回false
-def ten_times_test(model,url,secret,type,date)
+def ten_times_test(name,url,option)
 	hs=Hash.new
 	(0..10).each do
-		hs=get_rank_json(url,secret,type,date)  
+		hs=get_rank_json(url,option)  
 		break if hs!=false
 	end
 	if hs == false
-		out_log(Time.now.to_s+" "+model.name+"ERROR！")
+		out_log(Time.now.to_s+" "+name+"ERROR！")
 	elsif hs[:total].to_i == 0
-		out_log(Time.now.to_s+" "+model.name+"total is 0")
+		out_log(Time.now.to_s+" "+name+"total is 0")
 		hs=false
 	end
 	hs

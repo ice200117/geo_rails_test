@@ -1,1 +1,0 @@
-var city1="\u5eca\u574a";$(function(){$("#city1").attr("value",city1);new Vcity.CitySelector({input:"city1"});$("#myTab1 a:first").tab("show"),$("#myTab1 a").click(function(t){t.preventDefault(),$(this).tab("show")})});

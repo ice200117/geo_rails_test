@@ -16,3 +16,6 @@
 *.swp
 cron_log.log
 /public/images
+/public/assets
+*.log
+.env

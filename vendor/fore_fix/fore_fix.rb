@@ -174,7 +174,7 @@ def default_25km
 	#end 东北
 	#
 	#shangdongshen 山东
-	shandongsheng = {'you' =>1.08,'yellow' =>1.28,'qingdu'=>1.32,'zhong'=>1.35,'zhongdu'=>1.35,'yanzhong'=>1.40 }
+	shandongsheng = {'you' =>0.8,'yellow' =>0.68,'qingdu'=>0.82,'zhong'=>0.85,'zhongdu'=>0.85,'yanzhong'=>0.75 }
 	cities_default['jinanshi'] = {'you' =>0.9,'yellow' =>1.15,'qingdu'=>1.17,'zhong'=>1.25,'zhongdu'=>1.25,'yanzhong'=>1.35 }
 	# for e in (142..157)
 		# next if e == 57
