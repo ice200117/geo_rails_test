@@ -39,10 +39,7 @@ GEM
     arel (5.0.1.20140414130214)
     autoprefixer-rails (6.3.6)
       execjs
-<<<<<<< HEAD
-=======
     awesome_print (1.6.1)
->>>>>>> 11099ef9b61d236cb738c3605c33180b115aefa5
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.6)
@@ -51,12 +48,8 @@ GEM
     bootstrap-will_paginate (0.0.10)
       will_paginate
     builder (3.2.2)
-    byebug (8.2.5)
-<<<<<<< HEAD
-    capybara (2.7.0)
-=======
+    byebug (9.0.0)
     capybara (2.7.1)
->>>>>>> 11099ef9b61d236cb738c3605c33180b115aefa5
       addressable
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -69,10 +62,7 @@ GEM
       rails (~> 4.0)
     chinese_lunar (0.1.0)
     chronic (0.10.2)
-<<<<<<< HEAD
-=======
     clbustos-rtf (0.4.2)
->>>>>>> 11099ef9b61d236cb738c3605c33180b115aefa5
     coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.1.x)
@@ -80,11 +70,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
-<<<<<<< HEAD
-    concurrent-ruby (1.0.1)
-=======
     concurrent-ruby (1.0.2)
->>>>>>> 11099ef9b61d236cb738c3605c33180b115aefa5
     cucumber (2.3.3)
       builder (>= 2.1.2)
       cucumber-core (~> 1.4.0)
@@ -102,35 +88,24 @@ GEM
       nokogiri (~> 1.5)
       railties (>= 3, < 5)
     cucumber-wire (0.0.1)
-<<<<<<< HEAD
-    dalli (2.7.6)
-=======
-    daru (0.1.2)
+    daru (0.1.3)
       reportbuilder (~> 1.4)
       spreadsheet (~> 1.1.1)
->>>>>>> 11099ef9b61d236cb738c3605c33180b115aefa5
     database_cleaner (1.5.3)
     dbf (3.0.5)
     debug_inspector (0.0.2)
     diff-lcs (1.2.5)
-<<<<<<< HEAD
+    dirty-memoize (0.0.4)
+    distribution (0.7.3)
     dotenv (2.1.1)
     dotenv-rails (2.1.1)
       dotenv (= 2.1.1)
       railties (>= 4.0, < 5.1)
     erubis (2.7.0)
     execjs (2.6.0)
-    gherkin (3.2.0)
-    groupdate (2.5.2)
-=======
-    dirty-memoize (0.0.4)
-    distribution (0.7.3)
-    erubis (2.7.0)
-    execjs (2.6.0)
     extendmatrix (0.4)
     gherkin (3.2.0)
     groupdate (2.5.3)
->>>>>>> 11099ef9b61d236cb738c3605c33180b115aefa5
       activesupport (>= 3)
     highcharts-rails (4.0.4.1)
       railties (>= 3.1)
@@ -160,15 +135,10 @@ GEM
       mime-types (>= 1.13.1)
     mime-types (1.25.1)
     mini_portile2 (2.0.0)
-<<<<<<< HEAD
-    minitest (5.8.4)
-    multi_json (1.11.3)
-=======
     minimization (0.2.3)
       text-table (~> 1.2)
     minitest (5.8.4)
     multi_json (1.12.0)
->>>>>>> 11099ef9b61d236cb738c3605c33180b115aefa5
     multi_test (0.1.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -180,10 +150,6 @@ GEM
     numru-narray (1.0.3)
     pg (0.18.4)
     polyglot (0.3.5)
-<<<<<<< HEAD
-    predictionio (0.9.6)
-      json (~> 1.8)
-=======
     prawn (0.8.4)
       prawn-core (>= 0.8.4, < 0.9)
       prawn-layout (>= 0.8.4, < 0.9)
@@ -193,7 +159,8 @@ GEM
     prawn-security (0.8.4)
     prawn-svg (0.9.1.11)
       prawn (>= 0.8.4)
->>>>>>> 11099ef9b61d236cb738c3605c33180b115aefa5
+    predictionio (0.9.6)
+      json (~> 1.8)
     rack (1.5.5)
     rack-cache (1.6.1)
       rack (>= 0.4)
@@ -217,10 +184,7 @@ GEM
       activesupport (= 4.1.0)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-<<<<<<< HEAD
     rainbow (2.1.0)
-=======
->>>>>>> 11099ef9b61d236cb738c3605c33180b115aefa5
     rake (11.1.2)
     rb-readline (0.5.3)
     rdoc (4.2.2)
@@ -245,14 +209,11 @@ GEM
       redis-store (~> 1.1.0)
     redis-store (1.1.7)
       redis (>= 2.2)
-<<<<<<< HEAD
-=======
     reportbuilder (1.4.2)
       clbustos-rtf (~> 0.4.0)
       prawn (~> 0.8.4)
       prawn-svg (~> 0.9.1)
       text-table (~> 1.2)
->>>>>>> 11099ef9b61d236cb738c3605c33180b115aefa5
     rgeo (0.5.3)
     rgeo-activerecord (1.2.0)
       activerecord (~> 4.0)
@@ -262,10 +223,7 @@ GEM
     rgeo-shapefile (0.4.1)
       dbf (~> 3.0)
       rgeo (~> 0.3)
-<<<<<<< HEAD
-=======
     rserve-client (0.3.1)
->>>>>>> 11099ef9b61d236cb738c3605c33180b115aefa5
     rspec-core (3.4.4)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
@@ -288,10 +246,7 @@ GEM
       narray_miss
     ruby-ole (1.2.12)
     ruby-prof (0.15.9)
-<<<<<<< HEAD
-=======
     rubyvis (0.6.1)
->>>>>>> 11099ef9b61d236cb738c3605c33180b115aefa5
     sass (3.4.22)
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
@@ -330,11 +285,8 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.2)
-<<<<<<< HEAD
-=======
     to_xls (1.5.3)
       spreadsheet
->>>>>>> 11099ef9b61d236cb738c3605c33180b115aefa5
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -372,7 +324,6 @@ DEPENDENCIES
   chinese_lunar
   coffee-rails (~> 4.1.0)
   cucumber-rails
-  dalli
   database_cleaner
   dbf
   dotenv-rails

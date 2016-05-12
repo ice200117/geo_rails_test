@@ -1,4 +1,4 @@
-class WelcomeController < ApplicationController
+class QinhuangdaoController < ApplicationController
 	#	caches_page :pinggu, :bar
 	#cache_sweeper :welcome_sweeper
 
@@ -308,9 +308,9 @@ class WelcomeController < ApplicationController
 
 
 		@rank={'hour'=>get_rank(@sfcitiesrankbyhour)}
-		@rank['day']=get_rank(@sfcitiesrankbyday)
-		@rank['month']=get_rank(@sfcitiesrankbymonth)
-		@rank['year']=get_rank(@sfcitiesrankbyyear)
+		@rank['day']=get_rank(@sfcitiesrankbyday[:cities])
+		@rank['month']=get_rank(@sfcitiesrankbymonth[:cities])
+		@rank['year']=get_rank(@sfcitiesrankbyyear[:cities])
 
 		@banner = banner()
 
