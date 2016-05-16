@@ -580,6 +580,38 @@ class QinhuangdaoController < ApplicationController
 		"张家口" 
 	]
 
+	CITY_LIST_QHD = [
+		"public/adj/qhd/baoding.txt",
+		"public/adj/qhd/beijing.txt",
+		"public/adj/qhd/cangzhou.txt",
+		"public/adj/qhd/chengde.txt",
+		"public/adj/qhd/handan.txt",
+		"public/adj/qhd/hengshui.txt",
+		"public/adj/qhd/langfang.txt",
+		"public/adj/qhd/qinhuangdao.txt",
+		"public/adj/qhd/shijiazhuang.txt",
+		"public/adj/qhd/tangshan.txt",
+		"public/adj/qhd/tianjin.txt",
+		"public/adj/qhd/xingtai.txt",
+		"public/adj/qhd/zhangjiakou.txt"
+	]
+	CL_QHD = [
+		"保定",
+		"北京",
+		"沧州",
+		"承德",
+		"邯郸",
+		"衡水",
+		"廊坊",
+		"秦皇岛",
+		"石家庄",
+		"唐山",
+		"天津",
+		"邢台",
+		"张家口" 
+	]
+
+
 	CITY_LIST_ZZ = [
 		"public/adj/zz/anyang.txt",
 		"public/adj/zz/hebi.txt",
@@ -629,6 +661,9 @@ class QinhuangdaoController < ApplicationController
 			elsif params[:city_name] == 'zhengzhoushi'
 				city_dir = 'ADJ_zhengzhou'
 				force ="zz"
+			elsif params[:city_name] == 'qinhuangdaoshi'
+				city_dir = 'ADJ_qinhuangdao'
+				force ="qhd"
 			end
 		end
 		adj_bd = {}
@@ -655,7 +690,7 @@ class QinhuangdaoController < ApplicationController
 			ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
 			#ncfile='public\images\CUACE_09km_adj_2015-06-27.nc'
 			i = i + 1
-			return {} if i>60
+			return {} if i>356
 		end until File::exists?(ncfile)
 
 		#ncfile = 'public/adj/CUACE_09km_adj_2015-06-08.nc'
@@ -676,6 +711,8 @@ class QinhuangdaoController < ApplicationController
 					adj_per[CL[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
 				elsif force == "zz"
 					adj_per[CL_ZZ[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
+				elsif force == "qhd"
+					adj_per[CL_QHD[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
 				end
 			}
 		}
@@ -688,11 +725,14 @@ class QinhuangdaoController < ApplicationController
 		case post
 		when '130600'
 			@city_adj = 'ADJ_baoding/'
+		when '130300'
+			@city_adj = 'ADJ_qinhuangdao/'
+			force = 'qhd'
 		else
 			@city_adj = 'ADJ/'
 		end
 
-		@adj_per = adj_percent(@type, @city_adj)
+		@adj_per = adj_percent(@type, @city_adj, force)
 		respond_to do |format|
 			format.js   {
 				# puts @adj_per
@@ -708,6 +748,10 @@ class QinhuangdaoController < ApplicationController
 			}
 		elsif force == "zz" then
 			CITY_LIST_ZZ.each { |city_file|
+				pl << (read_adj ncfile, city_file, var_name)
+			}
+		elsif force == "qhd" then
+			CITY_LIST_QHD.each { |city_file|
 				pl << (read_adj ncfile, city_file, var_name)
 			}
 		end
@@ -755,7 +799,7 @@ class QinhuangdaoController < ApplicationController
 	def forecast
 		@banner = banner()
 		@day_fdata = @banner["day_fdata"]
-		@post='130600'
+		@post='130300'
 		@city_adj = @banner["city_adj"]
 		@adj_per1 = @banner["adj_per1"]
 		@forecast_data = get_forecast()
@@ -848,10 +892,11 @@ class QinhuangdaoController < ApplicationController
 			hs['real_time_weather'] = false	
 		end
 
-		hs["city_adj"] = 'ADJ_baoding/'
-		hs["adj_per1"] = adj_percent('SO2_120', hs["city_adj"])
-		hs["adj_per2"] = adj_percent('NOX_120', hs["city_adj"])
-		hs["adj_per3"] = adj_percent('CO_120', hs['city_adj'])
+		hs["city_adj"] = 'ADJ_qinhuangdao/'
+		force = 'qhd'
+		hs["adj_per1"] = adj_percent('SO2_120', hs["city_adj"], force)
+#		hs["adj_per2"] = adj_percent('NOX_120', hs["city_adj"], force)
+#		hs["adj_per3"] = adj_percent('CO_120', hs['city_adj'], force)
 
 		return hs
 	end 
