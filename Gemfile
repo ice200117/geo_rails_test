@@ -106,3 +106,5 @@ gem 'predictionio'
 gem 'rainbow'
 gem 'statsample'
 gem 'to_xls'
+
+gem 'casein', '~>5.1.1'

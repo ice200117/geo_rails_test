@@ -37,18 +37,23 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.4.0)
     arel (5.0.1.20140414130214)
-    autoprefixer-rails (6.3.6)
+    authlogic (3.4.4)
+      activerecord (>= 3.2)
+      activesupport (>= 3.2)
+      request_store (~> 1.0)
+      scrypt (~> 1.2)
+    autoprefixer-rails (6.3.6.1)
       execjs
     awesome_print (1.6.1)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bootstrap-sass (3.3.6)
-      autoprefixer-rails (>= 5.2.1)
-      sass (>= 3.3.4)
+    bootstrap-sass (3.3.3)
+      autoprefixer-rails (>= 5.0.0.1)
+      sass (>= 3.2.19)
     bootstrap-will_paginate (0.0.10)
       will_paginate
     builder (3.2.2)
-    byebug (9.0.0)
+    byebug (9.0.2)
     capybara (2.7.1)
       addressable
       mime-types (>= 1.16)
@@ -56,6 +61,13 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    casein (5.1.1.5)
+      authlogic (= 3.4.4)
+      bootstrap-sass (= 3.3.3)
+      jquery-rails
+      sass-rails
+      scrypt (= 1.2.1)
+      will_paginate (= 3.0.7)
     chartkick (1.3.2)
     china_city (0.0.6)
       jquery-rails (~> 3)
@@ -88,7 +100,7 @@ GEM
       nokogiri (~> 1.5)
       railties (>= 3, < 5)
     cucumber-wire (0.0.1)
-    daru (0.1.3)
+    daru (0.1.3.1)
       reportbuilder (~> 1.4)
       spreadsheet (~> 1.1.1)
     database_cleaner (1.5.3)
@@ -104,6 +116,10 @@ GEM
     erubis (2.7.0)
     execjs (2.6.0)
     extendmatrix (0.4)
+    ffi (1.9.10)
+    ffi-compiler (0.1.3)
+      ffi (>= 1.0.0)
+      rake
     gherkin (3.2.0)
     groupdate (2.5.3)
       activesupport (>= 3)
@@ -214,6 +230,7 @@ GEM
       prawn (~> 0.8.4)
       prawn-svg (~> 0.9.1)
       text-table (~> 1.2)
+    request_store (1.3.1)
     rgeo (0.5.3)
     rgeo-activerecord (1.2.0)
       activerecord (~> 4.0)
@@ -254,6 +271,9 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    scrypt (1.2.1)
+      ffi-compiler (>= 0.0.2)
+      rake
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
@@ -284,7 +304,7 @@ GEM
     text-table (1.2.4)
     thor (0.19.1)
     thread_safe (0.3.5)
-    tilt (2.0.2)
+    tilt (2.0.3)
     to_xls (1.5.3)
       spreadsheet
     treetop (1.4.15)
@@ -319,6 +339,7 @@ DEPENDENCIES
   bootstrap-sass (~> 3.3.3)
   bootstrap-will_paginate
   byebug
+  casein (~> 5.1.1)
   chartkick (~> 1.3.2)
   china_city (~> 0.0.4)
   chinese_lunar
@@ -366,3 +387,6 @@ DEPENDENCIES
   web-console (~> 2.0)
   whenever
   will_paginate (~> 3.0.6)
+
+BUNDLED WITH
+   1.10.6

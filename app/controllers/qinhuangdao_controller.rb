@@ -1,6 +1,10 @@
-class QinhuangdaoController < ApplicationController
+#class QinhuangdaoController < ApplicationController
+class QinhuangdaoController < Casein::CaseinController
+
 	#	caches_page :pinggu, :bar
 	#cache_sweeper :welcome_sweeper
+
+  layout 'qinhuangdao'
 
 	include NumRu
 	protect_from_forgery :except => [:get_forecast_baoding, :get_city_point]
