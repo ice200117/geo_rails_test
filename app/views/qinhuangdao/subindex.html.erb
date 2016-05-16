@@ -1,6 +1,6 @@
 <div class="container">
 
-	<%= form_tag(subindex_welcome_path, method: "get", html: { class: 'form-inline' }, remote: true) do %>
+	<%= form_tag(subindex_qinhuangdao_path, method: "get", html: { class: 'form-inline' }, remote: true) do %>
 		<%= label_tag(:d, "城市：") %>
 		<%= collection_select(:c, :city_id, City.order(:id), :id, :city_name, {:selected => 18}) %>
 		<%= label_tag(:start_date, "开始日期：") %>

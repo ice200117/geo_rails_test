@@ -8,46 +8,6 @@
 
 module Qinhuangdao
 	class Qinhuangdao
-		# def aahour
-		# 	data = Hash.new
-		# 	begin
-		# 		response = HTTParty.get('http://121.28.49.85:8080/datas/hour/130000.xml')
-		# 		data = Hash.from_xml(response.body)
-		# 	rescue
-		# 		return nil
-		# 	end
-		# 	a=data['Result']['Citys']['City']
-		# 	a.each do |t|
-		# 		next if t['Name']!='秦皇岛市'
-		# 		puts t['Name']
-		# 		t['Pointers'].values[0].each do |l|
-		# 			pointname=l['Name']
-		# 			len=pointname.length
-		# 			pointname=pointname[0,len-3] if pointname[len-3,3]=='(*)'
-		# 			m=City.find_by_city_name(l['City']).monitor_points.find_by_pointname(pointname)
-		# 			if MonitorPointHour.where("monitor_point_id = ? AND data_real_time >= ? AND data_real_time <=?",m.id,l['DataTime'].to_time.beginning_of_hour,l['DataTime'].to_time.end_of_hour).length==0
-		# 				linedata=MonitorPointHour.new
-		# 				# next if linedata.AQI
-		# 				linedata.monitor_point_id=m.id
-		# 				linedata.data_real_time=l['DataTime'].to_time.utc
-		# 				linedata.AQI = l['AQI']
-		# 				linedata.SO2 = l['SO2'].to_f*1000
-		# 				linedata.NO2 = l['NO2'].to_f*1000
-		# 				linedata.CO = l['CO']
-		# 				linedata.pm10 = l['PM10'].to_f*1000
-		# 				linedata.pm25 = l['PM2.5'].to_f*1000
-		# 				linedata.O3 = l['O3'].to_f*1000
-		# 				linedata.O3_8h = l['O3-8h'].to_f*1000
-		# 				linedata.quality = l['Level']
-		# 				linedata.main_pol = l['MaxPoll']
-		# 				linedata.city_id = 11
-		# 				linedata.save
-		# 				puts Time.now.to_s+' '+l['Name']+' Save OK!'
-		# 			end
-		# 		end
-		# 	end
-		# end
-
 		def day
 			data = Hash.new
 			begin

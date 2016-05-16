@@ -72,7 +72,9 @@ class WelcomeController < ApplicationController
 	def show
 		# @visits = Visit.all
 	end 
-
+	def test
+		puts 'a'
+	end
 	def map
 		#respond_to do |format|
 		#format.js   {}
