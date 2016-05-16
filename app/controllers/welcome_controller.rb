@@ -647,7 +647,7 @@ class WelcomeController < ApplicationController
 		@ret = {}
 		temp.each do |k,v|
 			v["fore_lev"] = get_lev(v["AQI"])
-			time = k.strftime("%Y%m%d")
+			time = k.to_time.strftime("%Y%m%d")
 			if @weather[time] != nil
 				@ret[time]=@weather[time].merge(v)
 			end

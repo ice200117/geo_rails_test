@@ -1,5 +1,6 @@
 /*bdqx_compare_chart.js*/
 
+
 var city1 = '廊坊';
 
 $(function() 
@@ -18,4 +19,3 @@ $(function()
    }); 
 
 }); 
-
