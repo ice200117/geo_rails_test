@@ -2,7 +2,7 @@
 
 
   var ITEM3="DESC";var DATE3="MONTH";
-  var startTime,endTime;var ranktype="DAY";
+  var startTime,endTime;var ranktype="DAY";var city = "秦皇岛";
   var dataRank = [];var dataLastRank = [];var num=0;var lastnum=0;
   setTimeout('$(".btndategroup3:last").click()',200);
    $(".btnitemgroup3:last").addClass("btnbd-info");
@@ -46,13 +46,14 @@ function getRankData()
   startTime = startTime.pattern('yyyy-MM-dd HH:mm:ss');
   endTime = endTime.pattern('yyyy-MM-dd HH:mm:ss');
   $.ajax({            
-      url: '/welcome/get_rank_chart_data',
+      url: '/qinhuangdao/get_rank_chart_data',
       data:{
+            'city':city,
             'type':ranktype,
             'startTime':startTime,
-            'endTime':endTime,
-          },
-      type: "get",            
+            'endTime':endTime},
+      type: "get",
+      dataType : "json",            
       success: function (data) {  
         
         if(data.total>0)
@@ -91,7 +92,7 @@ function getRankData()
                 rank = parseInt(data.rows[i].forerank);
                 lastrank = parseInt(data.rows[i].forelastrank);
                 index = parseFloat(data.rows[i].forecomplexindex);
-                if(data.rows[i].primary_pollutant!=null)
+                if(data.rows[i].foreprimary_pollutant!=null)
                   primary_pollutant = (data.rows[i].foreprimary_pollutant).toUpperCase();
                 label = '预测排名';
               }

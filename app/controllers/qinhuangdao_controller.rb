@@ -179,6 +179,7 @@ class QinhuangdaoController < ApplicationController
 	#最后，通过第一组按钮确定要显示的字段。
 	#2.三组按钮组内关系：第一组：“综合”显示AQI和其他的一堆，“AQI”只显示AQI，“PM2.5”~“湿度”这些显示AQI和本身
 	#第二组和第三组：如果选中“最近一天”则无论是按天还是按小时均按小时显示曲线图，如果选中“最近一周”、“最近一月”、“最近一年”则按天与按小时显示的图不同
+=begin
 	def chartway
 		# citybd=City.find_by city_name: '保定市'
 		startdate=Time.local(params[:starttime][0,4].to_i,params[:starttime][5,2].to_i,params[:starttime][8,2].to_i)
@@ -222,6 +223,29 @@ class QinhuangdaoController < ApplicationController
 				render json: @chartdata
 			}
 		end
+	end
+=end
+
+	def get_linechart_data
+		city=City.find_by city_name: (params[:city]+'市')
+		startdate=Time.local(params[:startTime][0,4].to_i,params[:startTime][5,2].to_i,params[:startTime][8,2].to_i,0)
+		enddate=Time.local(params[:endTime][0,4].to_i,params[:endTime][5,2].to_i,params[:endTime][8,2].to_i,23)
+		if params[:type]=='HOUR'
+			querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,city.id).order('data_real_time asc') 
+		elsif params[:type]=='DAY'
+			querydata=TempSfcitiesDay.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,city.id).order('data_real_time asc')
+		else
+			querydata=TempSfcitiesMonth.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,city.id).order('data_real_time asc')      
+		end  
+		@linechartdata={total: querydata.size,rows: querydata.map{ |data| { aqi: data.AQI,co: data.CO,complexindex: data.zonghezhishu,humi: data.humi,no2: data.NO2,o3: data.O3,pm2_5: data.pm25,pm10: data.pm10,primary_pollutant: data.main_pol,so2: data.SO2,temp: data.temp,time: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S"),weather: data.weather,winddirection: data.winddirection,windlevel: data.windscale}}}
+
+		respond_to do |format|
+			format.html { }
+			format.js   { }
+			format.json {
+				render json: @linechartdata
+			}
+		end    
 	end
 
 

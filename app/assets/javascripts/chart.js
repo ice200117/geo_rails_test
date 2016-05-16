@@ -158,8 +158,7 @@ function showLineChart(container,name,data,unit,type)
 }
 
 function showLineChartCompare(container,name,city1,city2,city3,data1,data2,data3,unit,type)
-{   
-   
+{    
     var dateTypeFormat;
     if(type=="HOUR")
     {
@@ -604,47 +603,47 @@ function showLineChartAll(container,type,dataAQI,dataPM25,dataPM10,dataSO2,dataN
         {
             name: 'PM2.5',
             data: dataPM25,
-            yAxis:1
+            yAxis:0
         },
         {
             name: 'PM10',
             data: dataPM10,
-            yAxis:1
+            yAxis:0
         },
         {
             name: 'SO2',
             data: dataSO2,
-            yAxis:1
+            yAxis:0
         },
         {
             name: 'CO',
             data: dataCO,
-            yAxis:2
+            yAxis:0
         },
         {
             name: 'NO2',
             data: dataNO2,
-            yAxis:1
+            yAxis:0
         },
         {
             name: 'O3',
             data: dataO3,
-            yAxis:1
+            yAxis:0
         },
         {
             name: '温度',
             data: dataTemp,
-            yAxis:3
+            yAxis:0
         },
         {
             name: '湿度',
             data: dataHumi,
-            yAxis:4
+            yAxis:0
         },
         {
             name: '风级',
             data: dataWind,
-            yAxis:5
+            yAxis:0
         }]
     });
 }

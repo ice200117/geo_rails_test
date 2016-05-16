@@ -43,135 +43,8 @@
 		</tbody>
 	</table>
 
-	<!--综合曲线模块-->
-
-	<%= stylesheet_link_tag 'css/button',"css/wdatepicker", media:'all', 'data-turbolinks-track' => true %>
-
-	<!--<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>-->
-
-	<script type="text/javascript"> 
-		var pType='zonghe',pTime='d',pExact='eh',pStartTime=GetDateStr(0),pEndTime=GetDateStr(0);
-		function GetDateStr(AddDayCount) {
-			var dd = new Date();
-			dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
-			var y = dd.getFullYear();
-			var m = dd.getMonth()+1;//获取当前月份的日期
-			var d = dd.getDate();
-			if(m<10){m="0"+m}
-			if(d<10){d="0"+d}
-			return y+"-"+m+"-"+d;
-		}
-
-function changeType(type){
-	pType=type;
-	ChartQuery();
-}
-
-function changeTimeQuick(time){
-	pTime=time;
-	if(time=='w'){
-		pStartTime =GetDateStr(-7);
-		pEndTime = GetDateStr(0);
-	}else if(time=='m'){
-		pStartTime =GetDateStr(-31);
-		pEndTime = GetDateStr(0);   
-	}else if(time=='y'){
-		pStartTime =GetDateStr(-361);
-		pEndTime = GetDateStr(0);
-	}else{
-		pStartTime = GetDateStr(0);
-		pEndTime = GetDateStr(0);
-	}
-	$("#beginTime").val(pStartTime); 
-	$("#stopTime").val(pEndTime);
-	ChartQuery();
-}
-
-function changeExact(exact){
-	pExact=exact;
-	ChartQuery();
-}  
-
-function ChartQuery(){
-	$("#toolbar :button").attr("class","btna btna-default btnitemgroup1");
-	$("#"+pType).attr("class","btna btna-default btnitemgroup1 btna-success");
-	$("#"+pTime).attr("class","btna btna-default btnitemgroup1 btna-success");     
-	$("#"+pExact).attr("class","btna btna-default btnitemgroup1 btna-success"); 
-	$.get("/qinhuangdao/chartway.json?exact="+pExact+"&type="+pType+"&starttime="+pStartTime+"&endtime="+pEndTime,function(result){
-		var titleText='';
-		if('d'==pTime){
-			titleText = '秦皇岛市市各项天气指数实时变化图表（更新于 '+result.categories[result.categories.length-1]+'时）'
-		}
-		else{
-			titleText = '保定市各项天气指数实时变化图表（更新于 '+result.categories[result.categories.length-1]+'）'
-		}
-	$('#container').highcharts({
-		title: {
-			text:titleText,
-		x: -20 //center
-		},
-		credits : { enabled:false },
-		subtitle: {
-			text: '',
-		x: -20
-		},
-		xAxis: {categories: result.categories},
-		yAxis: {
-			title: { text:'浓度'},
-		plotLines: [{
-			value: 0,
-		width: 1,
-		color: '#808080'
-		}]
-		},
-		tooltip: { 
-			shared: true,
-			crosshairs: true
-		},
-		legend: {
-			layout: 'vertical',
-			align: 'right',
-			verticalAlign: 'middle',
-			borderWidth: 0
-		},
-		series: result.series             
-	});
-	});   
-} 
-function datePicked(){
-	pTime='NONE';
-	aStartTime = document.getElementById("beginTime").value;  
-	aEndTime = document.getElementById("stopTime").value;
-	if(aStartTime>GetDateStr(0)||aEndTime>GetDateStr(0)){
-		alert("开始或结束日期大于当前日期！");
-	}else if(aStartTime>aEndTime){
-		alert("开始日期大于结束日期！");
-	}else{
-		pStartTime = aStartTime;  
-		pEndTime = aEndTime;
-		ChartQuery();
-	}
-}
-$(document).ready(function(){
-	$("#beginTime").datepicker({
-		onSelect: function(dateText,inst){
-			datePicked();
-		}
-	});
-
-	$("#stopTime").datepicker({
-		onSelect: function(dateText,inst){
-			datePicked();
-		}
-	});
-
-
-	$("#beginTime").val(pStartTime); 
-	$("#stopTime").val(pEndTime);
-	ChartQuery();
-});
-</script>
-
+	
+<!--
 <div class="container1 box">
 	<h3 class="top11-title" style="display:table;"><div id="kqzlpm"align="left"><font style="color:black;"> 空气质量历史数据显示图</font></div></h3>         
 	<div id="toolbar" class="btngroup btn-toolbar" style="margin-top:20px,margin-left:20px;">
@@ -204,16 +77,62 @@ $(document).ready(function(){
 		</div>
 	</div>
 	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</div>-->
+<!-- 历史数据模块 -->
+<%= stylesheet_link_tag "css/daterangepicker-bs3.css" %>
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<div class="containerbd" id="md-ls" style="margin-top:20px;">
+	<div class="dtipbd"></div>
+	<div class="subtitlebd">秦皇岛历史数据变化</div>
+	<hr>
+	<div class="row">
+		<div class="col-xs-12"> 
+			<div class="btngroupbd btnbd-toolbar">
+				<div id="btn-group1" class="btnbd-group btnbd-group-sm " style="float:left; margin-top: 10px;">
+				  <button type="button" class="btnbd btnbd-default btndategroup1 btnbd-info" value="DAY">最近一天</button>
+				  <button type="button" class="btnbd btnbd-default btndategroup1" value="WEEK">最近一周</button>
+				  <button type="button" class="btnbd btnbd-default btndategroup1" value="MONTH">最近一月</button>
+				  <button type="button" class="btnbd btnbd-default btndategroup1" value="YEAR">最近一年</button>
+				  <input type="text" style="width: 220px;height:30px;padding:6px 10px;" name="reservation" id="reservation" class="form-control">		  
+				</div>
+				<div id="btn-group2" class="btnbd-group btnbd-group-sm " style="float:right; margin:0 ">
+				  <button type="button" class="btnbd btnbd-default btntypegroup1 btnbd-info" value="HOUR">时</button>
+				  <button type="button" class="btnbd btnbd-default btntypegroup1" value="DAY">日</button>
+				  <button type="button" class="btnbd btnbd-default btntypegroup1" value="MONTH">月</button>  
+		    	</div>
+			</div>
+			<div class="btngroupbd btnbd-toolbar" style="margin-top: 10px;">
+				<div id="btn-group1" class="btnbd-group btnbd-group-sm " style="float:left">
+					<button type="button" class="btnbd btnbd-default btnitemgroup1 btnbd-info" value="AQI">AQI</button>
+					<button type="button" class="btnbd btnbd-default btnitemgroup1" value="TOTAL">综合</button>
+					<button type="button" class="btnbd btnbd-default btnitemgroup1" value="PM2.5">PM2.5</button>
+					<button type="button" class="btnbd btnbd-default btnitemgroup1" value="PM10">PM10</button>
+					<button type="button" class="btnbd btnbd-default btnitemgroup1" value="SO2">SO2</button>
+					<button type="button" class="btnbd btnbd-default btnitemgroup1" value="NO2">NO2</button>
+					<button type="button" class="btnbd btnbd-default btnitemgroup1" value="CO">CO</button>
+					<button type="button" class="btnbd btnbd-default btnitemgroup1" value="O3">O3</button>
+					<button type="button" class="btnbd btnbd-default btnitemgroup1" value="INDEX">综合指数</button>
+					<button type="button" class="btnbd btnbd-default btnitemgroup1" value="TEMP">温度</button>
+					<button type="button" class="btnbd btnbd-default btnitemgroup1" value="HUMI">湿度</button>
+					<button type="button" class="btnbd btnbd-default btnitemgroup1" value="WIND">风级</button>			  
+				</div>
+				<div id="btn-group2" class="btnbd-group btnbd-group-sm " style="float:right; margin:0 "></div>
+			</div>
+			<div id="chart" class="aqichartbd"></div>
+		</div>
+		<div class="col-xs-3" style="display:none">
+			<div id="piechart" class="aqichartbd" style="margin-top:35px;"></div>
+		</div>
+	</div>
 </div>
 
 
-
 <!-- 历史排名曲线模块 -->
-<%= javascript_include_tag 'rank_chart' %>
-<link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
 <div class="containerbd" id="md-qx" style="margin-top:20px;">
 	<div class="dtipbd"></div>
-	<div class="subtitlebd">郑州市历史排名曲线</div>
+	<div class="subtitlebd">秦皇岛历史排名曲线</div>
 	<hr>
 	<div class="row">
 		<div class="col-xs-12">
@@ -231,7 +150,6 @@ $(document).ready(function(){
 		</div>
 	</div>
 </div>
-
 
 
 
@@ -487,6 +405,8 @@ $(document).ready(function(){
 		<%# <a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a> %>
 	</div>
 </div>
+<%= javascript_include_tag 'bootstrap.min','respond','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','LineChart','rank_chart' %>
+
 <script>
 	$(document).ready()
 	$(function(){
