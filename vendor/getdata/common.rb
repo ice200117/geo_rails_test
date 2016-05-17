@@ -37,6 +37,7 @@ def get_rank_json(web_flag,option)
 		else
 			json_data=JSON.parse(response.body)
 		end
+		byebug
 		json_data['date'] != nil ? hs[:time] = json_data['date'] : hs[:time] = json_data['time']
 		hs[:cities] = column_name_modify(json_data['rows'])
 		hs[:total]=json_data['total']
@@ -64,8 +65,10 @@ def column_name_modify(hs)
 		hs[i]['so2']=hs[i]['so2nd'] if hs[i]['so2nd']!=nil
 		hs[i]['no2']=hs[i]['no2nd'] if hs[i]['no2nd']!=nil
 		hs[i]['co']=hs[i]['cond'] if hs[i]['cond']!=nil
-		hs[i]['o3']=hs[i]['o3_8hnd'] if hs[i]['o3_8hnd']!=nil
 		hs[i]['o3']=hs[i]['o3_8h'] if hs[i]['o3_8h'] != nil && hs[i]['o3'] == 0 && hs[i]['o3_8h'] != 0
+		hs[i]['o3']=hs[i]['o3_8hnd'] if hs[i]['o3_8hnd']!=nil
+		hs[i]['co']=hs[i]['co_95'] if hs[i]['co_95']!=nil
+		hs[i]['o3']=hs[i]['o3_90'] if hs[i]['o3_90']!=nil
 		hs[i]['pm2_5']=hs[i]['pm25nd'] if hs[i]['pm25nd'] != nil
 		hs[i]['pm10'] = hs[i]['pm10nd'] if hs[i]['pm10nd'] != nil
 	end
@@ -157,6 +160,7 @@ def get_change_rate(model,id,time)
 	sql_str<<time.to_time.years_ago(1).end_of_day
 	sql_str<<id
 	last_years_data = model.where(sql_str)	
+	byebug
 	if last_years_data.length == 0
 		return false
 	end
@@ -260,6 +264,7 @@ def save_db_common(model,t,time)
 	day_city.winddirection=t['winddirection'] if t['winddirection'] != nil && day_city.respond_to?('winddirection')
 	day_city.windspeed=t['windspeed'] if t['windspeed'] != nil && day_city.respond_to?('windspeed')
 	day_city.rank=t['rank'] if t['rank'] != nil && day_city.respond_to?('rank')
+	if model.name == 'TempSfcitiesMonth'
 	time = t['time'].to_time.localtime if time.nil?
 	day_city.data_real_time = time.to_time.localtime
 	day_city.save

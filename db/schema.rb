@@ -11,11 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160430085023) do
+ActiveRecord::Schema.define(version: 20160505022737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+  enable_extension "postgis_topology"
 
   create_table "ann_forecast_data", force: true do |t|
     t.integer  "city_id"
@@ -71,27 +72,16 @@ ActiveRecord::Schema.define(version: 20160430085023) do
     t.integer "cityid"
   end
 
-  create_table "city_days", force: true do |t|
+  create_table "counties", force: true do |t|
+    t.string   "name"
+    t.float    "area"
+    t.float    "perimeter"
+    t.integer  "adcode"
+    t.float    "centroid_y"
+    t.float    "centroid_x"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "city_hours", force: true do |t|
-    t.string   "CityDay"
-    t.string   "CityMonth"
-    t.string   "CityYear"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "city_months", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "city_years", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.spatial  "boundary",   limit: {:srid=>0, :type=>"multi_polygon"}
   end
 
   create_table "day_cities", force: true do |t|
@@ -336,16 +326,17 @@ ActiveRecord::Schema.define(version: 20160430085023) do
   end
 
   create_table "monitor_points", force: true do |t|
-    t.string    "region"
-    t.string    "pointname"
-    t.string    "level"
-    t.float     "latitude"
-    t.float     "longitude"
-    t.timestamp "created_at",  precision: 6
-    t.timestamp "updated_at",  precision: 6
-    t.integer   "city_id"
-    t.integer   "post_number"
+    t.string   "region"
+    t.string   "pointname"
+    t.string   "level"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "city_id"
   end
+
+  add_index "monitor_points", ["pointname", "city_id"], :name => "index_monitor_points_on_pointname_and_city_id"
 
   create_table "sources", force: true do |t|
     t.datetime "created_at"
