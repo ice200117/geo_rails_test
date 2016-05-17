@@ -7,7 +7,7 @@ Qinhuangdao::Qinhuangdao.new.day
 tmp=MonitorPointDay.last.data_real_time
 stime=tmp.beginning_of_day
 etime=tmp.end_of_day
-Custom::Redis.set('qhd_hour',MonitorPointDay.where("city_id = ? AND data_real_time => ? AND data_real_time <= ?",11,stime,etime))
+Custom::Redis.set('qhd_hour',MonitorPointDay.where(city_id: 11,data_real_time: (stime..etime)))
 
 # Qinhuangdao::Qinhuangdao.new.month
 # Qinhuangdao::Qinhuangdao.new.year
@@ -42,22 +42,21 @@ Custom::Redis.set('qhd_hour',MonitorPointDay.where("city_id = ? AND data_real_ti
 # common_get_month_year('langfang',TempLfYear,time)
 
 #京津冀日数据
-# hs=ten_times_test('TempJjjDay','china_history_data',{secret:'JINGJINJIDATA',type:'DAY',date:time})
-# save_db(hs,TempJjjDay)
+hs=ten_times_test('TempJjjDay','china_history_data',{secret:'JINGJINJIDATA',type:'DAY',date:time})
+save_db(hs,TempJjjDay)
 
 #京津冀月数据
-# common_get_month_year('jjj',TempJjjMonth,time)
+common_get_month_year('jjj',TempJjjMonth,time)
 
 #京津冀年数据
-# common_get_month_year('jjj',TempJjjYear,time)
+common_get_month_year('jjj',TempJjjYear,time)
 
 #74城市日数据
-# hs=ten_times_test('TempSfcitiesDay','shishi_rank_74',{secret:'CHINARANK',type:'DAY'})
-# save_db(hs,TempSfcitiesDay) if hs
+hs=ten_times_test('TempSfcitiesDay','shishi_rank_74',{secret:'CHINARANK',type:'DAY'})
+save_db(hs,TempSfcitiesDay) if hs
 
 #74城市月数据
-# common_get_month_year('china_city_74',TempSfcitiesMonth,time)
+common_get_month_year('china_city_74',TempSfcitiesMonth,time)
 
 #74城市年数据
-# common_get_month_year('china_city_74',TempSfcitiesYear,time)
-
+common_get_month_year('china_city_74',TempSfcitiesYear,time)
