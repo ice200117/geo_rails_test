@@ -38,7 +38,7 @@ Rails.application.routes.draw do
 	#get '/about' => 'welcome#about'
 	#get '/rank1503' => 'welcome#rank1503'
 	#get '/map' => 'welcome#map'
-	#get '/bar' => 'welcome#bar', as: :bar_welcome
+	get '/bar' => 'welcome#bar', as: :bar_welcome
 	#get '/subindex' => 'welcome#subindex', as: :subindex_welcome
 	#get '/pinggu' => 'welcome#pinggu', as: :pinggu_welcome
 	#get '/visits_by_day' => 'welcome#visits_by_day', as: :visits_by_day_welcome
@@ -79,4 +79,6 @@ Rails.application.routes.draw do
 	get 'qinhuangdao/get_city_point' => 'qinhuangdao#get_city_point'  
 	get '/qinhuangdao/adj_pie' => 'qinhuangdao#adj_pie'
 	get '/qinhuangdao/cities_around_fun' => 'qinhuangdao#cities_around_fun'
+	get '/qinhuangdao/get_linechart_data' => 'qinhuangdao#get_linechart_data'
+	get '/qinhuangdao/get_rank_chart_data' => 'qinhuangdao#get_rank_chart_data'
 end

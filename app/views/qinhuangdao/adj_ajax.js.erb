@@ -7,7 +7,7 @@ begin
   strnow2 = (nt-60*60*24*i).strftime("%Y-%m-%d")
   file = path + strnow1 + '/CUACE_09km_adj_SO2_120_'+strnow2+'.png'
   i = i + 1
-  break if i == 30
+  break if i == 356
 end until File::exists?(file)
           %>
         $('#factor1').html("<%=@type[0..-5]%>");

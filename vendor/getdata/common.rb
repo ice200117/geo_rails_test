@@ -37,7 +37,7 @@ def get_rank_json(web_flag,option)
 		else
 			json_data=JSON.parse(response.body)
 		end
-		byebug
+		json_data['time']=json_data['time']+
 		json_data['date'] != nil ? hs[:time] = json_data['date'] : hs[:time] = json_data['time']
 		hs[:cities] = column_name_modify(json_data['rows'])
 		hs[:total]=json_data['total']

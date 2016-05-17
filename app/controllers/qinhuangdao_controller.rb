@@ -1,6 +1,10 @@
-class QinhuangdaoController < ApplicationController
+#class QinhuangdaoController < ApplicationController
+class QinhuangdaoController < Casein::CaseinController
+
 	#	caches_page :pinggu, :bar
 	#cache_sweeper :welcome_sweeper
+
+  layout 'qinhuangdao'
 
 	include NumRu
 	protect_from_forgery :except => [:get_forecast_baoding, :get_city_point]
@@ -179,6 +183,7 @@ class QinhuangdaoController < ApplicationController
 	#最后，通过第一组按钮确定要显示的字段。
 	#2.三组按钮组内关系：第一组：“综合”显示AQI和其他的一堆，“AQI”只显示AQI，“PM2.5”~“湿度”这些显示AQI和本身
 	#第二组和第三组：如果选中“最近一天”则无论是按天还是按小时均按小时显示曲线图，如果选中“最近一周”、“最近一月”、“最近一年”则按天与按小时显示的图不同
+=begin
 	def chartway
 		# citybd=City.find_by city_name: '保定市'
 		startdate=Time.local(params[:starttime][0,4].to_i,params[:starttime][5,2].to_i,params[:starttime][8,2].to_i)
@@ -222,6 +227,29 @@ class QinhuangdaoController < ApplicationController
 				render json: @chartdata
 			}
 		end
+	end
+=end
+
+	def get_linechart_data
+		city=City.find_by city_name: (params[:city]+'市')
+		startdate=Time.local(params[:startTime][0,4].to_i,params[:startTime][5,2].to_i,params[:startTime][8,2].to_i,0)
+		enddate=Time.local(params[:endTime][0,4].to_i,params[:endTime][5,2].to_i,params[:endTime][8,2].to_i,23)
+		if params[:type]=='HOUR'
+			querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,city.id).order('data_real_time asc') 
+		elsif params[:type]=='DAY'
+			querydata=TempSfcitiesDay.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,city.id).order('data_real_time asc')
+		else
+			querydata=TempSfcitiesMonth.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,city.id).order('data_real_time asc')      
+		end  
+		@linechartdata={total: querydata.size,rows: querydata.map{ |data| { aqi: data.AQI,co: data.CO,complexindex: data.zonghezhishu,humi: data.humi,no2: data.NO2,o3: data.O3,pm2_5: data.pm25,pm10: data.pm10,primary_pollutant: data.main_pol,so2: data.SO2,temp: data.temp,time: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S"),weather: data.weather,winddirection: data.winddirection,windlevel: data.windscale}}}
+
+		respond_to do |format|
+			format.html { }
+			format.js   { }
+			format.json {
+				render json: @linechartdata
+			}
+		end    
 	end
 
 
@@ -580,6 +608,38 @@ class QinhuangdaoController < ApplicationController
 		"张家口" 
 	]
 
+	CITY_LIST_QHD = [
+		"public/adj/qhd/baoding.txt",
+		"public/adj/qhd/beijing.txt",
+		"public/adj/qhd/cangzhou.txt",
+		"public/adj/qhd/chengde.txt",
+		"public/adj/qhd/handan.txt",
+		"public/adj/qhd/hengshui.txt",
+		"public/adj/qhd/langfang.txt",
+		"public/adj/qhd/qinhuangdao.txt",
+		"public/adj/qhd/shijiazhuang.txt",
+		"public/adj/qhd/tangshan.txt",
+		"public/adj/qhd/tianjin.txt",
+		"public/adj/qhd/xingtai.txt",
+		"public/adj/qhd/zhangjiakou.txt"
+	]
+	CL_QHD = [
+		"保定",
+		"北京",
+		"沧州",
+		"承德",
+		"邯郸",
+		"衡水",
+		"廊坊",
+		"秦皇岛",
+		"石家庄",
+		"唐山",
+		"天津",
+		"邢台",
+		"张家口" 
+	]
+
+
 	CITY_LIST_ZZ = [
 		"public/adj/zz/anyang.txt",
 		"public/adj/zz/hebi.txt",
@@ -629,6 +689,9 @@ class QinhuangdaoController < ApplicationController
 			elsif params[:city_name] == 'zhengzhoushi'
 				city_dir = 'ADJ_zhengzhou'
 				force ="zz"
+			elsif params[:city_name] == 'qinhuangdaoshi'
+				city_dir = 'ADJ_qinhuangdao'
+				force ="qhd"
 			end
 		end
 		adj_bd = {}
@@ -655,7 +718,7 @@ class QinhuangdaoController < ApplicationController
 			ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
 			#ncfile='public\images\CUACE_09km_adj_2015-06-27.nc'
 			i = i + 1
-			return {} if i>60
+			return {} if i>356
 		end until File::exists?(ncfile)
 
 		#ncfile = 'public/adj/CUACE_09km_adj_2015-06-08.nc'
@@ -676,6 +739,8 @@ class QinhuangdaoController < ApplicationController
 					adj_per[CL[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
 				elsif force == "zz"
 					adj_per[CL_ZZ[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
+				elsif force == "qhd"
+					adj_per[CL_QHD[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
 				end
 			}
 		}
@@ -688,11 +753,14 @@ class QinhuangdaoController < ApplicationController
 		case post
 		when '130600'
 			@city_adj = 'ADJ_baoding/'
+		when '130300'
+			@city_adj = 'ADJ_qinhuangdao/'
+			force = 'qhd'
 		else
 			@city_adj = 'ADJ/'
 		end
 
-		@adj_per = adj_percent(@type, @city_adj)
+		@adj_per = adj_percent(@type, @city_adj, force)
 		respond_to do |format|
 			format.js   {
 				# puts @adj_per
@@ -708,6 +776,10 @@ class QinhuangdaoController < ApplicationController
 			}
 		elsif force == "zz" then
 			CITY_LIST_ZZ.each { |city_file|
+				pl << (read_adj ncfile, city_file, var_name)
+			}
+		elsif force == "qhd" then
+			CITY_LIST_QHD.each { |city_file|
 				pl << (read_adj ncfile, city_file, var_name)
 			}
 		end
@@ -755,7 +827,7 @@ class QinhuangdaoController < ApplicationController
 	def forecast
 		@banner = banner()
 		@day_fdata = @banner["day_fdata"]
-		@post='130600'
+		@post='130300'
 		@city_adj = @banner["city_adj"]
 		@adj_per1 = @banner["adj_per1"]
 		@forecast_data = get_forecast()
@@ -848,10 +920,11 @@ class QinhuangdaoController < ApplicationController
 			hs['real_time_weather'] = false	
 		end
 
-		hs["city_adj"] = 'ADJ_baoding/'
-		hs["adj_per1"] = adj_percent('SO2_120', hs["city_adj"])
-		hs["adj_per2"] = adj_percent('NOX_120', hs["city_adj"])
-		hs["adj_per3"] = adj_percent('CO_120', hs['city_adj'])
+		hs["city_adj"] = 'ADJ_qinhuangdao/'
+		force = 'qhd'
+		hs["adj_per1"] = adj_percent('SO2_120', hs["city_adj"], force)
+#		hs["adj_per2"] = adj_percent('NOX_120', hs["city_adj"], force)
+#		hs["adj_per3"] = adj_percent('CO_120', hs['city_adj'], force)
 
 		return hs
 	end 
