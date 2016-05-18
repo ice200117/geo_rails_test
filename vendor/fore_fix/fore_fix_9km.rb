@@ -39,7 +39,7 @@ cs.each do |c|
 	# fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_adjust"
 	# next unless hb_city.include?(py)
 	f = File.open(path+fn) if File::exists?(path+fn) 
-	next unless f
+	next if f.nil? || f.size < 1
 	puts fnout+' successful'
 
 	#begin判断预报城市是否与观测城市匹配
@@ -72,6 +72,7 @@ cs.each do |c|
 	lev['zhongdu'] = Array.new
 	lev['yanzhong'] =Array.new
 	
+	f.rewind
 	f.readlines[2..-1].each do |line|
 		hs=get_aqi(line)
 		next if hs[:forecast_datetime]>Time.now

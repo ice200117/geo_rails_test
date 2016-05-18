@@ -1,6 +1,6 @@
 require_relative './city_enum.rb'
 
-def get_rank_json(web_flag,option)
+def get_rank_json(flag,option)
 	option[:date]=option[:date].to_time.strftime("%Y-%m-%d") if option[:date] != nil
 	keystr=''
 	option.each do |k,v|
@@ -9,54 +9,44 @@ def get_rank_json(web_flag,option)
 	option[:key]=Digest::MD5.hexdigest(keystr)
 	hs = Hash.new
 	begin
-		if web_flag == 'shishi_rank_74'
+		if flag == 'shishi_rank_74'
 			#真气网74城市实时/日排名
 			response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+option[:secret]+'&type='+option[:type]+'&key='+option[:key])
-		elsif web_flag == 'history_74' 
+		elsif flag == 'history_74' 
 			#74城市和京津冀历史日接口
 			response = HTTParty.post('http://www.izhenqi.cn/api/getdata_history.php', :body => option)
-		elsif web_flag == 'shishi_74' 
+		elsif flag == 'shishi_74' 
 			#74城市 京津冀 廊坊实时数据
 			response = HTTParty.post('http://www.izhenqi.cn/api/getrank.php', :body => option)
-		elsif web_flag == 'rank_74_of_month'
+		elsif flag == 'rank_74_of_month'
 			#74城市月排名数据
 			response = HTTParty.post('http://www.izhenqi.cn/api/getrank_month.php', :body => option)
-		elsif web_flag == 'zhzs_74'
+		elsif flag == 'zhzs_74'
 			#74 城市当月和当年综合指数排名
 			response = HTTParty.post('http://www.izhenqi.cn/api/getrank_forecast.php', :body => option)
-		elsif web_flag == 'history_74'
+		elsif flag == 'history_74'
 			#廊坊区县历史数据排名
 			response  = HTTParty.get('http://115.28.227.231:8082/api/data/day-qxday?date='+option[:date])
-		elsif web_flag == 'all_city_by_hour'
+		elsif flag == 'all_city_by_hour'
 			#全国城市小时数据
 			response = HTTParty.post('http://www.izhenqi.cn/api/dataapi.php',:body => option)
 		end
-		json_data = ''
-		if web_flag == 'all_city_by_hour'
-			json_data=JSON.parse(Base64.decode64(response.body))
+		if flag == 'all_city_by_hour'
+			data=JSON.parse(Base64.decode64(response.body))
 		else
-			json_data=JSON.parse(response.body)
+			data=JSON.parse(response.body)
 		end
-		json_data['time']=json_data['time']+
-		json_data['date'] != nil ? hs[:time] = json_data['date'] : hs[:time] = json_data['time']
-		hs[:cities] = column_name_modify(json_data['rows'])
-		hs[:total]=json_data['total']
+		if flag == 'zhzs_74'
+			day = Time.now.yesterday.day
+			day > 9 ? data['time']=data['time']+day.to_s : data['time']=data['time']+'0'+day.to_s
+		end
+		data['date'] != nil ? hs[:time] = data['date'] : hs[:time] = data['time']
+		hs[:cities] = column_name_modify(data['rows'])
+		hs[:total]=data['total']
 	rescue
 		hs=false
 	end 
 	hs
-end
-def rank(hs)
-	for i in (0..hs.length)
-		for j in ((i+1)..hs.length)
-			if hs[i]>hs[j]
-				tmp=hs[i]
-				hs[i]=hs[j]
-				hs[j]=tmp
-			end
-		end		
-		hs[i]['rank']=i+1
-	end
 end
 #接口中不符合统一字段名，进行处理后再使用
 def column_name_modify(hs)
@@ -160,7 +150,6 @@ def get_change_rate(model,id,time)
 	sql_str<<time.to_time.years_ago(1).end_of_day
 	sql_str<<id
 	last_years_data = model.where(sql_str)	
-	byebug
 	if last_years_data.length == 0
 		return false
 	end
@@ -265,32 +254,39 @@ def save_db_common(model,t,time)
 	day_city.windspeed=t['windspeed'] if t['windspeed'] != nil && day_city.respond_to?('windspeed')
 	day_city.rank=t['rank'] if t['rank'] != nil && day_city.respond_to?('rank')
 	if model.name == 'TempSfcitiesMonth'
-	time = t['time'].to_time.localtime if time.nil?
-	day_city.data_real_time = time.to_time.localtime
-	day_city.save
-
-	if model.new.respond_to?('zonghezhishu')
-		day_city = model.last
-		#判断接口是否提供综合指数
-		if t['complexindex'] != nil && t['complexindex'] != 0
-			day_city.zonghezhishu = t['complexindex']
-		else
-			day_city.zonghezhishu = get_zonghezhishu(model)
-		end
+		time = t['time'].to_time.localtime if time.nil?
+		day_city.data_real_time = time.to_time.localtime
 		day_city.save
-		set_change_rate_to_db(model,city.id,time) if model.new.respond_to?("zongheindex_change_rate")
+
+		if model.new.respond_to?('zonghezhishu')
+			day_city = model.last
+			#判断接口是否提供综合指数
+			if t['complexindex'] != nil && t['complexindex'] != 0
+				day_city.zonghezhishu = t['complexindex']
+			else
+				day_city.zonghezhishu = get_zonghezhishu(model)
+			end
+			day_city.save
+			set_change_rate_to_db(model,city.id,time) if model.new.respond_to?("zongheindex_change_rate")
+		end
+		puts '=='+model.name+'=='+time.to_s+'=Save OK!==='
+		out_log(model.name+time.to_s+t['city']) if city.nil?	
 	end
-	puts '=='+model.name+'=='+time.to_s+'=Save OK!==='
-	out_log(model.name+time.to_s+t['city']) if city.nil?	
 end
 
 #通用方法
 def common_get_month_year(city_list,model,time)
+	data=Array.new
 	CityEnum.send(city_list).each do |name|
 		city = City.find_by_city_name(name)
 		city = City.find_by_city_name(name.to_s+'市') if city.nil?
 		tmp = get_avg(model,city.id,time)
 		tmp['city'] = name
-		save_db_common(model,tmp,time)
+		data<<tmp
+	end
+	data = data.sort_by{|a| a['zonghezhishu']}
+	for i in (0...data.length)
+		data[i]['rank'] = i+1
+		save_db_common(model,data[i],time)
 	end
 end
