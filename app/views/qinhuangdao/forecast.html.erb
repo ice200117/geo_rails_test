@@ -1,4 +1,31 @@
 <%= render partial:"qinhuangdao/banner",locals:{banner:@banner}%>
+          <style>
+          #forcastfive
+          {
+          font-family:'微软雅黑';
+          border: 3px solid #E3E9EC;
+          border-collapse:collapse;
+          }
+          #forcastfive td, #forcastfive th 
+          {
+          font-size:1em;
+          padding:3px 7px 2px 7px;
+          }
+          #forcastfive th 
+          {
+          font-size:1.1em;
+          text-align:left;
+          padding-top:5px;
+          padding-bottom:4px;
+          background-color:#30A6E5;
+          color:#ffffff;
+          }
+          #forcastfive tr.alt td 
+          {
+          color:#000000;
+          background-color:#B5E2FB;
+          }
+          </style>
 <div class="container">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
@@ -14,72 +41,75 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane" contenteditable="true" id="panel-437763">
-						<%
-								nt = Time.now
-						i = 0
-						path = '/mnt/share/Products/Web/Forecast/CUACE/'
-						begin
-							strtime = (nt-60*60*24*i).strftime("%Y%m%d")
-							file = path + strtime + '/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif'
-							i = i + 1
-							break if i == 7 
-						end until File::exists?(file)
-					%>
-				<%= image_tag 'china_fc09/'+strtime+'/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif', class:'col-xs-8' %>
-				<!--未来5天趋势预报和气象预报-->
-				  <div style="border:1px solid #dfdfdf;">
-    				<div><span class="aftertime-title" >未来5天趋势预报和气象预报</span></div>
-      				<div>
-            			<table cellpadding="0" cellspacing="0"  >
-            			<% for i in (0..4) %>
-            			<% time = i.day.from_now.strftime("%Y%m%d")%>
-						<% t = @forecast_data[time] %>
-						<% next unless t %>
-                    	<tr>
-                          <th style="border:1px solid #dfdfdf;"class="aftertime-title"><%= t["date"] %></th>
-                        <td>
-                            <table cellpadding="0" cellspacing="0"  width="100%" border="0" style="border:1px solid #dfdfdf;">
-                              <tr>
-                                <td>AQI日均值</td>
-                                <td><strong><%= t["AQI"] != nil ? t["AQI"].to_i : '-'%></strong></td>
-                                <td>平均级别</td>
-                                <td><span class="<%= t["fore_lev"] != nil ? t["fore_lev"] : '-'%> small"><%= t['level'] !=nil ? t["level"] : '-'%></span></td>
-                                </tr>
-                                <tr>
-                                  <td>AQI范围</td>
-                                  <td><strong><%= t["min"] != nil ? t["min"] : '-'%>~<%= t["max"] != nil ? t["max"] : '-'%></strong></td>
-                                  <td>首要污染物</td>
-                                  <td><strong><%= t["main_pol"] != nil ? t["main_pol"] : '-'%></strong></td>
-                                 </tr>
-                          </table>
-                          <div>
-                                <span><%= t["temp2"] !=nil ? t['temp2'] : '-' %>℃~<%= t["temp1"] !=nil ? t['temp1'] : '-' %>℃</span>    
-                                <span><%= t["tq"] != nil ? t["tp"] : '-' %></span>     
-                                <span><%= t["ws"] !=nil ? t['ws'] : '-' %> <%= t["wd"] !=nil ? t['wd'] : '-'%></span>
-                          </div>
-                       </td>
-                  </tr>
-                  <% end %>
-                  
+          <table width="1108">
+          <tr>
+          <td width="608">
+            <%
+                nt = Time.now
+            i = 0
+            path = '/mnt/share/Products/Web/Forecast/CUACE/'
+            begin
+              strtime = (nt-60*60*24*i).strftime("%Y%m%d")
+              file = path + strtime + '/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif'
+              i = i + 1
+              break if i == 7 
+            end until File::exists?(file)
+          %>
+        <%= image_tag 'china_fc09/'+strtime+'/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif', class:'col-xs-8' %>
+        </td>
+        <!--未来5天趋势预报和气象预报-->
+        
+          <td width="500">
+            <table id="forcastfive" width="500" height="300">
+              <caption style="font-size:large;">未来5天趋势预报和气象预报</caption>
+           <tr> 
+             <th width="110">日期</th> 
+             <th width="60">AQI日均值</th>
+             <th width="90">AQI范围</th>
+             <th width="160">平均级别</th>
+             <th width="60">首要污染物</th>
+             <th width="200">天气</th>
+           </tr> 
+              <% for i in (0..4) %>
+              <% time = i.day.from_now.strftime("%Y%m%d")%>
+              <% t = @forecast_data[time] %>
+              <% next unless t %>
 
-            	<tr>
-            		<td class="aftertime-title">秦皇岛重污染天气预警</td>
-                	<td>
-
-             			<div style="background: url(<%= image_url 'lanse.png' %>) no-repeat scroll 5px 10px rgba(0, 0, 0, 0);width:327px;height:60px;padding-top:8px;">
-              				<table style="height:100%;width:100%;margin-left:60px">
-                				<tr><td>无预警信息</td></tr>
-              				</table>
-             			</div>
-            		</td>
-            	</tr>
-              </table>
+          <tr  class="<%= (i==1 || i==3) ? 'alt' : ''%>" > 
+             <td><%= t["date"] %></td> 
+             <td><strong><%= t["AQI"] != nil ? t["AQI"].to_i : '-'%></td>
+             <td><strong><%= t["min"] != nil ? t["min"] : '-'%>~<%= t["max"] != nil ? t["max"] : '-'%></strong></td>
+             <td><span class="<%= t["fore_lev"] != nil ? t["fore_lev"] : '-'%> small"><%= t['level'] !=nil ? t["level"] : '-'%></span></td>
+             <td><strong><%= t["main_pol"] != nil ? t["main_pol"] : '-'%></strong></td>   
+            
+            <td>
+            <div>
+            <span><%= t["temp2"] !=nil ? t['temp2'] : '-' %>℃~<%= t["temp1"] !=nil ? t['temp1'] : '-' %>℃</span>    
+            <span><%= t["tq"] != nil ? t["tp"] : '-' %></span>     
+            <span><%= t["ws"] !=nil ? t['ws'] : '-' %> <%= t["wd"] !=nil ? t['wd'] : '-'%></span>
             </div>
- 
-         </div>   
-
-
-			</div>
+            </td>
+          </tr>
+          <% end %> 
+          </table>
+          <table style="font-family:'微软雅黑';">
+          <tr>
+           <td style="font-size:large;"> 秦皇岛重污染天气预警</td>   
+         </tr>
+         <tr> 
+          <td>
+            <div style="background: url(<%= image_url 'lanse.png' %>) no-repeat scroll 5px 10px rgba(0, 0, 0, 0);width:327px;height:60px;padding-top:8px;">
+                <table style="height:100%;width:100%;margin-left:60px">
+                  <tr><td>无预警信息</td></tr>
+                </table>
+            </div>
+          </td>
+         </tr>
+    </table>
+  </td>
+  </tr>
+  </table>
+</div>
 
 			<div class="tab-pane active" contenteditable="true" id="panel-55716">
 				<div class="zc-map-labels col-xs-12 row" >

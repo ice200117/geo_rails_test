@@ -70,7 +70,7 @@ background: url(searchlogo.png) no-repeat 60px 3px;
 .menu li.menulink{color:#333; font-size:21px; font-weight:normal;}
 .future-list{ padding:10px 0px; }
 .future-list ul{ overflow:hidden; width:100%;  }
-.future-list ul li{ padding-bottom:10px; float:left; width:210px;height:215px; line-height:36px;  margin-right:10px;  font-size:12px; background:#f6f6f7;}
+.future-list ul li{ padding-bottom:10px; float:left; width:210px;height:215px; line-height:36px;  margin-right:10px;  font-size:12px; background:#AEE8FF;}
 .list-title{ font-size:14px; text-align:center; display:block; color:#333; display:block; margin:0px; padding:0px; height:48px; line-height:48px;}
 .gray{ color:#999;}
 .list-alue{ font-size:16px;}
@@ -107,10 +107,10 @@ background: url(searchlogo.png) no-repeat 60px 3px;
 
 /*周边城市*/
 .p_around{font-size:12px; text-align:left;list-style: none;margin:0px;line-height: 18px;padding:0px;}
-.td_around{color: white;font-size: 13px;width: 100px;padding: 0; }
+.td_around{color: black;font-size: 16px;width: 100px;padding: 0;background: #F9F9F9;font-family: inherit;}
 .table_around_child{font-size:12px;width: 100%;}
-.table_around_child tr{border-bottom: 1px solid white !important;}
-.table_around_child td{text-align: center; background-color: #92d5f1;}
+.table_around_child tr{border-bottom: 1px solid white !important;line-height: 30px;}
+.table_around_child td{text-align: center; background-color: #92d5f1;line-height: 30px;}
 .div_a_info{position:absolute;width:180px;padding:5px;height:250px;display:none;z-index:999;background:white;color:#666;border-radius: 5px;}
 
 /*未来5天趋势预报*/

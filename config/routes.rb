@@ -81,4 +81,5 @@ Rails.application.routes.draw do
 	get '/qinhuangdao/cities_around_fun' => 'qinhuangdao#cities_around_fun'
 	get '/qinhuangdao/get_linechart_data' => 'qinhuangdao#get_linechart_data'
 	get '/qinhuangdao/get_rank_chart_data' => 'qinhuangdao#get_rank_chart_data'
+
 end

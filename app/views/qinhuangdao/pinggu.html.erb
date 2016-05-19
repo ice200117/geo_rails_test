@@ -1,47 +1,54 @@
 <%= render partial:"qinhuangdao/banner",locals:{banner:@banner,rank:@rank}%>
 <div class="container">
-	<table cellpadding="0" cellspacing="0" class="content" width="100%">
-		<tbody>
-			<tr>
-				<td>
-					<ul class="menu">
-						<li id="menu_forecast" style="production:left;padding:0px;margin:0px">
-							<font class="top11-title" style="color:black; padding:0px;margin:0px">空气质量预报</font> 
-						</li>
-					</ul>
-					<div class="future-list">
-						<ul>
-							<% for i in (0..4) %>
-								<% time = i.day.from_now.strftime("%Y%m%d")%>
-								<% t = @forecast_data[time] %>
-								<% next unless t %>
-								<% dnil='暂无数据'%>
-								<li>
-									<h4 class="list-title"><%= t["date"] %></h4>  
-									<table cellpadding="0" cellspacing="0">
-										<tbody>
-											<tr>
-												<td><span class="gray">级别</span></td>
-												<td><span class="list-alue" style="<%='font-size:12px' if t['fore_lev'].nil? %>"><span class="<%= t['fore_lev'] if t["fore_lev"] != nil %> <%= t['fore_lev'] != nil ? 'small' : 'small1'%>"><%= t['level'] !=nil ? t["level"] : dnil%></span></span></td>
-											</tr>
-											<tr>
-												<td style="width:88px;"><span class="gray">首要污染物</span></td>
-												<td><span class="list-alue" style="<%='font-size:12px' if t['main_pol'].nil?%>"><%= t["main_pol"] != nil ? t["main_pol"] : dnil%></span></td>
-											</tr>
-											<tr>
-												<td style="padding-top:15px;"><span class="gray">天气</span></td>
-												<td class="list-weather" style="padding-top:10px;"><span ><%= t["tq"] != nil ? t["tp"] : '-' %>&nbsp;<br><%= t["temp2"] !=nil ? t['temp2'] : '-' %>℃~<%= t["temp1"] !=nil ? t['temp1'] : '-' %>℃<br><%= t["wd"] !=nil ? t['wd'] : '-'%>&nbsp<%= t["ws"] !=nil ? t['ws'] : '-' %></span></td>
-											</tr>
-										</tbody>
-									</table>
-								</li>
-							<% end %>
-						</ul>
-					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+		<!-- 邻县 -->
+		<div style="width: 1100px;height: 240px;text-align: center;">
+        <table id="table_around" style="width: 100%;height: 100%;text-align: center;">
+        
+        </table>
+      </div>					
+		<!-- 邻县 end -->
+	<table stylecellpadding="0" cellspacing="0" class="content" width="100%">
+    <tbody>
+      <tr>
+        <td>
+          <ul class="menu">
+            <li id="menu_forecast" style="production:left;padding:0px;margin:0px">
+              <font class="top11-title" style="color:black; padding:0px;margin:0px">空气质量预报</font> 
+            </li>
+          </ul>
+          <div class="future-list">
+            <ul>
+              <% for i in (0..4) %>
+                <% time = i.day.from_now.strftime("%Y%m%d")%>
+                <% t = @forecast_data[time] %>
+                <% next unless t %>
+                <% dnil='暂无数据'%>
+                <li>
+                  <h4 class="list-title"><%= t["date"] %></h4>  
+                  <table cellpadding="0" cellspacing="0">
+                    <tbody>
+                      <tr>
+                        <td><span class="gray">级别</span></td>
+                        <td><span class="list-alue" style="<%='font-size:12px' if t['fore_lev'].nil? %>"><span class="<%= t['fore_lev'] if t["fore_lev"] != nil %> <%= t['fore_lev'] != nil ? 'small' : 'small1'%>"><%= t['level'] !=nil ? t["level"] : dnil%></span></span></td>
+                      </tr>
+                      <tr>
+                        <td style="width:88px;"><span class="gray">首要污染物</span></td>
+                        <td><span class="list-alue" style="<%='font-size:12px' if t['main_pol'].nil?%>"><%= t["main_pol"] != nil ? t["main_pol"] : dnil%></span></td>
+                      </tr>
+                      <tr>
+                        <td style="padding-top:15px;"><span class="gray">天气</span></td>
+                        <td class="list-weather" style="padding-top:10px;"><span ><%= t["tq"] != nil ? t["tp"] : '-' %>&nbsp;<br><%= t["temp2"] !=nil ? t['temp2'] : '-' %>℃~<%= t["temp1"] !=nil ? t['temp1'] : '-' %>℃<br><%= t["wd"] !=nil ? t['wd'] : '-'%>&nbsp<%= t["ws"] !=nil ? t['ws'] : '-' %></span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
 	
 <!--
@@ -405,7 +412,7 @@
 		<%# <a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a> %>
 	</div>
 </div>
-<%= javascript_include_tag 'bootstrap.min','respond','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','LineChart','rank_chart' %>
+<%= javascript_include_tag 'bootstrap.min','respond','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','LineChart','rank_chart',"cities_around" %>
 
 <script>
 	$(document).ready()
