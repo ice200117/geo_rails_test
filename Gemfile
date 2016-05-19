@@ -111,4 +111,4 @@ gem 'to_xls'
 #加载进度条
 gem 'nprogress-rails'
 gem 'jquery-turbolinks'
-gem 'casein'
+gem 'casein','~>5.1.1'

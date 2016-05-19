@@ -387,13 +387,13 @@
 						</ul>
 					</div>
 					<div class="tab-content">
-						<div class="tab-pane fade in active" id="sfrizhzs">
+						<div class="tab-pane fade in active sf" id="sfrizhzs" >
 							<%= render partial: 'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyday,flag:'sf',hasRate: true} %>
 						</div>    
-						<div class="tab-pane fade" id="sfyuezhzs">
+						<div class="tab-pane fade" id="sfyuezhzs" sf>
 							<%= render partial: 'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyday,flag:'sf',hasRate: true}%>
 						</div>    
-						<div class="tab-pane fade" id="sfnianzhzs">
+						<div class="tab-pane fade" id="sfnianzhzs" sf>
 							<%= render partial: 'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyyear,flag:'sf',hasRate: true} %>
 						</div>
 					</div>
@@ -420,13 +420,13 @@
 						</ul>
 					</div>
 					<div class="tab-content">
-						<div class="tab-pane fade in active" id="sfri">
+						<div class="tab-pane fade in active sf" id="sfri">
 							<%= render partial:'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyday,flag:'sf',hasRate: false}%>
 						</div>    
-						<div class="tab-pane fade" id="sfyue">
+						<div class="tab-pane fade sf" id="sfyue">
 							<%= render partial:'qinhuangdao/data_table',locals:{data:@sfcitiesrankbymonth,flag:'sf',hasRate: false}%>
 						</div>
-						<div class="tab-pane fade" id="sfnian">
+						<div class="tab-pane fade sf" id="sfnian">
 							<%= render partial:'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyyear,flag:'sf',hasRate: false}%>
 						</div>
 					</div>

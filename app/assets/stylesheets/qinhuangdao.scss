@@ -1,4 +1,4 @@
-// Place all the styles related to the welcome controller here.
+// Place all the styles related to the qinhuangdao controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
  
@@ -98,6 +98,12 @@ ul,ul li{ margin:0px; padding:0px; list-style:none;}
   bottom: -4px;
   left: 50%;
 }
-.panel-body table{
-	font-size:12px;
+.panel-body{
+	table{
+		font-size:12px;
+	}
+	.sf{
+		overflow:auto;
+		height:500px;
+	}
 }
