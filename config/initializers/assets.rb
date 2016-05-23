@@ -38,4 +38,8 @@ Rails.application.config.assets.precompile += %w(
 	rank_chart.js 
 	LineChart.js 
 	qinhuangdao.css
+	css/air.css
+	air.js
+	demo.js
+	langfang.css
 )

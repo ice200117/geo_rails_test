@@ -1,0 +1,27 @@
+// Place all the styles related to the langfang controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.t-t{
+	color:#333333;
+	height:36px;
+	line-height:36px;
+	border-bottom:1px solid #ddd;
+	a{
+		font-size: 12px;
+		display: inline-block;
+		float: left;
+		line-height: 25px;
+		height: 25px;
+		text-decoration: none;
+		margin: 5px 0 0 5px;
+		padding: 0 12px;
+		background-color: #eaeaea;
+		color: #666;
+		&:hover,&.cur{
+			color: #fff;
+			background-color: #7ca9e6;
+			text-decoration: none;
+		}	
+	}
+}

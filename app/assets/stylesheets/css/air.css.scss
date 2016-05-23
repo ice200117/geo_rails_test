@@ -1,0 +1,255 @@
+/* line 2, air.less */
+.ui-center .ui-center-area {
+  padding: 0px;
+}
+/* line 5, air.less */
+.en-air-top-banner {
+  height: 92px;
+  line-height: 25px;
+  background-color: #f7f7f7;
+}
+/* line 9, air.less */
+.en-air-top-banner .air-control {
+  float: right;
+  margin: 20px 10px 0 0;
+}
+/* line 13, air.less */
+.en-air-top-banner .air-title {
+  float: left;
+  font-size: 16px;
+  line-height: 66px;
+  color: #333;
+  margin-left: 18px;
+}
+/* line 20, air.less */
+.en-air-top-banner .air-date {
+  margin-left: 32px;
+  width:800px;
+}
+/* line 23, air.less */
+.en-air-top-banner .air-date span {
+  text-align: center;
+  display: inline-block;
+  float: left;
+  margin: 14px 5px 0;
+  font-size: 12px;
+}
+/* line 29, air.less */
+.en-air-top-banner .air-date span.t {
+  font-size: 14px;
+}
+/* line 32, air.less */
+.en-air-top-banner .air-date span a {
+  display: block;
+  color: #666;
+}
+/* line 35, air.less */
+.en-air-top-banner .air-date span a.cur {
+  color: #fff;
+  background-color: #7cbbf1;
+  padding: 0 3px;
+}
+/* line 41, air.less */
+.en-air-top-banner .air-date span b {
+  margin-top: 4px;
+  background-color: #ccc;
+  display: inline-block;
+  color: #fff;
+  font-weight: 500;
+  padding: 0 3px;
+}
+/* line 48, air.less */
+.en-air-top-banner .air-date span b.L {
+  background-color: #e0cf22;
+}
+/* line 51, air.less */
+.en-air-top-banner .air-date span b.Y {
+  background-color: #85e04e;
+}
+/* line 54, air.less */
+.en-air-top-banner .air-date span b.QD {
+  background-color: #ff9900;
+}
+.en-air-top-banner .air-date span b.G {
+  background-color:gray;
+}
+/* line 60, air.less */
+.en-air-top-banner .air-time {
+  margin-left: 38px;
+  float:left;
+  width:600px;
+}
+/* line 63, air.less */
+.en-air-top-banner .air-time .air-time-title {
+  font-size: 14px;
+  float: left;
+  margin-top: 14px;
+}
+/* line 68, air.less */
+.en-air-top-banner .air-time .air-time-content {
+  margin-top: 5px;
+  width: 500px;
+  height: 47px;
+  float: left;
+  background: image-url('timebg.jpg') no-repeat center bottom;
+  position: relative;
+}
+/* line 75, air.less */
+.en-air-top-banner .air-time .air-time-content a.ct {
+  position: absolute;
+  left: 3px;
+  top: -5px;
+  width: 35px;
+  height: 32px;
+  font-size: 11px;
+  text-align: center;
+  display: inline-block;
+  color: #6688cc;
+  text-decoration: none;
+  background: image-url('blue-timepoint.png') no-repeat center bottom;
+}
+/* line 89, air.less */
+.en-air-top-banner .air-time .air-time-control {
+  margin-top: 13px;
+  float: left;
+}
+/* line 92, air.less */
+.en-air-top-banner .air-time .air-time-control a {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+}
+/* line 96, air.less */
+.en-air-top-banner .air-time .air-time-control a.start {
+  background: image-url('play.png') no-repeat 0 0;
+}
+/* line 99, air.less */
+.en-air-top-banner .air-time .air-time-control a.stop {
+  background: image-url('stop.png') no-repeat 0 0;
+}
+/* line 105, air.less */
+.en-air-top-banner .air-tip {
+  float: left;
+  color: #666;
+  margin: 23px 0 0 20px;
+}
+/* line 109, air.less */
+.en-air-top-banner .air-tip span {
+  background-color: #51a5ee;
+  color: #fff;
+  border-radius: 9px;
+  -moz-border-radius: 9px;
+  -webkit-border-radius: 9px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+}
+/* line 120, air.less */
+.en-air-top-banner .air-info {
+  float: left;
+  margin: 12px 0 0 20px;
+  position: relative;
+}
+/* line 124, air.less */
+.en-air-top-banner .air-info a {
+  height: 54px;
+  line-height: 40px;
+  display: inline-block;
+  padding: 0 26px 0 40px;
+  background: image-url('hsicon.png') no-repeat 14px 10px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  color: #666;
+  font-size: 14px;
+}
+/* line 134, air.less */
+.en-air-top-banner .air-info a:hover {
+  color: #61c531;
+  background: #f5f5f5 image-url('hsicon_h.png') no-repeat 14px 10px;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  text-decoration: none;
+}
+/* line 142, air.less */
+.en-air-top-banner .air-info ul.air-info-content {
+  background-color: #f5f5f5;
+  position: absolute;
+  left: 0;
+  top: 54px;
+  padding: 10px;
+}
+/* line 149, air.less */
+.en-air-top-banner .air-info ul.air-info-content li a {
+  height: 30px;
+  line-height: 30px;
+  display: block;
+  padding: 0;
+  background: none;
+  border: 1px solid transparent;
+  border-bottom: none;
+  color: #666;
+  font-size: 14px;
+}
+/* line 172, air.less */
+.en-air-content .en-air-content-left {
+  width: 930px;
+  float: left;
+  padding: 10px;
+}
+/* line 177, air.less */
+.en-air-content .en-air-content-right {
+  margin-left: 950px;
+  padding: 10px;
+}
+/* line 184, air.less */
+.en-air-tab-item-content .en-air-tab-item-content-title {
+  font-size: 14px;
+  color: #333;
+  padding-left: 10px;
+  height: 45px;
+  line-height: 45px;
+}
+/* line 191, air.less */
+.en-air-tab-item-content .en-air-tab-item-content-c {
+  overflow: hidden;
+}
+/* line 194, air.less */
+.en-air-tab-item-content .en-air-tab-item-content-c ul li {
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  margin: 0 6px;
+  float: left;
+  border: 1px solid #dddddd;
+  width: 288px;
+}
+/* line 200, air.less */
+.en-air-tab-item-content .en-air-tab-item-content-c ul li p {
+  width: 288px;
+  height: 211px;
+}
+/* line 204, air.less */
+.en-air-tab-item-content .en-air-tab-item-content-c ul li h2 {
+  height: 34px;
+  line-height: 34px;
+  background-color: #f0f0f0;
+  text-align: center;
+}
+/* line 214, air.less */
+.td-title-des-color {
+  color: #999;
+}
+/* line 217, air.less */
+.air-flex-area {
+  margin-top: 10px;
+  border: 1px solid #dddddd;
+}
+/* line 220, air.less */
+.air-flex-area h1 {
+  color: #333;
+  height: 38px;
+  line-height: 38px;
+  text-align: center;
+}

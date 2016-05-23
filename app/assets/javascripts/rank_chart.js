@@ -2,7 +2,7 @@
 
 
   var ITEM3="DESC";var DATE3="MONTH";
-  var startTime,endTime;var ranktype="DAY";var city = "秦皇岛";
+  var startTime,endTime;var ranktype="DAY";var city = "秦皇岛市";
   var dataRank = [];var dataLastRank = [];var num=0;var lastnum=0;
   setTimeout('$(".btndategroup3:last").click()',200);
    $(".btnitemgroup3:last").addClass("btnbd-info");

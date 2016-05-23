@@ -1,19 +1,8 @@
-#class QinhuangdaoController < ApplicationController
-class QinhuangdaoController < Casein::CaseinController
-
-	#	caches_page :pinggu, :bar
-	#cache_sweeper :welcome_sweeper
-
-	layout 'qinhuangdao'
+class LangfangController < ApplicationController
+# class LangfangController < Casein::CaseinController
 
 	include NumRu
 	protect_from_forgery :except => [:get_forecast_baoding, :get_city_point]
-
-	def map
-		system('ls')
-		r = `rails r vendor/test.rb`
-		# puts r
-	end
 
 	def visits_by_day
 		id =  params[:city_id]
@@ -31,204 +20,12 @@ class QinhuangdaoController < Casein::CaseinController
 		end
 	end
 
-	def bar
-		@diff_monitor_forecast = []
-		if params[:c] 
-			city_name = params[:c][:city_name]
-			c =  City.find_by_city_name(city_name)
-			c = City.find_by_city_name(city_name+'市') unless c
-			c = City.find_by city_name_pinyin: 'qinhuangdaoshi' unless c
-			id = c.id
-		else
-			# Table 1: 全国城市当天监测与预报日均值差值
-			(id = City.find_by city_name_pinyin: 'qinhuangdaoshi')
-			monitor_today_avg = ChinaCitiesHour.today_avg
-			forecast_today_avg = HourlyCityForecastAirQuality.today_avg
-			monitor_today_avg.each do |k,v|
-				next unless forecast_today_avg[k]
-				d = monitor_today_avg[k] - forecast_today_avg[k].values[0]
-				@diff_monitor_forecast << [ k, monitor_today_avg[k], forecast_today_avg[k].values[0], d.abs, forecast_today_avg[k].keys[0]]
-			end
-		end
-
-		# Table 2: 城市监测与预报值小时值对比
-		c = City.find(id)
-		if params[:start_date] && params[:end_date]
-			sd = Time.local(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
-			ed = Time.local(params[:end_date][:year].to_i, params[:end_date][:month].to_i, params[:end_date][:day].to_i,23)
-			return 'error: start date can not later than end date!' if sd > ed
-			hss = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
-			hs = []
-			hss.each {|h| hs << h if h.forecast_datetime >= sd && h.forecast_datetime <= ed }
-		else
-			hs = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
-		end 
-
-		md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
-		
-		@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime,  h.AQI]} }]
-		@chart << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.AQI] } }
-
-
-		# Table 3: 过去一星期城市监测与预报值日均值对比
-		@fore_group_day = {}
-
-		# 获取过去几天的监测值
-		@fore_group_day = ChinaCitiesHour.history_data(c, 6.days.ago.beginning_of_day)
-
-		# 获取过去几天发布的预报值
-		md = {}
-		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime >= ?", 6.days.ago.beginning_of_day).group_by_day(:forecast_datetime).average(:AQI)
-		h.each {|k,v| k.map!{|x| x.strftime("%d%b")}; md[k] = v.round}
-
-		@fore_group_day.merge!(md)
-
-		respond_to do |format|
-			format.html { }
-			format.js   { }
-			format.json {
-				render json: @diff_monitor_forecast
-			}
-		end
-	end
-
-	#显示分指数
-	def subindex
-		@diff_monitor_forecast = []
-		@city_name=''
-		id = 18
-		if params[:c] 
-			(id =  params[:c][:city_id]) 
-		end
-
-		# Table 1: 全国城市当天监测与预报日均值差值
-		monitor_today_avg = ChinaCitiesHour.today_avg
-		forecast_today_avg = HourlyCityForecastAirQuality.today_avg
-		monitor_today_avg.each do |k,v|
-			next unless forecast_today_avg[k]
-			d = monitor_today_avg[k] - forecast_today_avg[k].values[0]
-			@diff_monitor_forecast << [ k, monitor_today_avg[k], forecast_today_avg[k].values[0], d.abs, forecast_today_avg[k].keys[0]]
-		end
-
-		# Table 2: 城市监测与预报值小时值对比
-		c = City.find(id)
-		@city_name=c.city_name
-		if params[:start_date] && params[:end_date]
-			sd = Time.local(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
-			ed = Time.local(params[:end_date][:year].to_i, params[:end_date][:month].to_i, params[:end_date][:day].to_i,23)
-			return 'error: start date can not later than end date!' if sd > ed
-			hss = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
-			hs = []
-			hss.each {|h| hs << h if h.forecast_datetime >= sd && h.forecast_datetime <= ed }
-		else
-			hs = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
-		end 
-
-		md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
-
-		@chart_aqi = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime, h.AQI]} }]
-		@chart_aqi << {name: '监测值', data: md.map { |h| [ h.data_real_time,h.AQI ] } }
-
-		@chart_so2 = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.SO2]} }]
-		@chart_so2 << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.SO2] } }
-
-		@chart_no2 = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.NO2]} }]
-		@chart_no2 << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.NO2] } }
-
-		@chart_co = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.CO]} }]
-		@chart_co << {name:'监测值', data: md.map { |h| [ h.data_real_time,  h.CO] } }
-
-		@chart_o3 = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.O3]} }]
-		@chart_o3 << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.O3] } }
-
-		@chart_pm10 = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.pm10]} }]
-		@chart_pm10 << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.pm10]} }
-
-		@chart_pm25 = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.pm25]} }]
-		@chart_pm25 << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.pm25] } }
-
-		@chart_vis = [{name: '预报值', data: hs.map { |h| [ h.forecast_datetime,  h.VIS]} }]
-		# @chart_vis << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.VIS] } }
-
-		# Table 3: 过去一星期城市监测与预报值日均值对比
-		@fore_group_day = {}
-
-		# 获取过去几天的监测值
-		@fore_group_day = ChinaCitiesHour.history_data(c, 6.days.ago.beginning_of_day)
-
-		# 获取过去几天发布的预报值
-		md = {}
-		h = c.hourly_city_forecast_air_qualities.group(:publish_datetime).having("publish_datetime >= ?", 6.days.ago.beginning_of_day).group_by_day(:forecast_datetime).average(:AQI)
-		h.each {|k,v| k.map!{|x| x.strftime("%d%b")}; md[k] = v.round}
-
-		@fore_group_day.merge!(md)
-		respond_to do |format|
-			format.html { }
-			format.js   { }
-			format.json {
-				render json: @diff_monitor_forecast
-			}
-		end
-	end
-
 	def get_history_data
 		model = params[:model]
 		time = params[:time].to_time
 		data = change_data_type(get_db_data(model.constantize,time),0)
 		render :json=>data
 	end
-
-	#1.三组按钮组间关系：根据三组按钮之间的关系确定编程顺序，先通过判断按天还是按小时从而确定查询天表还是小时表
-	#然后，通过第二组按钮最近一天、最近一周等等确定startdate和enddate今儿去卡记录数
-	#最后，通过第一组按钮确定要显示的字段。
-	#2.三组按钮组内关系：第一组：“综合”显示AQI和其他的一堆，“AQI”只显示AQI，“PM2.5”~“湿度”这些显示AQI和本身
-	#第二组和第三组：如果选中“最近一天”则无论是按天还是按小时均按小时显示曲线图，如果选中“最近一周”、“最近一月”、“最近一年”则按天与按小时显示的图不同
-=begin
-	def chartway
-		# citybd=City.find_by city_name: '保定市'
-		startdate=Time.local(params[:starttime][0,4].to_i,params[:starttime][5,2].to_i,params[:starttime][8,2].to_i)
-		enddate=Time.local(params[:endtime][0,4].to_i,params[:endtime][5,2].to_i,params[:endtime][8,2].to_i,23)
-		if  params[:starttime]==params[:endtime] 
-			startdate=Time.local(params[:starttime][0,4].to_i,params[:starttime][5,2].to_i,params[:starttime][8,2].to_i)
-			enddate=Time.local(params[:endtime][0,4].to_i,params[:endtime][5,2].to_i,params[:endtime][8,2].to_i,23)
-			querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,11) #秦皇岛的cityid是11,减少查找步骤，提高访问速度
-		elsif params[:exact]=='eh'
-			querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,11) 
-		else
-			querydata=TempSfcitiesDay.where("data_real_time>=? AND data_real_time<=? AND city_id=?",startdate,enddate,11)
-		end  
-		if params[:type]=='zonghe'
-			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'PM2.5(μg/m3)',data: querydata.map{ |data| data.pm25}},{name: 'PM10(μg/m3)',data: querydata.map{ |data| data.pm10}},{name: 'SO2(μg/m3)',data: querydata.map{ |data| data.SO2}},{name: 'CO(mg/m3)',data: querydata.map{ |data| data.CO}},{name: 'NO2(μg/m3)',data: querydata.map{ |data| data.NO2}},{name: 'O3(μg/m3)',data: querydata.map{ |data| data.O3}}]}
-		elsif params[:type]=='PM25'
-			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'PM2.5(μg/m3)',data: querydata.map{ |data| data.pm25}}]}
-		elsif params[:type]=='PM10'
-			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'PM10(μg/m3)',data: querydata.map{ |data| data.pm10}}]}
-		elsif params[:type]=='SO2'
-			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'SO2(μg/m3)',data: querydata.map{ |data| data.SO2}}]}
-		elsif params[:type]=='NO2'
-			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'NO2(μg/m3)',data: querydata.map{ |data| data.NO2}}]}
-		elsif params[:type]=='CO'
-			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'CO(mg/m3)',data: querydata.map{ |data| data.CO}}]}
-		elsif params[:type]=='O3'
-			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: 'O3(μg/m3)',data: querydata.map{ |data| data.O3}}]}
-		elsif params[:type]=='tem' && params[:exact]=='eh'
-			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: '温度(℃)',data: querydata.map{ |data| data.temp}}]}
-		elsif params[:type]=='wind' && params[:exact]=='eh'
-			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: '风速(级)',data: querydata.map{ |data| data.windspeed}}]}
-		elsif params[:type]=='hum' && params[:exact]=='eh'
-			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}},{name: '湿度(%)',data: querydata.map{ |data| data.humi}}]}
-		else
-			@chartdata={categories: querydata.map{ |data| params[:exact]=='eh' ? data.data_real_time.strftime("%m-%d %H") : data.data_real_time.strftime("%Y-%m-%d")}, series: [{name: 'AQI',data: querydata.map{ |data| data.AQI}}]}
-		end
-		respond_to do |format|
-			format.html { }
-			format.js   { }
-			format.json {
-				render json: @chartdata
-			}
-		end
-	end
-=end
 
 	def get_linechart_data
 		city=City.find_by city_name: (params[:city]+'市')
@@ -251,63 +48,6 @@ class QinhuangdaoController < Casein::CaseinController
 			}
 		end    
 	end
-
-
-	def city_compare_chart
-		city1=City.find_by city_name: (params[:city1]+'市')
-		city2=City.find_by city_name: (params[:city2]+'市')
-		city3=City.find_by city_name: (params[:city3]+'市')
-		cityidarray=Array[city1.id,city2.id,city3.id]
-		startdate=Time.local(params[:startTime][0,4].to_i,params[:startTime][5,2].to_i,params[:startTime][8,2].to_i,0)
-		enddate=Time.local(params[:endTime][0,4].to_i,params[:endTime][5,2].to_i,params[:endTime][8,2].to_i,23)
-		if params[:type]=='HOUR'
-			querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc') 
-		elsif params[:type]=='DAY'
-			querydata=TempSfcitiesDay.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')
-		else
-			querydata=TempSfcitiesMonth.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')      
-		end  
-		@citycompare={citynum: cityidarray,rows: querydata.map{ |data| { alldata: data,timeformatted: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S")}}}
-		#pp querydata.map{ |data| data.city_id}.uniq.length
-		#pp @citycompare
-		respond_to do |format|
-			format.html { }
-			format.js   { }
-			format.json {
-				render json: @citycompare
-			}
-		end    
-	end
-
-
-	def bdqx_compare_chart
-
-		bdqx_monitorpoint={"海港建设大厦"=>"建设大厦","北戴河区"=>"北戴河","海关区"=>"第一关","海港市政府"=>"市政府","青龙满族自治县"=>"青龙环保局","昌黎县"=>"昌黎环保局","抚宁县"=>"抚宁党校","卢龙县"=>"卢龙县气象局","海港市监测站"=>"市监测站"}
-		city1=MonitorPoint.where("pointname =? AND city_id = 11",bdqx_monitorpoint[params[:city1]])
-		city2=MonitorPoint.where("pointname =? AND city_id = 11",bdqx_monitorpoint[params[:city2]])
-		city3=MonitorPoint.where("pointname =? AND city_id = 11",bdqx_monitorpoint[params[:city3]])
-		cityidarray=Array[city1[0].id,city2[0].id,city3[0].id]
-		startdate=Time.local(params[:startTime][0,4].to_i,params[:startTime][5,2].to_i,params[:startTime][8,2].to_i,0)
-		enddate=Time.local(params[:endTime][0,4].to_i,params[:endTime][5,2].to_i,params[:endTime][8,2].to_i,23)
-		if params[:type]=='HOUR'
-			querydata=MonitorPointHour.where("data_real_time>=? AND data_real_time<=? AND monitor_point_id IN (?,?,?)",startdate,enddate,city1[0].id,city2[0].id,city3[0].id).order('data_real_time asc') 
-		elsif params[:type]=='DAY'
-			querydata=MonitorPointDay.where("data_real_time>=? AND data_real_time<=? AND monitor_point_id IN (?,?,?)",startdate,enddate,city1[0].id,city2[0].id,city3[0].id).order('data_real_time asc')
-		else
-			querydata=MonitorPointMonth.where("data_real_time>=? AND data_real_time<=? AND monitor_point_id IN (?,?,?)",startdate,enddate,city1[0].id,city2[0].id,city3[0].id).order('data_real_time asc')      
-		end  
-		@bdqxcompare={citynum: cityidarray,rows: querydata.map{ |data| { alldata: data,timeformatted: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S")}}}
-		#pp querydata.map{ |data| data.city_id}.uniq.length
-		#pp @citycompare
-		respond_to do |format|
-			format.html { }
-			format.js   { }
-			format.json {
-				render json: @bdqxcompare
-			}
-		end    
-	end
-
 
 	def pinggu
 		#秦皇岛数据
@@ -815,15 +555,6 @@ class QinhuangdaoController < Casein::CaseinController
 		return sum_per
 	end
 
-	#74城市全部展示
-	def rank1503
-		#74城市
-		@sfcitiesrankbyday=change_data_type(get_db_data(TempSfcitiesDay),0)
-		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth),0)
-		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear),0)
-		@banner=banner()
-	end
-
 	def forecast
 		@banner = banner()
 		@day_fdata = @banner["day_fdata"]
@@ -831,19 +562,8 @@ class QinhuangdaoController < Casein::CaseinController
 		@city_adj = @banner["city_adj"]
 		@adj_per1 = @banner["adj_per1"]
 		@forecast_data = get_forecast()
+		@imgTime = Time.now.strftime("%Y%m%d")
 	end
-	def compare
-		@banner = banner()
-	end
-	def sfcities_compare
-		render layout: getlayoutbyaction('sfcities_compare')
-	end
-
-
-	def bdqx_compare
-		render layout: getlayoutbyaction('bdqx_compare')
-	end
-
 
 	def getlayoutbyaction(action_name)
 		if action_name == 'sfcities_compare' || action_name == 'bdqx_compare'
@@ -928,30 +648,5 @@ class QinhuangdaoController < Casein::CaseinController
 
 		return hs
 	end 
-	#周边城市
-	def cities_around_fun
-		cities_hash={1=>"北京",8=>"天津",10=>"唐山",18=>"廊坊",14=>"保定",56=>"葫芦岛",49=>"锦州",16=>"承德"}
-		starttime=Time.mktime((Time.now-3600).year,(Time.now-3600).month,(Time.now-3600).day,(Time.now-3600).hour,0,0)
-		endtime=Time.mktime((Time.now-3600).year,(Time.now-3600).month,(Time.now-3600).day,(Time.now-3600).hour,59,59)
-		querydata=ChinaCitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (1,8,10,18,14,56,49,16)",starttime,endtime)
-		@cities_around=querydata.map{ |data| { time: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S"),cityname: cities_hash[data.city_id],aqi: data.AQI,pm2_5: data.pm25,pm10: data.pm10,so2: data.SO2,no2: data.NO2,co: data.CO,o3: data.O3,quality: data.level,primary_pollutant: data.main_pol,weather: data.weather,temp: data.temp,humi: data.humi,windspeed: data.windspeed,winddirection: data.winddirection}}
-		respond_to do |format|
-			format.html { }
-			format.js   { }
-			format.json {
-				render json: @cities_around
-			}
-		end
-	end
-	def get_rank_chart_data
-		cityName = params[:city]
-		type = params[:ranktype]
-		stime = params[:startTime]
-		etime = params[:endTime]
-		if type == 'DAY'
-			TempSfcitiesDay.get_rank_chart_data(cityName,stime,etime)
-		else
-			TempSfcitiesMonth.get_rank_chart_data(cityName,stime,etime)
-		end
-	end
+
 end
