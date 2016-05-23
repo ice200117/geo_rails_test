@@ -14,7 +14,7 @@ module Casein
     # The server hostname where Casein will run
     def casein_config_hostname
       if Rails.env.production?
-        'http://www.caseincms.com'
+        'http://60.10.135.153:3004'
       else
         'http://0.0.0.0:3000'
       end

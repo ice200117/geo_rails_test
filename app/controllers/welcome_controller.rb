@@ -1,4 +1,6 @@
+
 class WelcomeController < ApplicationController
+
   include WelcomeHelper
 
 	#	caches_page :pinggu, :bar

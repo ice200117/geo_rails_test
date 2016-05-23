@@ -832,6 +832,7 @@ class QinhuangdaoController < Casein::CaseinController
 		@adj_per1 = @banner["adj_per1"]
 		@forecast_data = get_forecast()
 	end
+
 	def compare
 		@banner = banner()
 	end
