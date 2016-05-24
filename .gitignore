@@ -17,3 +17,5 @@ cron_log.log
 /public/images
 /public/assets
 *.log
+public/assets/*
+public/images/*

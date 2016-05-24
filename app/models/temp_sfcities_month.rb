@@ -5,7 +5,7 @@ class TempSfcitiesMonth < ActiveRecord::Base
 		#获取日数据排名
 		if Custom::Redis.get("get_rank_chart_data_day")
 		else
-			data = City.find_by_city_name(name).temp_sfcities_months.select("AQI,main_pol,data_real_time,rank").where(data_real_time: (stime..etime)).group_by_month().as_json
+			data = City.find_by_city_name(name).temp_sfcities_months.select("AQI,main_pol,data_real_time,rank").where(data_real_time: (stime..etime)).group_by_month(&:data_real_time)
 
 			data.each do |l|
 				l['lastrank'] = 75 - l['rank'] if l['rank']

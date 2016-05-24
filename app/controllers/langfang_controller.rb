@@ -578,7 +578,7 @@ class LangfangController < ApplicationController
 		md = hb_real
 		hs['rt']= md[:time]
 		md[:cities].each do |c|
-			if c['city'] == '秦皇岛'
+			if c['city'] == '廊坊'
 				hs = hs.merge(c)
 				break
 			end
@@ -587,8 +587,8 @@ class LangfangController < ApplicationController
 		aqis = []
 		pri_pol = []
 		ch=nil
-		if $redis['qhd_hour_forecast'].nil?
-			c = City.find_by_city_name_pinyin('qinhuangdaoshi')
+		if $redis['langfang_hour_forecast'].nil?
+			c = City.find_by_city_name_pinyin('langfangshi')
 			ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
 			Custom::Redis.set('qhd_hour_forecast',ch,3600)
 		else
@@ -633,7 +633,7 @@ class LangfangController < ApplicationController
 		hs["day_fdata"] = day_fdata
 		#实时天气预报
 		begin
-			response = HTTParty.get('http://www.weather.com.cn/adat/sk/101091101.html')	
+			response = HTTParty.get('http://www.weather.com.cn/adat/sk/101090601.html')	
 			json_data = JSON.parse(response.body)
 			hs = hs.merge(json_data['weatherinfo'])	
 		rescue
