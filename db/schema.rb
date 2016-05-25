@@ -11,21 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20160505022737) do
-=======
 ActiveRecord::Schema.define(version: 20160516074526) do
->>>>>>> ce5e27a2008cecd374a76146f1dc85c49e44dc4b
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
   enable_extension "postgis_topology"
-<<<<<<< HEAD
-=======
   enable_extension "fuzzystrmatch"
   enable_extension "postgis_tiger_geocoder"
->>>>>>> ce5e27a2008cecd374a76146f1dc85c49e44dc4b
 
   create_table "ann_forecast_data", force: true do |t|
     t.integer  "city_id"
@@ -106,17 +99,6 @@ ActiveRecord::Schema.define(version: 20160516074526) do
   end
 
   create_table "counties", force: true do |t|
-<<<<<<< HEAD
-    t.string   "name"
-    t.float    "area"
-    t.float    "perimeter"
-    t.integer  "adcode"
-    t.float    "centroid_y"
-    t.float    "centroid_x"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.spatial  "boundary",   limit: {:srid=>0, :type=>"multi_polygon"}
-=======
     t.string    "name"
     t.float     "area"
     t.float     "perimeter"
@@ -126,7 +108,6 @@ ActiveRecord::Schema.define(version: 20160516074526) do
     t.timestamp "created_at",                                       precision: 6
     t.timestamp "updated_at",                                       precision: 6
     t.spatial   "boundary",   limit: {:srid=>0, :type=>"geometry"}
->>>>>>> ce5e27a2008cecd374a76146f1dc85c49e44dc4b
   end
 
   create_table "day_cities", force: true do |t|
@@ -350,16 +331,6 @@ ActiveRecord::Schema.define(version: 20160516074526) do
   end
 
   create_table "monitor_points", force: true do |t|
-<<<<<<< HEAD
-    t.string   "region"
-    t.string   "pointname"
-    t.string   "level"
-    t.float    "latitude"
-    t.float    "longitude"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "city_id"
-=======
     t.string    "region"
     t.string    "pointname"
     t.string    "level"
@@ -368,7 +339,6 @@ ActiveRecord::Schema.define(version: 20160516074526) do
     t.timestamp "created_at", precision: 6
     t.timestamp "updated_at", precision: 6
     t.integer   "city_id"
->>>>>>> ce5e27a2008cecd374a76146f1dc85c49e44dc4b
   end
 
   add_index "monitor_points", ["pointname", "city_id"], :name => "index_monitor_points_on_pointname_and_city_id"

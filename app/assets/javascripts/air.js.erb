@@ -18,6 +18,10 @@ function showOtherPic(obj){
 function imageViewClick(obj) {//资源图片的点击事件
 	nowSrc = obj.src;
 }
+function preLoadImg(url){ //图片预加载
+	var img = new Image();
+	img.src = url;
+}
 
 $(document).ready(function(){
 	$('#t-t a').each(function(){

@@ -15,4 +15,9 @@ class TempSfcitiesMonth < ActiveRecord::Base
 			data
 		end
 	end
+
+	def city_rank(cityNamePinyin)
+		City.find_by_city_name_pinyin('cityNamePinyin').temp_sfcities_months.last.rank
+	end
+		
 end

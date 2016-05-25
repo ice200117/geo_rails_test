@@ -1,10 +1,5 @@
 <%= render partial:"qinhuangdao/banner",locals:{banner:@banner,rank:@rank}%>
 <div class="container">
-	<!-- 邻县 -->
-	<div style="width: 1100px;height: 240px;text-align: center;">
-		<table id="table_around" style="width: 100%;height: 100%;text-align: center;"></table>
-	</div>
-	<!-- 邻县 end -->
 	<table stylecellpadding="0" cellspacing="0" class="content" width="100%">
 		<tbody>
 			<tr>
@@ -16,192 +11,192 @@
 					<div class="future-list">
 						<ul>
 							<% for i in (0..4) %>
-							<% time = i.day.from_now.strftime("%Y%m%d")%>
-							<% t = @forecast_data[time] %>
-							<% next unless t %>
-							<% dnil='暂无数据'%>
-							<li>
-								<h4 class="list-title">
-									<%= t["date"] %></h4>
-								<table cellpadding="0" cellspacing="0">
-									<tbody>
-										<tr>
-											<td>
-												<span class="gray">级别</span>
-											</td>
-											<td>
-												<span class="list-alue" style="<%='font-size:12px' if t['fore_lev'].nil? %>
+								<% time = i.day.from_now.strftime("%Y%m%d")%>
+								<% t = @forecast_data[time] %>
+								<% next unless t %>
+								<% dnil='暂无数据'%>
+								<li>
+									<h4 class="list-title">
+										<%= t["date"] %></h4>
+									<table cellpadding="0" cellspacing="0">
+										<tbody>
+											<tr>
+												<td>
+													<span class="gray">级别</span>
+												</td>
+												<td>
+													<span class="list-alue" style="<%='font-size:12px' if t['fore_lev'].nil? %>
 													">
 													<span class="<%= t['fore_lev'] if t["fore_lev"] != nil %>
-														<%= t['fore_lev'] != nil ? 'small' : 'small1'%>
-														">
-														<%= t['level'] !=nil ? t["level"] : dnil%></span>
-												</span>
-											</td>
-										</tr>
-										<tr>
-											<td style="width:88px;">
-												<span class="gray">首要污染物</span>
-											</td>
-											<td>
-												<span class="list-alue" style="<%='font-size:12px' if t['main_pol'].nil?%>
+													<%= t['fore_lev'] != nil ? 'small' : 'small1'%>
 													">
-													<%= t["main_pol"] != nil ? t["main_pol"] : dnil%></span>
-											</td>
-										</tr>
-										<tr>
-											<td style="padding-top:15px;">
-												<span class="gray">天气</span>
-											</td>
-											<td class="list-weather" style="padding-top:10px;">
-												<span >
-													<%= t["tq"] != nil ? t["tp"] : '-' %>
-													&nbsp;
-													<br>
-													<%= t["temp2"] !=nil ? t['temp2'] : '-' %>
-													℃~
-													<%= t["temp1"] !=nil ? t['temp1'] : '-' %>
-													℃
-													<br>
-													<%= t["wd"] !=nil ? t['wd'] : '-'%>
-													&nbsp
-													<%= t["ws"] !=nil ? t['ws'] : '-' %></span>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</li>
-							<% end %></ul>
-					</div>
-				</td>
-			</tr>
+													<%= t['level'] !=nil ? t["level"] : dnil%></span>
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="width:88px;">
+											<span class="gray">首要污染物</span>
+										</td>
+										<td>
+											<span class="list-alue" style="<%='font-size:12px' if t['main_pol'].nil?%>
+											">
+											<%= t["main_pol"] != nil ? t["main_pol"] : dnil%></span>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding-top:15px;">
+										<span class="gray">天气</span>
+									</td>
+									<td class="list-weather" style="padding-top:10px;">
+										<span >
+											<%= t["tq"] != nil ? t["tp"] : '-' %>
+											&nbsp;
+											<br>
+											<%= t["temp2"] !=nil ? t['temp2'] : '-' %>
+											℃~
+											<%= t["temp1"] !=nil ? t['temp1'] : '-' %>
+											℃
+											<br>
+											<%= t["wd"] !=nil ? t['wd'] : '-'%>
+											&nbsp
+											<%= t["ws"] !=nil ? t['ws'] : '-' %></span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</li>
+				<% end %></ul>
+		</div>
+	</td>
+</tr>
 		</tbody>
 	</table>
 
 	<!--
-<div class="container1 box">
-	<h3 class="top11-title" style="display:table;">
-		<div id="kqzlpm"align="left"> <font style="color:black;">空气质量历史数据显示图</font>
-		</div>
-	</h3>
-	<div id="toolbar" class="btngroup btn-toolbar" style="margin-top:20px,margin-left:20px;">
-		<div id="btn-group1" class="btna-group btna-group-sm ">
-			<button type="button" class="btna btna-default btnitemgroup1 btna-success"  id="zonghe" onclick="changeType('zonghe')" style="width:19px;text">综合</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="AQI" onclick="changeType('AQI')" style="width:15px">AQI</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="PM25" onclick="changeType('PM25')" style="width:28px">PM2.5</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="PM10" onclick="changeType('PM10')" style="width:25px">PM10</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="SO2" onclick="changeType('SO2')" style="width:18px">SO2</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="NO2" onclick="changeType('NO2')" style="width:18px">NO2</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="CO" onclick="changeType('CO')" style="width:12px">CO</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="O3" onclick="changeType('O3')" style="width:12px">O3</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="tem" onclick="changeType('tem')" style="width:18px">温度</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="wind" onclick="changeType('wind')" style="width:18px">风速</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="hum" onclick="changeType('hum')" style="width:18px">湿度</button>
-		</div>
-		<div id="btn-group2" class="btna-group btna-group-sm" style="float:left;margin-left:490px;margin-top:-32px;">
-			<button type="button" class="btna btna-default btndategroup1 btna-success" id="d"  value="DAY"onclick="changeTimeQuick('d')" style="width:43px">最近一天</button>
-			<button type="button" class="btna btna-default btndategroup1" id="w"  value="MONTH"onclick="changeTimeQuick('w')" style="width:43px">最近一周</button>
-			<button type="button" class="btna btna-default btndategroup1" id="m"  value="MONTH"onclick="changeTimeQuick('m')" style="width:43px">最近一月</button>
-			<button type="button" class="btna btna-default btndategroup1" id="y"  value="YEAR"onclick="changeTimeQuick('y')" style="width:43px">最近一年</button>
-		</div>
-		<div id="btn-group3" class="btna-group btna-group-sm" style="float:left;margin-left:764px;margin-top:-32px;">
-			<button type="button" class="btna btna-default btndategroup1 btna-success" id="eh" value="exactHour" onclick="changeExact('eh')" style="width:30px;">按小时</button>
-			<button type="button" class="btna btna-default btndategroup1" id="ed"value="exactDay" onclick="changeExact('ed')" style="width:30px">按天</button>
-			>>>>>>> ce5e27a2008cecd374a76146f1dc85c49e44dc4b
-		</div>
-		<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-	</div>
-	-->
-	<!-- 历史数据模块 -->
-	<%= stylesheet_link_tag "css/daterangepicker-bs3.css" %>
-	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-
-	<div class="containerbd" id="md-ls" style="margin-top:20px;">
-		<div class="dtipbd"></div>
-		<div class="subtitlebd">秦皇岛历史数据变化</div>
-		<hr>
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="btngroupbd btnbd-toolbar">
-					<div id="btn-group1" class="btnbd-group btnbd-group-sm " style="float:left; margin-top: 10px;">
-						<button type="button" class="btnbd btnbd-default btndategroup1 btnbd-info" value="DAY">最近一天</button>
-						<button type="button" class="btnbd btnbd-default btndategroup1" value="WEEK">最近一周</button>
-						<button type="button" class="btnbd btnbd-default btndategroup1" value="MONTH">最近一月</button>
-						<button type="button" class="btnbd btnbd-default btndategroup1" value="YEAR">最近一年</button>
-						<input type="text" style="width: 220px;height:30px;padding:6px 10px;" name="reservation" id="reservation" class="form-control"></div>
-					<div id="btn-group2" class="btnbd-group btnbd-group-sm " style="float:right; margin:0 ">
-						<button type="button" class="btnbd btnbd-default btntypegroup1 btnbd-info" value="HOUR">时</button>
-						<button type="button" class="btnbd btnbd-default btntypegroup1" value="DAY">日</button>
-						<button type="button" class="btnbd btnbd-default btntypegroup1" value="MONTH">月</button>
-					</div>
-				</div>
-				<div class="btngroupbd btnbd-toolbar" style="margin-top: 10px;">
-					<div id="btn-group1" class="btnbd-group btnbd-group-sm " style="float:left">
-						<button type="button" class="btnbd btnbd-default btnitemgroup1 btnbd-info" value="AQI">AQI</button>
-						<button type="button" class="btnbd btnbd-default btnitemgroup1" value="TOTAL">综合</button>
-						<button type="button" class="btnbd btnbd-default btnitemgroup1" value="PM2.5">PM2.5</button>
-						<button type="button" class="btnbd btnbd-default btnitemgroup1" value="PM10">PM10</button>
-						<button type="button" class="btnbd btnbd-default btnitemgroup1" value="SO2">SO2</button>
-						<button type="button" class="btnbd btnbd-default btnitemgroup1" value="NO2">NO2</button>
-						<button type="button" class="btnbd btnbd-default btnitemgroup1" value="CO">CO</button>
-						<button type="button" class="btnbd btnbd-default btnitemgroup1" value="O3">O3</button>
-						<button type="button" class="btnbd btnbd-default btnitemgroup1" value="INDEX">综合指数</button>
-						<button type="button" class="btnbd btnbd-default btnitemgroup1" value="TEMP">温度</button>
-						<button type="button" class="btnbd btnbd-default btnitemgroup1" value="HUMI">湿度</button>
-						<button type="button" class="btnbd btnbd-default btnitemgroup1" value="WIND">风级</button>
-					</div>
-					<div id="btn-group2" class="btnbd-group btnbd-group-sm " style="float:right; margin:0 "></div>
-				</div>
-				<div id="chart" class="aqichartbd"></div>
+	<div class="container1 box">
+		<h3 class="top11-title" style="display:table;">
+			<div id="kqzlpm"align="left"> <font style="color:black;">空气质量历史数据显示图</font>
 			</div>
-			<div class="col-xs-3" style="display:none">
-				<div id="piechart" class="aqichartbd" style="margin-top:35px;"></div>
+		</h3>
+		<div id="toolbar" class="btngroup btn-toolbar" style="margin-top:20px,margin-left:20px;">
+			<div id="btn-group1" class="btna-group btna-group-sm ">
+				<button type="button" class="btna btna-default btnitemgroup1 btna-success"  id="zonghe" onclick="changeType('zonghe')" style="width:19px;text">综合</button>
+				<button type="button" class="btna btna-default btnitemgroup1"  id="AQI" onclick="changeType('AQI')" style="width:15px">AQI</button>
+				<button type="button" class="btna btna-default btnitemgroup1"  id="PM25" onclick="changeType('PM25')" style="width:28px">PM2.5</button>
+				<button type="button" class="btna btna-default btnitemgroup1"  id="PM10" onclick="changeType('PM10')" style="width:25px">PM10</button>
+				<button type="button" class="btna btna-default btnitemgroup1"  id="SO2" onclick="changeType('SO2')" style="width:18px">SO2</button>
+				<button type="button" class="btna btna-default btnitemgroup1"  id="NO2" onclick="changeType('NO2')" style="width:18px">NO2</button>
+				<button type="button" class="btna btna-default btnitemgroup1"  id="CO" onclick="changeType('CO')" style="width:12px">CO</button>
+				<button type="button" class="btna btna-default btnitemgroup1"  id="O3" onclick="changeType('O3')" style="width:12px">O3</button>
+				<button type="button" class="btna btna-default btnitemgroup1"  id="tem" onclick="changeType('tem')" style="width:18px">温度</button>
+				<button type="button" class="btna btna-default btnitemgroup1"  id="wind" onclick="changeType('wind')" style="width:18px">风速</button>
+				<button type="button" class="btna btna-default btnitemgroup1"  id="hum" onclick="changeType('hum')" style="width:18px">湿度</button>
+			</div>
+			<div id="btn-group2" class="btna-group btna-group-sm" style="float:left;margin-left:490px;margin-top:-32px;">
+				<button type="button" class="btna btna-default btndategroup1 btna-success" id="d"  value="DAY"onclick="changeTimeQuick('d')" style="width:43px">最近一天</button>
+				<button type="button" class="btna btna-default btndategroup1" id="w"  value="MONTH"onclick="changeTimeQuick('w')" style="width:43px">最近一周</button>
+				<button type="button" class="btna btna-default btndategroup1" id="m"  value="MONTH"onclick="changeTimeQuick('m')" style="width:43px">最近一月</button>
+				<button type="button" class="btna btna-default btndategroup1" id="y"  value="YEAR"onclick="changeTimeQuick('y')" style="width:43px">最近一年</button>
+			</div>
+			<div id="btn-group3" class="btna-group btna-group-sm" style="float:left;margin-left:764px;margin-top:-32px;">
+				<button type="button" class="btna btna-default btndategroup1 btna-success" id="eh" value="exactHour" onclick="changeExact('eh')" style="width:30px;">按小时</button>
+				<button type="button" class="btna btna-default btndategroup1" id="ed"value="exactDay" onclick="changeExact('ed')" style="width:30px">按天</button>
+				>>>>>>> ce5e27a2008cecd374a76146f1dc85c49e44dc4b
+			</div>
+			<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+		</div>
+		-->
+		<!-- 历史数据模块 -->
+		<%= stylesheet_link_tag "css/daterangepicker-bs3.css" %>
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+		<div class="containerbd" id="md-ls" style="margin-top:20px;">
+			<div class="dtipbd"></div>
+			<div class="subtitlebd">秦皇岛历史数据变化</div>
+			<hr>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="btngroupbd btnbd-toolbar">
+						<div id="btn-group1" class="btnbd-group btnbd-group-sm " style="float:left; margin-top: 10px;">
+							<button type="button" class="btnbd btnbd-default btndategroup1 btnbd-info" value="DAY">最近一天</button>
+							<button type="button" class="btnbd btnbd-default btndategroup1" value="WEEK">最近一周</button>
+							<button type="button" class="btnbd btnbd-default btndategroup1" value="MONTH">最近一月</button>
+							<button type="button" class="btnbd btnbd-default btndategroup1" value="YEAR">最近一年</button>
+							<input type="text" style="width: 220px;height:30px;padding:6px 10px;" name="reservation" id="reservation" class="form-control"></div>
+						<div id="btn-group2" class="btnbd-group btnbd-group-sm " style="float:right; margin:0 ">
+							<button type="button" class="btnbd btnbd-default btntypegroup1 btnbd-info" value="HOUR">时</button>
+							<button type="button" class="btnbd btnbd-default btntypegroup1" value="DAY">日</button>
+							<button type="button" class="btnbd btnbd-default btntypegroup1" value="MONTH">月</button>
+						</div>
+					</div>
+					<div class="btngroupbd btnbd-toolbar" style="margin-top: 10px;">
+						<div id="btn-group1" class="btnbd-group btnbd-group-sm " style="float:left">
+							<button type="button" class="btnbd btnbd-default btnitemgroup1 btnbd-info" value="AQI">AQI</button>
+							<button type="button" class="btnbd btnbd-default btnitemgroup1" value="TOTAL">综合</button>
+							<button type="button" class="btnbd btnbd-default btnitemgroup1" value="PM2.5">PM2.5</button>
+							<button type="button" class="btnbd btnbd-default btnitemgroup1" value="PM10">PM10</button>
+							<button type="button" class="btnbd btnbd-default btnitemgroup1" value="SO2">SO2</button>
+							<button type="button" class="btnbd btnbd-default btnitemgroup1" value="NO2">NO2</button>
+							<button type="button" class="btnbd btnbd-default btnitemgroup1" value="CO">CO</button>
+							<button type="button" class="btnbd btnbd-default btnitemgroup1" value="O3">O3</button>
+							<button type="button" class="btnbd btnbd-default btnitemgroup1" value="INDEX">综合指数</button>
+							<button type="button" class="btnbd btnbd-default btnitemgroup1" value="TEMP">温度</button>
+							<button type="button" class="btnbd btnbd-default btnitemgroup1" value="HUMI">湿度</button>
+							<button type="button" class="btnbd btnbd-default btnitemgroup1" value="WIND">风级</button>
+						</div>
+						<div id="btn-group2" class="btnbd-group btnbd-group-sm " style="float:right; margin:0 "></div>
+					</div>
+					<div id="chart" class="aqichartbd"></div>
+				</div>
+				<div class="col-xs-3" style="display:none">
+					<div id="piechart" class="aqichartbd" style="margin-top:35px;"></div>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<!-- 历史排名曲线模块 -->
+		<!-- 历史排名曲线模块 -->
 
-	<div class="containerbd" id="md-qx" style="margin-top:20px;">
-		<div class="dtipbd"></div>
-		<div class="subtitlebd">秦皇岛历史排名曲线</div>
-		<hr>
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="btngroupbd">
-					<div class="btnbd-group btnbd-group-sm" style="float:right">
-						<button type="button" class="btnbd btnbd-default btndategroup3" value="DAY">日排名</button>
-						<button type="button" class="btnbd btnbd-default btndategroup3" value="MONTH">月排名</button>
-					</div>
-					<div class="btnbd-group btnbd-group-sm">
-						<button type="button" class="btnbd btnbd-default btnitemgroup3" value="ASC">正排</button>
-						<button type="button" class="btnbd btnbd-default btnitemgroup3" value="DESC">倒排</button>
-					</div>
+		<div class="containerbd" id="md-qx" style="margin-top:20px;">
+			<div class="dtipbd"></div>
+			<div class="subtitlebd">秦皇岛历史排名曲线</div>
+			<hr>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="btngroupbd">
+						<div class="btnbd-group btnbd-group-sm" style="float:right">
+							<button type="button" class="btnbd btnbd-default btndategroup3" value="DAY">日排名</button>
+							<button type="button" class="btnbd btnbd-default btndategroup3" value="MONTH">月排名</button>
+						</div>
+						<div class="btnbd-group btnbd-group-sm">
+							<button type="button" class="btnbd btnbd-default btnitemgroup3" value="ASC">正排</button>
+							<button type="button" class="btnbd btnbd-default btnitemgroup3" value="DESC">倒排</button>
+						</div>
 
-					<%# <div class="containerbd" id="md-qx" style="margin-top:20px;">
-					%>
+						<%# <div class="containerbd" id="md-qx" style="margin-top:20px;">
+						%>
 					<%# 	<div class="dtipbd"></div>
 				%>
-				<%# 	<div class="subtitlebd">秦皇岛历史排名曲线</div>
-			%>
-			<%# 	<hr>
-			%>
+			<%# 	<div class="subtitlebd">秦皇岛历史排名曲线</div>
+		%>
+	<%# 	<hr>
+%>
 			<%# 	<div class="row">
 			%>
-			<%# 		<div class="col-xs-12">
-			%>
-			<%# 		    <div class="btngroupbd">
-			%>
-			<%# 		    	<div class="btnbd-group btnbd-group-sm" style="float:right">
-			%>
+		<%# 		<div class="col-xs-12">
+		%>
+	<%# 		    <div class="btngroupbd">
+	%>
+<%# 		    	<div class="btnbd-group btnbd-group-sm" style="float:right">
+%>
 			<%# 				  <button type="button" class="btnbd btnbd-default btndategroup3" value="DAY">日排名</button>
 		%>
-		<%# 				  <button type="button" class="btnbd btnbd-default btndategroup3" value="MONTH">月排名</button>
-	%>
+	<%# 				  <button type="button" class="btnbd btnbd-default btndategroup3" value="MONTH">月排名</button>
+%>
 	<%# 				</div>
 	%>
-	<%# 				<div class="btnbd-group btnbd-group-sm">
-	%>
+<%# 				<div class="btnbd-group btnbd-group-sm">
+%>
 	<%# 				  <button type="button" class="btnbd btnbd-default btnitemgroup3" value="ASC">正排</button>
 %>
 <%# 				  <button type="button" class="btnbd btnbd-default btnitemgroup3" value="DESC">倒排</button>
@@ -213,61 +208,61 @@
 </div>
 
 <div class="panel panel-primary">
-<div class="panel-heading">
-<h3 > <strong>空气质量AQI排名</strong>
-</h3>
-</div>
-<div class="panel-body">
-<div class="row">
-<div class="col-xs-8">
-<div class="row">
-<div class="col-xs-6">
-	<table class="table table-striped">
-		<caption>
-			秦皇岛市各区县小时排名&nbsp&nbsp
-			<%= @qhdbyhour[:time].to_time.strftime("%Y-%m-%d %H:00:00") %></caption>
-		<thead>
-			<tr class="top11-color-title bluegreen">
-				<th>排名</th>
-				<th>县(市区)</th>
-				<th>AQI</th>
-				<th>级别</th>
-				<th>首要污染物</th>
-				<%# <div class="panel panel-primary">
-				%>
-				<%# 	<div class="panel-heading">
-				%>
-				<%# 		<h3 >
-				%>
-				<%# <strong>空气质量AQI排名</strong>
+	<div class="panel-heading">
+		<h3 > <strong>空气质量AQI排名</strong>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-xs-8">
+				<div class="row">
+					<div class="col-xs-6">
+						<table class="table table-striped">
+							<caption>
+								秦皇岛市各区县小时排名&nbsp&nbsp
+								<%= @qhdbyhour[:time].to_time.strftime("%Y-%m-%d %H:00:00") %></caption>
+							<thead>
+								<tr class="top11-color-title bluegreen">
+									<th>排名</th>
+									<th>县(市区)</th>
+									<th>AQI</th>
+									<th>级别</th>
+									<th>首要污染物</th>
+									<%# <div class="panel panel-primary">
+									%>
+								<%# 	<div class="panel-heading">
+								%>
+							<%# 		<h3 >
+							%>
+						<%# <strong>空气质量AQI排名</strong>
+					%>
+				<%# 		</h3>
+		%>
+	<%# 	</div>
 			%>
-			<%# 		</h3>
-			%>
-			<%# 	</div>
-			%>
-			<%# 	<div class="panel-body">
-			%>
-			<%# 		<div class="row">
-			%>
-			<%# 			<div class="col-xs-8">
-			%>
+		<%# 	<div class="panel-body">
+		%>
+	<%# 		<div class="row">
+	%>
+<%# 			<div class="col-xs-8">
+%>
 			<%# 				<div class="row">
 			%>
-			<%# 					<div class="col-xs-6">
-			%>
-			<%# 						<table class="table table-striped">
-			%>
-			<%# 							<caption>
-			秦皇岛市各区县小时排名&nbsp&nbsp
-			<%= @qhdbyhour[:time].to_time.strftime("%Y-%m-%d %H:00:00") %1></caption>
+		<%# 					<div class="col-xs-6">
 		%>
-		<%# 							<thead>
+	<%# 						<table class="table table-striped">
+	%>
+<%# 							<caption>
+	秦皇岛市各区县小时排名&nbsp&nbsp
+	<%= @qhdbyhour[:time].to_time.strftime("%Y-%m-%d %H:00:00") %1></caption>
 		%>
-		<%# 								<tr class="top11-color-title bluegreen">
-		%>
+	<%# 							<thead>
+	%>
+<%# 								<tr class="top11-color-title bluegreen">
+%>
 		<%# 									<th>排名</th>
 	%>
-	<%# 									<th>县(市区)</th>
+<%# 									<th>县(市区)</th>
 %>
 <%# 									<th>AQI</th>
 %>
@@ -290,358 +285,345 @@
 <%# 									<tr>
 %>
 <%# 										<td>
-<%= i+1 %1></td>
+	<%= i+1 %1></td>
 %>
 <%# 										<td>
-<%= tmp['city'] %1></td>
+	<%= tmp['city'] %1></td>
 %>
 <%# 										<td>
-<%= tmp['AQI'] %1></td>
+	<%= tmp['AQI'] %1></td>
 %>
 <%# 										<td>
-<%= tmp['quality'] %1></td>
+	<%= tmp['quality'] %1></td>
 %>
-<%# 										<td>
-<%= tmp['main_pol']%></td>
-%>
+	<%# <%= tmp['main_pol']%></td> 
 </tr>
 </thead>
 <tbody>
-<% qhdbyhour=@qhdbyhour[:cities].sort_by{|a| a['AQI'].to_i} %>
-<% for i in (0...qhdbyhour.length) %>
-<% tmp=qhdbyhour[i] %>
+	<% qhdbyhour=@qhdbyhour[:cities].sort_by{|a| a['AQI'].to_i} %>
+	<% for i in (0...qhdbyhour.length) %>
+		<% tmp=qhdbyhour[i] %>
 
-<tr>
-<td>
-<%= i+1 %></td>
-<td>
-<%= tmp['city'] %></td>
-<td>
-<%= tmp['AQI'] %></td>
-<td>
-<%= tmp['quality'] %></td>
-<td>
-<%= tmp['main_pol']%></td>
-</tr>
-<% end %></tbody>
+		<tr>
+			<td>
+				<%= i+1 %></td>
+			<td>
+				<%= tmp['city'] %></td>
+			<td>
+				<%= tmp['AQI'] %></td>
+			<td>
+				<%= tmp['quality'] %></td>
+			<td>
+				<%= tmp['main_pol']%></td>
+		</tr>
+	<% end %></tbody>
 </table>
 </div>
 <div class="col-xs-6">
-<table class="table table-striped">
-<caption>
-秦皇岛市各区县空气质量日均排名&nbsp&nbsp
-<%= @qhdbyday[:time].to_time.strftime("%Y-%m-%d") %></caption>
-<thead>
-<tr class="top11-color-title bluegreen">
-<th>排名</th>
-<th>县(市区)</th>
-<th>AQI</th>
-<th>级别</th>
-<th>首要污染物</th>
-</tr>
-</thead>
-<tbody>
-<% qhdbyday=@qhdbyday[:cities].sort_by{|a| a['AQI'].to_i} %>
-<% for i in (0...qhdbyday.length) %>
-<% tmp=qhdbyday[i]%>
-<tr>
-<td>
-<%= i+1 %></td>
-<td>
-<%= tmp['city']%></td>
-<td>
-<%= tmp['AQI']%></td>
-<td>
-<%= tmp['level']%></td>
-<td>
-<%= tmp['main_pol']%></td>
-</tr>
-<% end %></tbody>
-</table>
+	<table class="table table-striped">
+		<caption>
+			秦皇岛市各区县空气质量日均排名&nbsp&nbsp
+			<%= @qhdbyday[:time].to_time.strftime("%Y-%m-%d") %></caption>
+		<thead>
+			<tr class="top11-color-title bluegreen">
+				<th>排名</th>
+				<th>县(市区)</th>
+				<th>AQI</th>
+				<th>级别</th>
+				<th>首要污染物</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% qhdbyday=@qhdbyday[:cities].sort_by{|a| a['AQI'].to_i} %>
+			<% for i in (0...qhdbyday.length) %>
+				<% tmp=qhdbyday[i]%>
+				<tr>
+					<td>
+						<%= i+1 %></td>
+					<td>
+						<%= tmp['city']%></td>
+					<td>
+						<%= tmp['AQI']%></td>
+					<td>
+						<%= tmp['level']%></td>
+					<td>
+						<%= tmp['main_pol']%></td>
+				</tr>
+			<% end %></tbody>
+	</table>
 </div>
 </div>
 <div class="row">
-<div class="col-xs-6">
-<table class="table table-striped">
-<caption>
-省内城市小时排名&nbsp&nbsp
-<%= @hebeidatabyhour[:time].to_time.strftime("%Y-%m-%d %H:00:00") %></caption>
-<thead>
-<tr class="top11-color-title blue">
-<th>排名</th>
-<th>城市</th>
-<th>AQI</th>
-<th>级别</th>
-<th>首要污染物</th>
-</tr>
-</thead>
-<tbody>
-<% hebeidatabyhour=@hebeidatabyhour[:cities].sort_by{|a| a['AQI'].to_i} %>
-<% for i in (0...hebeidatabyhour.length) %>
-<% tmp=hebeidatabyhour[i] %>
-<tr>
-<td>
-<%= i+1 %></td>
-<td>
-<%= tmp['city'] %></td>
-<td>
-<%= tmp['AQI'] %></td>
-<td>
-<%= tmp['level'] %></td>
-<td>
-<%= tmp['main_pol'] %></td>
-</tr>
-<% end %></tbody>
-</table>
-</div>
-<div class="col-xs-6">
-<table class="table table-striped">
-<caption>
-省内城市日均排名&nbsp&nbsp
-<%= @hebeidatabyday[:time].to_time.strftime("%Y-%m-%d") %></caption>
-<thead>
-<tr class="top11-color-title blue">
-<th>排名</th>
-<th>城市</th>
-<th>AQI</th>
-<th>级别</th>
-<th>首要污染物</th>
-</tr>
-</thead>
-<tbody>
-<% hebeidatabyday=@hebeidatabyday[:cities].sort_by{|a| a['AQI'].to_i}%>
-<% for i in (0...hebeidatabyday.length)%>
-<% tmp=hebeidatabyday[i]%>
-<tr>
-<td>
-<%= i+1 %></td>
-<td>
-<%= tmp['city'] %></td>
-<td>
-<%= tmp['AQI'] %></td>
-<td>
-<%= tmp['level'] %></td>
-<td>
-<%= tmp['main_pol'] %></td>
-</tr>
-<% end %></tbody>
-</table>
-</div>
+	<div class="col-xs-6">
+		<table class="table table-striped">
+			<caption>
+				省内城市小时排名&nbsp&nbsp
+				<%= @hebeidatabyhour[:time].to_time.strftime("%Y-%m-%d %H:00:00") %></caption>
+			<thead>
+				<tr class="top11-color-title blue">
+					<th>排名</th>
+					<th>城市</th>
+					<th>AQI</th>
+					<th>级别</th>
+					<th>首要污染物</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% hebeidatabyhour=@hebeidatabyhour[:cities].sort_by{|a| a['AQI'].to_i} %>
+				<% for i in (0...hebeidatabyhour.length) %>
+					<% tmp=hebeidatabyhour[i] %>
+					<tr>
+						<td>
+							<%= i+1 %></td>
+						<td>
+							<%= tmp['city'] %></td>
+						<td>
+							<%= tmp['AQI'] %></td>
+						<td>
+							<%= tmp['level'] %></td>
+						<td>
+							<%= tmp['main_pol'] %></td>
+					</tr>
+				<% end %></tbody>
+		</table>
+	</div>
+	<div class="col-xs-6">
+		<table class="table table-striped">
+			<caption>
+				省内城市日均排名&nbsp&nbsp
+				<%= @hebeidatabyday[:time].to_time.strftime("%Y-%m-%d") %></caption>
+			<thead>
+				<tr class="top11-color-title blue">
+					<th>排名</th>
+					<th>城市</th>
+					<th>AQI</th>
+					<th>级别</th>
+					<th>首要污染物</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% hebeidatabyday=@hebeidatabyday[:cities].sort_by{|a| a['AQI'].to_i}%>
+				<% for i in (0...hebeidatabyday.length)%>
+					<% tmp=hebeidatabyday[i]%>
+					<tr>
+						<td>
+							<%= i+1 %></td>
+						<td>
+							<%= tmp['city'] %></td>
+						<td>
+							<%= tmp['AQI'] %></td>
+						<td>
+							<%= tmp['level'] %></td>
+						<td>
+							<%= tmp['main_pol'] %></td>
+					</tr>
+				<% end %></tbody>
+		</table>
+	</div>
 </div>
 </div>
 <div class="col-xs-4">
-<table class="table table-striped">
-<caption>
-全国74城市空气质量日均排名
-<%= @sfcitiesrankbyday[:time].to_time.strftime("%Y-%m-%d") %></caption>
-<thead>
-<tr class="top11-color-title green">
-<th>倒数排名</th>
-<th>城市</th>
-<th>AQI</th>
-<th>级别</th>
-<th>首要污染物</th>
-</tr>
-</thead>
-<tbody>
-<% sfcitiesrankbyday=@sfcitiesrankbyday[:cities].sort_by{|a| a["AQI"].to_i}%>
-<% for i in (0...sfcitiesrankbyday.length)%>
-<% tmp=sfcitiesrankbyday[sfcitiesrankbyday.length-1 -i]%>
-<% break if i==21 %>
-<tr>
-<td>
-<%= i+1 %></td>
-<td>
-<%= tmp['city'] %></td>
-<td>
-<%= tmp['AQI'] %></td>
-<td>
-<%= tmp['level'] %></td>
-<td>
-<%= tmp['main_pol'] %></td>
-</tr>
-<% end %>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td colspan="0">
-<a href="#sfcity" class='btn-link'>更多</a>
-</td>
-</tr>
-</tbody>
-</table>
+	<table class="table table-striped">
+		<caption>
+			全国74城市空气质量日均排名
+			<%= @sfcitiesrankbyday[:time].to_time.strftime("%Y-%m-%d") %></caption>
+		<thead>
+			<tr class="top11-color-title green">
+				<th>倒数排名</th>
+				<th>城市</th>
+				<th>AQI</th>
+				<th>级别</th>
+				<th>首要污染物</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% sfcitiesrankbyday=@sfcitiesrankbyday[:cities].sort_by{|a| a["AQI"].to_i}%>
+			<% for i in (0...sfcitiesrankbyday.length)%>
+				<% tmp=sfcitiesrankbyday[sfcitiesrankbyday.length-1 -i]%>
+				<% break if i==21 %>
+				<tr>
+					<td>
+						<%= i+1 %></td>
+					<td>
+						<%= tmp['city'] %></td>
+					<td>
+						<%= tmp['AQI'] %></td>
+					<td>
+						<%= tmp['level'] %></td>
+					<td>
+						<%= tmp['main_pol'] %></td>
+				</tr>
+			<% end %>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td colspan="0">
+					<a href="#sfcity" class='btn-link'>更多</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </div>
 </div>
 </div>
 </div>
 <div class="panel panel-primary">
-<div class="panel-heading">
-<h3 >
-<strong>各县市区污染物浓度及空气质量综合指数</strong>
-</h3>
-</div>
-<div class="panel-body">
-<div class="row">
-<div class="col-xs-12">
-<div class="tab-title">
-<ul class="nav nav-tabs">
-<li class="active">
-<a href="#lfgqxyue" data-toggle="tab">
-<strong>污染物浓度（时报）</strong>
-</a>
-</li>
-<li>
-<a href="#lfgqxnian" data-toggle="tab">
-<strong>污染物浓度（日报）</strong>
-</a>
-</li>
-</ul>
-</div>
-<div class="tab-content">
-<div class="tab-pane fade in active" id="lfgqxyue">
-<%= render partial:'qinhuangdao/data_table',locals:{data:@qhdbyhour,flag:'monitor',hasRate: true} %></div>
-<div class="tab-pane fade" id="lfgqxnian">
-<%= render partial:'qinhuangdao/data_table',locals:{data:@qhdbyday,flag:'monitor',hasRate: true} %></div>
-</div>
-</div>
-</div>
-</div>
+	<div class="panel-heading">
+		<h3 >
+			<strong>各县市区污染物浓度及空气质量综合指数</strong>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="tab-title">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#lfgqxyue" data-toggle="tab">
+								<strong>污染物浓度（时报）</strong>
+							</a>
+						</li>
+						<li>
+							<a href="#lfgqxnian" data-toggle="tab">
+								<strong>污染物浓度（日报）</strong>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="lfgqxyue">
+						<%= render partial:'qinhuangdao/data_table',locals:{data:@qhdbyhour,flag:'monitor',hasRate: true} %></div>
+					<div class="tab-pane fade" id="lfgqxnian">
+						<%= render partial:'qinhuangdao/data_table',locals:{data:@qhdbyday,flag:'monitor',hasRate: true} %></div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="panel panel-primary">
-<div class="panel-heading">
-<h3 >
-<strong>京津冀城市污染物浓度及空气质量综合指数</strong>
-</h3>
-</div>
-<div class="panel-body">
-<div class="row">
-<div class="col-xs-12">
-<div class="tab-title">
-<ul class="nav nav-tabs">
-<li class="active">
-<a href="#jjjcsyue" data-toggle="tab">
-<strong>污染物浓度（月报）</strong>
-</a>
-</li>
-<li>
-<a href="#jjjcsnian" data-toggle="tab">
-<strong>污染物浓度（年报）</strong>
-</a>
-</li>
-</ul>
-</div>
-<div class="tab-content">
-<div class="tab-pane fade in active" id="jjjcsyue">
-<%= render partial: 'qinhuangdao/data_table',locals:{data:@jjjdatabymonth,flag:'city',hasRate: true} %></div>
-<div class="tab-pane fade" id="jjjcsnian">
-<%= render partial: 'qinhuangdao/data_table',locals:{data:@jjjdatabyyear,flag:'city',hasRate: true} %></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<div class="panel panel-primary">
-<div class="panel-heading">
-<h3 >
-<strong>74城市污染物浓度及空气质量综合指数和同期变化率</strong>
-</h3>
-</div>
-<div class="panel-body">
-<div class="row">
-<div class="col-xs-12">
-<div class="tab-title">
-<ul class="nav nav-tabs">
-<li class="active">
-<a href="#sfrizhzs" data-toggle="tab">
-<strong>污染物浓度（日报）</strong>
-</a>
-</li>
-<li>
-<a href="#sfyuezhzs" data-toggle="tab">
-<strong>污染物浓度（月报）</strong>
-</a>
-</li>
-<li>
-<a href="#sfnianzhzs" data-toggle="tab">
-<strong>污染物浓度（年报）</strong>
-</a>
-</li>
-</ul>
-</div>
-<div class="tab-content">
-<div class="tab-pane fade in active sf" id="sfrizhzs" >
-<%= render partial: 'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyday,flag:'sf',hasRate: true} %></div>
-<div class="tab-pane fade" id="sfyuezhzs" sf>
-<%= render partial: 'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyday,flag:'sf',hasRate: true}%></div>
-<div class="tab-pane fade" id="sfnianzhzs" sf>
-<%= render partial: 'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyyear,flag:'sf',hasRate: true} %></div>
-</div>
-</div>
-</div>
-</div>
+	<div class="panel-heading">
+		<h3 >
+			<strong>京津冀城市污染物浓度及空气质量综合指数</strong>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="tab-title">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#jjjcsyue" data-toggle="tab">
+								<strong>污染物浓度（月报）</strong>
+							</a>
+						</li>
+						<li>
+							<a href="#jjjcsnian" data-toggle="tab">
+								<strong>污染物浓度（年报）</strong>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="jjjcsyue">
+						<%= render partial: 'qinhuangdao/data_table',locals:{data:@jjjdatabymonth,flag:'city',hasRate: true} %></div>
+					<div class="tab-pane fade" id="jjjcsnian">
+						<%= render partial: 'qinhuangdao/data_table',locals:{data:@jjjdatabyyear,flag:'city',hasRate: true} %></div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="panel panel-primary">
-<div class="panel-heading" id='sfcity'>
-<h3 >
-<strong>74城市空气质量综合指数排名</strong>
-</h3>
+	<div class="panel-heading">
+		<h3 >
+			<strong>74城市污染物浓度及空气质量综合指数和同期变化率</strong>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="tab-title">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#sfrizhzs" data-toggle="tab">
+								<strong>污染物浓度（日报）</strong>
+							</a>
+						</li>
+						<li>
+							<a href="#sfyuezhzs" data-toggle="tab">
+								<strong>污染物浓度（月报）</strong>
+							</a>
+						</li>
+						<li>
+							<a href="#sfnianzhzs" data-toggle="tab">
+								<strong>污染物浓度（年报）</strong>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="tab-content">
+					<div class="tab-pane fade in active sf" id="sfrizhzs" >
+						<%= render partial: 'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyday,flag:'sf',hasRate: true} %></div>
+					<div class="tab-pane fade" id="sfyuezhzs" sf>
+						<%= render partial: 'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyday,flag:'sf',hasRate: true}%></div>
+					<div class="tab-pane fade" id="sfnianzhzs" sf>
+						<%= render partial: 'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyyear,flag:'sf',hasRate: true} %></div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<div class="panel-body" name='sfcity'>
-<div class="row">
-<div class="col-xs-12">
-<div class="tab-title">
-<ul class="nav nav-tabs">
-<li class="active">
-<a href="#sfri" data-toggle="tab">
-<strong>污染物浓度（日报）</strong>
-</a>
-</li>
-<li>
-<a href="#sfyue" data-toggle="tab">
-<strong>污染物浓度（月报）</strong>
-</a>
-</li>
-<li>
-<a href="#sfnian" data-toggle="tab">
-<strong>污染物浓度（年报）</strong>
-</a>
-</li>
-</ul>
-</div>
-<div class="tab-content">
-<div class="tab-pane fade in active sf" id="sfri">
-<%= render partial:'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyday,flag:'sf',hasRate: false}%></div>
-<div class="tab-pane fade sf" id="sfyue">
-<%= render partial:'qinhuangdao/data_table',locals:{data:@sfcitiesrankbymonth,flag:'sf',hasRate: false}%></div>
-<div class="tab-pane fade sf" id="sfnian">
-<%= render partial:'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyyear,flag:'sf',hasRate: false}%></div>
-</div>
-</div>
-</div>
-</div>
-<div class="panel-footer">
-<%# <a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a>
-%>
-</div>
+
+<div class="panel panel-primary">
+	<div class="panel-heading" id='sfcity'>
+		<h3 >
+			<strong>74城市空气质量综合指数排名</strong>
+		</h3>
+	</div>
+	<div class="panel-body" name='sfcity'>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="tab-title">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#sfri" data-toggle="tab">
+								<strong>污染物浓度（日报）</strong>
+							</a>
+						</li>
+						<li>
+							<a href="#sfyue" data-toggle="tab">
+								<strong>污染物浓度（月报）</strong>
+							</a>
+						</li>
+						<li>
+							<a href="#sfnian" data-toggle="tab">
+								<strong>污染物浓度（年报）</strong>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="tab-content">
+					<div class="tab-pane fade in active sf" id="sfri">
+						<%= render partial:'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyday,flag:'sf',hasRate: false}%></div>
+					<div class="tab-pane fade sf" id="sfyue">
+						<%= render partial:'qinhuangdao/data_table',locals:{data:@sfcitiesrankbymonth,flag:'sf',hasRate: false}%></div>
+					<div class="tab-pane fade sf" id="sfnian">
+						<%= render partial:'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyyear,flag:'sf',hasRate: false}%></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel-footer">
+	</div>
 </div>
 <%= javascript_include_tag 'bootstrap.min','respond','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','LineChart','rank_chart' %>
 
 <script>
-		$(document).ready()
-<%# ======= %>
-<%# 	<div class="panel-footer"> %>
-<%# 		<1%# <a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a> %1> %>
-<%# 	</div> %>
-<%# </div> %>
-<%# <%= javascript_include_tag 'bootstrap.min','respond','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','LineChart','rank_chart',"cities_around" %1> %>
-
-<%# <script> %>
-<%# 	$(document).ready() %>
+	$(document).ready()
 	$(function(){
 		$(".change").click(function(){
 			if($(this).is(".active")){
