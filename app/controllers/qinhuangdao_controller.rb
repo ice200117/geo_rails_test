@@ -253,6 +253,10 @@ class QinhuangdaoController < Casein::CaseinController
 	end
 
 
+
+
+
+
 	def city_compare_chart
 		city1=City.find_by city_name: (params[:city1]+'市')
 		city2=City.find_by city_name: (params[:city2]+'市')
@@ -307,6 +311,17 @@ class QinhuangdaoController < Casein::CaseinController
 			}
 		end    
 	end
+
+
+	def sourceAnalysisPieChart
+				
+		city=City.find_by city_name: (params[:city]+'市')
+		querytime=Time.local(params[:datetime][0,4].to_i,params[:datetime][5,2].to_i,params[:datetime][8,2].to_i,params[:datetime][11,2].to_i)
+		querydata=TempSfcitiesHour.where("city_id=? AND data_real_time=?",city.id,querytime)
+		@_3Dpiechartdata=[["PM2.5",((querydata[0].pm25)/35/(querydata[0].zonghezhishu))*100],['PM10',((querydata[0].pm10)/70/(querydata[0].zonghezhishu))*100],['SO2',((querydata[0].SO2)/60/(querydata[0].zonghezhishu))*100],['NO2',((querydata[0].NO2)/40/(querydata[0].zonghezhishu))*100],['CO',((querydata[0].CO)/4/(querydata[0].zonghezhishu))*100],['O3',((querydata[0].O3)/160/(querydata[0].zonghezhishu))*100]]
+		render layout: '3Dpiechart'
+	end
+
 
 
 	def pinggu
