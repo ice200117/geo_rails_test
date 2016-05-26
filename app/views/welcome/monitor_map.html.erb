@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+		<title>监测实况</title>
+		<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+		<script src="http://webapi.amap.com/maps?v=1.3&key=95c97858fd0569e3f8b1fa55ae731698"></script>
+		<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+	</head>
+	<body>
+		<div id="container"></div>
+		<script>
+			var imageLayer = new AMap.ImageLayer({
+				//url: 'http://60.10.135.153:3000/images/ftproot/Products/Web/monitor/china/20160525/pollution_map_AQI_2016052514.png',
+				url: "/images/ftproot/Products/Web/monitor/china/<%=Time.now.strftime('%Y%m%d')%>/pollution_map_AQI_<%=(Time.now-1.hour).strftime('%Y%m%d%H')%>.png",
+				bounds: new AMap.Bounds(
+					//[68.57627149984937, 9.40196052667158],
+					//[143.487042763543, 55.61860562625989]
+					[60.42, 10.01],
+					[152.48, 57.35]
+					),
+				//zooms: [15, 18]
+			});
+var map = new AMap.Map('container', {
+	resizeEnable: true,
+	center: [110.33719, 39.942384],
+	zoom: 4,
+	layers: [
+	new AMap.TileLayer(),
+	imageLayer
+	]
+});
+		</script>
+	</body>
+</html>
+
+

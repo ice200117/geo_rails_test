@@ -1,7 +1,7 @@
 require_relative './city_enum.rb'
 
 def get_rank_json(web_flag,option)
-	option[:date]=option[:date].strftime("%Y-%m-%d") if option[:date] != nil
+	option[:date]=option[:date].to_time.strftime("%Y-%m-%d") if option[:date] != nil
 	keystr=''
 	option.each do |k,v|
 		keystr+=v
@@ -259,6 +259,7 @@ def save_db_common(model,t,time)
 	day_city.humi = t['humi'] if t['humi'] != nil && day_city.respond_to?('humi')
 	day_city.winddirection=t['winddirection'] if t['winddirection'] != nil && day_city.respond_to?('winddirection')
 	day_city.windspeed=t['windspeed'] if t['windspeed'] != nil && day_city.respond_to?('windspeed')
+	day_city.rank=t['rank'] if t['rank'] != nil && day_city.respond_to?('rank')
 	time = t['time'].to_time.localtime if time.nil?
 	day_city.data_real_time = time.to_time.localtime
 	day_city.save

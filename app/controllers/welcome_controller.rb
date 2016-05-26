@@ -884,7 +884,7 @@ class WelcomeController < ApplicationController
 			ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
 			#ncfile='public\images\CUACE_09km_adj_2015-06-27.nc'
 			i = i + 1
-			return {} if i>60
+			return {} if i>160
 		end until File::exists?(ncfile)
 
 		#ncfile = 'public/adj/CUACE_09km_adj_2015-06-08.nc'
@@ -899,16 +899,21 @@ class WelcomeController < ApplicationController
 		var_list.each { |var_name|
 			pl = (cal_var ncfile, var_name, force)
 			# puts var_name
+			tmp = 0.0
 			pl.sort.reverse.each { |p|
 				#print CL[pl.index(p)], "   ", p, "\n"
-				if force == "bd"
-					adj_per[CL[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
-				elsif force == "zz"
-					adj_per[CL_ZZ[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
-				elsif force == "qhd"
-					adj_per[CL[pl.index(p)]] = p.round(2) if p.round(1) > 0.03
+				if p.round(1) > 0.03
+					if force == "bd"
+						adj_per[CL[pl.index(p)]] = p.round(2)
+					elsif force == "zz"
+						adj_per[CL_ZZ[pl.index(p)]] = p.round(2) 
+					elsif force == "qhd"
+						adj_per[CL[pl.index(p)]] = p.round(2)
+					end
+					tmp = tmp + p
 				end
 			}
+			adj_per['其他'] = (100.0-tmp).round(2)
 		}
 		adj_per
 	end
@@ -1082,4 +1087,8 @@ class WelcomeController < ApplicationController
 
 		hs
 	end 
+
+	def monitor_map
+		render layout: false
+	end
 end

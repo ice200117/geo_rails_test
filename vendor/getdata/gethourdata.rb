@@ -1,5 +1,6 @@
 require_relative './common.rb'
 require_relative './get_qinhuangdao_data.rb'
+# require_relative '../fore_fix/fore_fix_9km.rb'
 hs=Hash.new
 oneday=60*60*24
 
@@ -14,26 +15,26 @@ oneday=60*60*24
 # 秦皇岛小时数据
 Qinhuangdao::Qinhuangdao.new.hour
 
-tmp=MonitorPointHour.last.data_real_time
-stime=tmp.beginning_of_hour
-etime=tmp.end_of_hour
-Custom::Redis.set('qhd_hour',MonitorPointHour.where(city_id: 11,data_real_time: (stime..etime)))
+# tmp=MonitorPointHour.last.data_real_time
+# stime=tmp.beginning_of_hour
+# etime=tmp.end_of_hour
+# Custom::Redis.set('qhd_hour',MonitorPointHour.where(city_id: 11,data_real_time: (stime..etime)))
 
 #河北实时数据
-# hs=ten_times_test(TempHbHour,'shishi_74',{secret:'HEBEIRANK',type:'HOUR'})
-# save_db(hs,TempHbHour)
+hs=ten_times_test(TempHbHour,'shishi_74',{secret:'HEBEIRANK',type:'HOUR'})
+save_db(hs,TempHbHour)
 
 #74城市实时数据
-# hs=ten_times_test(TempSfcitiesHour,'shishi_74',{secret:'CHINARANK',type:'HOUR'})
-# save_db(hs,TempSfcitiesHour)
+hs=ten_times_test(TempSfcitiesHour,'shishi_74',{secret:'CHINARANK',type:'HOUR'})
+save_db(hs,TempSfcitiesHour)
 
 #全国城市实时数据
-# hs = Hash.new
-# hs[:secret] = "70ad4cb02984355c0f08f2e84be72c9c"
-# hs[:method] = "GETCITYDATA"
-# hs[:type]='HOUR'
-# hs = ten_times_test(ChinaCitiesHour,'all_city_by_hour',hs)
-# save_db(hs,ChinaCitiesHour)
+hs = Hash.new
+hs[:secret] = "70ad4cb02984355c0f08f2e84be72c9c"
+hs[:method] = "GETCITYDATA"
+hs[:type]='HOUR'
+hs = ten_times_test(ChinaCitiesHour,'all_city_by_hour',hs)
+save_db(hs,ChinaCitiesHour)
 
 #获取当前全国城市后，调用修正算法
 # response = HTTParty.get("http://60.10.135.153:3000/bar.json")
@@ -47,5 +48,3 @@ Custom::Redis.set('qhd_hour',MonitorPointHour.where(city_id: 11,data_real_time: 
 # 		save_in_db(c) #调用rd_hourly_aqi_every_hour中的写入方法
 # 	end
 # end
-
-
