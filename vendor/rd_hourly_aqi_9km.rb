@@ -104,16 +104,9 @@ cs.each do |c|
   end
   f.close
   puts fn+" update database successful!"
-<<<<<<< HEAD
   if py=='qinhuangdaoshi'
 	  tmp=City.find_by_city_name_pinyin(py).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
 	  Custom::Redis.set(py,tmp,3600*24)
   end
-=======
-#  if py=='qinhuangdaoshi'
-#	  tmp=City.find_by_city_name_pinyin(py).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
-#	  Custom::Redis.set(py,tmp,3600*24)
-#  end
->>>>>>> 1a95773615b303289efe8ff636911f34b556dffb
 end
 

@@ -37,7 +37,6 @@ hs = ten_times_test(ChinaCitiesHour,'all_city_by_hour',hs)
 save_db(hs,ChinaCitiesHour)
 
 #获取当前全国城市后，调用修正算法
-<<<<<<< HEAD
 response = HTTParty.get("http://60.10.135.153:3000/bar.json")
 data = JSON.parse(response.body)
 if data != nil
@@ -49,16 +48,3 @@ if data != nil
 		save_in_db(c) #调用rd_hourly_aqi_every_hour中的写入方法
 	end
 end
-=======
-# response = HTTParty.get("http://60.10.135.153:3000/bar.json")
-# data = JSON.parse(response.body)
-# if data != nil
-# 	data.delete_if{|x| x[3]<49} #去掉差值低于50的城市
-# 	data.each do |i|
-# 		c=City.find_by_city_name(i[0]) 
-# 		next if c==nil
-# 		city(c)  #调起fore_fix_one_city中的city方法
-# 		save_in_db(c) #调用rd_hourly_aqi_every_hour中的写入方法
-# 	end
-# end
->>>>>>> 1a95773615b303289efe8ff636911f34b556dffb
