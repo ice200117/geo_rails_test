@@ -31,14 +31,17 @@ cs = City.all
 cs.each do |c|
 	puts c.city_name
 	py = c.city_name_pinyin.strip
-	
 	# fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
 	 # fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_adjust"
 	 fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_orig"
 	fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
 	# fnout = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT_adjust"
 	# next unless hb_city.include?(py)
+<<<<<<< HEAD
 	f = File.open(path+fn) if File::exists?(path+fn) 
+=======
+	f = File.open(path+fn,'r') if File::exists?(path+fn) 
+>>>>>>> 1a95773615b303289efe8ff636911f34b556dffb
 	next if f.nil? || f.size < 1
 	puts fnout+' successful'
 
@@ -71,7 +74,10 @@ cs.each do |c|
 	lev['zhong'] = Array.new
 	lev['zhongdu'] = Array.new
 	lev['yanzhong'] =Array.new
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 1a95773615b303289efe8ff636911f34b556dffb
 	f.rewind
 	f.readlines[2..-1].each do |line|
 		hs=get_aqi(line)
