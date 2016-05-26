@@ -1,4 +1,4 @@
-/*bdqx_compare_chart.js*/
+/*qhdqx_compare_chart.js*/
 
 var city1 = '卢龙县';
 var city2 = '北戴河区';
@@ -266,7 +266,7 @@ function getData()
 
 
    $.ajax({             
-        url: 'bdqx_compare_chart',
+        url: 'qhdqx_compare_chart',
         data:{
               'city1':city1,
               'city2':city2,

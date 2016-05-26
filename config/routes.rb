@@ -56,7 +56,7 @@ Rails.application.routes.draw do
 	#秦皇岛路由
 	get '/qinhuangdao' => 'qinhuangdao#pinggu'
 	get '/qinhuangdao/compare' => 'qinhuangdao#compare'
-	get '/qinhuangdao/bdqx_compare' => 'qinhuangdao#bdqx_compare'  
+	get '/qinhuangdao/qhdqx_compare' => 'qinhuangdao#qhdqx_compare'  
 	get '/qinhuangdao/sfcities_compare' => 'qinhuangdao#sfcities_compare' 
 	get '/qinhuangdao/real_time_monitoring' => 'qinhuangdao#real_time_monitoring'
 	get '/qinhuangdao/history_data' => 'qinhuangdao#history_data'
@@ -72,8 +72,8 @@ Rails.application.routes.draw do
 	get 'qinhuangdao/visits_by_day' => 'qinhuangdao#visits_by_day', as: :visits_by_day_qinhuangdao
 	get 'qinhuangdao/adj_ajax/:type/:post' => 'qinhuangdao#adj_ajax', as: :adj_ajax_qinhuangdao
 	get 'qinhuangdao/chartway' => 'qinhuangdao#chartway'
-	get 'qinhuangdao/city_compare_chart' => 'qinhuangdao#city_compare_chart'
-	get 'qinhuangdao/bdqx_compare_chart' => 'qinhuangdao#bdqx_compare_chart'
+	get 'qinhuangdao/sfcities_compare_chart' => 'qinhuangdao#sfcities_compare_chart'
+	get 'qinhuangdao/qhdqx_compare_chart' => 'qinhuangdao#qhdqx_compare_chart'
 	get 'qinhuangdao/get_history_data/:model/:time' => 'qinhuangdao#get_history_data'
 	get 'qinhuangdao/get_forecast_baoding' => 'qinhuangdao#get_forecast_baoding' 
 	get 'qinhuangdao/get_city_point' => 'qinhuangdao#get_city_point'  
