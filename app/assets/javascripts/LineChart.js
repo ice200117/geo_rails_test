@@ -427,7 +427,7 @@ function showChartByItem()
     // }
     else if(ITEM1=="TOTAL")
     {
-        showLineChartAll('chart',type,dataAQI,dataPM25,dataPM10,dataSO2,dataNO2,dataCO,dataO3,dataTemp,dataHumi,dataWind);
+        showLineChartAll('chart',type,dataAQI,dataPM25,dataPM10,dataSO2,dataNO2,dataCO,dataO3,dataTemp,dataHumi,dataWind,city,type);
     }
     else
     {

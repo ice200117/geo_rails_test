@@ -1,0 +1,47 @@
+
+		<div id="sourceAnalysisPieChart" class="aqichartbd"></div>
+		<script>
+		 /*源解析饼图*/
+		 $(function () {
+		var piechartdata='<%= @_3Dpiechartdata %>'.replace(/&quot;/g,"\"");
+		piechartdata=eval('('+piechartdata+')');
+	    $('#sourceAnalysisPieChart').highcharts({
+	    	credits: {
+            enabled: false
+        },
+	        chart: {
+	            type: 'pie',
+	            options3d: {
+	                enabled: true,
+	                alpha: 45,
+	                beta: 0
+	            },
+	            width:357,
+	            height:200
+	        },
+	        title: {
+	            text: '实时分指数占比'
+	        }, 
+	        tooltip: {
+	            headerFormat: '',   //去除默认的头
+	            pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+	        },
+	        plotOptions: {
+	            pie: {
+	                allowPointSelect: true,
+	                cursor: 'pointer',
+	                depth: 20,
+	                dataLabels: {
+	                    enabled: true,
+	                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+	                }
+	            }
+	        },
+	        series: [{
+	            type: 'pie',
+	            name: '',
+	            data:  piechartdata
+	        }]
+	    });
+	});	
+		</script>	

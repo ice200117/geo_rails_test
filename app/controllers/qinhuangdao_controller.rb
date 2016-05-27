@@ -253,19 +253,32 @@ class QinhuangdaoController < Casein::CaseinController
 	end
 
 
-	def city_compare_chart
-		city1=City.find_by city_name: (params[:city1]+'市')
-		city2=City.find_by city_name: (params[:city2]+'市')
-		city3=City.find_by city_name: (params[:city3]+'市')
-		cityidarray=Array[city1.id,city2.id,city3.id]
+
+
+
+
+	def sfcities_compare_chart
+		#以下方式City表中所有城市均适用
+		citynamearray=Array[params[:city1],params[:city2],params[:city3]]
+		cityidarray=Array.new
+		citynamearray.each do |cityname|
+			city=City.find_by city_name: cityname
+			if city!=nil
+				cityidarray << city.id
+			else
+				city=City.where("city_name LIKE ?",[cityname,'%'].join)
+				cityidarray << city[0].id		
+			end
+		end
+		#以上方式City表中所有城市均适用
 		startdate=Time.local(params[:startTime][0,4].to_i,params[:startTime][5,2].to_i,params[:startTime][8,2].to_i,0)
 		enddate=Time.local(params[:endTime][0,4].to_i,params[:endTime][5,2].to_i,params[:endTime][8,2].to_i,23)
 		if params[:type]=='HOUR'
-			querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc') 
+			querydata=TempSfcitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?)",startdate,enddate,cityidarray).order('data_real_time asc') 
 		elsif params[:type]=='DAY'
-			querydata=TempSfcitiesDay.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')
+			querydata=TempSfcitiesDay.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?)",startdate,enddate,cityidarray).order('data_real_time asc')
 		else
-			querydata=TempSfcitiesMonth.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?,?,?)",startdate,enddate,city1.id,city2.id,city3.id).order('data_real_time asc')      
+			querydata=TempSfcitiesMonth.where("data_real_time>=? AND data_real_time<=? AND city_id IN (?)",startdate,enddate,cityidarray).order('data_real_time asc')      
 		end  
 		@citycompare={citynum: cityidarray,rows: querydata.map{ |data| { alldata: data,timeformatted: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S")}}}
 		#pp querydata.map{ |data| data.city_id}.uniq.length
@@ -280,7 +293,7 @@ class QinhuangdaoController < Casein::CaseinController
 	end
 
 
-	def bdqx_compare_chart
+	def qhdqx_compare_chart
 
 		bdqx_monitorpoint={"海港建设大厦"=>"建设大厦","北戴河区"=>"北戴河","海关区"=>"第一关","海港市政府"=>"市政府","青龙满族自治县"=>"青龙环保局","昌黎县"=>"昌黎环保局","抚宁县"=>"抚宁党校","卢龙县"=>"卢龙县气象局","海港市监测站"=>"市监测站"}
 		city1=MonitorPoint.where("pointname =? AND city_id = 11",bdqx_monitorpoint[params[:city1]])
@@ -307,6 +320,17 @@ class QinhuangdaoController < Casein::CaseinController
 			}
 		end    
 	end
+
+
+	def sourceAnalysisPieChart
+				
+		city=City.find_by city_name: (params[:city]+'市')
+		querytime=Time.local(params[:datetime][0,4].to_i,params[:datetime][5,2].to_i,params[:datetime][8,2].to_i,params[:datetime][11,2].to_i)
+		querydata=TempSfcitiesHour.where("city_id=? AND data_real_time=?",city.id,querytime)
+		@_3Dpiechartdata=[["PM2.5",((querydata[0].pm25)/35/(querydata[0].zonghezhishu))*100],['PM10',((querydata[0].pm10)/70/(querydata[0].zonghezhishu))*100],['SO2',((querydata[0].SO2)/60/(querydata[0].zonghezhishu))*100],['NO2',((querydata[0].NO2)/40/(querydata[0].zonghezhishu))*100],['CO',((querydata[0].CO)/4/(querydata[0].zonghezhishu))*100],['O3',((querydata[0].O3)/160/(querydata[0].zonghezhishu))*100]]
+		render layout: '3Dpiechart'
+	end
+
 
 
 	def pinggu
@@ -837,13 +861,13 @@ class QinhuangdaoController < Casein::CaseinController
 	end
 
 
-	def bdqx_compare
-		render layout: getlayoutbyaction('bdqx_compare')
+	def qhdqx_compare
+		render layout: getlayoutbyaction('qhdqx_compare')
 	end
 
 
 	def getlayoutbyaction(action_name)
-		if action_name == 'sfcities_compare' || action_name == 'bdqx_compare'
+		if action_name == 'sfcities_compare' || action_name == 'qhdqx_compare'
 			layout='cmp'
 		end
 		layout
