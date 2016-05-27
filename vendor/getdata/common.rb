@@ -37,9 +37,9 @@ def get_rank_json(flag,option)
 			data=JSON.parse(response.body)
 		end
 		if flag == 'zhzs_74'
-			day = Time.now.yesterday.day
-			day > 9 ? data['time']=data['time']+day.to_s : data['time']=data['time']+'0'+day.to_s
+			data['time'] = Time.now.yesterday
 		end
+		puts data['time']
 		data['date'] != nil ? hs[:time] = data['date'] : hs[:time] = data['time']
 		hs[:cities] = column_name_modify(data['rows'])
 		hs[:total]=data['total']
@@ -253,25 +253,23 @@ def save_db_common(model,t,time)
 	day_city.winddirection=t['winddirection'] if t['winddirection'] != nil && day_city.respond_to?('winddirection')
 	day_city.windspeed=t['windspeed'] if t['windspeed'] != nil && day_city.respond_to?('windspeed')
 	day_city.rank=t['rank'] if t['rank'] != nil && day_city.respond_to?('rank')
-	if model.name == 'TempSfcitiesMonth'
-		time = t['time'].to_time.localtime if time.nil?
-		day_city.data_real_time = time.to_time.localtime
-		day_city.save
+	time = t['time'].to_time.localtime if time.nil?
+	day_city.data_real_time = time.to_time.localtime
+	day_city.save
 
-		if model.new.respond_to?('zonghezhishu')
-			day_city = model.last
-			#判断接口是否提供综合指数
-			if t['complexindex'] != nil && t['complexindex'] != 0
-				day_city.zonghezhishu = t['complexindex']
-			else
-				day_city.zonghezhishu = get_zonghezhishu(model)
-			end
-			day_city.save
-			set_change_rate_to_db(model,city.id,time) if model.new.respond_to?("zongheindex_change_rate")
+	if model.new.respond_to?('zonghezhishu')
+		day_city = model.last
+		#判断接口是否提供综合指数
+		if t['complexindex'] != nil && t['complexindex'] != 0
+			day_city.zonghezhishu = t['complexindex']
+		else
+			day_city.zonghezhishu = get_zonghezhishu(model)
 		end
-		puts '=='+model.name+'=='+time.to_s+'=Save OK!==='
-		out_log(model.name+time.to_s+t['city']) if city.nil?	
+		day_city.save
+		set_change_rate_to_db(model,city.id,time) if model.new.respond_to?("zongheindex_change_rate")
 	end
+	puts '=='+model.name+'=='+time.to_s+'=Save OK!==='
+	out_log(model.name+time.to_s+t['city']) if city.nil?	
 end
 
 #通用方法

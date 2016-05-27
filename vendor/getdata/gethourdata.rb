@@ -12,20 +12,20 @@ oneday=60*60*24
 # save_db(hs,TempLfHour) if hour_data_common(hs,TempLfHour)
 #
 # 秦皇岛小时数据
-Qinhuangdao::Qinhuangdao.new.hour
+# Qinhuangdao::Qinhuangdao.new.hour
 
-tmp=MonitorPointHour.last.data_real_time
-stime=tmp.beginning_of_hour
-etime=tmp.end_of_hour
-Custom::Redis.set('qhd_hour',MonitorPointHour.where(city_id: 11,data_real_time: (stime..etime)))
+# tmp=MonitorPointHour.last.data_real_time
+# stime=tmp.beginning_of_hour
+# etime=tmp.end_of_hour
+# Custom::Redis.set('qhd_hour',MonitorPointHour.where(city_id: 11,data_real_time: (stime..etime)))
 
 #河北实时数据
-hs=ten_times_test(TempHbHour,'shishi_74',{secret:'HEBEIRANK',type:'HOUR'})
-save_db(hs,TempHbHour)
+# hs=ten_times_test(TempHbHour,'shishi_74',{secret:'HEBEIRANK',type:'HOUR'})
+# save_db(hs,TempHbHour)
 
 #74城市实时数据
-hs=ten_times_test(TempSfcitiesHour,'shishi_74',{secret:'CHINARANK',type:'HOUR'})
-save_db(hs,TempSfcitiesHour)
+# hs=ten_times_test(TempSfcitiesHour,'shishi_74',{secret:'CHINARANK',type:'HOUR'})
+# save_db(hs,TempSfcitiesHour)
 
 #全国城市实时数据
 hs = Hash.new

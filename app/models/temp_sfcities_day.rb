@@ -3,7 +3,9 @@ class TempSfcitiesDay < ActiveRecord::Base
 								   message: "数据重复！" }
 	def get_rank_chart_data(name,stime,etime)
 		#获取日数据排名
-		if Custom::Redis.get("get_rank_chart_data_day")
+		data = Custom::Redis.get('get_rank_chart_data_day')
+		if data
+			data
 		else
 			data = City.find_by_city_name(name).temp_sfcities_days.select("AQI,main_pol,data_real_time,rank").where(data_real_time: (stime..etime)).as_json
 			data.each do |l|

@@ -80,4 +80,30 @@ class MonitorPointHour < ActiveRecord::Base
 		puts d['time'].to_s+' '+d['pointname']+' Save OK!'
 		# end
 	end
+
+	def self.all_site(stime,etime)
+		data = MonitorPointHour.where(data_real_time: (stime..etime))
+		return nil if data[0]
+		mp = MonitorPoint.all
+		city = City.all
+		mp.map do |m|
+			l = {m.id => m}
+			m = l
+		end
+		city.map do |c|
+			l = {c.id => c}
+			c = l
+		end
+		data.map do |l|
+			c = city[l.city_id]
+			m = mp[l.monitor_point_id]
+			l['city_name'] = c['city_name']
+			l['city_name_pinyin'] = c['city_name_pinyin']
+			l['region']=m.region
+			l['pointname']=m.pointname
+			l['latitude']=m.latitude
+			l['longitude']=m.longitude
+		end
+		data
+	end
 end
