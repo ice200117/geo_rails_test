@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>ForecastAQI</title>
+		<%= stylesheet_link_tag 'application','langfang','css/air','css/styles','css/jquery-ui',"css/bootstrap.min", 'css/bootstrap-table.min', media: 'all', 'data-turbolinks-track' => true %>
+		<%= javascript_include_tag 'application','air','demo',"jquery-ui-datepicker", 'data-turbolinks-track' => true %>
+		<%= csrf_meta_tags %>
+		<%= favicon_link_tag '/favicon.png' %>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
+		<script>
+			Highcharts.setOptions({
+				global: {
+					useUTC: false
+				}
+			});
+		</script>
+	</head>
+	<body>
+		<%= yield %>
+	</body>
+</html>

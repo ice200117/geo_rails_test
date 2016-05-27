@@ -1,5 +1,6 @@
 require_relative './common.rb'
 require_relative './get_qinhuangdao_data.rb'
+# require_relative '../fore_fix/fore_fix_9km.rb'
 hs=Hash.new
 oneday=60*60*24
 
@@ -14,10 +15,10 @@ oneday=60*60*24
 # 秦皇岛小时数据
 Qinhuangdao::Qinhuangdao.new.hour
 
-tmp=MonitorPointHour.last.data_real_time
-stime=tmp.beginning_of_hour
-etime=tmp.end_of_hour
-Custom::Redis.set('qhd_hour',MonitorPointHour.where(city_id: 11,data_real_time: (stime..etime)))
+# tmp=MonitorPointHour.last.data_real_time
+# stime=tmp.beginning_of_hour
+# etime=tmp.end_of_hour
+# Custom::Redis.set('qhd_hour',MonitorPointHour.where(city_id: 11,data_real_time: (stime..etime)))
 
 #河北实时数据
 hs=ten_times_test(TempHbHour,'shishi_74',{secret:'HEBEIRANK',type:'HOUR'})

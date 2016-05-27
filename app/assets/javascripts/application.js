@@ -28,3 +28,6 @@
 //= require bootstrap.min
 //= require respond
 //= require citySelector
+//= require nprogress
+//= require nprogress-turbolinks
+//= require jquery.turbolinks

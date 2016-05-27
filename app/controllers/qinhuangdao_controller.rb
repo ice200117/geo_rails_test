@@ -4,7 +4,7 @@ class QinhuangdaoController < Casein::CaseinController
 	#	caches_page :pinggu, :bar
 	#cache_sweeper :welcome_sweeper
 
-  layout 'qinhuangdao'
+	layout 'qinhuangdao'
 
 	include NumRu
 	protect_from_forgery :except => [:get_forecast_baoding, :get_city_point]
@@ -373,13 +373,9 @@ class QinhuangdaoController < Casein::CaseinController
 
 	end
 	def get_rank(data)
-		tmp=data.sort_by{|a| a['zonghezhishu']}
-		(0...tmp.length).each do |n|
-			if tmp[n]['city_id'] == 11
-				return tmp.length-n-1
-			end
+		data.each do |l|
+			return l['rank'] if l['city_id'] == 11
 		end
-		return '--'
 	end
 
 	#修改74城市首要污染物
@@ -966,6 +962,17 @@ class QinhuangdaoController < Casein::CaseinController
 			format.json {
 				render json: @cities_around
 			}
+		end
+	end
+	def get_rank_chart_data
+		cityName = params[:city]
+		type = params[:ranktype]
+		stime = params[:startTime]
+		etime = params[:endTime]
+		if type == 'DAY'
+			TempSfcitiesDay.get_rank_chart_data(cityName,stime,etime)
+		else
+			TempSfcitiesMonth.get_rank_chart_data(cityName,stime,etime)
 		end
 	end
 end

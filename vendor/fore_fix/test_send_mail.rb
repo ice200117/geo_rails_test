@@ -25,7 +25,7 @@ if File.exists?("/mnt/share/Temp/Rank/#{filename}")
 else
 	mail.text = "#{filename} is null!"
 end
-Net::SMTP.start('smtp.mxhichina.com',25,'mail.hh12369.com','libaoxi@hh12369.com','Lbx12369@',:plain) do |smtp|
+Net::SMTP.start('smtp.mxhichina.com',25,'mail.hh12369.com','libaoxi@hh12369.com',ENV['MAIL_PWD'],:plain) do |smtp|
 	# mail.to = toaddress
 	open_timeout=(300)
 	read_timeout=(300)

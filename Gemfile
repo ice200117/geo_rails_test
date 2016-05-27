@@ -48,8 +48,9 @@ group :development, :test do
   gem 'database_cleaner'
 
   #Load .env file!
-  gem 'dotenv-rails'
 end
+
+gem 'dotenv-rails'
 
 gem 'highcharts-rails', '~> 4.0.4.1'
 
@@ -107,4 +108,7 @@ gem 'rainbow'
 gem 'statsample'
 gem 'to_xls'
 
-gem 'casein', '~>5.1.1'
+#加载进度条
+gem 'nprogress-rails'
+gem 'jquery-turbolinks'
+gem 'casein','~>5.1.1'

@@ -29,11 +29,13 @@ class MonitorPointHour < ActiveRecord::Base
 		linedata.CO = d['co'] if !d['co'].nil?
 		linedata.pm10 = d['pm10'] if !d['pm10'].nil?
 		linedata.pm25 = d['pm25'] if !d['pm25'].nil?
+		linedata.pm25 = d['pm25'] if !d['pm2_5'].nil?
 		linedata.O3 = d['o3'] if !d['o3'].nil?
 		linedata.O3_8h = d['o3_8h'] if !d['o3_8h'].nil?
 		linedata.quality = d['quality'] if !d['quality'].nil?
 		linedata.level = d['level'] if !d['level'].nil?
 		linedata.main_pol = d['main_pol'] if !d['main_pol'].nil?
+		linedata.main_pol = d['main_pol'] if !d['main_pollutant'].nil?
 		linedata.weather = d['weather'] if !d['weather'].nil?
 		linedata.temp = d['temp'] if !d['temp'].nil?
 		linedata.humi = d['humi'] if !d['humi'].nil?

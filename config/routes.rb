@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 	get 'querys/monitor_data' => 'querys#monitor_data'
 	get 'querys/get_weather_air_data' => 'querys#get_weather_air_data'
 
+	get 'mmap' => 'welcome#monitor_map'
 
 	#get '/forecast_points/lookup' => 'forecast_points#lookup'
 	#resources :forecast_points
@@ -50,7 +51,7 @@ Rails.application.routes.draw do
 	get 'welcome/get_forecast_baoding' => 'welcome#get_forecast_baoding' 
 	get 'welcome/get_city_point' => 'welcome#get_city_point'  
 	get 'welcome/export_lfdata_xls' => 'welcome#export_lfdata_xls'  
-	#get '/adj_pie' => 'welcome#adj_pie'
+	get '/adj_pie' => 'welcome#adj_pie'
 	get '/welcome/cities_around_fun' => 'welcome#cities_around_fun'
 
 	#秦皇岛路由
@@ -85,4 +86,6 @@ Rails.application.routes.draw do
 	
 	
 
+	#廊坊路由
+	get 'langfang/index' => 'langfang#forecast'
 end

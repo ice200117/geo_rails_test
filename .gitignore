@@ -11,11 +11,11 @@
 /log/*
 !/log/.keep
 /tmp
-/config/database.yml
 /vendor/rd_hourly_aqi.rb
 *.swp
 cron_log.log
 /public/images
 /public/assets
 *.log
-.env
+public/assets/*
+public/images/*

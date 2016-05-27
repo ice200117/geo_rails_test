@@ -9,32 +9,37 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
-Rails.application.config.assets.precompile += %w( map_welcome.js )
-Rails.application.config.assets.precompile += %w( css/styles.css )
-Rails.application.config.assets.precompile += %w( css/button.css )
-Rails.application.config.assets.precompile += %w( jquery.cookie.js )
-Rails.application.config.assets.precompile += %w( jquery.min.js )
-Rails.application.config.assets.precompile += %w( bootstrap.min.js )
-Rails.application.config.assets.precompile += %w( citySelector.js )
-Rails.application.config.assets.precompile += %w( jquery-ui-datepicker.js )
-Rails.application.config.assets.precompile += %w( css/wdatepicker.css )
-Rails.application.config.assets.precompile += %w( css/jquery-ui.css )
-Rails.application.config.assets.precompile += %w( map.js )
-Rails.application.config.assets.precompile += %w( map.css )
-Rails.application.config.assets.precompile += %w( css/daterangepicker-bs3.css )
-Rails.application.config.assets.precompile += %w( chart.js )
-Rails.application.config.assets.precompile += %w( bootstrap-table.min.js )
-Rails.application.config.assets.precompile += %w( moment.js )
-Rails.application.config.assets.precompile += %w( daterangepicker.js )
-Rails.application.config.assets.precompile += %w( crypto_zq-min.js )
-Rails.application.config.assets.precompile += %w( sfcities_compare_chart.js )
-Rails.application.config.assets.precompile += %w( css/bootstrap.min.css )
-Rails.application.config.assets.precompile += %w( css/bootstrap-table.min.css )
-Rails.application.config.assets.precompile += %w( respond.js )
-Rails.application.config.assets.precompile += %w( qhdqxSelector.js )
-Rails.application.config.assets.precompile += %w( qhdqx_compare_chart.js )
-Rails.application.config.assets.precompile += %w( barcity.js )
-Rails.application.config.assets.precompile += %w( rank_chart.js )
-Rails.application.config.assets.precompile += %w( LineChart.js )
-Rails.application.config.assets.precompile += %w( cities_around.js )
-Rails.application.config.assets.precompile += %w( SfcitiesSelector.js )
+
+Rails.application.config.assets.precompile += %w( 
+	map_welcome.js 
+	css/styles.css 
+	css/button.css 
+	jquery.cookie.js 
+	jquery.min.js 
+	bootstrap.min.js 
+	citySelector.js 
+	map.js 
+	map.css 
+	css/daterangepicker-bs3.css 
+	chart.js 
+	bootstrap-table.min.js 
+	moment.js 
+	daterangepicker.js 
+	crypto_zq-min.js 
+	sfcities_compare_chart.js 
+	css/bootstrap.min.css 
+	css/bootstrap-table.min.css 
+	respond.js 
+	qhdqxSelector.js 
+	qhdqx_compare_chart.js 
+	barcity.js 
+	rank_chart.js 
+	LineChart.js 
+	qinhuangdao.css
+	css/air.css
+	air.js
+	demo.js
+	langfang.css
+	cities_around.js
+	SfcitiesSelector.js
+)
