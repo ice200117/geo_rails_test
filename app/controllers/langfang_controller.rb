@@ -563,6 +563,7 @@ class LangfangController < ApplicationController
 		@adj_per1 = @banner["adj_per1"]
 		@forecast_data = get_forecast()
 		@imgTime = Time.now.strftime("%Y%m%d")
+		@forecast_data = get_forecast()
 	end
 
 	def getlayoutbyaction(action_name)

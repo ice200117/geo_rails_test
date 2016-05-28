@@ -1,0 +1,41 @@
+function getImageNames(modeName,factorName,date){
+	var names=[];
+	if(modeName == defaultModeName){
+		for(var i=0;i<24;i++){
+			var h=i;
+			if(i<10){
+				h='0'+i;
+			}
+			var path = imagePath.replace(/modeName%/g, modeName);
+			names.push(contextPath+path+modeName+'_09km_'+factorName+'_'+date+'_'+h+'.png');
+		}
+	}
+	return names;
+}
+function showOtherPic(obj){
+	obj.src='<%= asset_path("noimage.jpg") %>';
+}
+function imageViewClick(obj) {//资源图片的点击事件
+	nowSrc = obj.src;
+}
+function preLoadImg(url){ //图片预加载
+	var img = new Image();
+	img.src = url;
+}
+
+$(document).ready(function(){
+	$('#t-t a').each(function(){
+		$(this).click(function(){
+			$('#t-t a').removeClass('cur');
+			$(this).addClass('cur');
+			var factor = $(this).html();
+			var imgTime = $('#imgTime').val();
+			if(factor=='能见度'){
+				factor = 'VIS';
+			}
+			src = 'http://60.10.135.153:3000/images/china_fc09/'+imgTime+'/Hourly/Animate_CUACE_09km_'+factor+'_'+imgTime+'.gif';
+			$('.t-c img').attr('src',src);
+		});
+	});
+	$('#t-t a.cur').click();
+});
