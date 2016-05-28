@@ -202,7 +202,7 @@ $(document).ready(function(){
                     for(var j = 0; j < items.photoData.length; j++){
                         var item = items.photoData[j];
                         //193 height
-                        html.push('<img id="id'+i+'_'+j+'" style="cursor:pointer;" onerror="showOtherPic(this)" src="' + item.picListData[Math.abs(H)] + '" width="100%" >');
+                        html.push('<img id="id'+i+'_'+j+'" style="cursor:pointer;" onerror="showOtherPic(this)" src="' + item.picListData[Math.abs(H)] + '"  >');
                     }
                     $('#item-content-air').html(html.join(""));
                 }

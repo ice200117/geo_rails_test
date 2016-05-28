@@ -1,11 +1,10 @@
 <%= render partial:"langfang/banner",locals:{banner:@banner} %>
-<<<<<<< HEAD
 <div class="container">
 	<div class='row'>
 		<%= render partial:"langfang/fore_table",locals:{forecast_data:@forecast_data} %>
 	</div>
 	<div class='row'>
-		<div style="font-size:large;">未来5天趋势预报</div>
+		<font class="top11-title" style="color:black; padding:0px;margin:0px">未来5天趋势预报</font>
 	</div>
 	<input value="http://60.10.151.85:81/netpicture/cuacepicture/<%= Time.now.strftime("%Y%m%d") %>/750_554/" id='imagePath' type='hidden' />
 	<div class = 'row'>
