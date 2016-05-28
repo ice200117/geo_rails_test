@@ -33,9 +33,14 @@ $(document).ready(function(){
 			if(factor=='能见度'){
 				factor = 'VIS';
 			}
-			src = 'http://60.10.135.153:3000/images/china_fc09/'+imgTime+'/Hourly/Animate_CUACE_09km_'+factor+'_'+imgTime+'.gif';
-			$('.t-c img').attr('src',src);
+			//src = 'http://60.10.135.153:3000/images/china_fc09/'+imgTime+'/Hourly/Animate_CUACE_09km_'+factor+'_'+imgTime+'.gif';
+			//$('.t-c img').attr('src',src);
+      $.ajax({url:"/langfang/lf_forecast_pics.js",
+             data:{type: factor},
+             success:function(result){
+        //$("#example1").html(result);
+      }});
 		});
 	});
-	$('#t-t a.cur').click();
+	//$('#t-t a.cur').click();
 });
