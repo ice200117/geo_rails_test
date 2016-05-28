@@ -11,7 +11,7 @@ function getImageNames(modeName,factorName,date){
 			if(i<10){
 				h='0'+i;
 			}
-			var path = '60.10.135.153:3004/images/china_fc09/'+<%= Time.now.strftime("%Y%m%d")%>+'/Hourly/';
+			var path = 'http://60.10.135.153:3004/images/china_fc09/'+<%= Time.now.strftime("%Y%m%d")%>+'/Hourly/';
 			names.push(path+modeName+'_09km_'+factorName+'_'+date+'_'+h+'.png');
 		}
 	} 
@@ -202,10 +202,8 @@ $(document).ready(function(){
                     for(var j = 0; j < items.photoData.length; j++){
                         var item = items.photoData[j];
                         //193 height
-                        html.push('<img id="id'+i+'_'+j+'" style="cursor:pointer;" onerror="showOtherPic(this)" src="' + item.picListData[Math.abs(H)] + '" width="686" height="546">');
+                        html.push('<img id="id'+i+'_'+j+'" style="cursor:pointer;" onerror="showOtherPic(this)" src="' + item.picListData[Math.abs(H)] + '" width="100%" >');
                     }
-                   //html.push('</ul>');
-                   // html.push('</div>');
                     $('#item-content-air').html(html.join(""));
                 }
                 first =1;
@@ -241,7 +239,7 @@ $(document).ready(function(){
     };
     ForecastDate.prototype = {
         init: function(){
-            var currentDate = <%= Time.now.strftime("%Y-%m-%d") %>;
+            var currentDate = '<%= Time.now.strftime("%Y-%m-%d").to_s %>';
             this.selectData(currentDate);
             photo.init(currentDate,timeline.formateTime(defaultHour),lastFactor);
         },

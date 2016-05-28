@@ -42,5 +42,5 @@ Rails.application.config.assets.precompile += %w(
 	air.js
 	demo.js
 	langfang.css
-	data-turbolinks-track
+	data-turbolinks-track.js
 )
