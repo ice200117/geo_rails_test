@@ -14,8 +14,6 @@
 /vendor/rd_hourly_aqi.rb
 *.swp
 cron_log.log
-/public/images
-/public/assets
 *.log
 public/assets/*
-public/images/*
+!public/assets/images

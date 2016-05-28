@@ -404,7 +404,7 @@ function showLineChartWithAQI(container,name,data,dataAQI,unit,type)
     });
 }
 
-function showLineChartAll(container,type,dataAQI,dataPM25,dataPM10,dataSO2,dataNO2,dataCO,dataO3,dataTemp,dataHumi,dataWind)
+function showLineChartAll(container,type,dataAQI,dataPM25,dataPM10,dataSO2,dataNO2,dataCO,dataO3,dataTemp,dataHumi,dataWind,city)
 {   
    
     var dateTypeFormat;
@@ -521,8 +521,16 @@ function showLineChartAll(container,type,dataAQI,dataPM25,dataPM10,dataSO2,dataN
             useHTML:true,
             formatter: function() 
             {
-                tip = '' + Highcharts.dateFormat(dateTypeFormat, this.x) +'<br/><hr style="margin:3px 0;"/>'
+                if(type=="HOUR")
+                {
+                    tip = '' + Highcharts.dateFormat(dateTypeFormat, this.x) +'<br/><hr style="margin:3px 0;"/>'
+                    + "<table width='357px'>";
+                }
+                else
+                {
+                    tip = '' + Highcharts.dateFormat(dateTypeFormat, this.x) +'<br/><hr style="margin:3px 0;"/>'
                     + "<table width='150px'>";
+                }
                     var tq =null;
                     var level =null;
                     var color =null;
@@ -574,6 +582,10 @@ function showLineChartAll(container,type,dataAQI,dataPM25,dataPM10,dataSO2,dataN
                         tip = tip + "<tr><td >天气: </td><td align='right'>" + tq + "</td></tr>";
                     }
                     tip = tip + "</table>";
+                    if(type=="HOUR")
+                    {
+                    tip=tip+"<table width='357'><iframe src='/qinhuangdao/sourceAnalysisPieChart?datetime=" + Highcharts.dateFormat(dateTypeFormat, this.x) + "&city=" + city + "'" + " scrolling='no' width='357' height='200'></iframe></table>";
+                    }
                     return tip;
 
             }

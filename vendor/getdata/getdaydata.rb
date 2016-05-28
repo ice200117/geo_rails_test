@@ -1,6 +1,7 @@
 require_relative './common.rb'
 require_relative './get_qinhuangdao_data.rb'
 
+time=Time.now.yesterday
 #秦皇岛日数据
 # Qinhuangdao::Qinhuangdao.new.day
 

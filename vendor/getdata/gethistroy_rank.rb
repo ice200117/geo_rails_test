@@ -31,7 +31,7 @@ etime=time.yesterday.end_of_day
 # histroy_common(stime,etime,'langfang',TempLfYear)
 
 #京津冀日数据
-stime=time.years_ago(1).beginning_of_year
+# stime=time.years_ago(1).beginning_of_year
 while stime<etime
 	hs=ten_times_test('TempJjjDay','history_74',{secret:'JINGJINJIDATA',type:'DAY',date:stime})  
 	save_db(hs,TempJjjDay) if hs != false
@@ -39,15 +39,15 @@ while stime<etime
 end
 
 #京津冀月数据
-stime=time.years_ago(1).beginning_of_year
+# stime=time.years_ago(1).beginning_of_year
 histroy_common(stime,etime,'jjj',TempJjjMonth)
 
 #京津冀年数据
-stime=time.years_ago(1).beginning_of_year
+# stime=time.years_ago(1).beginning_of_year
 histroy_common(stime,etime,'jjj',TempJjjYear)
 
 #74城市日数据
-stime=time.beginning_of_year
+# stime=time.beginning_of_year
 while stime<etime
 	hs=ten_times_test('TempSfcitiesDay','history_74',{secret:'CHINADATA',type:'DAY',date:stime})
 	save_db(hs,TempSfcitiesDay) if hs != false
@@ -55,9 +55,9 @@ while stime<etime
 end
 
 #74城市月数据
-stime=time.beginning_of_year
+# stime=time.beginning_of_year
 histroy_common(stime,etime,'china_city_74',TempSfcitiesMonth)
 
 #74城市年数据
-stime=time.beginning_of_year
+# stime=time.beginning_of_year
 histroy_common(stime,etime,'china_city_74',TempSfcitiesYear)

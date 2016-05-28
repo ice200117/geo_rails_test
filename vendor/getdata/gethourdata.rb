@@ -1,5 +1,6 @@
 require_relative './common.rb'
 require_relative './get_qinhuangdao_data.rb'
+# require_relative '../fore_fix/fore_fix_9km.rb'
 hs=Hash.new
 oneday=60*60*24
 

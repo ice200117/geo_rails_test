@@ -9,7 +9,13 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
+
 Rails.application.config.assets.precompile += %w( 
+  vendor/jquery.timeliner.min.js
+  css/timeliner.css
+  css/timeliner_styling.css
+  jquery-ui-datepicker.js
+  css/jquery-ui.css
 	map_welcome.js 
 	css/styles.css 
 	css/button.css 
@@ -17,9 +23,6 @@ Rails.application.config.assets.precompile += %w(
 	jquery.min.js 
 	bootstrap.min.js 
 	citySelector.js 
-	jquery-ui-datepicker.js 
-	css/wdatepicker.css 
-	css/jquery-ui.css 
 	map.js 
 	map.css 
 	css/daterangepicker-bs3.css 
@@ -28,12 +31,12 @@ Rails.application.config.assets.precompile += %w(
 	moment.js 
 	daterangepicker.js 
 	crypto_zq-min.js 
-	city_compare_chart.js 
+	sfcities_compare_chart.js 
 	css/bootstrap.min.css 
 	css/bootstrap-table.min.css 
 	respond.js 
-	bdqxSelector.js 
-	bdqx_compare_chart.js 
+	qhdqxSelector.js 
+	qhdqx_compare_chart.js 
 	barcity.js 
 	rank_chart.js 
 	LineChart.js 
@@ -43,4 +46,6 @@ Rails.application.config.assets.precompile += %w(
 	demo.js
 	langfang.css
 	data-turbolinks-track.js
+	cities_around.js
+	SfcitiesSelector.js
 )

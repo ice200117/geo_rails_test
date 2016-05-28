@@ -28,7 +28,7 @@
 								</li>
 								<li  class="haze-value-bar">
 									<!-- 污染类型 -->
-									<span class="haze-type">AQI&nbsp;&nbsp;&nbsp;&nbsp;<%= banner['rt'].strftime('%H')%>时更新</span>
+									<span class="haze-type">AQI&nbsp;&nbsp;&nbsp;&nbsp;<%= banner['rt'].to_time.strftime('%H')%>时实时值更新</span>
 									<!-- 污染类型 end-->
 								</li>
 							</ul> 
@@ -62,7 +62,7 @@
 						<!-- 参数值  -->
 					</div>
 				</td>
-				<td width="420" valign="top">
+				<td width="420" valign="bottom">
 					<!-- 天气  -->
 					<div class="weather">
 						<div class="date">
