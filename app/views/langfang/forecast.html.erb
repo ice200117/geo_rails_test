@@ -1,240 +1,71 @@
 <%= render partial:"langfang/banner",locals:{banner:@banner} %>
-		<%= stylesheet_link_tag 'css/timeliner', 'css/timeliner_styling', 'data-turbolinks-track' => true %>
-		<%= javascript_include_tag 'vendor/jquery.timeliner.min', 'data-turbolinks-track' => true %>
-<script>
-$(function loadtlr(){
-	$('#example1').timeliner({
-		containerwidth : 844, //幻灯片宽度
-		containerheight : 624, //幻灯片高度
-		timelinewidth: 840, //时间线宽度
-		timelineheight: 4, //时间线高度
-		repeat: true, //循环播放
-    autoplay: false,
-		timedisplayposition: 'below', //时间显示位置
-		transition: 'instant', //切换方式
-    showtimedisplay: false,
-    interval: 1
-	});
-});
-function start_callback(id){
-	if(id=='example1'){
-		$('#callback_log').html('幻灯片 "'+id+'" 开始');
-	}
-}
-function newslide_callback(id, slide){
-	if(id=='example1'){
-		$('#callback_log').html('幻灯片 "'+id+'" 切换到 '+slide);
-	}
-}
-function end_callback(id){
-	if(id=='example1'){
-		$('#callback_log').html('幻灯片 "'+id+'" 结束');
-	}
-}
-function paused_callback(id, slide){
-	if(id=='example1'){
-		$('#callback_log').html('幻灯片 "'+id+'" 暂停在幻灯片 '+slide);
-	}
-}
-function resumed_callback(id, slide){
-	if(id=='example1'){
-		$('#callback_log').html('幻灯片 "'+id+'" 重新开始从幻灯片 '+slide);
-	}
-}
-function click_callback(id, slide){
-	if(id=='example1'){
-		$('#callback_log').html('Clicked on slide '+slide+' of Timeliner "'+id+'"');
-	}
-}
-</script>
-<style>
-  #forcastfive
-  {
-    font-family:'微软雅黑';
-    border: 3px solid #E3E9EC;
-    border-collapse:collapse;
-  }
-  #forcastfive td, #forcastfive th
-  {
-    font-size:1em;
-    padding:3px 7px 2px 7px;
-  }
-  #forcastfive th
-  {
-    font-size:1.1em;
-    text-align:left;
-    padding-top:5px;
-    padding-bottom:4px;
-    background-color:#30A6E5;
-    color:#ffffff;
-  }
-  #forcastfive tr.alt td
-  {
-    color:#000000;
-  }
-</style>
-<input type="hidden" value='<%= @imgTime %>' id='imgTime'>
 <div class="container">
-
-  <div class = 'row'>
-    <div class="col-xs-2"></div>
-    <div class='col-xs-9'>
-      <table stylecellpadding="0" cellspacing="0" class="content" width="100%">
-        <tbody>
-          <tr>
-            <td>
-              <ul class="menu">
-                <li id="menu_forecast" style="production:left;padding:0px;margin:0px">
-                <font class="top11-title" style="color:black; padding:0px;margin:0px">未来三天空气质量预报</font> 
-                </li>
-              </ul>
-              <div class="future-list">
-                <ul>
-                  <% for i in (0..2) %>
-                    <% time = i.day.from_now.strftime("%Y%m%d")%>
-                    <% t = @forecast_data[time] %>
-                    <% next unless t %>
-                    <% dnil='暂无数据'%>
-                    <li class="">
-                    <h4 class="list-title"><%= t["date"] %></h4>  
-                    <table cellpadding="0" cellspacing="0">
-                      <tbody>
-                        <tr>
-                          <td><span class="gray">级别</span></td>
-                          <td><span class="list-alue" style="<%='font-size:12px' if t['fore_lev'].nil? %>"><span class="<%= t['fore_lev'] if t["fore_lev"] != nil %> <%= t['fore_lev'] != nil ? 'small' : 'small1'%>"><%= t['level'] !=nil ? t["level"] : dnil%></span></span></td>
-                        </tr>
-                        <tr>
-                          <td style="width:88px;"><span class="gray">首要污染物</span></td>
-                          <td><span class="list-alue" style="<%='font-size:12px' if t['main_pol'].nil?%>"><%= t["main_pol"] != nil ? t["main_pol"] : dnil%></span></td>
-                        </tr>
-                        <tr>
-                          <td style="padding-top:15px;"><span class="gray">天气</span></td>
-                          <td class="list-weather" style="padding-top:10px;"><span ><%= t["tq"] != nil ? t["tp"] : '-' %>&nbsp;<br><%= t["temp2"] !=nil ? t['temp2'] : '-' %>℃~<%= t["temp1"] !=nil ? t['temp1'] : '-' %>℃<br><%= t["wd"] !=nil ? t['wd'] : '-'%>&nbsp<%= t["ws"] !=nil ? t['ws'] : '-' %></span></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    </li>
-                  <% end %>
-                </ul>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-xs-1"></div>
-  </div>
-
-
-  <div class = 'row'>
-    <div class="col-xs-2"></div>
-    <div class='col-xs-8'>
-      <div class='row'>
-        <!-- <div style="font-size:large;">未来5天趋势预报</div> -->
-              <ul class="menu">
-                <li id="menu_forecast" style="production:left;padding:0px;margin:0px">
-                <font class="top11-title" style="color:black; padding:0px;margin:0px">未来三天空气质量趋势预报图</font> 
-                </li>
-              </ul>
-
-      </div>
-      <div id="t-t" class="t-t">
-        <a href='javascript:void(0)' >PM2.5</a>
-        <a href='javascript:void(0)' >PM10</a>
-        <a href='javascript:void(0)' >SO2</a>
-        <a href='javascript:void(0)' >CO</a>
-        <a href='javascript:void(0)' >NO2</a>
-        <a href='javascript:void(0)' >O3</a>
-        <a href='javascript:void(0)' class='cur'>AQI</a>
-        <a href='javascript:void(0)' >能见度</a>
-      </div>
-      <div class="col-xs-2"></div>
-    </div>
-    <!--
-    <div class='col-xs-4'>
-      <div>未来5天趋势预报和气象预报</div>
-    </div>
-    -->
-  </div>
-  <div class='row'>
-    <div class="col-xs-2"></div>
-    <div class="col-xs-8">
-      <div class="row">
-        <!--未来5天趋势预报图-->
-        <!--
-        <div id="item-content-air" class="t-c">
-          <%# <img src="" style='cursor:pointer;' onerror='showOtherPic(this)' width='686px' height='546'> %>
-          <img src="" style='cursor:pointer;' width='100%'>
-        </div>
-        -->
-
-        <ul id="example1" class="timeliner">
-          <% @pics.each do |pic| %>
-            <li title=<%=pic["time"]%>>
-            <img src=<%=pic["pic_url"]%> alt="">
-            </li>
-          <% end %>
-        </ul>
-        <!-- 代码 结束 -->
-        <!--
-        <div class="callback">返回值：<span id="callback_log"></span></div>
-        -->
-
-      </div>
-    </div>
-    <div class="col-xs-2"></div>
-    <!--
-    <div class='col-xs-5'>
-      <table id="forcastfive" width="500" height="300">
-        <tr>
-          <th width="110">日期</th>
-          <th width="60">AQI日均值</th>
-          <th width="90">AQI范围</th>
-          <th width="160">平均级别</th>
-          <th width="60">首要污染物</th>
-          <th width="200">天气</th>
-        </tr>
-        <% for i in (0..4) %>
-          <% time = i.day.from_now.strftime("%Y%m%d") %>
-          <% t = @forecast_data[time] if @forecast_data%>
-          <% next unless t %>
-
-          <tr  class="<%= (i==1 || i==3) ? 'alt' : '' %>
-          " >
-          <td>
-            <%= t["date"] %></td>
-          <td> <strong><%= t["AQI"] != nil ? t["AQI"].to_i : '-' %></td>
-            <td> <strong><%= t["min"] != nil ? t["min"] : '-' %>
-              ~
-              <%= t["max"] != nil ? t["max"] : '-' %></strong>
-          </td>
-          <td>
-            <span class="<%= t["fore_lev"] != nil ? t["fore_lev"] : '' %>
-            smallforcast">
-            <%= t['level'] !=nil ? t["level"] : '-' %></span>
-        </td>
-        <td>
-          <strong>
-            <%= t["main_pol"] != nil ? t["main_pol"] : '-' %></strong>
-        </td>
-
-        <td>
-          <div>
-            <span>
-              <%= t["temp2"] !=nil ? t['temp2'] : '-' %>
-              ℃~
-              <%= t["temp1"] !=nil ? t['temp1'] : '-' %>℃</span>
-            <span>
-              <%= t["tq"] != nil ? t["tp"] : '-' %></span>
-            <span>
-              <%= t["ws"] !=nil ? t['ws'] : '-' %>
-              <%= t["wd"] !=nil ? t['wd'] : '-' %></span>
-          </div>
-        </td>
-      </tr>
-    <% end %>
-  </table>
-</div>
--->
-</div>
+	<div class='row'>
+		<%= render partial:"langfang/fore_table",locals:{forecast_data:@forecast_data} %>
+	</div>
+	<div class='row'>
+		<div style="font-size:large;">未来5天趋势预报</div>
+	</div>
+	<input value="http://60.10.151.85:81/netpicture/cuacepicture/<%= Time.now.strftime("%Y%m%d") %>/750_554/" id='imagePath' type='hidden' />
+	<div class = 'row'>
+		<div class='t-t' id='t-t'>
+			<a href='javascript:void(0)' class='cur'>PM2.5</a>
+			<a href='javascript:void(0)' >PM10</a>
+			<a href='javascript:void(0)' >SO2</a>
+			<a href='javascript:void(0)' >CO</a>
+			<a href='javascript:void(0)' >NO2</a>
+			<a href='javascript:void(0)' >O3</a>
+			<a href='javascript:void(0)' >AQI</a>
+			<a href='javascript:void(0)' >能见度</a>
+		</div>
+	</div>
+	<div class="row">
+		<!--未来5天趋势预报图-->
+		<div id="item-content-air" class="t-c">
+			<!--img id="id0_0" src="" alt="" onclick='imageViewClick(this);' style='cursor:pointer;' onerror='showOtherPic(this)' width='100%' -->
+		</div>
+	</div>
+	<!--趋势预报end-->
+	<div class="row">
+		<div class="t-b">
+			<div class="ui-center">
+				<div class="en-air-top-banner" id="tip-banner">
+					<div class="air-date" id="air-date">
+						<span class="aftertime-title">日期：</span>
+						<span class="dateElement">
+							<a href="javascript:;" title="<%= Time.now.strftime('%Y-%m-%d') %>" class="cur" id="date1" nextid="date2">
+								<%= Time.now.month %>月<%= Time.now.day %>日</a>
+						</span>
+						<span class="dateElement">
+							<a href="javascript:;" title="<%= 1.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date2" nextid="date3">
+								<%= 1.days.from_now.month %>月<%= 1.days.from_now.day %>日</a>
+						</span>
+						<span class="dateElement">
+							<a href="javascript:;" title="<%= 2.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date3" nextid="date4">
+								<%= 2.days.from_now.month %>月<%= 2.days.from_now.day %>日</a>
+						</span>
+						<span class="dateElement">
+							<a href="javascript:;" title="<%= 3.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date4" nextid="date5">
+								<%= 3.days.from_now.month %>月<%= 3.days.from_now.day %>日
+							</a>
+						</span>
+						<span class="dateElement">
+							<a href="javascript:;" title="<%= 4.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date5" nextid="date1">
+								<%= 4.days.from_now.month %>月<%= 4.days.from_now.day %>日
+							</a>
+						</span>
+					</div>
+					<div class="air-time">
+						<div class="air-time-title" style="color:#000000">时间：</div>
+						<div class="air-time-content">
+							<a href="javascript:void(0)" class="ct" id="tc" style="left: -10px;">00</a>
+						</div>
+						<div class="air-time-control">
+							<a href="javascript:void(0)" class="start" id="kg"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

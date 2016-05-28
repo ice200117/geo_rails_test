@@ -152,6 +152,10 @@
 				  <button type="button" class="btnbd btnbd-default btnitemgroup3" value="ASC">正排</button>
 				  <button type="button" class="btnbd btnbd-default btnitemgroup3" value="DESC">倒排</button>
 				</div>
+				<div id="chart" class="aqichartbd"></div>
+			</div>
+			<div class="col-xs-3" style="display:none">
+				<div id="piechart" class="aqichartbd" style="margin-top:35px;"></div>
 			</div>
 			<div id="rankchart" class="aqichartbd"></div>
 		</div>
@@ -347,6 +351,7 @@
 			</div>
 		</div>
 	</div>
+
 </div>
 <div class="panel panel-primary">
 	<div class="panel-heading">
@@ -411,6 +416,7 @@
 	<div class="panel-footer">
 		<%# <a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a> %>
 	</div>
+
 </div>
 <%= javascript_include_tag 'bootstrap.min','respond','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','LineChart','rank_chart',"cities_around" %>
 
@@ -422,33 +428,6 @@
 				return;
 			}
 			$(this).addClass("active").siblings().removeClass("active");
-
-			//change($(this).data("val"));
-			/*
-			   if($(this).data("type")=='CO')
-			   {
-			   $("#factor3").html($(this).data("type"))
-			   $("#001").css("display","none");
-			   $("#002").css("display","none");
-			   $("#003").css("display","block");
-
-			   }
-			   else if($(this).data("type")=='NOX')
-			   {
-			   $("#factor2").html($(this).data("type"))
-			   $("#001").css("display","none");
-			   $("#002").css("display","block");
-			   $("#003").css("display","none");
-			   }
-			   else
-			   {
-			   $("#factor1").html($(this).data("type"))
-			   $("#001").css("display","block");
-			   $("#002").css("display","none");
-			   $("#003").css("display","none");
-			   }
-			 */
-
 		});
 	});
 function change(img){
@@ -467,6 +446,5 @@ begin
 	break if i == 7 
 end until File::exists?(file)
 %>
-					//change('<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>');
 change('<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
 </script>

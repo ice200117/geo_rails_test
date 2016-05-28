@@ -182,34 +182,33 @@ class LangfangController < ApplicationController
 
 	#获取预测数据
 	def get_forecast
-		city_name_encode = ERB::Util.url_encode("廊坊")
-		options = Hash.new
-		headers={'apikey' => 'f8484c1661a905c5ca470b0d90af8d9f'}
-		options[:headers] = headers
-		url = "http://apis.baidu.com/showapi_open_bus/weather_showapi/address?area=#{city_name_encode}&needMoreDay=1"
-		response = HTTParty.get(url,options)
-    begin
-		  json = JSON.parse(response.body)
-    rescue => e
-      puts "Rescued #{e.inspect}"
-      return {}
-    end
-		# puts 0 if json['showapi_res_error'] == 0
 		@weather = Hash.new
-		json['showapi_res_body'].each do |k,v|
-			if k[-1].to_i > 0 
-				tq = get_tq(v)
-				@weather[tq['day']] = tq
+		if Custom::Redis.get('langfang_weaterh').nil?
+			city_name_encode = ERB::Util.url_encode("秦皇岛")
+			options = Hash.new
+			headers={'apikey' => 'f8484c1661a905c5ca470b0d90af8d9f'}
+			options[:headers] = headers
+			url = "http://apis.baidu.com/showapi_open_bus/weather_showapi/address?area=#{city_name_encode}&needMoreDay=1"
+			response = HTTParty.get(url,options)
+			json = JSON.parse(response.body)
+			# puts 0 if json['showapi_res_error'] == 0
+			json['showapi_res_body'].each do |k,v|
+				if k[-1].to_i > 0 
+					tq = get_tq(v)
+					@weather[tq['day']] = tq
+				end
 			end
-		end
-		temp = ForecastRealDatum.new.air_quality_forecast('langfangshi')
-
-		temp.each do |k,v|
-			v["fore_lev"] = get_lev(v["AQI"])
-			key = k.to_time.strftime("%Y%m%d")
-			if @weather[key] != nil
-				@weather[key]=@weather[key].merge(v)
+			temp = HourlyCityForecastAirQuality.new.air_quality_forecast('qinhuangdaoshi')
+			temp.each do |k,v|
+				v["fore_lev"] = get_lev(v["AQI"])
+				key = k.to_time.strftime("%Y%m%d")
+				if @weather[key] != nil
+					@weather[key]=@weather[key].merge(v)
+				end
 			end
+			Custom::Redis.set('langfang_weaterh',@weather,3600*24)
+		else
+			@weather=Custom::Redis.get('langfang_weaterh')
 		end
 		@ret=@weather
 	end
@@ -567,7 +566,7 @@ class LangfangController < ApplicationController
 		#@adj_per1 = @banner["adj_per1"]
 		@forecast_data = get_forecast()
 		@imgTime = Time.now.strftime("%Y%m%d")
-    @pics = get_forecast_pics
+		@forecast_data = get_forecast()
 	end
   
   def lf_forecast_pics
@@ -638,11 +637,11 @@ class LangfangController < ApplicationController
 		ch=nil
 		#if $redis['langfang_hour_forecast'].nil?
 			c = City.find_by_city_name_pinyin('langfangshi')
-      ch = c.forecast_real_data.last(120).group_by_day(&:forecast_datetime)
-			#Custom::Redis.set('qhd_hour_forecast',ch,3600)
-		#else
-			#ch = Custom::Redis.get('qhd_hour_forecast')
-		#end
+			ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(72).group_by_day(&:forecast_datetime)
+			Custom::Redis.set('langfang_hour_forecast',ch,3600*24)
+		else
+			ch = Custom::Redis.get('langfang_hour_forecast')
+		end
 
 		ch.each do |time,fds|
 			t = Time.now

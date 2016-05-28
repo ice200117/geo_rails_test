@@ -891,7 +891,7 @@ class QinhuangdaoController < Casein::CaseinController
 		if $redis['qhd_hour_forecast'].nil?
 			c = City.find_by_city_name_pinyin('qinhuangdaoshi')
 			ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
-			Custom::Redis.set('qhd_hour_forecast',ch,3600)
+			Custom::Redis.set('qhd_hour_forecast',ch,3600*24)
 		else
 			ch = Custom::Redis.get('qhd_hour_forecast')
 		end
