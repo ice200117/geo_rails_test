@@ -45,16 +45,7 @@ Rails.application.config.assets.precompile += %w(
 	air.js
 	demo.js
 	langfang.css
-<<<<<<< HEAD
-<<<<<<< HEAD
-	cities_around.js
-	SfcitiesSelector.js
-=======
-	data-turbolinks-track.js
->>>>>>> langfang
-=======
 	data-turbolinks-track.js
 	cities_around.js
 	SfcitiesSelector.js
->>>>>>> langfang
 )
