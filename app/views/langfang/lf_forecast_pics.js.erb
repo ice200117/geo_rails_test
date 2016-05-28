@@ -1,0 +1,13 @@
+$("#example1").html("<% @pics.each do |pic| %> <li title=<%=pic["time"]%>> <img src=<%=pic["pic_url"]%>> </li> <% end %>");
+$('#example1').timeliner({
+		containerwidth : 844, //幻灯片宽度
+		containerheight : 624, //幻灯片高度
+		timelinewidth: 840, //时间线宽度
+		timelineheight: 4, //时间线高度
+		repeat: true, //循环播放
+    autoplay: false,
+		timedisplayposition: 'below', //时间显示位置
+		transition: 'instant', //切换方式
+    showtimedisplay: false,
+    interval: 1
+	});

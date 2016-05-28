@@ -88,4 +88,5 @@ Rails.application.routes.draw do
 
 	#廊坊路由
 	get 'langfang/index' => 'langfang#forecast'
+  get 'langfang/lf_forecast_pics'
 end

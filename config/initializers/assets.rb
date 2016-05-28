@@ -11,6 +11,11 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 
 Rails.application.config.assets.precompile += %w( 
+  vendor/jquery.timeliner.min.js
+  css/timeliner.css
+  css/timeliner_styling.css
+  jquery-ui-datepicker.js
+  css/jquery-ui.css
 	map_welcome.js 
 	css/styles.css 
 	css/button.css 
