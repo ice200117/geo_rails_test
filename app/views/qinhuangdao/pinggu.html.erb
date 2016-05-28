@@ -49,42 +49,6 @@
       </tr>
     </tbody>
   </table>
-
-	
-<!--
-<div class="container1 box">
-	<h3 class="top11-title" style="display:table;"><div id="kqzlpm"align="left"><font style="color:black;"> 空气质量历史数据显示图</font></div></h3>         
-	<div id="toolbar" class="btngroup btn-toolbar" style="margin-top:20px,margin-left:20px;">
-		<div id="btn-group1" class="btna-group btna-group-sm ">
-			<button type="button" class="btna btna-default btnitemgroup1 btna-success"  id="zonghe" onclick="changeType('zonghe')" style="width:19px;text">综合</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="AQI" onclick="changeType('AQI')" style="width:15px">AQI</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="PM25" onclick="changeType('PM25')" style="width:28px">PM2.5</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="PM10" onclick="changeType('PM10')" style="width:25px">PM10</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="SO2" onclick="changeType('SO2')" style="width:18px">SO2</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="NO2" onclick="changeType('NO2')" style="width:18px">NO2</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="CO" onclick="changeType('CO')" style="width:12px">CO</button>
-			<button type="button" class="btna btna-default btnitemgroup1"  id="O3" onclick="changeType('O3')" style="width:12px">O3</button>  
-			<button type="button" class="btna btna-default btnitemgroup1"  id="tem" onclick="changeType('tem')" style="width:18px">温度</button>        
-			<button type="button" class="btna btna-default btnitemgroup1"  id="wind" onclick="changeType('wind')" style="width:18px">风速</button>        
-			<button type="button" class="btna btna-default btnitemgroup1"  id="hum" onclick="changeType('hum')" style="width:18px">湿度</button>              
-		</div>
-		<div id="btn-group2" class="btna-group btna-group-sm" style="float:left;margin-left:490px;margin-top:-32px;">
-			<button type="button" class="btna btna-default btndategroup1 btna-success" id="d"  value="DAY"onclick="changeTimeQuick('d')" style="width:43px">最近一天</button>
-			<button type="button" class="btna btna-default btndategroup1" id="w"  value="MONTH"onclick="changeTimeQuick('w')" style="width:43px">最近一周</button>
-			<button type="button" class="btna btna-default btndategroup1" id="m"  value="MONTH"onclick="changeTimeQuick('m')" style="width:43px">最近一月</button>
-			<button type="button" class="btna btna-default btndategroup1" id="y"  value="YEAR"onclick="changeTimeQuick('y')" style="width:43px">最近一年</button>
-		</div>
-		<div id="btn-group3" class="btna-group btna-group-sm" style="float:left;margin-left:764px;margin-top:-32px;">
-			<button type="button" class="btna btna-default btndategroup1 btna-success" id="eh" value="exactHour" onclick="changeExact('eh')" style="width:30px;">按小时</button>
-			<button type="button" class="btna btna-default btndategroup1" id="ed"value="exactDay" onclick="changeExact('ed')" style="width:30px">按天</button>
-		</div>
-		<div style="float:right;margin-top:-30px;">
-			<input name="starttime" id="beginTime" class="Wdate" type="text" style="width:110px"/>-
-			<input name="endtime" id="stopTime" class="Wdate" type="text" style="width:110px"/>
-		</div>
-	</div>
-	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-</div>-->
 <!-- 历史数据模块 -->
 <%= stylesheet_link_tag "css/daterangepicker-bs3.css" %>
 <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -351,7 +315,6 @@
 			</div>
 		</div>
 	</div>
-
 </div>
 <div class="panel panel-primary">
 	<div class="panel-heading">
@@ -416,7 +379,6 @@
 	<div class="panel-footer">
 		<%# <a href="/rank1503" target="_blank" class='btn-link'>查看更多排名</a> %>
 	</div>
-
 </div>
 <%= javascript_include_tag 'bootstrap.min','respond','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','LineChart','rank_chart',"cities_around" %>
 
