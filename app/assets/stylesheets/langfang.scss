@@ -2,6 +2,18 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.home-banner{
+	background: image_url('bg.jpg')
+}
+.center{
+	text-align:center;
+}
+.title{
+	margin-top:30px;
+	font-size:60px;
+	color:#FFFFFF;
+	font-family:微软雅黑;
+}
 .t-t{
 	color:#333333;
 	height:36px;
@@ -24,4 +36,45 @@
 			text-decoration: none;
 		}	
 	}
+}
+#forcastfive
+{
+	font-family:'微软雅黑';
+	border: 3px solid #E3E9EC;
+	border-collapse:collapse;
+}
+#forcastfive td, #forcastfive th
+{
+	font-size:1em;
+	padding:3px 7px 2px 7px;
+}
+#forcastfive th
+{
+	font-size:1.1em;
+	text-align:left;
+	padding-top:5px;
+	padding-bottom:4px;
+	background-color:#30A6E5;
+	color:#ffffff;
+}
+#forcastfive tr.alt td
+{
+	color:#000000;
+}
+.future-list{
+	ul{
+		li{
+			margin-left:100px;
+		}
+	}
+}
+.t-c{
+	text-align:center;
+	img{
+		width:80%;
+	}
+}
+.row{
+	padding-left:70px;
+	padding-right:70px;
 }

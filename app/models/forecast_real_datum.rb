@@ -70,4 +70,60 @@ class ForecastRealDatum < ActiveRecord::Base
 		end
 		achf
 	end
+
+
+	#未来五天城市预报
+	def air_quality_forecast(pinyin)
+		if $redis[pinyin].nil?
+      tmp = City.find_by_city_name_pinyin(pinyin).forecast_real_data.last(120).group_by_day(&:forecast_datetime)
+			Custom::Redis.set(pinyin,tmp,3600)
+		else 
+			tmp=Custom::Redis.get(pinyin)
+		end
+		fore_data = Hash.new
+		tmp.each do |time,data|
+			temp = Hash.new 
+			sum = 0
+			num = 0
+			tmpd = Hash.new
+
+			ary = Array.new
+			data.each do |t|
+				sum += t['AQI'];num += 1 if t['AQI'] != 0
+				ary << t['AQI']
+				td = false
+				if tmpd[t['main_pol']] == nil
+					tmpd[t['main_pol']] = 1
+				else
+					tmpd[t['main_pol']] += 1
+				end
+			end
+
+			temp['max'] = ary.max
+			temp['min'] = ary.min
+
+			temp["main_pol"]=tmpd.sort{|a,b| a[1] <=> b[1]}.last.first.to_s
+			temp["AQI"] = sum/num
+			temp["level"] = get_lev(sum/num)
+			fore_data[time] = temp
+		end
+		fore_data
+	end
+
+	#aqi等级
+	def get_lev(a)
+		if (0 .. 50) === a
+			lev = '优'
+		elsif (50 .. 100) === a
+			lev = '良'
+		elsif (100 .. 150) === a
+			lev = '轻度污染'
+		elsif (150 .. 200) === a
+			lev = '中度污染'
+		elsif (200 .. 300) === a
+			lev = '重度污染'
+		elsif (300 .. 500) === a
+			lev = '严重污染'
+		end
+	end
 end

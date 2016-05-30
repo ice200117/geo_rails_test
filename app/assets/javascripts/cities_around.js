@@ -2,7 +2,7 @@
 	
 	$.get("/qinhuangdao/cities_around_fun.json",function(result){
 	var j=0;
-	var info=result	
+	var info=result;	
 	console.info(info);
 	$("#table_around").append("<tr><th class='top11-title' height='10%' style='text-align:left;padding-left:10px;padding-top:10px;color: black;'>周边城市</th></tr>");
 		var $tr=$("<tr style=''></tr>");

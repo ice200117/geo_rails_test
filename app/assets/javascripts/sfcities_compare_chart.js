@@ -266,7 +266,7 @@ function getData()
 
 
    $.ajax({             
-        url: '/welcome/city_compare_chart',
+        url: 'sfcities_compare_chart',
         data:{
               'city1':city1,
               'city2':city2,
