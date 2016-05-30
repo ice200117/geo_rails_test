@@ -19,6 +19,7 @@ Rails.application.config.assets.precompile += %w(
 	map_welcome.js 
 	css/styles.css 
 	css/button.css 
+	css/wdatepicker.css
 	jquery.cookie.js 
 	jquery.min.js 
 	bootstrap.min.js 

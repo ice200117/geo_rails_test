@@ -15,6 +15,7 @@ response = HTTParty.post('http://www.izhenqi.cn/api/dataapi.php', :body => hs)
 data=JSON.parse(Base64.decode64(response.body))
 f = File.open('/vagrant/test.txt','w')
 data['rows'].each do |l|
-	f.puts(l['city']+','+l['pointname']+','+l['latitude'].to_s+','+l['longitude'].to_s)
+	# f.puts(l['city']+','+l['pointname']+','+l['latitude'].to_s+','+l['longitude'].to_s)
+	f.puts(l)
 end
 f.close

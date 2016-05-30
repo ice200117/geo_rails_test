@@ -28,21 +28,21 @@ Rails.application.routes.draw do
 	#root 'welcome#index'
 	#root 'welcome#map'
 	root 'qinhuangdao#pinggu'
-#	get '/compare' => 'welcome#compare'
-	#get '/bdqx_compare' => 'welcome#bdqx_compare'  
-	#get '/sfcities_compare' => 'welcome#sfcities_compare' 
-	#get '/real_time_monitoring' => 'welcome#real_time_monitoring'
-	#get '/history_data' => 'welcome#history_data'
-	#get '/forecast' => 'welcome#forecast'
-	#get '/real_map' => 'welcome#real_map'
-	#get '/case' => 'welcome#case'
-	#get '/about' => 'welcome#about'
-	#get '/rank1503' => 'welcome#rank1503'
-	#get '/map' => 'welcome#map'
+	get '/compare' => 'welcome#compare'
+	get '/bdqx_compare' => 'welcome#bdqx_compare'  
+	get '/sfcities_compare' => 'welcome#sfcities_compare' 
+	get '/real_time_monitoring' => 'welcome#real_time_monitoring'
+	get '/history_data' => 'welcome#history_data'
+	get '/forecast' => 'welcome#forecast'
+	get '/real_map' => 'welcome#real_map'
+	get '/case' => 'welcome#case'
+	get '/about' => 'welcome#about'
+	get '/rank1503' => 'welcome#rank1503'
+	get '/map' => 'welcome#map'
 	get '/bar' => 'welcome#bar', as: :bar_welcome
-	#get '/subindex' => 'welcome#subindex', as: :subindex_welcome
-	#get '/pinggu' => 'welcome#pinggu', as: :pinggu_welcome
-	#get '/visits_by_day' => 'welcome#visits_by_day', as: :visits_by_day_welcome
+	get '/subindex' => 'welcome#subindex', as: :subindex_welcome
+	get '/pinggu' => 'welcome#pinggu', as: :pinggu_welcome
+	get '/visits_by_day' => 'welcome#visits_by_day', as: :visits_by_day_welcome
 	get 'welcome/adj_ajax/:type/:post' => 'welcome#adj_ajax', as: :adj_ajax_welcome
 	get 'welcome/chartway' => 'welcome#chartway'
 	get 'welcome/city_compare_chart' => 'welcome#city_compare_chart'
@@ -88,5 +88,5 @@ Rails.application.routes.draw do
 
 	#廊坊路由
 	get 'langfang/index' => 'langfang#forecast'
-  get 'langfang/lf_forecast_pics'
+	get 'langfang/lf_forecast_pics'
 end

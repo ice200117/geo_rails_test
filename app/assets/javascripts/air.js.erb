@@ -239,7 +239,8 @@ $(document).ready(function(){
     };
     ForecastDate.prototype = {
         init: function(){
-            var currentDate = '<%= Time.now.strftime("%Y-%m-%d").to_s %>';
+			var day = new Date();
+            var currentDate = day.getFullYear()+'-'+(day.getMonth()+1)+'-'+day.getDate();
             this.selectData(currentDate);
             photo.init(currentDate,timeline.formateTime(defaultHour),lastFactor);
         },
