@@ -207,9 +207,9 @@ def ten_times_test(name,url,option)
 		break if hs!=false
 	end
 	if hs == false
-		out_log(Time.now.to_s+" "+name+"ERROR！")
+		out_log(Time.now.to_s+" "+name.to_s+"ERROR！")
 	elsif hs[:total].to_i == 0
-		out_log(Time.now.to_s+" "+name+"total is 0")
+		out_log(Time.now.to_s+" "+name.to_s+"total is 0")
 		hs=false
 	end
 	hs

@@ -28,7 +28,7 @@ module AllSite
 			filePath = PATH+tmpTime[0..7]
 			Dir::mkdir(filePath) unless Dir.exists?(filePath)
 			f = File.open(filePath+'/'+tmpTime+'_station.csv','w')
-			f.puts('station_name,Lon,Lat,AQI')
+			f.puts('station_name,Lon,Lat,AQI,pm2_5,pm10,so2,no2,o3,o3_8h,co,quality,main_pollutant,time,city')
 
 			#遍历站点数据
 			@data['rows'].each do |l|
@@ -49,7 +49,7 @@ module AllSite
 				MonitorPointHour.new.save_with_arg(l)
 
 				#逐条写入cvs
-				f.puts(city.city_name_pinyin.to_s+','+mp.longitude.to_s+','+mp.latitude.to_s+','+l['aqi'].to_s)
+				f.puts(l['pointname']+','+mp.longitude.to_s+','+mp.latitude.to_s+','+l['aqi'].to_s+','+l['pm2_5'].to_s+','+l['pm10'].to_s+','+l['so2'].to_s+','+l['no2'].to_s+','+l['o3'].to_s+','+l['o3_8h'].to_s+','+l['co'].to_s+','+l['quality'].to_s+','+l['main_pollutant'].to_s+','+l['time']+','+l['city'])
 			end
 			f.close #关闭
 		end
