@@ -12,10 +12,10 @@
 !/log/.keep
 /tmp
 /vendor/rd_hourly_aqi.rb
-*.swp
-cron_log.log
+/*.swp
+/cron_log.log
 /public/images
 /public/assets
-*.log
-public/assets/*
-public/images/*
+/*.log
+/public/assets/*
+/public/images/*
