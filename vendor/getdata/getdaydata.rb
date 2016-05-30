@@ -3,7 +3,7 @@ require_relative './get_qinhuangdao_data.rb'
 
 time=Time.now.yesterday
 #秦皇岛日数据
-# Qinhuangdao::Qinhuangdao.new.day
+Qinhuangdao::Qinhuangdao.new.day
 
 # tmp=MonitorPointDay.last.data_real_time
 # stime=tmp.beginning_of_day
@@ -43,15 +43,15 @@ time=Time.now.yesterday
 # common_get_month_year('langfang',TempLfYear,time)
 
 #京津冀日数据
-# time=Time.now.yesterday
-# hs=ten_times_test('TempJjjDay','history_74',{secret:'JINGJINJIDATA',type:'DAY',date:time})
-# save_db(hs,TempJjjDay)
+time=Time.now.yesterday
+hs=ten_times_test('TempJjjDay','history_74',{secret:'JINGJINJIDATA',type:'DAY',date:time})
+save_db(hs,TempJjjDay)
 
 #京津冀月数据
-# common_get_month_year('jjj',TempJjjMonth,time)
+common_get_month_year('jjj',TempJjjMonth,time)
 
 #京津冀年数据
-# common_get_month_year('jjj',TempJjjYear,time)
+common_get_month_year('jjj',TempJjjYear,time)
 
 #74城市日数据
 hs=ten_times_test('TempSfcitiesDay','shishi_rank_74',{secret:'CHINARANK',type:'DAY'})

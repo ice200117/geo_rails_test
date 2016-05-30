@@ -237,12 +237,9 @@ class LangfangController < ApplicationController
 	def forecast
 		@banner = banner()
 		@day_fdata = @banner["day_fdata"]
-		#@post='130300'
-		#@city_adj = @banner["city_adj"]
-		#@adj_per1 = @banner["adj_per1"]
 		@forecast_data = get_forecast()
 		@imgTime = Time.now.strftime("%Y%m%d")
-		@forecast_data = get_forecast()
+		#@forecast_data = get_forecast()
 	end
 
 	def lf_forecast_pics
