@@ -33,7 +33,8 @@ Rails.application.routes.draw do
 	# You can have the root of your site routed with "root"
 	#root 'welcome#index'
 	#root 'welcome#map'
-	root 'qinhuangdao#pinggu'
+	#root 'qinhuangdao#pinggu'
+	root 'langfang#forecast'
 	get '/compare' => 'welcome#compare'
 	get '/bdqx_compare' => 'welcome#bdqx_compare'  
 	get '/sfcities_compare' => 'welcome#sfcities_compare' 
