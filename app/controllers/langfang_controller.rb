@@ -6,8 +6,9 @@ class LangfangController < ApplicationController
 	#获取预测数据
 	def get_forecast
 		@weather = Hash.new
-		if Custom::Redis.get('langfang_weaterh').nil?
-			city_name_encode = ERB::Util.url_encode("秦皇岛")
+    #Custom::Redis.del('langfang_weather')
+		if Custom::Redis.get('langfang_weather').nil?
+			city_name_encode = ERB::Util.url_encode("廊坊")
 			options = Hash.new
 			headers={'apikey' => 'f8484c1661a905c5ca470b0d90af8d9f'}
 			options[:headers] = headers
@@ -23,19 +24,48 @@ class LangfangController < ApplicationController
 
 			end
 
-			temp = HourlyCityForecastAirQuality.new.air_quality_forecast('qinhuangdaoshi')
-			temp.each do |k,v|
-				v["fore_lev"] = get_lev(v["AQI"])
-				key = k.to_time.strftime("%Y%m%d")
-				if @weather[key] != nil
-					@weather[key]=@weather[key].merge(v)
-				end
+      fore_range = ForecastDailyDatum.get_three_daily_range
+      if fore_range.length == 0
+        temp = ForecastRealDatum.new.air_quality_forecast('langfangshi')
+        pdate = temp.first[0].to_date
+        city_id =  18 #City.find_by_city_name_pinyin('langfangshi').id
 
-			end
+        temp.each do |k,v|
+          d = {}
+          d["city_id"] = city_id
+          d["publish_date"] = pdate
+          d["forecast_date"] = k.to_date
+          d["max_forecast"] = v["max"]
+          d["min_forecast"] = v["min"]
+          d["main_pollutant"] = v["main_pol"]
+          byebug
+          ForecastDailyDatum.create(d)
 
-			Custom::Redis.set('langfang_weaterh',@weather,3600*24)
+          d["fore_lev"] = get_lev(v["min"])
+          d["fore_lev1"] = get_lev(v["max"])
+          d["level"] = v["level"]
+          d["level1"] = v["level1"]
+
+
+          key = k.to_time.strftime("%Y%m%d")
+          if @weather[key] != nil# and k.to_date >= Date.today
+            @weather[key]=@weather[key].merge(d)
+          end
+        end
+        Custom::Redis.del('langfang_weather')
+      else
+        fore_range.each do |k,v|
+          v["fore_lev"] = get_lev(v["min_forecast"])
+          v["fore_lev1"] = get_lev(v["max_forecast"])
+          key = k.to_time.strftime("%Y%m%d")
+          if @weather[key] != nil
+            @weather[key]=@weather[key].merge(v)
+          end
+        end
+      end
+			Custom::Redis.set('langfang_weather',@weather,3600)
 		else
-			@weather=Custom::Redis.get('langfang_weaterh')
+			@weather=Custom::Redis.get('langfang_weather')
 		end
 
 		@ret=@weather
@@ -240,7 +270,6 @@ class LangfangController < ApplicationController
 		#@post='130300'
 		#@city_adj = @banner["city_adj"]
 		#@adj_per1 = @banner["adj_per1"]
-		@forecast_data = get_forecast()
 		@imgTime = Time.now.strftime("%Y%m%d")
 		@forecast_data = get_forecast()
 	end
@@ -310,7 +339,7 @@ class LangfangController < ApplicationController
 		ch=nil
 		if $redis['langfang_hour_forecast'].nil?
 			c = City.find_by_city_name_pinyin('langfangshi')
-			ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(72).group_by_day(&:forecast_datetime)
+			ch = c.forecast_real_data.last(120).group_by_day(&:forecast_datetime)
 			Custom::Redis.set('langfang_hour_forecast',ch,3600*24)
 		else
 			ch = Custom::Redis.get('langfang_hour_forecast')

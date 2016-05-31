@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160516074526) do
+ActiveRecord::Schema.define(version: 20160530084445) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -131,6 +131,17 @@ ActiveRecord::Schema.define(version: 20160516074526) do
     t.float     "zongheindex_change_rate"
     t.timestamp "created_at",              precision: 6
     t.timestamp "updated_at",              precision: 6
+  end
+
+  create_table "forecast_daily_data", force: true do |t|
+    t.integer  "city_id"
+    t.date     "publish_date"
+    t.date     "forecast_date"
+    t.integer  "max_forecast"
+    t.integer  "min_forecast"
+    t.string   "main_pollutant"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "forecast_points", force: true do |t|
