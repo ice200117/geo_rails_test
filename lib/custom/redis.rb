@@ -27,5 +27,10 @@ module Custom::Redis
 		else
 			JSON.parse(data) 
 		end
+  end
+
+  def self.del(name)
+		return false unless OPEN
+		$redis.del(name)
 	end
 end

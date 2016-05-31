@@ -240,7 +240,8 @@ $(document).ready(function(){
     ForecastDate.prototype = {
         init: function(){
 			var day = new Date();
-            var currentDate = day.getFullYear()+'-'+(day.getMonth()+1)+'-'+day.getDate();
+			var dMonth=day.getMonth()+1
+			var currentDate = day.getFullYear()+'-'+(dMonth>9?dMonth:'0'+dMonth)+'-'+day.getDate();
             this.selectData(currentDate);
             photo.init(currentDate,timeline.formateTime(defaultHour),lastFactor);
         },

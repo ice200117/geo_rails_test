@@ -1,11 +1,14 @@
 <div class="home-banner"> 
 	<div class="container">
+		<div class="row">
+			<div class="title center" >廊坊市空气质量预报</div>
+		</div>
 		<table cellpadding="0" cellspacing="0" border="0" width="100%;">
 			<tr>
+				<td></td>
+			</tr>
+			<tr>
 				<td width="780">
-					<div class="logo">
-						<div class="logo"><img src="<%= image_url 'logo_qhd.png' %>" width="500" height="54" /></div>
-					</div>
 					<div class="haze-forecast">
 						<!-- 级别图 -->
 						<div class="haze-grade"><%= image_tag banner['lev']+'.png', width:275, height:157 %></div>
@@ -25,7 +28,7 @@
 								</li>
 								<li  class="haze-value-bar">
 									<!-- 污染类型 -->
-									<span class="haze-type">AQI&nbsp;&nbsp;&nbsp;&nbsp;<%= banner['rt'].strftime('%H')%>时更新</span>
+									<span class="haze-type">AQI&nbsp;&nbsp;&nbsp;&nbsp;<%= banner['rt'].to_time.strftime('%H')%>时实时值更新</span>
 									<!-- 污染类型 end-->
 								</li>
 							</ul> 
@@ -59,7 +62,7 @@
 						<!-- 参数值  -->
 					</div>
 				</td>
-				<td width="420" valign="top">
+				<td width="420" valign="bottom">
 					<!-- 天气  -->
 					<div class="weather">
 						<div class="date">
@@ -76,25 +79,9 @@
 							</div>
 						</div>
 					</div>
-					<!-- 天气 end  -->
-					<!-- 日期 -->
-					<div class="paiming">
-						<!--
-						<span>全国当年排名估算：倒数<%= rank['year']%> <br></span>
-						<span>全国当前月排名估算：倒数<%= rank['month']%><br></span>
-						<span> 全国当前小时排名：倒数<%=rank['hour'] %></span><br>
-						<span><a href="#sfcity" style="font-size:14px; text-decoration:underline; color:#ffdd68;font-family:" 微软雅黑";="" "="">查看更多排名&gt;</a></span>
-						-->
-					</div>
-					<%# <div class="date"> %>
-					<%# </div> %>
-					<!-- 日期 end -->
 				</td>
 			</tr>
 		
 		</table>
 	</div>
 </div>
-<script type='text/javascript'>
-	$('.home-banner').backstretch("<%= image_url 'bg.jpg' %>");
-</script>

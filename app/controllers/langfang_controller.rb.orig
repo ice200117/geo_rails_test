@@ -6,7 +6,7 @@ class LangfangController < ApplicationController
 	#获取预测数据
 	def get_forecast
 		@weather = Hash.new
-		#Custom::Redis.del('langfang_weather')
+    #Custom::Redis.del('langfang_weather')
 		if Custom::Redis.get('langfang_weather').nil?
 			city_name_encode = ERB::Util.url_encode("廊坊")
 			options = Hash.new
@@ -267,10 +267,15 @@ class LangfangController < ApplicationController
 	def forecast
 		@banner = banner()
 		@day_fdata = @banner["day_fdata"]
+<<<<<<< HEAD
+		@forecast_data = get_forecast()
+=======
+		#@post='130300'
 		#@city_adj = @banner["city_adj"]
 		#@adj_per1 = @banner["adj_per1"]
+>>>>>>> 1626db7e373fe084da54ebfa9e002045e8c5e0b9
 		@imgTime = Time.now.strftime("%Y%m%d")
-		@forecast_data = get_forecast()
+		#@forecast_data = get_forecast()
 	end
 
 	def lf_forecast_pics

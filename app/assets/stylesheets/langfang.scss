@@ -9,11 +9,13 @@
 	text-align:center;
 }
 .title{
-	margin-top:30px;
+	margin-top:100px;
 	font-size:60px;
 	color:#FFFFFF;
 	font-family:微软雅黑;
+	padding-bottom:100px
 }
+.top11-title{ font-family:"微软雅黑"; font-size:24px; padding-left:20px; font-weight:normal;}
 .t-t{
 	color:#333333;
 	height:36px;
@@ -61,13 +63,6 @@
 {
 	color:#000000;
 }
-.future-list{
-	ul{
-		li{
-			margin-left:100px;
-		}
-	}
-}
 .t-c{
 	text-align:center;
 	img{
@@ -78,3 +73,45 @@
 	padding-left:70px;
 	padding-right:70px;
 }
+
+// 空气质量预报begin
+.future-list{
+	padding:10px 0px;
+	ul{
+		overflow:hidden; width:100%;
+		li{
+			.list-title{ font-size:14px; text-align:center; display:block; color:#333; display:block; margin:0px; padding:0px; height:48px; line-height:48px;}
+			.gray{ color:#999;}
+			.list-alue{ font-size:16px;}
+			padding-bottom:10px; 
+			padding-left:10px; 
+			float:left;
+			width:240px;
+			height:255px;
+			line-height:36px; 
+			margin-right:10px;
+			margin-left:70px;
+			font-size:12px;
+			background:#AEE8FF;
+			table{
+				td{
+					padding:0px 10px;
+				}
+				.yellow,.qingdu,.you,.zhongdu,.yanzhong,.zhong{padding:1px 10px;}
+				.yanzhong{background:#6f0474;}
+				.zhong{ background:#ba1d26;}
+				.yellow{ background:#fac305;}
+				.qingdu{ background:#fd5b30;}
+				.you{ background:#72ca29;}
+				.zhongdu{background:#b414bb;}
+				.list-weatherbar{ padding-top:15px;}
+				.small{ font-size:12px; padding:1px 10px; color:#fff;}
+				.smallforcast{ font-size:12px; padding:1px 10px; color:#000;}
+				.small1{ font-size:12px; padding:1px 10px; color:#000;}
+				.list-weather{ line-height:21px; font-size:12px;}
+			}
+		} 
+	} 
+}
+
+// 空气质量预报end

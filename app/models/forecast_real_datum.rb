@@ -99,12 +99,15 @@ class ForecastRealDatum < ActiveRecord::Base
 				end
 			end
 
-			temp['max'] = ary.max
-			temp['min'] = ary.min
+			#temp['max'] = ary.max
+			#temp['min'] = ary.min
 
 			temp["main_pol"]=tmpd.sort{|a,b| a[1] <=> b[1]}.last.first.to_s
-			temp["AQI"] = sum/num
-			temp["level"] = get_lev(sum/num)
+      temp["AQI"] = (sum/num).round
+			temp['max'] = temp["AQI"]+10
+			temp['min'] = temp["AQI"]-10
+      temp["level"] = get_lev(temp['min'])
+      temp["level1"] = get_lev(temp['max'])
 			fore_data[time] = temp
 		end
 		fore_data
@@ -126,4 +129,5 @@ class ForecastRealDatum < ActiveRecord::Base
 			lev = '严重污染'
 		end
 	end
+
 end
