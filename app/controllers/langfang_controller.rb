@@ -25,11 +25,10 @@ class LangfangController < ApplicationController
 			end
 
       fore_range = ForecastDailyDatum.get_three_daily_range
-      if fore_range.length == 0
-        temp = ForecastRealDatum.new.air_quality_forecast('langfangshi')
-        pdate = temp.first[0].to_date
+      temp = ForecastRealDatum.new.air_quality_forecast('langfangshi')
+      pdate = temp.first[0].to_date
+      if fore_range[0].length == 0 or pdate > fore_range[1]
         city_id =  18 #City.find_by_city_name_pinyin('langfangshi').id
-
         temp.each do |k,v|
           d = {}
           d["city_id"] = city_id
@@ -38,7 +37,6 @@ class LangfangController < ApplicationController
           d["max_forecast"] = v["max"]
           d["min_forecast"] = v["min"]
           d["main_pollutant"] = v["main_pol"]
-          byebug
           ForecastDailyDatum.create(d)
 
           d["fore_lev"] = get_lev(v["min"])
@@ -54,7 +52,7 @@ class LangfangController < ApplicationController
         end
         Custom::Redis.del('langfang_weather')
       else
-        fore_range.each do |k,v|
+        fore_range[0].each do |k,v|
           v["fore_lev"] = get_lev(v["min_forecast"])
           v["fore_lev1"] = get_lev(v["max_forecast"])
           key = k.to_time.strftime("%Y%m%d")
@@ -271,6 +269,7 @@ class LangfangController < ApplicationController
 		#@adj_per1 = @banner["adj_per1"]
 		@imgTime = Time.now.strftime("%Y%m%d")
 		@forecast_data = get_forecast()
+    get_forecast_pics
 	end
 
 	def lf_forecast_pics
@@ -292,9 +291,9 @@ class LangfangController < ApplicationController
 		t = stime
 		str_time = t.strftime("%Y-%m-%d_%H")
 		while(t+5.days > stime) do
-			str_date = t.strftime("%Y%m%d")
+			@str_date = t.strftime("%Y%m%d")
 			name = "CUACE_09km_#{type}_#{str_time}.png"
-			pic_name = "#{url}#{str_date}/Hourly/#{name}"
+			pic_name = "#{url}#{@str_date}/Hourly/#{name}"
 			begin
 				response = HTTParty.get(pic_name)
 				break if response.code==200
@@ -309,7 +308,7 @@ class LangfangController < ApplicationController
 			pic ={}
 			str_time = t.strftime("%Y-%m-%d_%H")
 			name = "CUACE_09km_#{type}_#{str_time}.png"
-			pic_name = "#{url}#{str_date}/Hourly/#{name}"
+			pic_name = "#{url}#{@str_date}/Hourly/#{name}"
 			pic["time"] = t.strftime("%m月%d日%H时")
 			pic["pic_url"] = pic_name
 			pics << pic

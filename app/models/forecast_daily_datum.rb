@@ -21,7 +21,7 @@ class ForecastDailyDatum < ActiveRecord::Base
       next if f.forecast_date < Date.today
       ret[f.forecast_date] = {"min_forecast"=> f.min_forecast, "max_forecast"=> f.max_forecast, "main_pollutant"=> f.main_pollutant, "level"=> get_lev(f.min_forecast), "level1"=> get_lev(f.max_forecast)}
     end
-    ret
+    [ret, td]
   end
 
 	#aqi等级
