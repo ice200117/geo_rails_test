@@ -6,7 +6,7 @@ class LangfangController < ApplicationController
 	#获取预测数据
 	def get_forecast
 		@weather = Hash.new
-		Custom::Redis.del('langfang_weather')
+		#Custom::Redis.del('langfang_weather')
 		if Custom::Redis.get('langfang_weather').nil?
 			city_name_encode = ERB::Util.url_encode("廊坊")
 			options = Hash.new
