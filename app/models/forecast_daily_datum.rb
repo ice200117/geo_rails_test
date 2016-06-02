@@ -6,14 +6,33 @@ class ForecastDailyDatum < ActiveRecord::Base
 	  Custom::Redis.del('langfang_weather') 
   end
 
+  def self.create_5obj(date = Date.today)
+    pdate = date
+    fdate = pdate
+    while fdate < 5.days.from_now
+      ForecastDailyDatum.create(city_id: 18, publish_date: pdate, forecast_date: fdate, main_pollutant:"暂无数据")
+      fdate = fdate + 1.day
+    end
+  end
+
+  def self.isModify(fs)
+    fs.each do |f|
+      if f.max_forecast != nil and f.min_forecast != nil
+        return true
+      end
+    end
+    false
+  end
+
 
   def self.get_three_daily_range
-    td = Date.today
+    td = Date.today-1.day
     begin
       fs = ForecastDailyDatum.where(publish_date: td)
-      break if fs.length>0
+      break if fs.length>0 and isModify(fs)
+      create_5obj(td)
       td = td - 1.day
-    end while td > 3.days.ago.to_date
+    end while td > 4.days.ago.to_date
 
 
     ret = {}

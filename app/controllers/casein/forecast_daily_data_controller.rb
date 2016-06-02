@@ -20,7 +20,7 @@ module Casein
   
     def new
       @casein_page_title = 'Add a new forecast daily datum'
-    	@forecast_daily_datum = ForecastDailyDatum.new
+      @forecast_daily_datum = ForecastDailyDatum.new(publish_date: Date.today)
     end
 
     def create

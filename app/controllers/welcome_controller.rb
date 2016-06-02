@@ -163,7 +163,7 @@ class WelcomeController < ApplicationController
 
 		# Table 4: 预报准确性月小时值评估
 		# 获取过去一个月的监测小时值
-    get_lf_hour_data
+    get_hour_data(c)
 
 		respond_to do |format|
 			format.html { }
@@ -189,11 +189,11 @@ class WelcomeController < ApplicationController
 #     end
 #     ret_data
 # =======
-  def get_lf_hour_data
-    c = City.find 18
+  def get_hour_data(c)
+    #c = City.find 18
     # Table 4: 预报准确性月小时值评估
     # 获取过去一个月的监测小时值
-    num_day = 40
+    num_day = 67
 		monitor_data_hour = ChinaCitiesHour.history_data_hour(c, num_day.days.ago.beginning_of_day)
     # 获取过去一个月的预报24,48,72,96小时值
     forecast_data_hour = HourlyCityForecastAirQuality.history_data_hour(c, num_day.days.ago.beginning_of_day, 0)
@@ -216,19 +216,25 @@ class WelcomeController < ApplicationController
       @correlation << r(v[0].map {|d| d[1]}, v[1].map {|d| d[1]})
 	  @corr_data << v
     end
-    forecast_data_hour_ann.each_index do |i|
-      v = data_to_vector(mld,add_loss_hour_data(forecast_data_hour_ann[i]))
-      @correlation << r(v[0].map {|d| d[1]}, v[1].map {|d| d[1]})
-	  @corr_data << v
-      #@correlation << r(Hash(*v[0].flatten).values, Hash(*v[1].flatten).values)
+    if forecast_data_hour_ann.first.length >0
+      forecast_data_hour_ann.each_index do |i|
+        v = data_to_vector(mld,add_loss_hour_data(forecast_data_hour_ann[i]))
+        @correlation << r(v[0].map {|d| d[1]}, v[1].map {|d| d[1]})
+      @corr_data << v
+        #@correlation << r(Hash(*v[0].flatten).values, Hash(*v[1].flatten).values)
+      end
     end
-
     mld
 
   end
 
-  def export_lfdata_xls
-	  get_lf_hour_data
+  def export_data_xls
+    c = City.find_by_city_name_pinyin(params[:city])
+    if c
+      get_hour_data(c) 
+    else
+      return 'can not find city'
+    end
 	  book = Spreadsheet::Workbook.new
 	  @corr_data.each_index do |tdi|
 		  sheet = book.create_worksheet :name => 'sheet'+(tdi+1).to_s
@@ -242,11 +248,11 @@ class WelcomeController < ApplicationController
 			  sheet[i+1,2] = @corr_data[tdi][1][i][0]; sheet[i+1,3] = @corr_data[tdi][1][i][1] 
 		  end
 	  end
-      file_path = "#{Rails.root}/public/data.xls"
-	  `rm *.xls`
+      file_path = "#{Rails.root}/public/#{c.city_name_pinyin}_data_#{Time.now.strftime("%Y%m%d")}.xls"
+	  `rm #{file_path}`
 	  book.write(file_path)
 
-	  send_file file_path, :filename => 'data.xls'
+    send_file file_path, :filename => "#{c.city_name_pinyin}_data_#{Time.now.strftime("%Y%m%d")}.xls"
 #	  respond_to do |format|
 #		  format.xls {
 #			  send_file file_path, :filename => 'data.xls'

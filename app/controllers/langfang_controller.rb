@@ -6,7 +6,7 @@ class LangfangController < ApplicationController
 	#获取预测数据
 	def get_forecast
 		@weather = Hash.new
-		#Custom::Redis.del('langfang_weather')
+		Custom::Redis.del('langfang_weather')
 		if Custom::Redis.get('langfang_weather').nil?
 			city_name_encode = ERB::Util.url_encode("廊坊")
 			options = Hash.new
@@ -27,7 +27,7 @@ class LangfangController < ApplicationController
       fore_range = ForecastDailyDatum.get_three_daily_range
       temp = ForecastRealDatum.new.air_quality_forecast('langfangshi')
       pdate = temp.first[0].to_date
-      if fore_range[0].length == 0 or pdate > fore_range[1]
+      if fore_range[0].length == 0# or pdate > fore_range[1]
         city_id =  18 #City.find_by_city_name_pinyin('langfangshi').id
         temp.each do |k,v|
           d = {}
@@ -37,7 +37,11 @@ class LangfangController < ApplicationController
           d["max_forecast"] = v["max"]
           d["min_forecast"] = v["min"]
           d["main_pollutant"] = v["main_pol"]
-          ForecastDailyDatum.create(d)
+          f = ForecastDailyDatum.find_or_create_by(city_id: city_id, publish_date: pdate, forecast_date: k.to_date)
+          f.max_forecast = v["max"]
+          f.min_forecast = v["min"]
+          f.main_pollutant = v["main_pol"]
+          f.save
 
           d["fore_lev"] = get_lev(v["min"])
           d["fore_lev1"] = get_lev(v["max"])
