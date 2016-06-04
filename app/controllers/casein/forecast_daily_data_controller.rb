@@ -9,7 +9,7 @@ module Casein
   
     def index
       @casein_page_title = 'Forecast daily data'
-      @forecast_daily_data = ForecastDailyDatum.order(sort_order(:publish_date)).reverse_order.paginate :page => params[:page]
+      @forecast_daily_data = ForecastDailyDatum.order(sort_order(:publish_date)).reverse_order.paginate :page => params[:page], :per_page=>10
     end
   
     def show

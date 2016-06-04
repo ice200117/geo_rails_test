@@ -9,8 +9,23 @@ class ForecastDailyDatum < ActiveRecord::Base
   def self.create_5obj(date = Date.today)
     pdate = date
     fdate = pdate
-    while fdate < 5.days.from_now
-      ForecastDailyDatum.create(city_id: 18, publish_date: pdate, forecast_date: fdate, main_pollutant:"暂无数据")
+	edate = fdate + 5.days
+    fs = ForecastDailyDatum.where(publish_date: pdate-1.day)
+	max = nil
+	min = nil
+	main = '暂无数据'
+
+    while fdate < edate
+	  # Get yesterday forecast data.
+	  fs.each do |f|
+		  if f.forecast_date == fdate
+			  max = f.max_forecast
+			  min = f.min_forecast
+			  main = f.main_pollutant
+		  end
+	  end
+
+      ForecastDailyDatum.create(city_id: 18, publish_date: pdate, forecast_date: fdate, main_pollutant:main, max_forecast: max, min_forecast: min)
       fdate = fdate + 1.day
     end
   end
@@ -30,7 +45,7 @@ class ForecastDailyDatum < ActiveRecord::Base
     begin
       fs = ForecastDailyDatum.where(publish_date: td)
       break if fs.length>0 and isModify(fs)
-      create_5obj(td)
+      create_5obj(td) if fs.empty?
       td = td - 1.day
     end while td > 4.days.ago.to_date
 
