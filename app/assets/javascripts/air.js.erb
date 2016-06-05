@@ -11,8 +11,8 @@ function getImageNames(modeName,factorName,date){
 			if(i<10){
 				h='0'+i;
 			}
-			var path = 'http://60.10.135.153:3004/images/china_fc09/'+<%= Time.now.strftime("%Y%m%d")%>+'/Hourly/';
-			names.push(path+modeName+'_09km_'+factorName+'_'+date+'_'+h+'.png');
+      var imagePath=$("#imagePath").val()+'/';
+			names.push(imagePath+modeName+'_09km_'+factorName+'_'+date+'_'+h+'.png');
 		}
 	} 
 	return names;
@@ -241,7 +241,8 @@ $(document).ready(function(){
         init: function(){
 			var day = new Date();
 			var dMonth=day.getMonth()+1
-			var currentDate = day.getFullYear()+'-'+(dMonth>9?dMonth:'0'+dMonth)+'-'+day.getDate();
+      var dday=day.getDate()
+			var currentDate = day.getFullYear()+'-'+(dMonth>9?dMonth:'0'+dMonth)+'-'+(dday>9?dday:'0'+dday);
             this.selectData(currentDate);
             photo.init(currentDate,timeline.formateTime(defaultHour),lastFactor);
         },
