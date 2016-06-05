@@ -1,6 +1,7 @@
 class TempSfcitiesDay < ActiveRecord::Base
 	validates :city_id, uniqueness: { scope: :data_real_time,
 								   message: "数据重复！" }
+	belongs_to :city
 	def get_rank_chart_data(name,stime,etime)
 		#获取日数据排名
 		data = Custom::Redis.get('get_rank_chart_data_day')
@@ -17,7 +18,7 @@ class TempSfcitiesDay < ActiveRecord::Base
 		end
 	end
 
-	def city_rank(cityNamePinyin)
-		City.find_by_city_name_pinyin('cityNamePinyin').temp_sfcities_days.last.rank
+	def self.city_rank(cityNamePinyin)
+		City.find_by_city_name_pinyin(cityNamePinyin).temp_sfcities_days.last.rank
 	end
 end

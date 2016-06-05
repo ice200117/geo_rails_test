@@ -9,6 +9,9 @@ class QinhuangdaoController < Casein::CaseinController
 	include NumRu
 	protect_from_forgery :except => [:get_forecast_baoding, :get_city_point]
 
+	before_action :banner,only: [:pinggu,:rank1503,:forecast,:compare]
+	before_action :get_forecast,only: [:pinggu,:forecast]
+
 	def map
 		system('ls')
 		r = `rails r vendor/test.rb`
@@ -35,7 +38,7 @@ class QinhuangdaoController < Casein::CaseinController
 		@diff_monitor_forecast = []
 		if params[:c] 
 			city_name = params[:c][:city_name]
-			c =  City.find_by_city_name(city_name)
+			c = City.find_by_city_name(city_name)
 			c = City.find_by_city_name(city_name+'市') unless c
 			c = City.find_by city_name_pinyin: 'qinhuangdaoshi' unless c
 			id = c.id
@@ -357,17 +360,6 @@ class QinhuangdaoController < Casein::CaseinController
 		@sfcitiesrankbyday=change_data_type(change_74_main_pol(get_db_data(TempSfcitiesDay,TempSfcitiesDay.last.data_real_time)),0)
 		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth,TempSfcitiesMonth.last.data_real_time),0)
 		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear,TempSfcitiesYear.last.data_real_time),0)
-
-
-		@rank={'hour'=>get_rank(@sfcitiesrankbyhour)}
-		@rank['day']=get_rank(@sfcitiesrankbyday[:cities])
-		@rank['month']=get_rank(@sfcitiesrankbymonth[:cities])
-		@rank['year']=get_rank(@sfcitiesrankbyyear[:cities])
-
-		@banner = banner()
-
-		@forecast_data = get_forecast()
-
 		# adj data
 		@city_adj = 'ADJ_baoding/'
 
@@ -423,6 +415,7 @@ class QinhuangdaoController < Casein::CaseinController
 
 	#修改小数点位数
 	def change_data_type(data,flag)			
+		#设置需要处理小数位数的字段
 		float_round={"SO2"=>0,"NO2"=>0,"CO"=>1,"O3"=>0,"pm10"=>0,"pm25"=>0,"zonghezhishu"=>2,"AQI"=>0,
 			   "SO2_change_rate"=>4,"NO2_change_rate"=>4,"CO_change_rate"=>4,"O3_change_rate"=>4,"pm10_change_rate"=>4,
 			   "pm25_change_rate"=>4,"zongheindex_change_rate"=>4}
@@ -470,11 +463,11 @@ class QinhuangdaoController < Casein::CaseinController
 		response = HTTParty.get(url,options)
 		json = JSON.parse(response.body)
 		# puts 0 if json['showapi_res_error'] == 0
-		@weather = Hash.new
+		@forecast_data = Hash.new
 		json['showapi_res_body'].each do |k,v|
 			if k[-1].to_i > 0 
 				tq = get_tq(v)
-				@weather[tq['day']] = tq
+				@forecast_data[tq['day']] = tq
 			end
 		end
 		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('qinhuangdaoshi')
@@ -483,11 +476,11 @@ class QinhuangdaoController < Casein::CaseinController
 		temp.each do |k,v|
 			v["fore_lev"] = get_lev(v["AQI"])
 			key = k.to_time.strftime("%Y%m%d")
-			if @weather[key] != nil
-				@weather[key]=@weather[key].merge(v)
+			if @forecast_data[key] != nil
+				@forecast_data[key]=@forecast_data[key].merge(v)
 			end
 		end
-		@ret=@weather
+		# @ret=@weather
 	end
 	#天气处理与get_forecast合作使用
 	def get_tq(f1)
@@ -841,20 +834,16 @@ class QinhuangdaoController < Casein::CaseinController
 		@sfcitiesrankbyday=change_data_type(get_db_data(TempSfcitiesDay),0)
 		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth),0)
 		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear),0)
-		@banner=banner()
 	end
 
 	def forecast
-		@banner = banner()
 		@day_fdata = @banner["day_fdata"]
 		@post='130300'
 		@city_adj = @banner["city_adj"]
 		@adj_per1 = @banner["adj_per1"]
-		@forecast_data = get_forecast()
 	end
 
 	def compare
-		@banner = banner()
 	end
 	def sfcities_compare
 		render layout: getlayoutbyaction('sfcities_compare')
@@ -944,10 +933,14 @@ class QinhuangdaoController < Casein::CaseinController
 		hs["city_adj"] = 'ADJ_qinhuangdao/'
 		force = 'qhd'
 		hs["adj_per1"] = adj_percent('SO2_120', hs["city_adj"], force)
-#		hs["adj_per2"] = adj_percent('NOX_120', hs["city_adj"], force)
-#		hs["adj_per3"] = adj_percent('CO_120', hs['city_adj'], force)
 
-		return hs
+		city_name_pinyin='qinhuangdaoshi'
+		@rank={'hour'=>TempSfcitiesHour.city_rank(city_name_pinyin)}
+		@rank['day']=TempSfcitiesDay.city_rank(city_name_pinyin)
+		@rank['month']=TempSfcitiesMonth.city_rank(city_name_pinyin)
+		@rank['year']=TempSfcitiesYear.city_rank(city_name_pinyin)
+
+		@banner = hs
 	end 
 	#周边城市
 	def cities_around_fun

@@ -241,6 +241,7 @@ def save_db_common(model,t,time)
 	day_city.NO2=t['no2'] if t['no2'] != nil
 	day_city.CO=t['co'] if t['co'] != nil
 	day_city.O3 = t['o3'] if t['o3'] != nil
+	day_city.O3_8h = t['o3_8h'] if t['o3_8h'] != nil && day_city.respond_to?('O3_8h')
 	day_city.pm10=t['pm10'] if t['pm10'] != nil
 	day_city.pm25=t['pm2_5'] if t['pm2_5'] != nil
 	day_city.AQI = t['aqi'] if t['aqi'] != nil && day_city.respond_to?('AQI')
@@ -271,6 +272,8 @@ def save_db_common(model,t,time)
 	puts '=='+model.name+'=='+time.to_s+'=Save OK!==='
 	out_log(model.name+time.to_s+t['city']) if city.nil?	
 end
+
+#保存到站点表
 
 #通用方法
 def common_get_month_year(city_list,model,time)

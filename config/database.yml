@@ -90,7 +90,7 @@ production:
     #url: <%= ENV['DATABASE_URL'] %>
   <<: *default
   database: geo_rails_test_production
-  host: 60.10.135.153
-  port: 5432
+  # host: 60.10.135.153
+  # port: 5432
   #username: geo_rails_test
   #password: <%= ENV['GEO_RAILS_TEST_DATABASE_PASSWORD'] %>

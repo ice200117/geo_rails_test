@@ -6,14 +6,16 @@ class ChinaCitiesHour < ActiveRecord::Base
 		city_avg = {}
 		if city_name_pinyin
 			c = City.find_by_city_name_pinyin(city_name_pinyin)
-			f = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day).average(spe)
+			f = c.china_cities_hours.where(
+				data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day).average(spe)
 			city_avg[c.city_name] = f.round if f
 		else
-      cs = City.includes(:china_cities_hours).where(china_cities_hours: {data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day})
+			cs = City.includes(:china_cities_hours).where(
+				china_cities_hours: {data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day})
 			print cs.length
 			cs.each do |cl|
-        f = (cl.china_cities_hours.collect(&spe).sum / cl.china_cities_hours.length).to_i
-        city_avg[cl.city_name] = f
+				f = (cl.china_cities_hours.collect(&spe).sum / cl.china_cities_hours.length).to_i
+				city_avg[cl.city_name] = f
 			end
 		end
 		#puts city_avg
@@ -56,7 +58,7 @@ class ChinaCitiesHour < ActiveRecord::Base
 			data[:NO2] = d.NO2
 			data[:O3] = d.O3
 			data[:pm10] = d.pm10
-		  data[:pm25] = d.pm25
+			data[:pm25] = d.pm25
 			data[:level] = d.level
 			data[:main_pol] = d.main_pol
 			data[:AQI] = d.AQI
@@ -75,8 +77,8 @@ class ChinaCitiesHour < ActiveRecord::Base
 		hs
 	end
 
-  def self.history_data_hour(city, start_time)
-    city.china_cities_hours.where(data_real_time: start_time..Time.now).order(:data_real_time).pluck(:data_real_time, :AQI)
-  end
+	def self.history_data_hour(city, start_time)
+		city.china_cities_hours.where(data_real_time: start_time..Time.now).order(:data_real_time).pluck(:data_real_time, :AQI)
+	end
 
 end
