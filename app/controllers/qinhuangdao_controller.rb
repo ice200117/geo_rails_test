@@ -939,7 +939,6 @@ class QinhuangdaoController < Casein::CaseinController
 		@rank['day']=TempSfcitiesDay.city_rank(city_name_pinyin)
 		@rank['month']=TempSfcitiesMonth.city_rank(city_name_pinyin)
 		@rank['year']=TempSfcitiesYear.city_rank(city_name_pinyin)
-
 		@banner = hs
 	end 
 	#周边城市

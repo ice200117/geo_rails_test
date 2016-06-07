@@ -34,39 +34,38 @@ class MonitorPointYear < ActiveRecord::Base
 		if !d['so2'].nil? && !d['no2'].nil?&&!d['co'].nil?&&!d['pm10'].nil?&&!d['pm25'].nil?&&!d['o3_8h'].nil?
 			linedata.zonghezhishu = d['so2'].to_f/60+d['no2'].to_f/40+d['pm10'].to_f/70+d['pm25'].to_f/35+d['co'].to_f/4+d['o3_8h'].to_f/160 
 		end
-			#计算同期对比
-			sql_str=Array.new
-			sql_str<<'data_real_time >= ? AND data_real_time <= ? AND city_id = ?'
-			sql_str<<d['time'].to_time.years_ago(1).beginning_of_day
-			sql_str<<d['time'].to_time.years_ago(1).end_of_day
-			sql_str<<d['id']
-			last_years_data = MonitorPointYear.where(sql_str)	
-			if last_years_data.length != 0
-				last_years=last_years_data[0]
-				if !d['so2'].nil? && !last_years.SO2.nil?
-					linedata.SO2_change_rate=(d['so2']-last_years.SO2)/last_years.SO2
-				end
-				if !d['no2'].nil? && !last_years.NO2.nil?
-					linedata.NO2_change_rate=(d['no2']-last_years.NO2)/last_years.NO2
-				end
-				if !d['pm10'].nil? && !last_years.pm10.nil?
-					linedata.pm10_change_rate=(d['pm10']-last_years.pm10)/last_years.pm10
-				end
-				if !d['pm25'].nil?&& !last_years.pm25.nil?
-					linedata.pm25_change_rate=(d['pm25']-last_years.pm25)/last_years.pm25
-				end
-				if !d['co'].nil? && !last_years.CO.nil?
-					linedata.CO_change_rate=(d['co']-last_years.CO)/last_years.CO
-				end
-				if !d['o3_8h'].nil? && !last_years.O3.nil?
-					linedata.O3_8h_change_rate=(d['o3_8h']-last_years.O3)/last_years.O3
-				end
-				if !linedata.zonghezhishu.nil? && !last_years.zonghezhishu.nil?
-					linedata.zongheindex_change_rate=(linedata.zonghezhishu-last_years.zonghezhishu)/last_years.zonghezhishu
-				end
+		#计算同期对比
+		sql_str=Array.new
+		sql_str<<'data_real_time >= ? AND data_real_time <= ? AND city_id = ?'
+		sql_str<<d['time'].to_time.years_ago(1).beginning_of_day
+		sql_str<<d['time'].to_time.years_ago(1).end_of_day
+		sql_str<<d['id']
+		last_years_data = MonitorPointYear.where(sql_str)	
+		if last_years_data.length != 0
+			last_years=last_years_data[0]
+			if !d['so2'].nil? && !last_years.SO2.nil?
+				linedata.SO2_change_rate=(d['so2']-last_years.SO2)/last_years.SO2
 			end
-			linedata.save
-			puts d['time'].to_s+' '+d['pointname']+' Save OK!'
+			if !d['no2'].nil? && !last_years.NO2.nil?
+				linedata.NO2_change_rate=(d['no2']-last_years.NO2)/last_years.NO2
+			end
+			if !d['pm10'].nil? && !last_years.pm10.nil?
+				linedata.pm10_change_rate=(d['pm10']-last_years.pm10)/last_years.pm10
+			end
+			if !d['pm25'].nil?&& !last_years.pm25.nil?
+				linedata.pm25_change_rate=(d['pm25']-last_years.pm25)/last_years.pm25
+			end
+			if !d['co'].nil? && !last_years.CO.nil?
+				linedata.CO_change_rate=(d['co']-last_years.CO)/last_years.CO
+			end
+			if !d['o3_8h'].nil? && !last_years.O3.nil?
+				linedata.O3_8h_change_rate=(d['o3_8h']-last_years.O3)/last_years.O3
+			end
+			if !linedata.zonghezhishu.nil? && !last_years.zonghezhishu.nil?
+				linedata.zongheindex_change_rate=(linedata.zonghezhishu-last_years.zonghezhishu)/last_years.zonghezhishu
+			end
 		end
+		linedata.save
+		puts d['time'].to_s+' '+d['pointname']+' Save OK!'
 	end
 end

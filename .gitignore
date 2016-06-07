@@ -20,3 +20,4 @@
 /public/assets/*
 /public/images/*
 /dump.rdb
+/config/deploy.rb
