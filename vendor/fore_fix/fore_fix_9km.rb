@@ -83,7 +83,7 @@ cs.each do |c|
 		data = ChinaCitiesHour.where(tmp)
 		next if data.length == 0
 		# byebug if hs[:AQI].to_i/data[0].AQI&&data[0].AQI != 0 
-		lev[get_lev(hs[:AQI].to_i)] << hs[:AQI].to_i/data[0].AQI if !data[0].AQI.nil?
+		lev[get_lev(hs[:AQI].to_i)] << hs[:AQI].to_i/data[0].AQI if !data[0].AQI.nil? && data[0].AQI > 0
 	end
 	avg = Hash['you' =>nil,'yellow' =>nil,'qingdu'=>nil,'zhong'=>nil,'zhongdu'=>nil,'zhongdu'=>nil,'yanzhong'=>nil]
 	lev.each do |k,v|

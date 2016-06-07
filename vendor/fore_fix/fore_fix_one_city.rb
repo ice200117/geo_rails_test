@@ -65,7 +65,7 @@ def city(c)
 		tmp << c.id
 		data = ChinaCitiesHour.where(tmp)
 		next if data.length == 0
-		lev[get_lev(hs[:AQI].to_i)] << hs[:AQI].to_i/data[0].AQI if !data[0].AQI.nil?
+		lev[get_lev(hs[:AQI].to_i)] << hs[:AQI].to_i/data[0].AQI if !data[0].AQI.nil? && data[0] > 0
 	end
 	avg = Hash['you' =>nil,'yellow' =>nil,'qingdu'=>nil,'zhong'=>nil,'zhongdu'=>nil,'zhongdu'=>nil,'yanzhong'=>nil]
 	lev.each do |k,v|
