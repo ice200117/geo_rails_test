@@ -8,14 +8,13 @@
 /.bundle
 
 # Ignore all logfiles and tempfiles.
-log/*
 !/log/.keep
-tmp
+tmp/
 vendor/rd_hourly_aqi.rb
 *.swp
-cron_log.log
 *.log
-public/assets/*
-public/images/*
+public/assets/
+public/images/
 dump.rdb
 config/deploy.rb
+.byebug_history
