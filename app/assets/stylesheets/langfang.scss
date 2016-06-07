@@ -5,6 +5,9 @@
 .home-banner{
 	background: image_url('bg.jpg')
 }
+body{ background-size: 100% 100%;
+			background-repeat: no-repeat;
+			 background-attachment: fixed;}
 .center{
 	text-align:center;
 }
@@ -92,7 +95,7 @@
 			margin-right:10px;
 			margin-left:70px;
 			font-size:12px;
-			background:#AEE8FF;
+			background:rgba(174, 232, 255, 0.3);
 			table{
 				td{
 					padding:0px 10px;
