@@ -957,7 +957,7 @@ class QinhuangdaoController < Casein::CaseinController
 		end
 	end
 	def get_rank_chart_data
-		cityName = params[:city]
+		cityName = params[:city]+"市"
 		type = params[:ranktype]
 		stime = params[:startTime]
 		etime = params[:endTime]
