@@ -45,7 +45,7 @@ class HourlyCityForecastAirQuality < ActiveRecord::Base
 
 	#未来五天城市预报
 	def air_quality_forecast(pinyin)
-		if $redis[pinyin].nil?
+		unless Custom::Redis.get(pinyin)
 			tmp = City.find_by_city_name_pinyin(pinyin).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
 			Custom::Redis.set(pinyin,tmp,3600)
 		else 

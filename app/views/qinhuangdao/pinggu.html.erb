@@ -429,24 +429,7 @@
 		<div class="panel-footer"></div>
 	</div>
 </div>
-<%= javascript_include_tag 'bootstrap.min','respond','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','LineChart','rank_chart',"cities_around" %>
-
-<script>
-	$(document).ready()
-	$(function(){
-		$(".change").click(function(){
-			if($(this).is(".active")){
-				return;
-			}
-			$(this).addClass("active").siblings().removeClass("active");
-		});
-	});
-function change(img){
-	$('.yuanzhuizong').html(img);
-}
-
-<% 
-		nt = Time.now
+<% nt = Time.now
 i = 0
 path = '/mnt/share/Products/Web/'+@city_adj
 begin
@@ -456,6 +439,19 @@ begin
 	i = i + 1
 	break if i == 7
 end until File::exists?(file)
- %>
-change('<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
-</script>
+%>
+	<%= javascript_include_tag 'bootstrap.min','respond','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','LineChart','rank_chart',"cities_around" %>
+<% content_for :nav do%>
+	$('.navigation li .pinggu').addClass('current-link');
+	$(".change").click(function(){
+	if($(this).is(".active")){
+	return;
+	}
+	$(this).addClass("active").siblings().removeClass("active");
+	});
+	change('<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
+	function change(img){
+		$('.yuanzhuizong').html(img);
+	}
+<% end %>
+

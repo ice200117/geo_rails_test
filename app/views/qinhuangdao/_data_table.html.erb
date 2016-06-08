@@ -56,7 +56,6 @@
 					<%= tmp['O3']==nil ? '——' : tmp['O3'] %>
 					&nbsp&nbsp
 					<% if hasRate%>
-						<%= tmp['CO_change_rate']==nil ? '——' : (tmp['CO_change_rate']+ '%') %>
 						<%= tmp['O3_change_rate']==nil ? '——' : (tmp['O3_change_rate']+ '%') %>
 						<%= image_tag "#{tmp['img']}.jpg" if !tmp['O3_change_rate'].nil? %>
 					<% end %>
@@ -65,7 +64,6 @@
 					<%= tmp['pm10']==nil ? '——' : tmp['pm10'] %>
 					&nbsp&nbsp
 					<% if hasRate%>
-						<%= tmp['CO_change_rate']==nil ? '——' : (tmp['CO_change_rate']+ '%') %>
 						<%= tmp['pm10_change_rate']==nil ? '——' : (tmp['pm10_change_rate']+ '%') %>
 						<%= image_tag "#{tmp['img']}.jpg" if !tmp['pm10_change_rate'].nil? %>
 					<% end %>
@@ -74,7 +72,6 @@
 					<%= tmp['pm25']==nil ? '——' : tmp['pm25'] %>
 					&nbsp&nbsp
 					<% if hasRate%>
-						<%= tmp['CO_change_rate']==nil ? '——' : (tmp['CO_change_rate']+ '%') %>
 						<%= tmp['pm25_change_rate']==nil ? '——' : (tmp['pm25_change_rate']+ '%') %>
 						<%= image_tag "#{tmp['img']}.jpg" if !tmp['pm25_change_rate'].nil? %>
 					<% end %>
@@ -83,7 +80,6 @@
 					<%= tmp['zonghezhishu']==nil ? '——' : tmp['zonghezhishu'] %>
 					&nbsp&nbsp
 					<% if hasRate%>
-						<%= tmp['CO_change_rate']==nil ? '——' : (tmp['CO_change_rate']+ '%') %>
 						<%= tmp['zongheindex_change_rate']==nil ? '——' : (tmp['zongheindex_change_rate']+ '%') %>
 						<%= image_tag "#{tmp['img']}.jpg" if !tmp['zongheindex_change_rate'].nil? %>
 					<% end %>
