@@ -399,7 +399,7 @@ class QinhuangdaoController < Casein::CaseinController
 			stime = time.beginning_of_day
 			etime = time.end_of_day
 		end
-		if $redis[model.name].nil?
+		if Custom::Redis.get(model.name).nil?
 			sql_str=Array.new
 			sql_str<<"data_real_time >= ? AND data_real_time <= ?"
 			sql_str<<stime
@@ -407,7 +407,6 @@ class QinhuangdaoController < Casein::CaseinController
 			data = model.where(sql_str)
 			tmpd = /\w*Hour/.match(model.name) ? 3600 : 3600*24
 			Custom::Redis.set(model.name,data,tmpd)
-			data
 		else
 			Custom::Redis.get(model.name)
 		end
@@ -877,7 +876,7 @@ class QinhuangdaoController < Casein::CaseinController
 		aqis = []
 		pri_pol = []
 		ch=nil
-		if $redis['qhd_hour_forecast'].nil?
+		unless Custom::Redis.get('qinhuangdaoshi')
 			c = City.find_by_city_name_pinyin('qinhuangdaoshi')
 			ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
 			Custom::Redis.set('qhd_hour_forecast',ch,3600*24)

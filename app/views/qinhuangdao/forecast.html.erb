@@ -203,3 +203,6 @@ end until File::exists?(file)
                     //change('<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>');
 change('<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
         </script>
+<% content_for :nav do %>
+	$('.navigation li .forecast').addClass('current-link')
+<% end %>
