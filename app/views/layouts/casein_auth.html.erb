@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Welcome to <%= casein_config_website_name %></title>
-    <%= stylesheet_link_tag "casein/login" %>
+    <title>Unicorn Login</title>
+    <%= stylesheet_link_tag "css/login","css/bootstrap.min","css/font-awesome","css/loginstyle" %>
+	<%= javascript_include_tag "modernizr.custom" %>
+	    <%= stylesheet_link_tag "casein/login" %>
 	<%= javascript_include_tag "casein/casein" %>
 	<%= csrf_meta_tag %>
 
@@ -16,22 +17,20 @@
 
   </head>
 
-  <body>
-  	<div class="container-narrow">
-		<div class="jumbotron">
-			<div class="row brand">
-				<%= image_tag(casein_config_logo, :alt => casein_config_website_name, size: "150x60")%>
-			</div>
+  <body class="login1" style="background: url(<%= image_url 'login-bg.jpg' %>) no-repeat center center;">
+		 <div class="login-wrapper">
+			
+
 			<%= yield %>
+		
 		</div>
-		<div class="row">
+		<!--<div class="row">
 			<div class="col-lg-12">
 				<hr />
 				<footer>
 					<p><%#= casein_get_footer_string(false) %></p>
 				</footer>
 			</div>
-		</div>
-	</div>
+		</div>-->
   </body>
 </html>
