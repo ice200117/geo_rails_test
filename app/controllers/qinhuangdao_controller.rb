@@ -400,11 +400,7 @@ class QinhuangdaoController < Casein::CaseinController
 			etime = time.end_of_day
 		end
 		if Custom::Redis.get(model.name).nil?
-			sql_str=Array.new
-			sql_str<<"data_real_time >= ? AND data_real_time <= ?"
-			sql_str<<stime
-			sql_str<<etime
-			data = model.where(sql_str)
+			data = model.where(data_real_time:(stime..etime))
 			tmpd = /\w*Hour/.match(model.name) ? 3600 : 3600*24
 			Custom::Redis.set(model.name,data,tmpd)
 		else
