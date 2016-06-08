@@ -4,7 +4,7 @@ class MonitorPointHour < ActiveRecord::Base
 	# validates_uniqueness_of :monitor_point_id, :scope => :data_real_time
 	validates :monitor_point_id, uniqueness: { scope: :data_real_time,message: "数据重复！" }
 	def last_hour_by_cityid(cityid)
-		if Custom::Redis.get('qhd_hour')
+		if Custom::Redis.get('qhd_hour').nil?
 			tmp=MonitorPointHour.maximum('data_real_time')
 			stime=tmp.beginning_of_hour
 			etime=tmp.end_of_hour

@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 	#root 'welcome#index'
 	#root 'welcome#map'
 	#root 'qinhuangdao#pinggu'
-	root 'langfang#forecast'
+	root 'qinhuangdao#pinggu'
 	get '/compare' => 'welcome#compare'
 	get '/bdqx_compare' => 'welcome#bdqx_compare'  
 	get '/sfcities_compare' => 'welcome#sfcities_compare' 

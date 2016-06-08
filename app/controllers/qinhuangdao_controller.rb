@@ -419,7 +419,6 @@ class QinhuangdaoController < Casein::CaseinController
 			   "SO2_change_rate"=>4,"NO2_change_rate"=>4,"CO_change_rate"=>4,"O3_change_rate"=>4,"pm10_change_rate"=>4,
 			   "pm25_change_rate"=>4,"zongheindex_change_rate"=>4}
 		model_column=Array['level','main_pol','data_real_time','maxindex']
-
 		data_ary=Array.new
 		(0...data.length).each do |t|
 			data_hash=Hash.new
@@ -876,7 +875,8 @@ class QinhuangdaoController < Casein::CaseinController
 		aqis = []
 		pri_pol = []
 		ch=nil
-		unless Custom::Redis.get('qinhuangdaoshi')
+
+		unless Custom::Redis.get('qhd_hour_forecast')
 			c = City.find_by_city_name_pinyin('qinhuangdaoshi')
 			ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
 			Custom::Redis.set('qhd_hour_forecast',ch,3600*24)
@@ -960,10 +960,16 @@ class QinhuangdaoController < Casein::CaseinController
 		type = params[:ranktype]
 		stime = params[:startTime]
 		etime = params[:endTime]
+		@get_rank_chart_data = nil
 		if type == 'DAY'
-			TempSfcitiesDay.get_rank_chart_data(cityName,stime,etime)
+			@get_rank_chart_data = TempSfcitiesDay.get_rank_chart_data(cityName,stime,etime)
 		else
-			TempSfcitiesMonth.get_rank_chart_data(cityName,stime,etime)
+			@get_rank_chart_data = TempSfcitiesMonth.get_rank_chart_data(cityName,stime,etime)
+		end
+		respond_to do |format|
+			format.html {}
+			format.js {}
+			format.json{ render json: @get_rank_chart_data}
 		end
 	end
 end

@@ -2,7 +2,7 @@ class TempSfcitiesDay < ActiveRecord::Base
 	validates :city_id, uniqueness: { scope: :data_real_time,
 								   message: "数据重复！" }
 	belongs_to :city
-	def get_rank_chart_data(name,stime,etime)
+	def self.get_rank_chart_data(name,stime,etime)
 		#获取日数据排名
 		data = Custom::Redis.get('get_rank_chart_data_day')
 		if data
