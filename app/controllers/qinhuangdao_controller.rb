@@ -400,11 +400,7 @@ class QinhuangdaoController < Casein::CaseinController
 			etime = time.end_of_day
 		end
 		if Custom::Redis.get(model.name).nil?
-			sql_str=Array.new
-			sql_str<<"data_real_time >= ? AND data_real_time <= ?"
-			sql_str<<stime
-			sql_str<<etime
-			data = model.where(sql_str)
+			data = model.where(data_real_time:(stime..etime))
 			tmpd = /\w*Hour/.match(model.name) ? 3600 : 3600*24
 			Custom::Redis.set(model.name,data,tmpd)
 		else
@@ -419,7 +415,6 @@ class QinhuangdaoController < Casein::CaseinController
 			   "SO2_change_rate"=>4,"NO2_change_rate"=>4,"CO_change_rate"=>4,"O3_change_rate"=>4,"pm10_change_rate"=>4,
 			   "pm25_change_rate"=>4,"zongheindex_change_rate"=>4}
 		model_column=Array['level','main_pol','data_real_time','maxindex']
-
 		data_ary=Array.new
 		(0...data.length).each do |t|
 			data_hash=Hash.new
@@ -961,10 +956,16 @@ class QinhuangdaoController < Casein::CaseinController
 		type = params[:ranktype]
 		stime = params[:startTime]
 		etime = params[:endTime]
+		@get_rank_chart_data = nil
 		if type == 'DAY'
-			TempSfcitiesDay.get_rank_chart_data(cityName,stime,etime)
+			@get_rank_chart_data = TempSfcitiesDay.get_rank_chart_data(cityName,stime,etime)
 		else
-			TempSfcitiesMonth.get_rank_chart_data(cityName,stime,etime)
+			@get_rank_chart_data = TempSfcitiesMonth.get_rank_chart_data(cityName,stime,etime)
+		end
+		respond_to do |format|
+			format.html {}
+			format.js {}
+			format.json{ render json: @get_rank_chart_data}
 		end
 	end
 end
