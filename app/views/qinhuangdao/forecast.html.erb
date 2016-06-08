@@ -148,61 +148,32 @@
 		</div>
 	</div>
 </div>
-<script>
-$(function(){
-    $(".change").click(function(){
-        if($(this).is(".active")){
-        return;
-        }
-        $(this).addClass("active").siblings().removeClass("active");
-
-        //change($(this).data("val"));
-        /*
-           if($(this).data("type")=='CO')
-           {
-           $("#factor3").html($(this).data("type"))
-           $("#001").css("display","none");
-           $("#002").css("display","none");
-           $("#003").css("display","block");
-
-           }
-           else if($(this).data("type")=='NOX')
-           {
-           $("#factor2").html($(this).data("type"))
-           $("#001").css("display","none");
-           $("#002").css("display","block");
-           $("#003").css("display","none");
-           }
-           else
-           {
-           $("#factor1").html($(this).data("type"))
-           $("#001").css("display","block");
-           $("#002").css("display","none");
-           $("#003").css("display","none");
-           }
-         */
-
-    });
-});
-function change(img){
-  $('.yuanzhuizong').html(img);
-}
-
-<%
-    nt = Time.now
-i = 0
-path = '/mnt/share/Products/Web/'+@city_adj
-begin
-  strnow1 = (nt-60*60*24*i).strftime('%Y%m%d') 
-  strnow2 = (nt-60*60*24*i).strftime("%Y-%m-%d")
-  file = path + strnow1 + '/CUACE_09km_adj_SO2_120_'+strnow2+'.png'
-  i = i + 1
-  break if i == 356 
-end until File::exists?(file)
-%>
-                    //change('<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>');
-change('<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
-        </script>
 <% content_for :nav do %>
+	$(function(){
+		$(".change").click(function(){
+			if($(this).is(".active")){
+				return;
+			}
+			$(this).addClass("active").siblings().removeClass("active");
+		});
+	});
+
+	<%
+			nt = Time.now
+	i = 0
+	path = '/mnt/share/Products/Web/'+@city_adj
+	begin
+		strnow1 = (nt-60*60*24*i).strftime('%Y%m%d') 
+		strnow2 = (nt-60*60*24*i).strftime("%Y-%m-%d")
+		file = path + strnow1 + '/CUACE_09km_adj_SO2_120_'+strnow2+'.png'
+		i = i + 1
+		break if i == 356 
+	end until File::exists?(file)
+%>
+					//change('<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>');
+					change('<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
+	function change(img){
+	$('.yuanzhuizong').html(img);
+	}
 	$('.navigation li .forecast').addClass('current-link')
 <% end %>

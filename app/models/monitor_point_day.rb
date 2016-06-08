@@ -4,7 +4,7 @@ class MonitorPointDay < ActiveRecord::Base
 	validates :monitor_point_id, uniqueness: { scope: :data_real_time,message: "数据重复！" }
 	def yesterday_by_cityid(cityid)
 		if $redis['qhd_day'].nil?
-			tmp=MonitorPointDay.last.data_real_time
+			tmp=MonitorPointDay.maximum('data_real_time')
 			stime=tmp.beginning_of_day
 			etime=tmp.end_of_day
 			Custom::Redis.set('qhd_day',City.find(cityid).monitor_point_days.where("data_real_time >= ? AND data_real_time <=?",stime,etime))
