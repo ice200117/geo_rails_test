@@ -11,10 +11,10 @@ class TempSfcitiesMonth < ActiveRecord::Base
 				tmp = v.max_by{|x| x['data_real_time']}
 				if tmp['data_real_time'].to_time.day == tmp['data_real_time'].to_time.end_of_month.day
 					tmp['lastrank'] = (tmp['rank']==nil) ? nil : (75 - tmp['rank'])
-					tmp['time'] = tmp['data_real_time']
+					tmp['time'] = tmp['data_real_time'].strftime("%Y%m")
 					tmp['primary_pollutant'] = tmp['main_pol']
 				else
-					tmp['foretime'] = tmp['data_real_time']
+					tmp['foretime'] = tmp['data_real_time'].strftime('%Y%m')
 					tmp['forerank'] = tmp['rank']
 					tmp['forelastrank'] = (tmp['rank']==nil) ? nil : (75 - tmp['rank'])
 					tmp['forecomplexindex'] = tmp['complexindex']
@@ -23,9 +23,12 @@ class TempSfcitiesMonth < ActiveRecord::Base
 				tmp['city']=name
 				data << tmp
 			end
-			Custom::Redis.set("get_rank_chart_data_month",data,3600*24)
+			rankdata = {total:data.length,rows: data}
+			Custom::Redis.set("get_rank_chart_data_month",rankdata,3600*24)
+		else
+			Custom::Redis.get('get_rank_chart_data_month')
 		end
-		Custom::Redis.get('get_rank_chart_data_month')
+		
 	end
 
 	def self.city_rank(cityNamePinyin)

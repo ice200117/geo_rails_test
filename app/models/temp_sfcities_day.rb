@@ -9,12 +9,14 @@ class TempSfcitiesDay < ActiveRecord::Base
 			data
 		else
 			data = City.find_by_city_name(name).temp_sfcities_days.select("AQI,main_pol,data_real_time,rank").where(data_real_time: (stime..etime)).as_json
-			data.each do |l|
+			data.map do |l|
 				l['lastrank'] = 75 - l['rank'] if l['rank']
 				l['city']=name
+				l['time']=l['data_real_time'].strftime('%Y-%m-%d')
 			end
-			Custom::Redis.set("get_rank_chart_data_day",data,3600*24)
-			data
+			rankdata={total: data.length,rows: data}
+			Custom::Redis.set("get_rank_chart_data_day",rankdata,3600*24)
+			
 		end
 	end
 
