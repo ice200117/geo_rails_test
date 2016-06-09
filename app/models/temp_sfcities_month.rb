@@ -2,11 +2,11 @@ class TempSfcitiesMonth < ActiveRecord::Base
 	validates :city_id, uniqueness: { scope: :data_real_time,
     message: "数据重复！" }
 	belongs_to :city
-	def self.get_rank_chart_data(name,stime,etime)
+	def self.get_rank_chart_data(name='qinhuangdaoshi',stime='20150101'.to_time,etime='20160606'.to_time)
 		#获取月数据排名
 		unless Custom::Redis.get("get_rank_chart_data_day")
 			data = Array.new
-			d = City.find_by_city_name(name).temp_sfcities_months.where(data_real_time: (stime..etime)).to_a.group_by_month(&:data_real_time).as_json
+			d = City.find_by_city_name_pinyin(name).temp_sfcities_months.where(data_real_time: (stime..etime)).to_a.group_by_month(&:data_real_time).as_json
 			d.each do |k,v|
 				tmp = v.max_by{|x| x['data_real_time']}
 				if tmp['data_real_time'].to_time.day == tmp['data_real_time'].to_time.end_of_month.day
@@ -24,8 +24,9 @@ class TempSfcitiesMonth < ActiveRecord::Base
 				data << tmp
 			end
 			Custom::Redis.set("get_rank_chart_data_month",data,3600*24)
+		else
+			Custom::Redis.get('get_rank_chart_data_month')
 		end
-		Custom::Redis.get('get_rank_chart_data_month')
 	end
 
 	def self.city_rank(cityNamePinyin)

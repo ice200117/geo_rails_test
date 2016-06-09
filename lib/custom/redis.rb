@@ -7,8 +7,8 @@
 #
 
 module Custom::Redis
-	# OPEN = true
-	OPEN = false
+	OPEN = true
+	# OPEN = false
 	#缓存公用方法,time==0时永不过期
 	def self.set(name,data,time=0)
 		$redis.del(name)
