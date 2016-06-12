@@ -956,11 +956,12 @@ class QinhuangdaoController < Casein::CaseinController
 		type = params[:ranktype]
 		stime = params[:startTime]
 		etime = params[:endTime]
+		cityNamePY = City.find_by_city_name(cityName)
 		@get_rank_chart_data = nil
 		if type == 'DAY'
-			@get_rank_chart_data = TempSfcitiesDay.get_rank_chart_data(cityName,stime,etime)
+			@get_rank_chart_data = TempSfcitiesDay.get_rank_chart_data(cityNamePY,stime,etime)
 		else
-			@get_rank_chart_data = TempSfcitiesMonth.get_rank_chart_data(cityName,stime,etime)
+			@get_rank_chart_data = TempSfcitiesMonth.get_rank_chart_data(cityNamePY,stime,etime)
 		end
 		respond_to do |format|
 			format.html {}
