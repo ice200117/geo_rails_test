@@ -534,10 +534,10 @@ class WelcomeController < ApplicationController
 
 	def pinggu
 		#保定数据
-		@bddatabyhour=del_some_points(change_data_type(get_db_data(TempBdHour,TempBdHour.last.data_real_time))) 
-		@bddatabyday=del_some_points(change_data_type(get_db_data(TempBdDay,TempBdDay.last.data_real_time))) 
-		@bddatabymonth=del_some_points(change_data_type(get_db_data(TempBdMonth,TempBdMonth.last.data_real_time)))
-		@bddatabyyear=del_some_points(change_data_type(get_db_data(TempBdYear,TempBdYear.last.data_real_time)))
+		@bddatabyhour=del_some_points(change_data_type(MonitorPointHour.new.last_hour_by_cityid(14)))
+		@bddatabyday=del_some_points(change_data_type(MonitorPointDay.yesterday_by_cityid(14))) 
+		# @bddatabymonth=del_some_points(change_data_type(get_db_data(TempBdMonth,TempBdMonth.last.data_real_time)))
+		# @bddatabyyear=del_some_points(change_data_type(get_db_data(TempBdYear,TempBdYear.last.data_real_time)))
 
 		#河北数据
 		@hebeidatabyhour=change_data_type(get_db_data(TempHbHour,TempHbHour.last.data_real_time)) 

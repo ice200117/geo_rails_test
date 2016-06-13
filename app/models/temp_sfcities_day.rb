@@ -8,9 +8,10 @@ class TempSfcitiesDay < ActiveRecord::Base
 		if data
 			data
 		else
-			data = City.find_by_city_name(name).temp_sfcities_days.where(data_real_time: (stime..etime)).as_json
+			data = City.find_by_city_name(name).temp_sfcities_days.where(data_real_time: (stime..etime)).order(data_real_time: :asc).as_json
 			data.map do |l|
-				l['lastrank'] = 75 - l['rank'] if l['rank']
+				l['rank'] = '' if l['rank'].nil?
+				l['lastrank'] = 75 - l['rank'] if l['rank'] != ''
 				l['city']=name
 				l['time']=l['data_real_time'].strftime('%Y-%m-%d')
 				l['primary_pollutant'] = l['main_pol']
