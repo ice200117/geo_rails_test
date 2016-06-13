@@ -46,7 +46,7 @@ function getRankData()
   startTime = startTime.pattern('yyyy-MM-dd HH:mm:ss');
   endTime = endTime.pattern('yyyy-MM-dd HH:mm:ss');
   $.ajax({            
-	  url: '/qinhuangdao/get_rank_chart_data.json',
+	  url: '/qinhuangdao/get_rank_chart_data',
       data:{
             'city':city,
             'type':ranktype,

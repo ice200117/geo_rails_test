@@ -6,17 +6,19 @@ class TempSfcitiesMonth < ActiveRecord::Base
 		#获取月数据排名
 		unless Custom::Redis.get("get_rank_chart_data_month")
 			data = Array.new
-			d = City.find_by_city_name(name).temp_sfcities_months.where(data_real_time: (stime..etime)).to_a.group_by_month(&:data_real_time).as_json
+			d = City.find_by_city_name(name).temp_sfcities_months.where(data_real_time: (stime..etime)).order('data_real_time asc').to_a.group_by_month(&:data_real_time).as_json
 			d.each do |k,v|
 				tmp = v.max_by{|x| x['data_real_time']}
+				# tmp['rank'] = '' if tmp['rank'].nil?
+				# tmp.delete_if{|x| x['rank'].nil? }
 				if tmp['data_real_time'].to_time.day == tmp['data_real_time'].to_time.end_of_month.day
-					tmp['lastrank'] = (tmp['rank']==nil) ? nil : (75 - tmp['rank'])
+					tmp['lastrank'] = (tmp['rank']=='') ? '' : (75 - tmp['rank'])
 					tmp['time'] = tmp['data_real_time'].strftime("%Y%m")
 					tmp['primary_pollutant'] = tmp['main_pol']
 				else
 					tmp['foretime'] = tmp['data_real_time'].strftime('%Y%m')
 					tmp['forerank'] = tmp['rank']
-					tmp['forelastrank'] = (tmp['rank']==nil) ? nil : (75 - tmp['rank'])
+					tmp['forelastrank'] = (tmp['rank']=='') ? '' : (75 - tmp['rank'])
 					tmp['forecomplexindex'] = tmp['complexindex']
 					tmp['foreprimary_pollutant'] = tmp['main_pol']
 				end
