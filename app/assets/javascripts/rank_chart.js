@@ -1,7 +1,7 @@
 /*秦皇岛历史排名曲线js*/
 
 
-  var ITEM3="DESC";var DATE3="DAY";
+  var ITEM3="DESC";var DATE3="MONTH";
   var startTime,endTime;var ranktype="DAY";var city = "秦皇岛";
   var dataRank = [];var dataLastRank = [];var num=0;var lastnum=0;
   setTimeout('$(".btndategroup3:last").click()',200);
@@ -14,7 +14,7 @@
         showRankChartByItem();
     });
 
-   $(".btndategroup3:first").addClass("btnbd-info");
+   $(".btndategroup3:last").addClass("btnbd-info");
    $(".btndategroup3").click(function()
 	 {
         $(".btndategroup3").removeClass("btnbd-info");
