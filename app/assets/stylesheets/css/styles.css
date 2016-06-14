@@ -109,7 +109,7 @@ background: url(searchlogo.png) no-repeat 60px 3px;
 
 /*周边城市*/
 .p_around{font-size:12px; text-align:left;list-style: none;margin:0px;line-height: 18px;padding:0px;}
-.td_around{color: black;font-size: 16px;width: 100px;padding: 0;background: #F9F9F9;font-family: inherit;}
+.td_around{color: black;font-size: 16px;width: 100px;height:10px;padding: 0;background: #F9F9F9;font-family: inherit;}
 .table_around_child{font-size:12px;width: 100%;}
 .table_around_child tr{border-bottom: 1px solid white !important;line-height: 30px;}
 .table_around_child td{text-align: center; background-color: #92d5f1;line-height: 30px;}
