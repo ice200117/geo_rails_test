@@ -1,4 +1,4 @@
-<%= render partial:"weclome/banner",locals:{banner:@banner}%>
+<%= render partial:"welcome/banner",locals:{banner:@banner}%>
 <div class="container">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
@@ -138,7 +138,6 @@
 </div>
 </div>
 <script>
-	$('.home-banner').backstretch("<%= image_url 'top.png' %>");
 	$(function(){
 		$(".change").click(function(){
 			if($(this).is(".active")){

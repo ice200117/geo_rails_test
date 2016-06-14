@@ -12,25 +12,25 @@
 					<div class="future-list">
 						<ul>
 							<% for i in (0..4) %>
-								<% time = (Time.now.strftime("%Y%m%d").to_i+i).to_s%>
+								<% time = i.day.from_now.strftime("%Y%m%d") %>
 								<% t = @forecast_data[time] %>
 								<% next unless t %>
+								<% dnil = '暂无数据' %>
 								<li>
-									<%# <h4 class="list-title"><%= t["day"]+"(#{DateTime.now.next_day(i).month}月#{DateTime.now.next_day(i).day}日)" %1></h4> %> 
-									<h4 class="list-title"><%= t["day"] %></h4>  
+									<h4 class="list-title"><%= t["date"] %></h4>  
 									<table cellpadding="0" cellspacing="0">
 										<tbody>
 											<tr>
 												<td><span class="gray">级别</span></td>
-												<td><span class="list-alue"><span class="<%= t["fore_lev"] if t["fore_lev"] != nil %> small"><%= t["level"] if t['level'] !=nil %></span></span></td>
+												<td><span class="list-alue" style='<%= 'font-size:12px' if t['fore_lev'].nil? %>'><span class="<%= t["fore_lev"] if t["fore_lev"] != nil %> small"><%= t['level'] !=nil ? t["level"] : dnil %></span></span></td>
 											</tr>
 											<tr>
 												<td style="width:88px;"><span class="gray">首要污染物</span></td>
-												<td><span class="list-alue"><%= t["main_pol"]%></span></td>
+												<td><span class="list-alue" style='<%= 'font-size:12px' if t['main_pol'].nil? %>'><%= t["main_pol"] != nil ? t['main_pol'] : dnil %></span></td>
 											</tr>
 											<tr>
 												<td style="padding-top:15px;"><span class="gray">天气</span></td>
-												<td class="list-weather" style="padding-top:10px;"><span ><%= t["tq"] %>&nbsp;<br><%= t["temp2"] %>℃~<%= t["temp1"] %>℃<br><%= t["wd"]%>&nbsp;<%= t["ws"] %></span></td>
+												<td class="list-weather" style="padding-top:10px;"><span ><%= t["tq"] != nil ? t["tp"] : '-' %>&nbsp;<br><%= t["temp2"] !=nil ? t['temp2'] : '-' %>℃~<%= t["temp1"] !=nil ? t['temp1'] : '-' %>℃<br><%= t["wd"] !=nil ? t['wd'] : '-'%>&nbsp<%= t["ws"] !=nil ? t['ws'] : '-' %></span></td>
 											</tr>
 										</tbody>
 									</table>
@@ -277,7 +277,7 @@ $(document).ready(function(){
 				<div class="row">
 					<div class="col-xs-6">
 						<table class="table table-striped">
-							<caption>省内城市小时排名&nbsp&nbsp<%= @hebeidatabyhour[:time].strftime("%Y-%m-%d %H:00:00") %></caption>
+							<caption>省内城市小时排名&nbsp&nbsp<%= @hebeidatabyhour[:time].to_time.strftime("%Y-%m-%d %H:00:00") %></caption>
 							<thead>
 								<tr class="top11-color-title blue">
 									<th>排名</th>
@@ -380,16 +380,16 @@ $(document).ready(function(){
 			<div class="col-xs-12">
 				<div class="tab-title">
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#lfgqxyue" data-toggle="tab"><strong>污染物浓度（月报）</strong></a></li>
-						<li><a href="#lfgqxnian" data-toggle="tab"><strong>污染物浓度（年报）</strong></a></li>
+						<li class="active"><a href="#lfgqxyue" data-toggle="tab"><strong>污染物浓度（时报）</strong></a></li>
+						<li><a href="#lfgqxnian" data-toggle="tab"><strong>污染物浓度（日报）</strong></a></li>
 					</ul>
 				</div>
 				<div class="tab-content">
 					<div class="tab-pane fade in active" id="lfgqxyue">
-						<%= render partial:'welcome/data_table',locals:{data:@bddatabymonth,flag:'bd'} %>
+						<%= render partial:'welcome/data_table',locals:{data:@bddatabyhour,flag:'bd'} %>
 					</div>
 					<div class="tab-pane fade" id="lfgqxnian">
-						<%= render partial:'welcome/data_table',locals:{data:@bddatabyyear,flag:'bd'} %>
+						<%= render partial:'welcome/data_table',locals:{data:@bddatabyday,flag:'bd'} %>
 					</div>
 				</div>
 			</div>

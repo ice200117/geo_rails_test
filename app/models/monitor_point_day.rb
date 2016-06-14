@@ -5,6 +5,7 @@ class MonitorPointDay < ActiveRecord::Base
 	def yesterday_by_cityid(cityid)
 		unless Custom::Redis.get('qhd_day')
 			tmp=MonitorPointDay.last.data_real_time
+			# tmp= Time.now.yesterday
 			stime=tmp.beginning_of_day
 			etime=tmp.end_of_day
 			Custom::Redis.set('qhd_day',City.find(cityid).monitor_point_days.where("data_real_time >= ? AND data_real_time <=?",stime,etime))
