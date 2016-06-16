@@ -1317,3 +1317,14 @@ function getCOLevelIndex(co)
     return level;
 }
 
+function nullValueJudgement_Int(value)
+{
+    return (value==null)?null:parseInt(value);
+}
+function nullValueJudgement_Float(value)
+{
+    return (value==null)?null:parseFloat(value);
+}
+
+
+
