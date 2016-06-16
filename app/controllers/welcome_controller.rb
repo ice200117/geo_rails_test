@@ -3,94 +3,13 @@ class WelcomeController < ApplicationController
 
   include WelcomeHelper
 
-	#	caches_page :pinggu, :bar
-	#cache_sweeper :welcome_sweeper
-
 	include NumRu
 	protect_from_forgery :except => [:get_forecast_baoding, :get_city_point]
 
+	before_action :banner,only: [:pinggu,:rank1503,:forecast,:compare]
+	before_action :get_forecast,only: [:pinggu,:forecast]
 
-	def index
-		#data_table = GoogleVisualr::DataTable.new
-		#data_table.new_column('string', 'Country')
-		#data_table.new_column('number', 'Popularity')
-		#data_table.add_rows(6)
-		#data_table.set_cell(0, 0, 'Germany')
-		#data_table.set_cell(0, 1, 200)
-		#data_table.set_cell(1, 0, 'United States')
-		#data_table.set_cell(1, 1, 300)
-		#data_table.set_cell(2, 0, 'Brazil')
-		#data_table.set_cell(2, 1, 400)
-		#data_table.set_cell(3, 0, 'Canada')
-		#data_table.set_cell(3, 1, 500)
-		#data_table.set_cell(4, 0, 'France')
-		#data_table.set_cell(4, 1, 600)
-		#data_table.set_cell(5, 0, 'RU')
-		#data_table.set_cell(5, 1, 700)
-
-		#opts   = { :width => 500, :height => 300 }
-		#@chart = GoogleVisualr::Interactive::GeoChart.new(data_table, opts)
-
-		#data_table_markers = GoogleVisualr::DataTable.new
-		#data_table_markers.new_column('string'  , 'Country'   )
-		#data_table_markers.new_column('number'  , 'Popularity')
-		#data_table_markers.add_rows(6)
-		#data_table_markers.set_cell(0, 0, 'New York'     )
-		#data_table_markers.set_cell(0, 1, 200)
-		#data_table_markers.set_cell(1, 0, 'Boston'       )
-		#data_table_markers.set_cell(1, 1, 300)
-		#data_table_markers.set_cell(2, 0, 'Miami'        )
-		#data_table_markers.set_cell(2, 1, 400)
-		#data_table_markers.set_cell(3, 0, 'Chicago'      )
-		#data_table_markers.set_cell(3, 1, 500)
-		#data_table_markers.set_cell(4, 0, 'Los Angeles'  )
-		#data_table_markers.set_cell(4, 1, 600)
-		#data_table_markers.set_cell(5, 0, 'Houston'      )
-		#data_table_markers.set_cell(5, 1, 700)
-
-		#opts   = {  :region => 'US'  }
-		#@chart = GoogleVisualr::Interactive::GeoChart.new(data_table_markers, opts)
-
-		#data_table = GoogleVisualr::DataTable.new
-		#data_table.new_column('number', 'Lat' )
-		#data_table.new_column('number', 'Lon' )
-		#data_table.new_column('string', 'Name')
-		#data_table.add_rows(4)
-		#data_table.set_cell(0, 0, 37.4232   )
-		#data_table.set_cell(0, 1, -122.0853 )
-		#data_table.set_cell(0, 2, 'Work'      )
-		#data_table.set_cell(1, 0, 37.4289   )
-		#data_table.set_cell(1, 1, -122.1697 )
-		#data_table.set_cell(1, 2, 'University')
-		#data_table.set_cell(2, 0, 37.6153   )
-		#data_table.set_cell(2, 1, -122.3900 )
-		#data_table.set_cell(2, 2, 'Airport'   )
-		#data_table.set_cell(3, 0, 37.4422   )
-		#data_table.set_cell(3, 1, -122.1731 )
-		#data_table.set_cell(3, 2, 'Shopping'  )
-		#opts   = { :showTip => true }
-		#@chart = GoogleVisualr::Interactive::Map.new(data_table, opts)
-	end
-	def show
-		# @visits = Visit.all
-	end 
-	def test
-		puts 'a'
-	end
 	def map
-		#respond_to do |format|
-		#format.js   {}
-		#format.html   {}
-		#format.json {
-		#achf = Hash.new
-		#cs = City.all
-		#cs.each do |c|
-		#ch = c.hourly_city_forecast_air_qualities.last(120)[0]
-		#achf[c.city_name] = ch.AQI  if ch
-		#end
-		#render json: achf
-		#}
-		#end
 
 		system('ls')
 		r = `rails r vendor/test.rb`
@@ -521,30 +440,16 @@ class WelcomeController < ApplicationController
 	end
 
 
-	#去掉保定部分监测点
-	def del_some_points(data)
-		del_point=['地表水厂','游泳馆','接待中心', '华电二区', '定兴县政府', '市监测站', '胶片厂']
-		del_point.each do |t|
-			data[:cities].each do |n|
-				data[:cities].delete(n) if n['city'].strip == t.strip 
-			end
-		end
-		data
-	end
-
 	def pinggu
 		#保定数据
-		@bddatabyhour=del_some_points(change_data_type(MonitorPointHour.new.last_hour_by_cityid(14)))
-		@bddatabyday=del_some_points(change_data_type(MonitorPointDay.yesterday_by_cityid(14))) 
-		# @bddatabymonth=del_some_points(change_data_type(get_db_data(TempBdMonth,TempBdMonth.last.data_real_time)))
-		# @bddatabyyear=del_some_points(change_data_type(get_db_data(TempBdYear,TempBdYear.last.data_real_time)))
+		@bddatabyhour=change_data_type(MonitorPointHour.new.last_hour_by_cityid(14))
+		@bddatabyday=change_data_type(MonitorPointDay.new.yesterday_by_cityid(14))
 
 		#河北数据
 		@hebeidatabyhour=change_data_type(get_db_data(TempHbHour,TempHbHour.last.data_real_time)) 
 		hebeidatabyday=change_data_type(get_db_data(TempJjjDay,TempJjjDay.last.data_real_time))
-		hebeidatabyday[:cities] = hebeidatabyday[:cities].delete_if{|item| (item['city']=='北京市')||(item['city']=='天津市')}
+		hebeidatabyday[:cities] = hebeidatabyday[:cities].delete_if{|item| (item['city']=='北京')||(item['city']=='天津')}
 		@hebeidatabyday=hebeidatabyday
-
 		#京津冀
 		@jjjdatabyday=change_data_type(get_db_data(TempJjjDay,TempJjjDay.last.data_real_time))
 		@jjjdatabymonth=change_data_type(get_db_data(TempJjjMonth,TempJjjMonth.last.data_real_time))
@@ -554,10 +459,6 @@ class WelcomeController < ApplicationController
 		@sfcitiesrankbyday=change_data_type(change_74_main_pol(get_db_data(TempSfcitiesDay,TempSfcitiesDay.last.data_real_time)))
 		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth,TempSfcitiesMonth.last.data_real_time))
 		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear,TempSfcitiesYear.last.data_real_time))
-
-		@banner = banner()
-
-		@forecast_data = get_forecast()
 
 		# adj data
 		@city_adj = 'ADJ_baoding/'
@@ -593,12 +494,13 @@ class WelcomeController < ApplicationController
 			stime = time.beginning_of_day
 			etime = time.end_of_day
 		end
-		sql_str=Array.new
-		sql_str<<"data_real_time >= ? AND data_real_time <= ?"
-		sql_str<<stime
-		sql_str<<etime
-		data = model.where(sql_str)
-		data[0].nil? ? [] : data.uniq
+		if Custom::Redis.get(model.name).nil?
+			data = model.where(data_real_time:(stime..etime))
+			tmpd = /\w*Hour/.match(model.name) ? 3600 : 3600*24
+			Custom::Redis.set(model.name,data,tmpd)
+		else
+			Custom::Redis.get(model.name)
+		end
 	end
 
 	#修改小数点位数
@@ -611,14 +513,18 @@ class WelcomeController < ApplicationController
 		data_ary=Array.new
 		(0...data.length).each do |t|
 			data_hash=Hash.new
-			data_hash['city']=City.find(data[t].city_id).city_name
+			if data[t]['monitor_point_id'].nil?
+				data_hash['city']=City.find(data[t]['city_id']).city_name
+			else
+				data_hash['city']=MonitorPoint.find(data[t]['monitor_point_id']).pointname
+			end
 			float_round.each do |k,v|
 				if /change_rate/.match(k)
-					d="%.#{v}f"%data[t][k].to_f if data[t].respond_to?(k)
+					d="%.#{v}f"%data[t][k].to_f if data[t][k] != nil
 					d.to_f>0 ? data_hash['img']='arrow_up' : data_hash['img']='arrow_down'
 					data_hash[k]=(d.to_f*100).abs.round(v).to_s
 				else
-					data_hash[k]="%.#{v}f"%data[t][k].to_f if data[t].respond_to?(k)
+					data_hash[k]="%.#{v}f"%data[t][k].to_f if data[t][k] != nil
 				end
 			end
 			model_column.each do |i|
@@ -628,7 +534,7 @@ class WelcomeController < ApplicationController
 		end
 		re_hs=Hash.new
 		if data[0]
-			re_hs[:time]=data[0].data_real_time
+			re_hs[:time]=data[0]['data_real_time'].to_time
 		else
 			re_hs[:time]=Time.now
 		end
@@ -645,24 +551,22 @@ class WelcomeController < ApplicationController
 		url = "http://apis.baidu.com/showapi_open_bus/weather_showapi/address?area=#{city_name_encode}&needMoreDay=1"
 		response = HTTParty.get(url,options)
 		json = JSON.parse(response.body)
-		puts 0 if json['showapi_res_error'] == 0
-		@weather = Hash.new
+		# puts 0 if json['showapi_res_error'] == 0
+		@forecast_data = Hash.new
 		json['showapi_res_body'].each do |k,v|
 			if k[-1].to_i > 0 
 				tq = get_tq(v)
-				@weather[tq['day']] = tq
+				@forecast_data[tq['day']] = tq
 			end
 		end
 		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('baodingshi')
-		@ret = {}
 		temp.each do |k,v|
 			v["fore_lev"] = get_lev(v["AQI"])
 			time = k.to_time.strftime("%Y%m%d")
-			if @weather[time] != nil
-				@ret[time]=@weather[time].merge(v)
+			if @forecast_data[time] != nil
+				@forecast_data[time]=@forecast_data[time].merge(v)
 			end
 		end
-		@ret
 	end
 	#天气处理与get_forecast合作使用
 	def get_tq(f1)
@@ -702,6 +606,16 @@ class WelcomeController < ApplicationController
 			tq['ws'] = dw
 		elsif dw != nw
 			dw[0].to_i > nw[0].to_i ? tq['ws'] = nw + '~' + dw : tq['ws'] = dw + '~' + nw
+		end
+		date = f1['day'].to_time
+		if date.day==Time.now.day
+			tq['date']= date.month.to_s.to_s+date.strftime("月%d日")+' '+'今天'
+		elsif date.day==1.days.from_now.day
+			tq['date']= date.month.to_s.to_s+date.strftime("月%d日")+' '+'明天'
+		elsif date.day==2.days.from_now.day
+			tq['date']= date.month.to_s.to_s+date.strftime("月%d日")+' '+'后天'
+		else
+			tq['date']= date.month.to_s.to_s+date.strftime("月%d日")+' '+'星期'+Custom::Week.week_of_time(date)
 		end
 		tq['day'] = f1['day'].to_time.strftime("%Y%m%d")
 		tq
@@ -996,21 +910,17 @@ class WelcomeController < ApplicationController
 	#74城市全部展示
 	def rank1503
 		#74城市
-		@sfcitiesrankbyday=change_data_type(get_db_data(TempSfcitiesDay))
-		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth))
-		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear))
-		@banner=banner()
+		@sfcitiesrankbyday=change_data_type(get_db_data(TempSfcitiesDay,TempSfcitiesDay.last.data_real_time))
+		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth,TempSfcitiesMonth.last.data_real_time))
+		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear,TempSfcitiesYear.last.data_real_time))
 	end
 
 	def forecast
-		@banner = banner()
 		@day_fdata = @banner["day_fdata"]
 		@post='130600'
-		@city_adj = @banner["city_adj"]
 		@adj_per1 = @banner["adj_per1"]
 	end
 	def compare
-		@banner = banner()
 	end
 	def sfcities_compare
 		render layout: getlayoutbyaction('sfcities_compare')
@@ -1043,18 +953,24 @@ class WelcomeController < ApplicationController
 		# forecast data
 		aqis = []
 		pri_pol = []
-		c = City.find_by_city_name_pinyin('baodingshi')
-		ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
+
+		unless Custom::Redis.get('baoding_hour_forecast')
+			c = City.find_by_city_name_pinyin('baodingshi')
+			ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
+			Custom::Redis.set('baoding_hour_forecast',ch,3600*24)
+		else
+			ch = Custom::Redis.get('baoding_hour_forecast')
+		end
 		ch.each do |time,fds|
 			t = Time.now
 			if time > Time.local(t.year,t.month,t.day)
 				#if time >= Time.local(2015,4,24)
 				sum = []
 				fds.each do |fd|
-					sum << fd.AQI
+					sum << fd['AQI']
 				end
 				aqis << [sum.min, sum.max]
-				pri_pol << fds[0].main_pol
+				pri_pol << fds[0]['main_pol']
 			end
 		end
 
@@ -1090,12 +1006,19 @@ class WelcomeController < ApplicationController
 			hs['real_time_weather'] = false	
 		end
 
-		hs["city_adj"] = 'ADJ_baoding/'
-		hs["adj_per1"] = adj_percent('SO2_120', hs["city_adj"])
-		hs["adj_per2"] = adj_percent('NOX_120', hs["city_adj"])
-		hs["adj_per3"] = adj_percent('CO_120', hs['city_adj'])
+		@city_adj = 'ADJ_baoding/'
 
-		hs
+		hs["adj_per1"] = adj_percent('SO2_120', @city_adj)
+		hs["adj_per2"] = adj_percent('NOX_120', @city_adj)
+		hs["adj_per3"] = adj_percent('CO_120', @city_adj)
+
+		city_name_pinyin = 'baodingshi'
+		@rank={'hour' => TempSfcitiesHour.city_rank(city_name_pinyin)}
+		@rank['day'] = TempSfcitiesDay.city_rank(city_name_pinyin)
+		@rank['month'] = TempSfcitiesMonth.city_rank(city_name_pinyin)
+		@rank['year'] = TempSfcitiesYear.city_rank(city_name_pinyin)
+
+		@banner = hs
 	end 
 
 	def monitor_map

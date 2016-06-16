@@ -45,7 +45,7 @@ module AllSite
 					next
 					puts l+' '+'is nil!'
 				end
-				l['monitor_point_id'] = mp.id
+				l['id'] = mp.id
 				MonitorPointHour.new.save_with_arg(l)
 
 				#逐条写入cvs
