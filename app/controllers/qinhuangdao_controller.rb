@@ -555,7 +555,8 @@ class QinhuangdaoController < Casein::CaseinController
 		end
 	end
 
-	def get_lev(a)
+=begin
+	def get_lev_old(a)
 		if (0 .. 50) === a
 			lev = 'you'
 		elsif (50 .. 100) === a
@@ -570,6 +571,141 @@ class QinhuangdaoController < Casein::CaseinController
 			lev = 'yanzhong'
 		end
 	end
+=end
+
+	def get_lev(aqi)
+		if aqi<=0
+			lev='yichang'
+		elsif aqi<=50
+			lev = 'you'
+		elsif aqi<=100
+			lev = 'yellow'
+		elsif aqi<=150
+			lev = 'qingdu'
+		elsif aqi<=200
+			lev = 'zhong'
+		elsif aqi<=300
+			lev = 'zhongdu'
+		else
+			lev = 'yanzhong'	
+		end
+	end
+
+	def getlevelColor(level)
+		if level==0
+	     lev='yichang'
+	   	elsif level==1
+	     lev = 'you'
+	   	elsif level==2
+	    lev = 'yellow'
+	   	elsif level==3
+	    lev = 'qingdu'
+	   	elsif level==4
+	    lev = 'zhong'
+	   	elsif level==5
+	    lev = 'zhongdu'
+	   	else
+	    lev = 'yanzhong'
+		end
+	end
+
+	def getPM25LevelIndex(pm2_5)
+		if pm2_5<=35
+	      level=1
+	    elsif pm2_5<=75
+	      level=2
+	    elsif pm2_5<=115
+	      level=3
+	    elsif pm2_5<150
+	      level=4
+	    elsif pm2_5<=250
+	      level=5
+	    else
+	      level=6
+		end	
+	end
+
+	def getPM10LevelIndex(pm10)
+	    if pm10<=50
+	      level=1
+	    elsif pm10<=150
+	      level=2
+	    elsif pm10<=250
+	      level=3
+	    elsif pm10<350
+	      level=4
+	    elsif pm10<=420
+	      level=5
+	    else
+	      level=6
+	    end	
+	end
+
+	def getSO2LevelIndex(so2)
+		if so2<=150
+	      level=1
+	    elsif so2<=500
+	      level=2
+	    elsif so2<=650
+	      level=3
+	    elsif so2<800
+	      level=4
+	    else
+	      level=5
+		end
+	end
+
+	def getCOLevelIndex(co)
+		if co<=5
+	      level=1
+	    elsif co<=10
+	      level=2
+	    elsif co<=35
+	      level=3
+	    elsif co<60
+	      level=4
+	    elsif co<90
+	      level=5
+	    else
+	      level=6
+		end
+	end
+
+	def getNO2LevelIndex(no2)
+		if no2<=100
+		      level=1
+		    elsif no2<=200
+		      level=2
+		    elsif no2<=700
+		      level=3
+		    elsif no2<1200
+		      level=4
+		    elsif no2<2340
+		      level=5
+		    else
+		      level=6
+		end
+	end
+
+    def getO3LevelIndex(o3)
+    	if o3<=160
+	      level=1
+	    elsif o3<=200
+	      level=2
+	    elsif o3<=300
+	      level=3
+	    elsif o3<400
+	      level=4
+	    elsif o3<800
+	      level=5
+	    else
+	      level=6
+    	end
+    end
+
+    def getPointIcon(str,main_pol)
+    	return (main_pol.include? str) ? 'point_icon8x8.jpg' : ''  	
+    end
 
 	def hb_real
 		hs = Hash.new
@@ -893,11 +1029,33 @@ class QinhuangdaoController < Casein::CaseinController
 			end
 		end
 
-		lev_hs = {"you"=>"优", "yellow"=>"良", "qingdu"=>"轻度", "zhong"=>"中度","zhongdu"=>"重度", "yanzhong"=>"严重"}
+		lev_hs = {"you"=>"优", "yellow"=>"良", "qingdu"=>"轻度", "zhong"=>"中度","zhongdu"=>"重度", "yanzhong"=>"严重","yichang"=>"异常值"}
 
 		hs["lev"] = get_lev(hs["aqi"])
 		hs["lev_han"] = lev_hs[hs["lev"]]
+		hs["pm2_5_color"]=getlevelColor(getPM25LevelIndex(hs["pm2_5"]))
+		hs["pm10_color"]=getlevelColor(getPM10LevelIndex(hs["pm10"]))
+		hs["so2_color"]=getlevelColor(getSO2LevelIndex(hs["so2"]))
+		hs["co_color"]=getlevelColor(getCOLevelIndex(hs["co"]))
+		hs["no2_color"]=getlevelColor(getNO2LevelIndex(hs["no2"]))
+		hs["o3_color"]=getlevelColor(getO3LevelIndex(hs["o3"]))
 
+		if hs['main_pollutant']==nil || hs['main_pollutant']==""
+		hs['pm2_5_icon']=''
+		hs['pm10_icon']=''
+		hs['so2_icon']=''
+		hs['co_icon']=''
+		hs['no2_icon']=''
+		hs['o3_icon']=''
+		else
+				
+		hs['pm2_5_icon']=getPointIcon('PM2.5',hs['main_pollutant'])
+		hs['pm10_icon']=getPointIcon('PM10',hs['main_pollutant'])
+		hs['so2_icon']=getPointIcon('SO2',hs['main_pollutant'])
+		hs['co_icon']=getPointIcon('CO',hs['main_pollutant'])
+		hs['no2_icon']=getPointIcon('NO2',hs['main_pollutant'])
+		hs['o3_icon']=getPointIcon('O3',hs['main_pollutant'])
+        end
 		lev_arr = []
 		lev_han_arr= []
 		aqis.each do |aqi|
