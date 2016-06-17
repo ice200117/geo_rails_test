@@ -1,5 +1,5 @@
 class ChinaCitiesHour < ActiveRecord::Base
-	belongs_to :cities
+	belongs_to :city
 	validates_uniqueness_of :city_id, :scope => :data_real_time
 
 	def self.today_avg(city_name_pinyin=nil,spe=:AQI)

@@ -45,11 +45,13 @@ module AllSite
 					next
 					puts l+' '+'is nil!'
 				end
-				l['monitor_point_id'] = mp.id
+				l['id'] = mp.id
 				MonitorPointHour.new.save_with_arg(l)
 
 				#逐条写入cvs
-				f.puts(l['pointname']+','+mp.longitude.to_s+','+mp.latitude.to_s+','+l['aqi'].to_s+','+l['pm2_5'].to_s+','+l['pm10'].to_s+','+l['so2'].to_s+','+l['no2'].to_s+','+l['o3'].to_s+','+l['o3_8h'].to_s+','+l['co'].to_s+','+l['quality'].to_s+','+l['main_pollutant'].to_s+','+l['time']+','+l['city'])
+				if l['aqi'].to_s.length > 0
+				  f.puts(l['pointname']+','+mp.longitude.to_s+','+mp.latitude.to_s+','+l['aqi'].to_s+','+l['pm2_5'].to_s+','+l['pm10'].to_s+','+l['so2'].to_s+','+l['no2'].to_s+','+l['o3'].to_s+','+l['o3_8h'].to_s+','+l['co'].to_s+','+l['quality'].to_s+','+l['main_pollutant'].to_s.gsub(',','&')+','+l['time']+','+l['city'])
+				end
 			end
 			f.close #关闭
 		end

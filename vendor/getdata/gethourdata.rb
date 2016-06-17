@@ -1,7 +1,7 @@
 require_relative './common.rb'
 require_relative './get_qinhuangdao_data.rb'
 require_relative './all_sites.rb'
-# require_relative '../fore_fix/fore_fix_9km.rb'
+require_relative '../fore_fix/fore_fix_9km.rb'
 hs=Hash.new
 oneday=60*60*24
 
@@ -14,7 +14,7 @@ oneday=60*60*24
 # save_db(hs,TempLfHour) if hour_data_common(hs,TempLfHour)
 #
 # 秦皇岛小时数据
-Qinhuangdao::Qinhuangdao.new.hour
+# Qinhuangdao::Qinhuangdao.new.hour
 
 # tmp=MonitorPointHour.last.data_real_time
 # stime=tmp.beginning_of_hour

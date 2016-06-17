@@ -17,8 +17,8 @@ class MonitorPointHour < ActiveRecord::Base
 	#重写保存(参数类型为哈希)
 	def save_with_arg(d)
 		return 'id or time is nil' if d['id'] == nil || d['time'] == nil
-		linedata=MonitorPointHour.find_or_create_by(monitor_point_id:d['id'],data_real_time: (d['time'].beginning_of_hour..d['time'].end_of_hour))
-		# if MonitorPointHour.where("monitor_point_id =? AND data_real_time >= ? AND data_real_time <= ?",d['id'], d['time'].beginning_of_hour,d['time'].end_of_hour).length == 0
+		linedata=MonitorPointHour.find_or_create_by(monitor_point_id:d['id'],data_real_time: (d['time'].to_time.beginning_of_hour..d['time'].to_time.end_of_hour))
+		# if MonitorPointHour.where("monitor_point_id =? AND data_real_time >= ? AND data_real_time <= ?",d['id'],d['time'].to_time.beginning_of_hour,d['time'].to_time.end_of_hour).length == 0
 		# linedata=MonitorPointHour.new
 		linedata.monitor_point_id = d['id']
 		linedata.data_real_time = d['time']
