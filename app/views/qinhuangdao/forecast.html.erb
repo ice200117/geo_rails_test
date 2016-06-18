@@ -1,31 +1,31 @@
 <%= render partial:"qinhuangdao/banner",locals:{banner:@banner}%>
-          <style>
-          #forcastfive
-          {
-          font-family:'微软雅黑';
-          border: 3px solid #E3E9EC;
-          border-collapse:collapse;
-          }
-          #forcastfive td, #forcastfive th 
-          {
-          font-size:1em;
-          padding:3px 7px 2px 7px;
-          }
-          #forcastfive th 
-          {
-          font-size:1.1em;
-          text-align:left;
-          padding-top:5px;
-          padding-bottom:4px;
-          background-color:#30A6E5;
-          color:#ffffff;
-          }
-          #forcastfive tr.alt td 
-          {
-          color:#000000;
-          background-color:#B5E2FB;
-          }
-          </style>
+<style>
+	#forcastfive
+	{
+		font-family:'微软雅黑';
+		border: 3px solid #E3E9EC;
+		border-collapse:collapse;
+  }
+  #forcastfive td, #forcastfive th 
+  {
+	  font-size:1em;
+	  padding:3px 7px 2px 7px;
+  }
+  #forcastfive th 
+  {
+	  font-size:1.1em;
+	  text-align:left;
+	  padding-top:5px;
+	  padding-bottom:4px;
+	  background-color:#30A6E5;
+	  color:#ffffff;
+  }
+  #forcastfive tr.alt td 
+  {
+	  color:#000000;
+	  background-color:#B5E2FB;
+  }
+</style>
 <div class="container">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
@@ -36,144 +36,185 @@
 		<div class="panel-body">
 			<div class="tabbable" id="tabs-922331">
 				<ul class="nav nav-tabs">
-					<li><a contenteditable="true" data-toggle="tab" href="#panel-437763">未来5天趋势预报</a></li>
-					<li class="active"><a contenteditable="true" data-toggle="tab" href="#panel-55716">源追踪</a></li>
+					<li class="active"><a contenteditable="true" data-toggle="tab" href="#panel-437763">未来5天趋势预报</a></li>
+					<li><a contenteditable="true" data-toggle="tab" href="#panel-55716">源追踪</a></li>
 				</ul>
 				<div class="tab-content">
-					<div class="tab-pane" contenteditable="true" id="panel-437763">
-          <table width="1108">
-          <tr>
-          <td width="608">
-            <%
-                nt = Time.now
-            i = 0
-            path = '/mnt/share/Products/Web/Forecast/CUACE/'
-            begin
-              strtime = (nt-60*60*24*i).strftime("%Y%m%d")
-              file = path + strtime + '/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif'
-              i = i + 1
-              break if i == 7 
-            end until File::exists?(file)
-          %>
-        <%= image_tag 'china_fc09/'+strtime+'/Hourly/Animate_CUACE_09km_AQI_'+strtime+'.gif', class:'col-xs-8' %>
-        </td>
-        <!--未来5天趋势预报和气象预报-->
-        
-          <td width="500">
-            <table id="forcastfive" width="500" height="300">
-              <caption style="font-size:large;">未来5天趋势预报和气象预报</caption>
-           <tr> 
-             <th width="110">日期</th> 
-             <th width="60">AQI日均值</th>
-             <th width="90">AQI范围</th>
-             <th width="160">平均级别</th>
-             <th width="60">首要污染物</th>
-             <th width="200">天气</th>
-           </tr> 
-              <% for i in (0..4) %>
-              <% time = i.day.from_now.strftime("%Y%m%d")%>
-              <% t = @forecast_data[time] %>
-              <% next unless t %>
+					<div class="tab-pane active" contenteditable="true" id="panel-437763">
+						<div class="row">
+							<div class="col-xs-8">
+								<input value="http://60.10.135.153:3004/images/china_fc09/<%= @str_date %>/Hourly/" id='imagePath' type='hidden' />
+								<div class = 'row'>
+									<div class='t-t' id='t-t'>
+										<a href='javascript:void(0)' class='cur'>PM2.5</a>
+										<a href='javascript:void(0)' >PM10</a>
+										<a href='javascript:void(0)' >SO2</a>
+										<a href='javascript:void(0)' >CO</a>
+										<a href='javascript:void(0)' >NO2</a>
+										<a href='javascript:void(0)' >O3</a>
+										<a href='javascript:void(0)' >AQI</a>
+										<a href='javascript:void(0)' >能见度</a>
+									</div>
+								</div>
+								<div class="row">
+									<!--未来5天趋势预报图-->
+									<div id="item-content-air" class="t-c">
+										<!--img id="id0_0" src="" alt="" onclick='imageViewClick(this);' style='cursor:pointer;' onerror='showOtherPic(this)' width='100%' -->
+									</div>
+								</div>
+								<!--趋势预报end-->
+								<div class="row">
+									<div class="t-b">
+										<div class="ui-center">
+											<div class="en-air-top-banner" id="tip-banner">
+												<div class="air-date" id="air-date">
+													<span class="aftertime-title">日期：</span>
+													<span class="dateElement">
+														<a href="javascript:;" title="<%= Time.now.strftime('%Y-%m-%d') %>" class="cur" id="date1" nextid="date2"><%= Time.now.month %>月<%= Time.now.day %>日</a>
+													</span>
+													<span class="dateElement">
+														<a href="javascript:;" title="<%= 1.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date2" nextid="date3"><%= 1.days.from_now.month %>月<%= 1.days.from_now.day %>日</a>
+													</span>
+													<span class="dateElement">
+														<a href="javascript:;" title="<%= 2.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date3" nextid="date4"><%= 2.days.from_now.month %>月<%= 2.days.from_now.day %>日</a>
+													</span>
+													<span class="dateElement">
+														<a href="javascript:;" title="<%= 3.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date4" nextid="date5"><%= 3.days.from_now.month %>月<%= 3.days.from_now.day %>日</a>
+													</span>
+													<span class="dateElement">
+														<a href="javascript:;" title="<%= 4.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date5" nextid="date1"> <%= 4.days.from_now.month %>月<%= 4.days.from_now.day %>日 </a>
+													</span>
+												</div>
+												<div class="air-time">
+													<div class="air-time-title" style="color:#000000">时间：</div>
+													<div class="air-time-content">
+														<a href="javascript:void(0)" class="ct" id="tc" style="left: -10px;">00</a>
+													</div>
+													<div class="air-time-control">
+														<a href="javascript:void(0)" class="start" id="kg"></a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+								<!--未来5天趋势预报和气象预报-->
 
-          <tr  class="<%= (i==1 || i==3) ? 'alt' : ''%>" > 
-             <td><%= t["date"] %></td> 
-             <td><strong><%= t["AQI"] != nil ? t["AQI"].to_i : '-'%></td>
-             <td><strong><%= t["min"] != nil ? t["min"] : '-'%>~<%= t["max"] != nil ? t["max"] : '-'%></strong></td>
-             <td><span class="<%= t["fore_lev"] != nil ? t["fore_lev"] : ''%> smallforcast"><%= t['level'] !=nil ? t["level"] : '-'%></span></td>
-             <td><strong><%= t["main_pol"] != nil ? t["main_pol"] : '-'%></strong></td>   
-            
-            <td>
-            <div>
-            <span><%= t["temp2"] !=nil ? t['temp2'] : '-' %>℃~<%= t["temp1"] !=nil ? t['temp1'] : '-' %>℃</span>    
-            <span><%= t["tq"] != nil ? t["tp"] : '-' %></span>     
-            <span><%= t["ws"] !=nil ? t['ws'] : '-' %> <%= t["wd"] !=nil ? t['wd'] : '-'%></span>
-            </div>
-            </td>
-          </tr>
-          <% end %> 
-          </table>
-          <table style="font-family:'微软雅黑';">
-          <tr>
-           <td style="font-size:large;"> 秦皇岛重污染天气预警</td>   
-         </tr>
-         <tr> 
-          <td>
-            <div style="background: url(<%= image_url 'lanse.png' %>) no-repeat scroll 5px 10px rgba(0, 0, 0, 0);width:327px;height:60px;padding-top:8px;">
-                <table style="height:100%;width:100%;margin-left:60px">
-                  <tr><td>无预警信息</td></tr>
-                </table>
-            </div>
-          </td>
-         </tr>
-    </table>
-  </td>
-  </tr>
-  </table>
-</div>
+								<div class='col-xs-4'>
+									<%# <table id="forcastfive" width="500" height="300"> %>
+									 <table id="forcastfive"> 
+										<caption style="font-size:large;">未来5天趋势预报和气象预报</caption>
+										<tr> 
+											<th width="110">日期</th> 
+											<th width="60">AQI日均值</th>
+											<th width="90">AQI范围</th>
+											<th width="160">平均级别</th>
+											<th width="60">首要污染物</th>
+											<th width="200">天气</th>
+										</tr> 
+										<% for i in (0..4) %>
+											<% time = i.day.from_now.strftime("%Y%m%d")%>
+											<% t = @forecast_data[time] %>
+											<% next unless t %>
 
-			<div class="tab-pane active" contenteditable="true" id="panel-55716">
-				<div class="zc-map-labels col-xs-12 row" >
-					<%= link_to 'SO2', adj_ajax_qinhuangdao_path(type: "SO2_120", post: @post), remote: true, class: "active change" %>
-					<%= link_to 'NOX', adj_ajax_qinhuangdao_path(type: "NOX_120", post: @post), remote: true , class: "change" %>
-					<%= link_to 'CO', adj_ajax_qinhuangdao_path(type: "CO_120", post: @post), remote: true , class: "change" %>
-				</div>
-				<div class="row">
-					<div class="yuanzhuizong col-xs-8">
-					</div>
-					<div class="col-xs-4" id="001" >
-						<div> <%=@city_name%><span id="factor1"><%=@factor%></span>因子未来五天污染的来源贡献比</div>
-						<div id="0001">
-							<%= pie_chart(@adj_per1, height: "200px") %>
+											<tr  class="<%= (i==1 || i==3) ? 'alt' : ''%>" > 
+												<td><%= t["date"] %></td> 
+												<td><strong><%= t["AQI"] != nil ? t["AQI"].to_i : '-'%></td>
+												<td><strong><%= t["min"] != nil ? t["min"] : '-'%>~<%= t["max"] != nil ? t["max"] : '-'%></strong></td>
+												<td><span class="<%= t["fore_lev"] != nil ? t["fore_lev"] : ''%> smallforcast"><%= t['level'] !=nil ? t["level"] : '-'%></span></td>
+												<td><strong><%= t["main_pol"] != nil ? t["main_pol"] : '-'%></strong></td>   
+													<td>
+														<div>
+															<span><%= t["temp2"] !=nil ? t['temp2'] : '-' %>℃~<%= t["temp1"] !=nil ? t['temp1'] : '-' %>℃</span>    
+															<span><%= t["tq"] != nil ? t["tp"] : '-' %></span>     
+															<span><%= t["ws"] !=nil ? t['ws'] : '-' %> <%= t["wd"] !=nil ? t['wd'] : '-'%></span>
+														</div>
+													</td>
+												</tr>
+											<% end %> 
+										</table>
+										<table style="font-family:'微软雅黑';">
+											<tr>
+												<td style="font-size:large;"> 秦皇岛重污染天气预警</td>   
+											</tr>
+											<tr> 
+												<td>
+													<div style="background: url(<%= image_url 'lanse.png' %>) no-repeat scroll 5px 10px rgba(0, 0, 0, 0);width:327px;height:60px;padding-top:8px;">
+														<table style="height:100%;width:100%;margin-left:60px">
+															<tr><td>无预警信息</td></tr>
+														</table>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
 						</div>
-						<table class="table table-striped" id="adj_table">
-							<tr>
-								<th>序号</th>
-								<th>城市</th>
-								<th>贡献比</th>
-								<!--<th>综合指数</th>-->
-							</tr>
 
-							<% i = 0 %>
-							<% @adj_per1.each{ |key,value| %>
-								<tr>
-									<td><%=i = i+1 %></td>
-									<td><%=key %> </td>
-									<td><%=value%></td>
-								</tr>
-							<% } %>
-						</table>
+						<div class="tab-pane" contenteditable="true" id="panel-55716">
+							<div class="zc-map-labels col-xs-12 row" >
+								<%= link_to 'SO2', adj_ajax_qinhuangdao_path(type: "SO2_120", post: @post), remote: true, class: "active change" %>
+								<%= link_to 'NOX', adj_ajax_qinhuangdao_path(type: "NOX_120", post: @post), remote: true , class: "change" %>
+								<%= link_to 'CO', adj_ajax_qinhuangdao_path(type: "CO_120", post: @post), remote: true , class: "change" %>
+							</div>
+							<div class="row">
+								<div class="yuanzhuizong col-xs-8">
+								</div>
+								<div class="col-xs-4" id="001" >
+									<div> <%=@city_name%><span id="factor1"><%=@factor%></span>因子未来五天污染的来源贡献比</div>
+									<div id="0001">
+										<%= pie_chart(@adj_per1, height: "200px") %>
+									</div>
+									<table class="table table-striped" id="adj_table">
+										<tr>
+											<th>序号</th>
+											<th>城市</th>
+											<th>贡献比</th>
+											<!--<th>综合指数</th>-->
+										</tr>
+
+										<% i = 0 %>
+										<% @adj_per1.each{ |key,value| %>
+											<tr>
+												<td><%=i = i+1 %></td>
+												<td><%=key %> </td>
+												<td><%=value%></td>
+											</tr>
+										<% } %>
+									</table>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>
-<% content_for :nav do %>
-	$(function(){
-		$(".change").click(function(){
-			if($(this).is(".active")){
+			<% content_for :nav do %>
+				$(function(){
+				$(".change").click(function(){
+				if($(this).is(".active")){
 				return;
-			}
-			$(this).addClass("active").siblings().removeClass("active");
-		});
-	});
+				}
+				$(this).addClass("active").siblings().removeClass("active");
+				});
+				});
 
-	<%
-			nt = Time.now
-	i = 0
-	path = '/mnt/share/Products/Web/'+@city_adj
-	begin
-		strnow1 = (nt-60*60*24*i).strftime('%Y%m%d') 
-		strnow2 = (nt-60*60*24*i).strftime("%Y-%m-%d")
-		file = path + strnow1 + '/CUACE_09km_adj_SO2_120_'+strnow2+'.png'
-		i = i + 1
-		break if i == 356 
-	end until File::exists?(file)
-%>
-					//change('<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>');
-					change('<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
-	function change(img){
-	$('.yuanzhuizong').html(img);
-	}
-	$('.navigation li .forecast').addClass('current-link')
-<% end %>
+				<%
+					nt = Time.now
+					i = 0
+					path = '/mnt/share/Products/Web/'+@city_adj
+					begin
+						strnow1 = (nt-60*60*24*i).strftime('%Y%m%d') 
+						strnow2 = (nt-60*60*24*i).strftime("%Y-%m-%d")
+						file = path + strnow1 + '/CUACE_09km_adj_SO2_120_'+strnow2+'.png'
+						i = i + 1
+						break if i == 356 
+					end until File::exists?(file)
+				%>
+				//change('<%= image_tag strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12"%>');
+				change('<%= image_tag "ftproot/Products/Web/"+@city_adj+strnow1+"/CUACE_09km_adj_SO2_120_"+strnow2+".png", class:"col-xs-12" %>');
+				function change(img){
+				$('.yuanzhuizong').html(img);
+				}
+				$('.navigation li .forecast').addClass('current-link')
+			<% end %>

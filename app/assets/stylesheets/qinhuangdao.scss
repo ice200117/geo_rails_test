@@ -107,3 +107,26 @@ ul,ul li{ margin:0px; padding:0px; list-style:none;}
 		height:500px;
 	}
 }
+.t-t{
+	color:#333333;
+	height:36px;
+	line-height:36px;
+	border-bottom:1px solid #ddd;
+	a{
+		font-size: 12px;
+		display: inline-block;
+		float: left;
+		line-height: 25px;
+		height: 25px;
+		text-decoration: none;
+		margin: 5px 0 0 5px;
+		padding: 0 12px;
+		background-color: #eaeaea;
+		color: #666;
+		&:hover,&.cur{
+			color: #fff;
+			background-color: #7ca9e6;
+			text-decoration: none;
+		}	
+	}
+}
