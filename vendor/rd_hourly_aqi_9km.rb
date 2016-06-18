@@ -109,4 +109,3 @@ cs.each do |c|
 	  Custom::Redis.set(py,tmp,3600*24)
   end
 end
-

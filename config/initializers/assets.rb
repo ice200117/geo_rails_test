@@ -12,6 +12,8 @@ Rails.application.config.assets.version = '1.0'
 
 Rails.application.config.assets.precompile += %w( 
   vendor/jquery.timeliner.min.js
+  vendor/leaflet.ChineseTmsProviders.js
+  vendor/OSMBuildings-Leaflet.js
   css/timeliner.css
   css/timeliner_styling.css
   jquery-ui-datepicker.js
@@ -49,4 +51,6 @@ Rails.application.config.assets.precompile += %w(
 	data-turbolinks-track.js
 	cities_around.js
 	SfcitiesSelector.js
+  leaflet.js
+  leaflet.css
 )

@@ -92,9 +92,15 @@ class WelcomeController < ApplicationController
 		#}
 		#end
 
-		system('ls')
-		r = `rails r vendor/test.rb`
-		puts r
+		#system('ls')
+		#r = `rails r vendor/test.rb`
+		#puts r
+    
+    @cf = County.all.map {|c| c.to_geojson }
+    @cs = City.all.map {|c| c.to_geojson }
+    @geoJsonBlock = Adjoint.to_geojson
+
+    render layout: false
 	end
 
 	def visits_by_day
@@ -146,9 +152,11 @@ class WelcomeController < ApplicationController
 		else
 			hs = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
 		end 
-		md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
-		@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime,  h.AQI]} }]
+    md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day-2.days..Time.zone.now.end_of_day)
+		@chart = [{name: c.city_name+"AQI", data: hs.map { |h| [ h.forecast_datetime,  h.AQI]} }]
 		@chart << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.AQI] } }
+		@chart << {name: c.city_name+"O3", data: hs.map { |h| [ h.forecast_datetime,  h.O3]} }
+		@chart << {name: 'O3监测值', data: md.map { |h| [ h.data_real_time,  h.O3] } }
 
 
 		# Table 3: 过去一星期城市监测与预报值日均值对比

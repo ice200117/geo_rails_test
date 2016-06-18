@@ -25,4 +25,14 @@ class City < ActiveRecord::Base
     self.lonlat = "POINT(#{longitude} #{latitude})"
   end
 
+  def to_feature
+    @entity_factory = RGeo::GeoJSON::EntityFactory.instance
+    @entity_factory.feature(lonlat, id, :name => city_name)
+  end
+
+  def to_geojson
+    RGeo::GeoJSON.encode(to_feature)
+  end
+
+
 end

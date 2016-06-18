@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 	#get 'counties/lookup'
+	get 'counties/to_geojson'
+
 	get 'querys/aqis_by_city' => 'querys#aqis_by_city'
 	get 'querys/aqis_by_city/:city' => 'querys#aqis_by_city'
 	# get 'querys/aqis_by_city/city' => 'querys#aqis_by_cityid'
