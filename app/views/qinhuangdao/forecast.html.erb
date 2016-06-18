@@ -43,7 +43,7 @@
 					<div class="tab-pane active" contenteditable="true" id="panel-437763">
 						<div class="row">
 							<div class="col-xs-8">
-								<input value="http://60.10.135.153:3004/images/china_fc09<%= @str_date %>/Hourly" id='imagePath' type='hidden' />
+								<input value="http://60.10.135.153:3004/images/china_fc09/<%= Time.now.strftime('%Y%m%d')%>/Hourly" id='imagePath' type='hidden' />
 								<div class = 'row'>
 									<div class='t-t' id='t-t'>
 										<a href='javascript:void(0)' class='cur'>PM2.5</a>
