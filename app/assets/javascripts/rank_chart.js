@@ -71,6 +71,7 @@ function getRankData()
               rank = (data.rows[i].rank==null)?null:parseInt(data.rows[i].rank);
               lastrank = (data.rows[i].lastrank==null)?null:parseInt(data.rows[i].lastrank);
               index = (data.rows[i].aqi==null)?null:parseInt(data.rows[i].aqi);
+              if(data.rows[i].primary_pollutant!=null)
               primary_pollutant = (data.rows[i].primary_pollutant).toUpperCase();
               label = '真气排名';
             }

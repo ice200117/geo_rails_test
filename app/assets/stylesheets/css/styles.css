@@ -82,14 +82,21 @@ background: url(searchlogo.png) no-repeat 60px 3px;
 .small1{ font-size:12px; padding:1px 10px; color:#000;}
 .list-weather{ line-height:21px; font-size:12px;}
 
-.yellow,.qingdu,.you,.zhongdu,.yanzhong,.zhong{ padding:1px 10px;}
-.yanzhong{background:#6f0474;}
-.zhong{ background:#ba1d26;}
-.yellow{ background:#fac305;}
-.qingdu{ background:#fd5b30;}
-.you{ background:#72ca29;}
-.zhongdu{background:#b414bb;}
-
+.yichang.yellow,.qingdu,.you,.zhongdu,.yanzhong,.zhong{ padding:1px 10px;}
+.yanzhong{background:#9c0a4e;}
+.zhong{ background:#ff401a;}
+.yellow{ background:#efdc31;}
+.qingdu{ background:#fa0;}
+.you{ background:#43ce17;}
+.zhongdu{background:#d20040;}
+.yichang{background:#6E6E6E}
+.yanzhong-font{color:#9c0a4e;background:none;border-color:none;}
+.zhong-font{ color:#ff401a;background:none;border-color:none;}
+.yellow-font{ color:#efdc31;background:none;border-color:none;}
+.qingdu-font{ color:#fa0;background:none;border-color:none;}
+.you-font{ color:#43ce17;background:none;border-color:none;}
+.zhongdu-font{color:#d20040;background:none;border-color:none;}
+.yichang-font{color:#6E6E6E;background:none;border-color:none;}
 
 /*城市空气质量比较*/
 .containerbd{width: 1170px!important;}
@@ -119,5 +126,6 @@ background: url(searchlogo.png) no-repeat 60px 3px;
 .aftertime-title{ color:#a5d6ff; font-size:14px; }
 .yellow-small{ background-color:#FFFF37;}
 .qingdu-small{ background-color:#FF8000;}
+.forcastimgfugai{width:100%;float:left;position:relative;min-height: 1px;padding-right:15px;padding-left:15px;}
 
 
