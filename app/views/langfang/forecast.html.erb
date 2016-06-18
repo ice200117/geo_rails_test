@@ -6,7 +6,7 @@
 	<div class='row'>
 		<font class="top11-title" style="color:black; padding:0px;margin:0px">未来5天趋势预报</font>
 	</div>
-	<input value="http://60.10.135.153:3004/images/china_fc09/<%= @str_date %>/Hourly/" id='imagePath' type='hidden' />
+	<input value="http://60.10.135.153:3004/images/china_fc09/<%= Time.now.strftime('%Y%m%d') %>/Hourly/" id='imagePath' type='hidden' />
 	<div class = 'row'>
 		<div class='t-t' id='t-t'>
 			<a href='javascript:void(0)' class='cur'>PM2.5</a>
