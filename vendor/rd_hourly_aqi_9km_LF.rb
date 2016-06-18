@@ -102,9 +102,9 @@ fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
 f = File.open(path+fn) if File::exists?(path+fn) 
 exit unless f
 f.readlines[2..-1].each do |line| 
-	# puts line
+	puts line
 	parse_line(line, c)
-	puts fn+" update database successful!"
 end
+puts fn+" update database successful!"
 # end
 

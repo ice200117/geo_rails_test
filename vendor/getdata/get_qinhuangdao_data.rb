@@ -26,7 +26,7 @@ module Qinhuangdao
 					pointname=pointname[0,len-3] if pointname[len-3,3]=='(*)'
 					m=City.find_by_city_name(t['Name']).monitor_points.find_by_pointname(pointname)
 					linedata=Hash.new
-					tmp=someday_data('day',l['DataTime'].to_time,MonitorPoint.find_by_pointname(pointname).id)
+					tmp=someday_data('day',l['DataTime'].to_time,m.id)
 					linedata=tmp if !tmp.nil?
 					linedata['id']=m.id
 					linedata['time']=l['DataTime'].to_time
