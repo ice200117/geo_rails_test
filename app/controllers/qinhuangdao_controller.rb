@@ -853,8 +853,8 @@ class QinhuangdaoController < Casein::CaseinController
 	def adj_percent(type="", city='ADJ_baoding', force = "bd")
 		nt = Time.now
 		i = 0
-		path = 'public/images/ftproot/Temp/Backup'+city+'/'
-		#path = '/mnt/share/Temp/Backup'+city+'/'
+		#path = 'public/images/ftproot/Temp/Backup'+city+'/'
+		path = '/mnt/share/Temp/Backup'+city+'/'
 		begin
 			#puts i
 			strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
