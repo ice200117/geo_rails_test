@@ -53,4 +53,7 @@ Rails.application.config.assets.precompile += %w(
 	css/font-awesome.css
 	css/loginstyle.css
 	modernizr.custom.js
+	echarts.min.js
+	infographic.js
+	sandian.js
 )
