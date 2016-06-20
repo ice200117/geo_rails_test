@@ -853,8 +853,8 @@ class QinhuangdaoController < Casein::CaseinController
 	def adj_percent(type="", city='ADJ_baoding', force = "bd")
 		nt = Time.now
 		i = 0
-		path = 'public/images/ftproot/Temp/Backup'+city+'/'
-		#path = '/mnt/share/Temp/Backup'+city+'/'
+		#path = 'public/images/ftproot/Temp/Backup'+city+'/'
+		path = '/mnt/share/Temp/Backup'+city+'/'
 		begin
 			#puts i
 			strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
@@ -1097,9 +1097,11 @@ class QinhuangdaoController < Casein::CaseinController
 	#周边城市
 	def cities_around_fun
 		cities_hash={1=>"北京",8=>"天津",10=>"唐山",18=>"廊坊",14=>"保定",56=>"葫芦岛",49=>"锦州",16=>"承德"}
-		starttime=Time.mktime((Time.now-3600).year,(Time.now-3600).month,(Time.now-3600).day,(Time.now-3600).hour,0,0)
-		endtime=Time.mktime((Time.now-3600).year,(Time.now-3600).month,(Time.now-3600).day,(Time.now-3600).hour,59,59)
-		querydata=ChinaCitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (1,8,10,18,14,56,49,16)",starttime,endtime)
+		stime = ChinaCitiesHour.last.data_real_time.beginning_of_hour
+		etime = stime.end_of_hour
+		# starttime=Time.mktime((Time.now-3600).year,(Time.now-3600).month,(Time.now-3600).day,(Time.now-3600).hour,0,0)
+		# endtime=Time.mktime((Time.now-3600).year,(Time.now-3600).month,(Time.now-3600).day,(Time.now-3600).hour,59,59)
+		querydata=ChinaCitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (1,8,10,18,14,56,49,16)",stime,etime).order(AQI: :desc)
 		@cities_around=querydata.map{ |data| { time: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S"),cityname: cities_hash[data.city_id],aqi: data.AQI,pm2_5: data.pm25,pm10: data.pm10,so2: data.SO2,no2: data.NO2,co: data.CO,o3: data.O3,quality: data.level,primary_pollutant: data.main_pol,weather: data.weather,temp: data.temp,humi: data.humi,windspeed: data.windspeed,winddirection: data.winddirection}}
 		respond_to do |format|
 			format.html { }

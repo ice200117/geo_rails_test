@@ -302,10 +302,10 @@
 					</div>
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="lfgqxyue">
-							<%= render partial:'qinhuangdao/data_table',locals:{data:@qhdbyhour,flag:'bd',hasRate:false} %>
+							<%= render partial:'qinhuangdao/data_table',locals:{data:@qhdbyhour,flag:'monitor_hour',hasRate:false} %>
 						</div>
 						<div class="tab-pane fade" id="lfgqxnian">
-							<%= render partial:'qinhuangdao/data_table',locals:{data:@qhdbyday,flag:'bd',hasRate:false} %>
+							<%= render partial:'qinhuangdao/data_table',locals:{data:@qhdbyday,flag:'monitor',hasRate:false} %>
 						</div>
 					</div>
 				</div>
@@ -352,27 +352,20 @@
 					<div class="tab-title">
 						<ul class="nav nav-tabs">
 							<li class="active">
-								<a href="#sfrizhzs" data-toggle="tab">
-									<strong>污染物浓度（日报）</strong>
-								</a>
+								<a href="#sfrizhzs" data-toggle="tab"> <strong>污染物浓度（日报）</strong> </a>
 							</li>
 							<li>
-								<a href="#sfyuezhzs" data-toggle="tab">
-									<strong>污染物浓度（月报）</strong>
-								</a>
+								<a href="#sfyuezhzs" data-toggle="tab"> <strong>污染物浓度（月报）</strong> </a>
 							</li>
 							<li>
-								<a href="#sfnianzhzs" data-toggle="tab">
-									<strong>污染物浓度（年报）</strong>
-								</a>
-							</li>
+								<a href="#sfnianzhzs" data-toggle="tab"> <strong>污染物浓度（年报）</strong> </a> </li>
 						</ul>
 					</div>
 					<div class="tab-content">
 						<div class="tab-pane fade in active sf" id="sfrizhzs" >
 							<%= render partial: 'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyday,flag:'sf',hasRate: true} %></div>
 						<div class="tab-pane fade sf" id="sfyuezhzs" sf>
-							<%= render partial: 'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyday,flag:'sf',hasRate: true} %></div>
+							<%= render partial: 'qinhuangdao/data_table',locals:{data:@sfcitiesrankbymonth,flag:'sf',hasRate: true} %></div>
 						<div class="tab-pane fade sf" id="sfnianzhzs" sf>
 							<%= render partial: 'qinhuangdao/data_table',locals:{data:@sfcitiesrankbyyear,flag:'sf',hasRate: true} %></div>
 					</div>
@@ -393,19 +386,12 @@
 					<div class="tab-title">
 						<ul class="nav nav-tabs">
 							<li class="active">
-								<a href="#sfri" data-toggle="tab">
-									<strong>污染物浓度（日报）</strong>
-								</a>
+								<a href="#sfri" data-toggle="tab"> <strong>污染物浓度（日报）</strong> </a> </li>
+							<li>
+								<a href="#sfyue" data-toggle="tab"> <strong>污染物浓度（月报）</strong> </a>
 							</li>
 							<li>
-								<a href="#sfyue" data-toggle="tab">
-									<strong>污染物浓度（月报）</strong>
-								</a>
-							</li>
-							<li>
-								<a href="#sfnian" data-toggle="tab">
-									<strong>污染物浓度（年报）</strong>
-								</a>
+								<a href="#sfnian" data-toggle="tab"> <strong>污染物浓度（年报）</strong> </a>
 							</li>
 						</ul>
 					</div>
