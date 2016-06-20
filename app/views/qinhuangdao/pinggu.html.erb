@@ -92,8 +92,9 @@
 				</div>
 				<div id="chart" class="aqichartbdzh"></div>
 			</div>
-			<div class="col-xs-3" style="display:none">
-				<div id="piechart" class="aqichartbd" style="margin-top:35px;"></div>
+			<div>
+				<div id="piechart" class="aqichartbd" style="margin-top:35px;width:40%;height: 470px;float:left"></div>
+				<div id="sandian" class="aqichartbd" style="margin-top:35px;width:60%;height: 470px;float:left"></div>
 			</div>
 		</div>
 	</div>
@@ -436,7 +437,7 @@ begin
 	break if i == 7
 end until File::exists?(file)
 %>
-	<%= javascript_include_tag 'bootstrap.min','respond','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','LineChart','rank_chart',"cities_around" %>
+	<%= javascript_include_tag 'bootstrap.min','respond','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','LineChart','rank_chart',"cities_around",'echarts.min','infographic','sandian' %>
 <% content_for :nav do%>
 	$('.navigation li .pinggu').addClass('current-link');
 	$(".change").click(function(){
