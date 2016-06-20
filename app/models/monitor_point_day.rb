@@ -8,7 +8,7 @@ class MonitorPointDay < ActiveRecord::Base
 			# tmp= Time.now.yesterday
 			stime=tmp.beginning_of_day
 			etime=tmp.end_of_day
-			Custom::Redis.set('qhd_day',City.find(cityid).monitor_point_days.where("data_real_time >= ? AND data_real_time <=?",stime,etime))
+			Custom::Redis.set('qhd_day',City.find(cityid).monitor_point_days.where("data_real_time >= ? AND data_real_time <=?",stime,etime),3600*24)
 		else
 			Custom::Redis.get('qhd_day')
 		end

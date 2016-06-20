@@ -12,7 +12,7 @@ module Custom::Redis
 	#缓存公用方法,time==0时永不过期
 	def self.set(name,data,time=0)
 		if $redis.set(name,data.to_json)=='OK'
-			$redis.expire(name,time) if time == 0
+			$redis.expire(name,time) if time != 0
 			data.as_json
 		else
 			nil
