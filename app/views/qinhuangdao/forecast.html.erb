@@ -162,22 +162,22 @@
 							</div>
 							<div class="col-xs-4" id="001" >
 								<div class='row'><%=@city_name%><span id="factor1"><%=@factor%></span>因子未来五天污染的来源贡献比</div>
-								<div class='row' id="0001">
-									<%= pie_chart(@adj_per1, height: "200px") %>
-								</div>
-								<div class="row">
-								<table class="table table-striped" id="adj_table">
-									<tr>
-										<th>序号</th>
-										<th>城市</th>
-										<th>贡献比</th>
-										<!--<th>综合指数</th>-->
-									</tr>
-
-									<% i = 0 %>
-									<% @adj_per1.each{ |key,value| %>
-									<tr>
-										<td><%=i = i+1 %></td>
+								<div class="col-xs-4" id="001" >
+									<div> <%=@city_name%><span id="factor1"><%=@factor%></span>因子未来五天污染的来源贡献比</div>
+									<div id="0001" >
+										<%= pie_chart(@adj_per1, height: "200px", library: { chart:{ width: 282 }}) %>
+									</div>
+									<table class="table table-striped" id="adj_table">
+										<tr>
+											<th>序号</th>
+											<th>城市</th>
+											<th>贡献比</th>
+											<!--<th>综合指数</th>-->
+										</tr>
+										<% i = 0 %>
+										<% @adj_per1.each{ |key,value| %>
+										<tr>
+									<td><%=i = i+1 %></td>
 										<td><%=key %> </td>
 										<td><%=value%></td>
 									</tr>
