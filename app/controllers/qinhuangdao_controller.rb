@@ -9,7 +9,7 @@ class QinhuangdaoController < Casein::CaseinController
 	include NumRu
 	protect_from_forgery :except => [:get_forecast_baoding, :get_city_point]
 
-	before_action :banner,only: [:pinggu,:rank1503,:forecast,:compare]
+	before_action :banner,only: [:pinggu,:rank1503,:forecast,:compare,:ltjc]
 	before_action :get_forecast,only: [:pinggu,:forecast]
 
 	def map
@@ -973,6 +973,9 @@ class QinhuangdaoController < Casein::CaseinController
 		@adj_per1 = @banner["adj_per1"]
 	end
 
+	def ltjc
+
+	end
 	def compare
 	end
 	def sfcities_compare
