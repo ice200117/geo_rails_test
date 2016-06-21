@@ -1088,10 +1088,10 @@ class QinhuangdaoController < Casein::CaseinController
 		hs["adj_per1"] = adj_percent('SO2_120', hs["city_adj"], force)
 
 		city_name_pinyin='qinhuangdaoshi'
-		@rank={'hour'=>TempSfcitiesHour.city_rank(city_name_pinyin)}
-		@rank['day']=TempSfcitiesDay.city_rank(city_name_pinyin)
-		@rank['month']=TempSfcitiesMonth.city_rank(city_name_pinyin)
-		@rank['year']=TempSfcitiesYear.city_rank(city_name_pinyin)
+		@rank={'hour'=>(74-TempSfcitiesHour.city_rank(city_name_pinyin))}
+		@rank['day']=74-TempSfcitiesDay.city_rank(city_name_pinyin)
+		@rank['month']=74-TempSfcitiesMonth.city_rank(city_name_pinyin)
+		@rank['year']=74-TempSfcitiesYear.city_rank(city_name_pinyin)
 		@banner = hs
 	end 
 	#周边城市
