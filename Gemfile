@@ -1,7 +1,7 @@
 source 'https://ruby.taobao.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.0'
+gem 'rails', '4.1.13'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
@@ -65,7 +65,7 @@ gem 'jquery-migrate-rails', '~> 1.2.1'
 
 gem 'groupdate'
 
-gem 'chartkick', '~> 1.3.2'
+gem 'chartkick', '~> 2.0.0'
 
 #gem 'baidumap'
 gem 'leaflet-rails'
@@ -116,3 +116,6 @@ gem 'to_xls'
 gem 'nprogress-rails'
 gem 'jquery-turbolinks'
 gem 'casein','~>5.1.1'
+
+# 提供分表功能
+gem 'partitioned', '~> 2.1'

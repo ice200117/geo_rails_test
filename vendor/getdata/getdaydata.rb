@@ -1,8 +1,10 @@
 require_relative './common.rb'
 require_relative './get_qinhuangdao_data.rb'
-require_relative './bd_day.rb'
+require_relative './calculate_sfcities_rank.rb'
+# require_relative './bd_day.rb'
 
-# time=Time.now.yesterday
+time=Time.now.yesterday
+
 #秦皇岛日数据
 # Qinhuangdao::Qinhuangdao.new.day
 
@@ -67,3 +69,6 @@ save_db(hs,TempSfcitiesMonth) if hs
 hs=ten_times_test("TempSfcitiesYear",'zhzs_74',{secret:'CHINARANK',type:'YEAR'})
 save_db(hs,TempSfcitiesYear) if hs
 # common_get_month_year('china_city_74',TempSfcitiesYear,time)
+
+model(TempSfcitiesMonth,time.beginning_of_day,time.end_of_day)
+model(TempSfcitiesYear,time.beginning_of_day,time.end_of_day)

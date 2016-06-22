@@ -25,11 +25,9 @@ wgs84_wkt = <<WKT
       AUTHORITY["EPSG","9122"]],
     AUTHORITY["EPSG","4326"]]
 WKT
-factory = RGeo::Geographic.spherical_factory(:srid => 4326, :proj4 => wgs84_proj4, :coord_sys => wgs84_wkt)
+w_factory = RGeo::Geographic.spherical_factory(:srid => 4326, :proj4 => wgs84_proj4, :coord_sys => wgs84_wkt)
 RGeo::Shapefile::Reader.open('vendor/map/heibei.shp', :factory => County::FACTORY) do |file|
   file.each do |record|
-    boundarys = record.geometry.projection
-    # geom is now an RGeo geometry object.
     #name = record['NAME99']
     name = arr[i].chomp!
     i += 1
@@ -48,8 +46,17 @@ RGeo::Shapefile::Reader.open('vendor/map/heibei.shp', :factory => County::FACTOR
     c.adcode     =  adcode    
     c.centroid_y =  centroid_y
     c.centroid_x =  centroid_x
+
+    #boundarys = record.geometry.projection
+    #record.geometry.projection.each do |poly|
+      #byebug
+      #County.create(:name => name, :area => area, :perimeter => perimeter, :adcode => adcode, :centroid_y => centroid_y, :centroid_x => centroid_x, :boundary => poly)
+    #end
+
     #c.boundary   =  RGeo::Feature.cast(boundarys, :factory => mct_factory, :project => true)
-    c.boundary   =  boundarys
+    geom = record.geometry.projection
+    # geom is now an RGeo geometry object.
+    c.boundary   =  geom
     c.save 
   end
 end

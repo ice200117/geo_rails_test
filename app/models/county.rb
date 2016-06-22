@@ -53,4 +53,18 @@ class County < ActiveRecord::Base
     where("ST_Intersects(boundary, ST_GeomFromEWKB(E'\\\\x#{ewkb}'))")
   end
 
+  def to_feature
+    @entity_factory = RGeo::GeoJSON::EntityFactory.instance
+    @entity_factory.feature(self.boundary_geographic, self.id, :name => self.name, :aero => self.area, :perimeter => self.perimeter, :adcode => self.adcode, :centroid_y => self.centroid_y, :centroid_x => self.centroid_x)
+  end
+
+  def to_geojson
+    RGeo::GeoJSON.encode(self.to_feature)
+  end
+
+  def self.to_geojson
+    @entity_factory = RGeo::GeoJSON::EntityFactory.instance
+    object = @entity_factory.feature_collection( County.all.map {|c| c.to_feature })
+    RGeo::GeoJSON.encode(object)
+  end
 end

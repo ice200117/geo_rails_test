@@ -11,9 +11,15 @@ class WelcomeController < ApplicationController
 
 	def map
 
-		system('ls')
-		r = `rails r vendor/test.rb`
-		puts r
+		#system('ls')
+		#r = `rails r vendor/test.rb`
+		#puts r
+    
+    @cf = County.all.map {|c| c.to_geojson }
+    @cs = City.all.map {|c| c.to_geojson }
+    @geoJsonBlock = Adjoint.to_geojson
+
+    render layout: false
 	end
 
 	def visits_by_day
@@ -65,9 +71,11 @@ class WelcomeController < ApplicationController
 		else
 			hs = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
 		end 
-		md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
-		@chart = [{name: c.city_name, data: hs.map { |h| [ h.forecast_datetime,  h.AQI]} }]
+    md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day-2.days..Time.zone.now.end_of_day)
+		@chart = [{name: c.city_name+"AQI", data: hs.map { |h| [ h.forecast_datetime,  h.AQI]} }]
 		@chart << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.AQI] } }
+		@chart << {name: c.city_name+"O3", data: hs.map { |h| [ h.forecast_datetime,  h.O3]} }
+		@chart << {name: 'O3监测值', data: md.map { |h| [ h.data_real_time,  h.O3] } }
 
 
 		# Table 3: 过去一星期城市监测与预报值日均值对比
@@ -1022,6 +1030,17 @@ class WelcomeController < ApplicationController
 	end 
 
 	def monitor_map
+		@sdt = Time.now
+		begin
+			sdate = @sdt.strftime("%Y%m%d")
+			stime = @sdt.strftime("%Y%m%d%H")
+			@mmap_url = "/images/ftproot/Products/Web/monitor/china/#{sdate}/pollution_map_AQI_#{stime}.png"
+			puts @sdt
+			puts @mmap_url
+			puts '------------------'
+			@sdt = @sdt - 1.hours
+		end until File::exists?("public#{@mmap_url}")
+		@sdt = @sdt + 1.hours
 		render layout: false
 	end
 end

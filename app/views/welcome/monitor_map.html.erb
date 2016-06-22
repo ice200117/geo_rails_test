@@ -11,10 +11,11 @@
 	</head>
 	<body>
 		<div id="container"></div>
+		<div id="txtTime" style="position:absolute;top:50px;left:60px;padding:4px;background:rgba(255,255,255,0.9);z-index:2000;">更新时间：<span style="color:red"><%= @sdt.strftime("%Y%m%d %H:00:00") %></span></div>
 		<script>
 			var imageLayer = new AMap.ImageLayer({
 				//url: 'http://60.10.135.153:3000/images/ftproot/Products/Web/monitor/china/20160525/pollution_map_AQI_2016052514.png',
-				url: "/images/ftproot/Products/Web/monitor/china/<%=Time.now.strftime('%Y%m%d')%>/pollution_map_AQI_<%=(Time.now-1.hour).strftime('%Y%m%d%H')%>.png",
+				url: "<%= @mmap_url %>",
 				bounds: new AMap.Bounds(
 					//[68.57627149984937, 9.40196052667158],
 					//[143.487042763543, 55.61860562625989]

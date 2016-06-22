@@ -9,4 +9,12 @@ class CountiesController < ApplicationController
       :county => c ? c.name : nil, :centroid_y => c.centroid_y, :centroid_x => c.centroid_x})
 
   end
+
+  def to_geojson
+    respond_to do |format|
+      format.json {
+        render json: County.to_geojson
+      }
+    end
+  end
 end

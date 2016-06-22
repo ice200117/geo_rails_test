@@ -11,6 +11,10 @@ Rails.application.configure do
   # and those relying on copy on write to perform better.
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
+  
+  # Rgeo unproject error, fixed 2 method 
+  # config.eager_load = false
+  config.eager_load_paths -= ["#{config.root}/app/models", "#{config.root}/app/models/concerns"]
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
