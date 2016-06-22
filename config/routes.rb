@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 	#root 'welcome#index'
 	#root 'welcome#map'
 	#root 'qinhuangdao#pinggu'
-	root 'langfang#forecast'
+	root 'qinhuangdao#pinggu'
 	get '/compare' => 'welcome#compare'
 	get '/bdqx_compare' => 'welcome#bdqx_compare'  
 	get '/sfcities_compare' => 'welcome#sfcities_compare' 
@@ -90,6 +90,7 @@ Rails.application.routes.draw do
 	get '/qinhuangdao/get_linechart_data' => 'qinhuangdao#get_linechart_data'
 	get '/qinhuangdao/get_rank_chart_data' => 'qinhuangdao#get_rank_chart_data'
 	get '/qinhuangdao/sourceAnalysisPieChart' => 'qinhuangdao#sourceAnalysisPieChart'
+	get '/qinhuangdao/ltjc' => 'qinhuangdao#ltjc'
 	
 	
 

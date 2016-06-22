@@ -4,9 +4,9 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>ForecastAQI</title>
-		<%= stylesheet_link_tag 'application','qinhuangdao','css/styles','css/jquery-ui',"css/bootstrap.min", 'css/bootstrap-table.min', media: 'all', 'data-turbolinks-track' => true %>
-		<%= javascript_include_tag 'application',"jquery-ui-datepicker", 'data-turbolinks-track' => true %>
+		<title>秦皇岛空气质量实时管控平台</title>
+		<%= stylesheet_link_tag 'application','qinhuangdao','css/styles','css/air','css/jquery-ui',"css/bootstrap.min", 'css/bootstrap-table.min', media: 'all', 'data-turbolinks-track' => true %>
+		<%= javascript_include_tag 'application',"jquery-ui-datepicker",'air','demo','data-turbolinks-track'=> true %>
 		<%= csrf_meta_tags %>
 		<%= favicon_link_tag '/favicon.png' %>
 		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
@@ -24,16 +24,17 @@
 			<div> 
 				<ul class="navigation" id="toptitle">
 					<!--<a href="/">污染源解析与治理</a>-->
-					<li><a id="welcome-pinggu" href="/qinhuangdao" class="current-link" data-no-turbolink>首页</a></li>
-					<li><a id="welcome-forecast" href="/qinhuangdao/forecast">预警预报</a></li>
-					<li><a id="welcome-compare" href="/qinhuangdao/compare" >城市对比</a></li>
-					<li class="dropdown">
-						<a class="dropdown-toggle showDM" data-toggle="dropdown" id="ltjcDiv1" >立体监测</a>
+					<li><a id="welcome-pinggu" href="/qinhuangdao" class="pinggu" data-no-turbolink>首页</a></li>
+					<li><a id="welcome-forecast" href="/qinhuangdao/forecast" class='forecast'>预警预报</a></li>
+					<li><a id="welcome-compare" href="/qinhuangdao/compare" class='compare'>城市对比</a></li>
+					<li><a id="welcome-ltjc" href="/qinhuangdao/ltjc" class='ltjc'>立体监测</a></li>					
+					<!--<li class="dropdown">
+						<a class="dropdown-toggle showDM litijiance" data-toggle="dropdown" id="ltjcDiv1">立体监测</a>
 						<ul class="dropdown-menu">
 							<li><a href="/qinhuangdao/real_time_monitoring">实 时 监 测</a></li>
 							<li><a href="/qinhuangdao/history_data">历 史 数 据</a></li>
 						</ul>
-					</li>
+					</li>-->
 					<li><a id="zq-map" href="http://www.zq12369.com/map.php" target="_blank">地图模式</a></li>
 					<%# <li><a id="welcome-case" href="/case">典型案例</a></li> %>
 					<%# <li><a id="welcome-about" href="/about">联系我们</a></li> %>
@@ -43,7 +44,7 @@
 
 		<%= yield %>
 
-		<div class="container">
+		<!--<div class="container">
 			<hr>
 			<footer class="footer">
 				<p class="pull-right"><a href="#">返回顶部</a></p>
@@ -61,31 +62,62 @@
 					<script type="text/javascript">//var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254317176'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1254317176%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>  
 				</div>
 			</footer>
-		</div>
-		<script type="text/javascript" charset="utf-8">
-			$(function() {
-				$('#toptitle a').each(function(){
-					$(this).click(function(event){
-						$('#toptitle a').removeClass('current-link');
-						$(this).addClass('current-link');
-					});
+		</div> 
+		<div class="command">
+	<span style="color:#fff;">免责声明</span> 
+<span style="margin-left: 50px;">数据来源于<a target="_blank" href="http://www.zq12369.com/">真气网 </a>仅供内部参考</span> 
+
+</div>--> 
+<div class="friendship">
+	
+    <ul>
+    	<div style="width: 1200px; margin: 0 auto; margin-left: 100px;">
+          <li><strong>技术支撑单位</strong><br>
+             <a  href="http://www.1000plan.org/" target="_blank">中组部千人计划<br> </a>
+             <a href="http://www.hh12369.com/">PM2.5特别防治小组<br> </a>
+             <a href="http://www.nscc-tj.gov.cn/" target="_blank">国家超级计算天津中心 </a>
+          </li>
+          <li style="margin-left:120px;"><strong>业务指导单位</strong><br>
+             <span style=" display:block; width:130px; float:left;">
+             <a href="http://www.1000plan.org/">中组部人才局<br> </a>
+             <a href="http://www.craes.cn/" target="_blank">中国环境科学研究院<br> </a>
+             <a href="http://www.cas.cn/" target="_blank">中国科学院</a>
+             </span> 
+             <span style=" display:block; width:270px; margin-left:20px; float:left;">
+             <a href="http://yjb.mep.gov.cn/" target="_blank">中华人民共和国环境保护部<br> </a>
+             <a href="http://www.hnep.gov.cn/" target="_blank">河南省环保厅<br> </a>
+             <a href="http://www.zzepb.gov.cn/" target="_blank">郑州市环境保护局<br> </a>
+             </span>
+          </li>
+          <li><strong>特别鸣谢</strong><br>
+             <span style=" display:block; width:130px; float:left;">
+             <a href="http://www.cams.cma.gov.cn/" target="_blank">中国气象局科学研究院<br> </a>
+             <a href="http://www.nankai.edu.cn/" target="_blank">南开大学<br> </a>
+             <a href="http://www.pku.edu.cn/" target="_blank">北京大学</a>
+             </span>
+             <span style=" display:block; width:120px; margin-left:20px; float:left;">
+             <a href="http://www.tsinghua.edu.cn/" target="_blank">清华大学<br> </a>
+             <a href="http://www.jnu.edu.cn/" target="_blank">暨南大学等 </a>
+             </span>
+          </li>
+           </div>
+    </ul>
+   
+</div>
+<div style="clear:both;text-align:center;padding:30px 0px;font-size:14px;color:#3490C7;">
+	版权所有：廊坊市海宏环保科技有限公司&nbsp&nbsp&nbsp技术支持：廊坊市海宏环保科技有限公司
+	
+</div>
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			$('#toptitle a').each(function(){
+				$(this).click(function(event){
+					event.stopPropagation();
+					$('#toptitle a').removeClass('current-link');
 				});
 			});
-/*
-   $(document).on("page:change", function() {
-   var page;
-   page = $("body").attr("class");
-   $(".nav li").removeClass("active");
-   return $("#"+page).addClass("active");
-   });
- */
-function showLtjc(type){
-	if(type==1){
-		$("#ltjcDiv").css("display","");
-	}else{
-		$("#ltjcDiv").css("display","none");
-	}
-}
-		</script>
-	</body>
+			<%= yield :nav%>
+		});
+	</script>
 </html>

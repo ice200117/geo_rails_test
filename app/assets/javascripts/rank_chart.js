@@ -46,7 +46,7 @@ function getRankData()
   startTime = startTime.pattern('yyyy-MM-dd HH:mm:ss');
   endTime = endTime.pattern('yyyy-MM-dd HH:mm:ss');
   $.ajax({            
-      url: '/qinhuangdao/get_rank_chart_data',
+	  url: '/qinhuangdao/get_rank_chart_data',
       data:{
             'city':city,
             'type':ranktype,
@@ -68,9 +68,10 @@ function getRankData()
             if(ranktype=="DAY")
             {
               time = converTimeFormat(data.rows[i].time).getTime();
-              rank = parseInt(data.rows[i].rank);
-              lastrank = parseInt(data.rows[i].lastrank);
-              index = parseInt(data.rows[i].aqi);
+              rank = (data.rows[i].rank==null)?null:parseInt(data.rows[i].rank);
+              lastrank = (data.rows[i].lastrank==null)?null:parseInt(data.rows[i].lastrank);
+              index = (data.rows[i].aqi==null)?null:parseInt(data.rows[i].aqi);
+              if(data.rows[i].primary_pollutant!=null)
               primary_pollutant = (data.rows[i].primary_pollutant).toUpperCase();
               label = '真气排名';
             }
@@ -79,9 +80,9 @@ function getRankData()
               if(data.rows[i].time!=null)
               {
                 time = convertMonthFormat(data.rows[i].time).getTime();
-                rank = parseInt(data.rows[i].rank);
-                lastrank = parseInt(data.rows[i].lastrank);
-                index = parseFloat(data.rows[i].complexindex);
+                rank = (data.rows[i].rank==null)?null:parseInt(data.rows[i].rank);
+                lastrank = (data.rows[i].lastrank==null)?null:parseInt(data.rows[i].lastrank);
+                index = (data.rows[i].complexindex==null)?null:parseFloat(data.rows[i].complexindex);
                 if(data.rows[i].primary_pollutant!=null)
                   primary_pollutant = (data.rows[i].primary_pollutant).toUpperCase();
                 label = '官方排名';
@@ -89,9 +90,9 @@ function getRankData()
               else
               { 
                 time = convertMonthFormat(data.rows[i].foretime).getTime();
-                rank = parseInt(data.rows[i].forerank);
-                lastrank = parseInt(data.rows[i].forelastrank);
-                index = parseFloat(data.rows[i].forecomplexindex);
+                rank = (data.rows[i].forerank==null)?null:parseInt(data.rows[i].forerank);
+                lastrank = (data.rows[i].forelastrank==null)?null:parseInt(data.rows[i].forelastrank);
+                index = (data.rows[i].forecomplexindex==null)?null:parseFloat(data.rows[i].forecomplexindex);
                 if(data.rows[i].foreprimary_pollutant!=null)
                   primary_pollutant = (data.rows[i].foreprimary_pollutant).toUpperCase();
                 label = '预测排名';
@@ -117,22 +118,22 @@ function getRankData()
             {
               lastcolor='#2894FF';
             }
-            dataRank.push({
-                    x: time,
-                    y: rank,
-                    color:color,
-                    type:label,
-                    index:index,
-                    primary_pollutant:primary_pollutant
-                });
-                dataLastRank.push({
-                  x: time,
-                  y: lastrank,
-                  color:lastcolor,
-                  type:label,
-                  index:index,
-                    primary_pollutant:primary_pollutant
-                });
+			dataRank.push({
+				x: time,
+				y: rank,
+				color:color,
+				type:label,
+				index:index,
+				primary_pollutant:primary_pollutant
+			});
+			dataLastRank.push({
+				x: time,
+				y: lastrank,
+				color:lastcolor,
+				type:label,
+				index:index,
+				primary_pollutant:primary_pollutant
+			});
 
           }
           showRankChartByItem();

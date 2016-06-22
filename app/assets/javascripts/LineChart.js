@@ -3,7 +3,7 @@
 
 var city = '秦皇岛';
 var type="HOUR";
-var ITEM1="AQI";
+var ITEM1="TOTAL";
 var DATE1="DAY";
 var dataAQI = [];var dataPM25 = [];var dataPM10 = [];var dataCO = [];var dataSO2 = [];var dataNO2 = [];var dataO3 = [];
 var dataIndex = [];var dataHumi = [];var dataTemp = [];var dataWind = [];
@@ -236,17 +236,17 @@ function getChartData(startTime,endTime)
 
               for(i=0;i<data.rows.length;i++)
               {
-                  aqi = parseInt(data.rows[i].aqi);
-                  pm2_5 = parseInt(data.rows[i].pm2_5);
-                  pm10 = parseInt(data.rows[i].pm10);
-                  co = parseFloat((parseFloat(data.rows[i].co)).toFixed(2));
-                  no2 = parseInt(data.rows[i].no2);
-                  o3 = parseInt(data.rows[i].o3);
-                  so2 = parseInt(data.rows[i].so2);
-                  complexindex = parseFloat((parseFloat(data.rows[i].complexindex)).toFixed(3));
-                  temp = parseInt(data.rows[i].temp);
-                  humi = parseInt(data.rows[i].humi);
-                  wind = parseInt(data.rows[i].windlevel);
+                  aqi = nullValueJudgement_Int(data.rows[i].aqi);
+                  pm2_5 = nullValueJudgement_Int(data.rows[i].pm2_5);
+                  pm10 = nullValueJudgement_Int(data.rows[i].pm10);
+                  co = (nullValueJudgement_Float(data.rows[i].co)==null)?null:parseFloat((nullValueJudgement_Float(data.rows[i].co)).toFixed(2));
+                  no2 = nullValueJudgement_Int(data.rows[i].no2);
+                  o3 = nullValueJudgement_Int(data.rows[i].o3);
+                  so2 = nullValueJudgement_Int(data.rows[i].so2);
+                  complexindex =(nullValueJudgement_Float(data.rows[i].complexindex)==null)?null:parseFloat((nullValueJudgement_Float(data.rows[i].complexindex)).toFixed(3));
+                  temp = nullValueJudgement_Int(data.rows[i].temp);
+                  humi = nullValueJudgement_Int(data.rows[i].humi);
+                  wind = nullValueJudgement_Int(data.rows[i].windlevel);
                   winddirection = data.rows[i].winddirection;
                   wdurl = getWindDirectionUrl(winddirection);
 

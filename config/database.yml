@@ -28,7 +28,7 @@ default: &default
 
 development:
   <<: *default
-  #database: geo_rails_test_development
+  # database: geo_rails_test_development
   database: geo_rails_test_production
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.

@@ -24,6 +24,47 @@ class LangfangController < ApplicationController
 
 			end
 
+=begin
+			fore_range = ForecastDailyDatum.get_three_daily_range
+			if fore_range.length == 0
+				temp = ForecastRealDatum.new.air_quality_forecast('langfangshi')
+				pdate = temp.first[0].to_date
+				city_id =  18 #City.find_by_city_name_pinyin('langfangshi').id
+
+				temp.each do |k,v|
+					d = {}
+					d["city_id"] = city_id
+					d["publish_date"] = pdate
+					d["forecast_date"] = k.to_date
+					d["max_forecast"] = v["max"]
+					d["min_forecast"] = v["min"]
+					d["main_pollutant"] = v["main_pol"]
+					ForecastDailyDatum.create(d)
+
+					d["fore_lev"] = get_lev(v["min"])
+					d["fore_lev1"] = get_lev(v["max"])
+					d["level"] = v["level"]
+					d["level1"] = v["level1"]
+
+					key = k.to_time.strftime("%Y%m%d")
+					if @weather[key] != nil# and k.to_date >= Date.today
+						@weather[key]=@weather[key].merge(d)
+					end
+
+				end
+				Custom::Redis.del('langfang_weather')
+			else
+				fore_range.each do |k,v|
+					v["fore_lev"] = get_lev(v["min_forecast"])
+					v["fore_lev1"] = get_lev(v["max_forecast"])
+					key = k.to_time.strftime("%Y%m%d")
+					if @weather[key] != nil
+						@weather[key]=@weather[key].merge(v)
+					end
+
+				end
+			end
+=end
       fore_range = ForecastDailyDatum.get_three_daily_range
       temp = ForecastRealDatum.new.air_quality_forecast('langfangshi')
       pdate = temp.first[0].to_date
@@ -69,7 +110,6 @@ class LangfangController < ApplicationController
 		else
 			@weather=Custom::Redis.get('langfang_weather')
 		end
-
 		@ret=@weather
 	end
 
@@ -146,6 +186,8 @@ class LangfangController < ApplicationController
 			lev = 'zhongdu'
 		elsif (300 .. 500) === a
 			lev = 'yanzhong'
+		elsif 
+			lev = 'null'
 		end
 
 	end

@@ -1,9 +1,10 @@
 require_relative './common.rb'
 require_relative './get_qinhuangdao_data.rb'
+require_relative './bd_day.rb'
 
-time=Time.now.yesterday
+# time=Time.now.yesterday
 #秦皇岛日数据
-Qinhuangdao::Qinhuangdao.new.day
+# Qinhuangdao::Qinhuangdao.new.day
 
 # tmp=MonitorPointDay.last.data_real_time
 # stime=tmp.beginning_of_day
