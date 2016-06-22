@@ -3,7 +3,7 @@
 
 var city = '秦皇岛';
 var type="HOUR";
-var ITEM1="AQI";
+var ITEM1="TOTAL";
 var DATE1="DAY";
 var dataAQI = [];var dataPM25 = [];var dataPM10 = [];var dataCO = [];var dataSO2 = [];var dataNO2 = [];var dataO3 = [];
 var dataIndex = [];var dataHumi = [];var dataTemp = [];var dataWind = [];

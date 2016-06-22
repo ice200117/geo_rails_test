@@ -90,6 +90,7 @@ Rails.application.routes.draw do
 	get '/qinhuangdao/get_linechart_data' => 'qinhuangdao#get_linechart_data'
 	get '/qinhuangdao/get_rank_chart_data' => 'qinhuangdao#get_rank_chart_data'
 	get '/qinhuangdao/sourceAnalysisPieChart' => 'qinhuangdao#sourceAnalysisPieChart'
+	get '/qinhuangdao/ltjc' => 'qinhuangdao#ltjc'
 	
 	
 

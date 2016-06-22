@@ -7,9 +7,9 @@
 	$("#table_around").append("<tr><th class='top11-title' height='10%' style='text-align:left;padding-left:10px;padding-top:10px;color: black;'>周边城市</th></tr>");
 		var $tr=$("<tr style=''></tr>");
 		for(var i=0;i<info.length;i++){
-		$tr.append("<td class='td_around'>"+info[i]['cityname']+"&nbsp;&nbsp;<span class='' style='background:"+getColorByAQI(info[i]['aqi'])+";padding-left:8px;padding-right:8px;line-height:12px;font-size:16px'>"+info[i]['aqi']+"</span><div class='div_a_info'>"+
+		$tr.append("<td class='td_around'>"+info[i]['cityname']+"&nbsp;&nbsp;<span class='' style='background:"+getColorByAQI(info[i]['aqi'])+";padding-left:8px;padding-right:8px;line-height:12px;font-size:16px;color:white'>"+info[i]['aqi']+"</span><div class='div_a_info'>"+
 	"<p class='p_around'>"+
-	"AQI:"+info[i]['aqi']+"<span style='background:"+getColorByAQI(info[i]['aqi'])+";color:black;padding:0px 3px;margin-left:20px'>"+info[i]['quality']+"</span>"+"</p>"+
+	"AQI:"+info[i]['aqi']+"<span style='background:"+getColorByAQI(info[i]['aqi'])+";color:black;padding:0px 3px;margin-left:20px;color:white'>"+info[i]['quality']+"</span>"+"</p>"+
 	"<p class='p_around'>"+((info[i]['temp']==null)?"-":info[i]['temp'])+"℃&nbsp;&nbsp;"+((info[i]['weather']==null)?"-":info[i]['weather'])+"</p>"+
 	"<p class='p_around'>"+((info[i]['winddirection']==null)?"-":info[i]['winddirection'])+"("+((info[i]['windspeed']==null)?"-":getWindLevel(info[i]['windspeed']))+"级)&nbsp;&nbsp;湿度"+((info[i]['humi']==null)?"-":info[i]['humi'])+"%</p>"+
 	"<table class='table_around_child'><tr>"+
