@@ -224,7 +224,7 @@ function showLineChartCompare(container,name,city1,city2,city3,data1,data2,data3
                             winddirection = " " + this.points[i].point.winddirection;
                         else
                             winddirection = "";
-                        tip = tip +  "<tr><td style='color:" +  this.points[i].series.color  +  "'>" + this.points[i].series.name +": </td><td align='right'><b>"+ this.points[i].y + "</b>" + unit + winddirection + "</td></tr>";                    
+                        tip = tip +  "<tr><td style='color:" +  this.points[i].series.color  +  "'>" + this.points[i].series.name +": </td><td align='right'><b>"+ this.points[i].y + "</b>" + unit + winddirection + "</td></tr>";
                     }
                     tip = tip + "</table>";
                     return tip;
@@ -736,7 +736,7 @@ function showRankChart(container,city,name,data,unit,type,subtitle)
             formatter: function() {
                 return '' + Highcharts.dateFormat(dateTypeFormat, this.x) + this.point.type +'<br/>' + 
                 this.series.name +': <b>'+ this.y + '</b>' + unit +'<br/>' + 
-                label + ": " + this.point.index + '<br/>' +
+                label + ": " + this.point.index_num + '<br/>' +
                 '首要污染物: ' + this.point.primary_pollutant;
             }
         },

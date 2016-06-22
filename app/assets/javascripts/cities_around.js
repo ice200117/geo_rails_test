@@ -140,10 +140,6 @@ function getColorByAQI(aqi)
    }
    return color;  
 }
-
-
-
-
 function getlevelColor(level)
 		{
 		   if(level==0)

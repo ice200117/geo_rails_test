@@ -15,11 +15,12 @@ class TempSfcitiesMonth < ActiveRecord::Base
 					tmp['lastrank'] = (tmp['rank']=='') ? '' : (75 - tmp['rank'])
 					tmp['time'] = tmp['data_real_time'].strftime("%Y%m")
 					tmp['primary_pollutant'] = tmp['main_pol']
+					tmp['complexindex'] = tmp['zonghezhishu'].round(3)
 				else
 					tmp['foretime'] = tmp['data_real_time'].strftime('%Y%m')
 					tmp['forerank'] = tmp['rank']
 					tmp['forelastrank'] = (tmp['rank']=='') ? '' : (75 - tmp['rank'])
-					tmp['forecomplexindex'] = tmp['complexindex']
+					tmp['forecomplexindex'] = tmp['zonghezhishu'].round(3)
 					tmp['foreprimary_pollutant'] = tmp['main_pol']
 				end
 				tmp['city']=name

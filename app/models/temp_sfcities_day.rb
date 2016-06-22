@@ -15,6 +15,8 @@ class TempSfcitiesDay < ActiveRecord::Base
 				l['city']=name
 				l['time']=l['data_real_time'].strftime('%Y-%m-%d')
 				l['primary_pollutant'] = l['main_pol']
+				l['complexindex'] = l['zonghezhishu'].round(3)
+				l['aqi'] = l['AQI']
 			end
 			rankdata={total: data.length,rows: data}
 			Custom::Redis.set("get_rank_chart_data_day",rankdata,3600*24)
