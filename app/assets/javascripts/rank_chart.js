@@ -70,7 +70,7 @@ function getRankData()
               time = converTimeFormat(data.rows[i].time).getTime();
               rank = (data.rows[i].rank==null)?null:parseInt(data.rows[i].rank);
               lastrank = (data.rows[i].lastrank==null)?null:parseInt(data.rows[i].lastrank);
-              index_num = (data.rows[i].aqi==null)?null:parseInt(data.rows[i].aqi);
+              index = (data.rows[i].aqi==null)?null:parseInt(data.rows[i].aqi);
               if(data.rows[i].primary_pollutant!=null)
               primary_pollutant = (data.rows[i].primary_pollutant).toUpperCase();
               label = '真气排名';
@@ -82,7 +82,7 @@ function getRankData()
                 time = convertMonthFormat(data.rows[i].time).getTime();
                 rank = (data.rows[i].rank==null)?null:parseInt(data.rows[i].rank);
                 lastrank = (data.rows[i].lastrank==null)?null:parseInt(data.rows[i].lastrank);
-                index_num = (data.rows[i].complexindex==null)?null:parseFloat(data.rows[i].complexindex);
+                index = (data.rows[i].complexindex==null)?null:parseFloat(data.rows[i].complexindex);
                 if(data.rows[i].primary_pollutant!=null)
                   primary_pollutant = (data.rows[i].primary_pollutant).toUpperCase();
                 label = '官方排名';
@@ -92,7 +92,7 @@ function getRankData()
                 time = convertMonthFormat(data.rows[i].foretime).getTime();
                 rank = (data.rows[i].forerank==null)?null:parseInt(data.rows[i].forerank);
                 lastrank = (data.rows[i].forelastrank==null)?null:parseInt(data.rows[i].forelastrank);
-                index_num = (data.rows[i].forecomplexindex==null)?null:parseFloat(data.rows[i].forecomplexindex);
+                index = (data.rows[i].forecomplexindex==null)?null:parseFloat(data.rows[i].forecomplexindex);
                 if(data.rows[i].foreprimary_pollutant!=null)
                   primary_pollutant = (data.rows[i].foreprimary_pollutant).toUpperCase();
                 label = '预测排名';
@@ -123,7 +123,7 @@ function getRankData()
 				y: rank,
 				color:color,
 				type:label,
-				index_num:index_num,
+				index:index,
 				primary_pollutant:primary_pollutant
 			});
 			dataLastRank.push({
@@ -131,7 +131,7 @@ function getRankData()
 				y: lastrank,
 				color:lastcolor,
 				type:label,
-				index_num:index_num,
+				index:index,
 				primary_pollutant:primary_pollutant
 			});
 

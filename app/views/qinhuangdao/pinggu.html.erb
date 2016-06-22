@@ -425,7 +425,7 @@ begin
 	break if i == 7
 end until File::exists?(file)
 %>
-	<%= javascript_include_tag 'bootstrap.min','respond','chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','LineChart','rank_chart',"cities_around",'echarts.min','infographic','sandian' %>
+	<%= javascript_include_tag 'bootstrap.min','respond',"highcharts",'chart','bootstrap-table.min','moment','daterangepicker','crypto_zq-min','LineChart','rank_chart',"cities_around",'echarts.min','infographic','sandian' %>
 <% content_for :nav do%>
 	$('.navigation li .pinggu').addClass('current-link');
 	$(".change").click(function(){

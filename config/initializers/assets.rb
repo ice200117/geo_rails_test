@@ -56,4 +56,5 @@ Rails.application.config.assets.precompile += %w(
 	echarts.min.js
 	infographic.js
 	sandian.js
+	highcharts.js
 )

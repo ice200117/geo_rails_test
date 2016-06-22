@@ -736,7 +736,7 @@ function showRankChart(container,city,name,data,unit,type,subtitle)
             formatter: function() {
                 return '' + Highcharts.dateFormat(dateTypeFormat, this.x) + this.point.type +'<br/>' + 
                 this.series.name +': <b>'+ this.y + '</b>' + unit +'<br/>' + 
-                label + ": " + this.point.index_num + '<br/>' +
+                label + ": " + this.point.index + '<br/>' +
                 '首要污染物: ' + this.point.primary_pollutant;
             }
         },
