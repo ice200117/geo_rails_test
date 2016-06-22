@@ -1,5 +1,15 @@
-class HourlyCityForecastAirQuality < ActiveRecord::Base
+class HourlyCityForecastAirQuality < Partitioned::ByMonthlyTimeField
 	belongs_to :city
+
+  def self.partition_time_field
+    return :publish_datetime
+  end
+
+  partitioned do |partition|
+    partition.index :id, :unique => true
+    partition.index [:city_id, :publish_datetime, :forecast_datetime], :unique => true
+    partition.foreign_key :city_id
+  end
 
 	def city_forecast_by_id(cityid)
 		c = City.find_by_cityid(cityid)
