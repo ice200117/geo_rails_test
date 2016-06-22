@@ -59,15 +59,16 @@ class Adjoint
 
   def self.to_feature(datum, polygon, i)
     @entity_factory ||= RGeo::GeoJSON::EntityFactory.instance
-    @entity_factory.feature(polygon, i, :height => (datum[:percent]*1000).to_s, :color=> get_color(datum[:percent]),
+    @entity_factory.feature(polygon, i, :height => (datum[:percent]*100).to_s, :color=> get_color(datum[:percent]),
                             :roofColor=> get_color(datum[:percent]))
     #@entity_factory.feature(polygon, i, :height => datum[:percent], :color=>"rgb(255,0,0)")
   end
 
   def self.read_adj_nc(var_list=['SO2'], period_list=['120'])
-    path = "#{Rails.root.to_s}/tmp/data/"
+    #path = "#{Rails.root.to_s}/tmp/data/"
     # TODO, Find latest date of adj file.
-    fname = "CUACE_09km_adj_2016-03-03.nc"
+	path = 'public/images/ftproot/Temp/BackupADJ/'
+    fname = "CUACE_09km_adj_2016-06-21.nc"
     ncfile =path + '/' + fname;
     var_name = "#{var_list[0]}_#{period_list[0]}"
 
