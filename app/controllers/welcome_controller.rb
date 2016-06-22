@@ -1101,6 +1101,17 @@ class WelcomeController < ApplicationController
 	end 
 
 	def monitor_map
+		@sdt = Time.now
+		begin
+			sdate = @sdt.strftime("%Y%m%d")
+			stime = @sdt.strftime("%Y%m%d%H")
+			@mmap_url = "/images/ftproot/Products/Web/monitor/china/#{sdate}/pollution_map_AQI_#{stime}.png"
+			puts @sdt
+			puts @mmap_url
+			puts '------------------'
+			@sdt = @sdt - 1.hours
+		end until File::exists?("public#{@mmap_url}")
+		@sdt = @sdt + 1.hours
 		render layout: false
 	end
 end

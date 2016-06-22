@@ -135,12 +135,15 @@ var geoJSON = {
 };
 
 
-//osmb = new OSMBuildings(geolocationMap).set(geoJSON);
+//osmb = new OSMBuildings(geolocationMap).set(geoJSON)
 new OSMBuildings(geolocationMap).set(<%= raw @geoJsonBlock.to_json %>)
-                                .click(function(id) {
-                                  console.log('feature height clicked:', id);
-                                })
-                                .bindPopup(feature.properties.height);
+									   .style({
+										   shadows: false
+									   });
+//                                .click(function(id) {
+//                                  console.log('feature height clicked:', id);
+//                                })
+//                                .bindPopup(feature.properties.height);
 
 /*
 function getCenter(geoJson) {

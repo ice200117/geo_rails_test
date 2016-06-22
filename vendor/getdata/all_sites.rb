@@ -31,6 +31,7 @@ module AllSite
 			f.puts('station_name,Lon,Lat,AQI,pm2_5,pm10,so2,no2,o3,o3_8h,co,quality,main_pollutant,time,city')
 
 			#遍历站点数据
+			count = 0
 			@data['rows'].each do |l|
 				city = City.find_by_city_name(l['city'])
 				city = City.find_by_city_name(l['city']+'市') unless city
@@ -47,11 +48,16 @@ module AllSite
 				end
 				l['id'] = mp.id
 				MonitorPointHour.new.save_with_arg(l)
+				count = count + 1
 
-				#逐条写入cvs
-				if l['aqi'].to_s.length > 0 and l['pointname'].length>0 and mp.longitude.to_s.length>0 and mp.latitude.to_s.length>0
-				  f.puts(l['pointname']+','+mp.longitude.to_s+','+mp.latitude.to_s+','+l['aqi'].to_s+','+l['pm2_5'].to_s+','+l['pm10'].to_s+','+l['so2'].to_s+','+l['no2'].to_s+','+l['o3'].to_s+','+l['o3_8h'].to_s+','+l['co'].to_s+','+l['quality'].to_s+','+l['main_pollutant'].to_s.gsub(',','&')+','+l['time']+','+l['city'])
-				end
+				# 剔除多余的邯郸错误数据，导致不能画图。
+				if count >= 1534 and l['city'] == '邯郸'
+				  puts l
+				  next 
+			    end
+
+				#逐条写入csv
+				f.puts(l['pointname']+','+mp.longitude.to_s+','+mp.latitude.to_s+','+l['aqi'].to_s+','+l['pm2_5'].to_s+','+l['pm10'].to_s+','+l['so2'].to_s+','+l['no2'].to_s+','+l['o3'].to_s+','+l['o3_8h'].to_s+','+l['co'].to_s+','+l['quality'].to_s+','+l['main_pollutant'].to_s.gsub(',','&')+','+l['time']+','+l['city'])
 			end
 			f.close #关闭
 		end
