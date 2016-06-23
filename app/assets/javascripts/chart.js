@@ -224,7 +224,7 @@ function showLineChartCompare(container,name,city1,city2,city3,data1,data2,data3
                             winddirection = " " + this.points[i].point.winddirection;
                         else
                             winddirection = "";
-                        tip = tip +  "<tr><td style='color:" +  this.points[i].series.color  +  "'>" + this.points[i].series.name +": </td><td align='right'><b>"+ this.points[i].y + "</b>" + unit + winddirection + "</td></tr>";                    
+                        tip = tip +  "<tr><td style='color:" +  this.points[i].series.color  +  "'>" + this.points[i].series.name +": </td><td align='right'><b>"+ this.points[i].y + "</b>" + unit + winddirection + "</td></tr>";
                     }
                     tip = tip + "</table>";
                     return tip;
@@ -1316,4 +1316,15 @@ function getCOLevelIndex(co)
     }
     return level;
 }
+
+function nullValueJudgement_Int(value)
+{
+    return (value==null)?null:parseInt(value);
+}
+function nullValueJudgement_Float(value)
+{
+    return (value==null)?null:parseFloat(value);
+}
+
+
 

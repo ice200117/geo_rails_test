@@ -9,6 +9,9 @@ class QinhuangdaoController < Casein::CaseinController
 	include NumRu
 	protect_from_forgery :except => [:get_forecast_baoding, :get_city_point]
 
+	before_action :banner,only: [:pinggu,:rank1503,:forecast,:compare,:ltjc]
+	before_action :get_forecast,only: [:pinggu,:forecast]
+
 	def map
 		system('ls')
 		r = `rails r vendor/test.rb`
@@ -35,7 +38,7 @@ class QinhuangdaoController < Casein::CaseinController
 		@diff_monitor_forecast = []
 		if params[:c] 
 			city_name = params[:c][:city_name]
-			c =  City.find_by_city_name(city_name)
+			c = City.find_by_city_name(city_name)
 			c = City.find_by_city_name(city_name+'市') unless c
 			c = City.find_by city_name_pinyin: 'qinhuangdaoshi' unless c
 			id = c.id
@@ -357,17 +360,6 @@ class QinhuangdaoController < Casein::CaseinController
 		@sfcitiesrankbyday=change_data_type(change_74_main_pol(get_db_data(TempSfcitiesDay,TempSfcitiesDay.last.data_real_time)),0)
 		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth,TempSfcitiesMonth.last.data_real_time),0)
 		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear,TempSfcitiesYear.last.data_real_time),0)
-
-
-		@rank={'hour'=>get_rank(@sfcitiesrankbyhour)}
-		@rank['day']=get_rank(@sfcitiesrankbyday[:cities])
-		@rank['month']=get_rank(@sfcitiesrankbymonth[:cities])
-		@rank['year']=get_rank(@sfcitiesrankbyyear[:cities])
-
-		@banner = banner()
-
-		@forecast_data = get_forecast()
-
 		# adj data
 		@city_adj = 'ADJ_baoding/'
 
@@ -407,15 +399,10 @@ class QinhuangdaoController < Casein::CaseinController
 			stime = time.beginning_of_day
 			etime = time.end_of_day
 		end
-		if $redis[model.name].nil?
-			sql_str=Array.new
-			sql_str<<"data_real_time >= ? AND data_real_time <= ?"
-			sql_str<<stime
-			sql_str<<etime
-			data = model.where(sql_str)
+		if Custom::Redis.get(model.name).nil?
+			data = model.where(data_real_time:(stime..etime))
 			tmpd = /\w*Hour/.match(model.name) ? 3600 : 3600*24
 			Custom::Redis.set(model.name,data,tmpd)
-			data
 		else
 			Custom::Redis.get(model.name)
 		end
@@ -423,11 +410,11 @@ class QinhuangdaoController < Casein::CaseinController
 
 	#修改小数点位数
 	def change_data_type(data,flag)			
+		#设置需要处理小数位数的字段
 		float_round={"SO2"=>0,"NO2"=>0,"CO"=>1,"O3"=>0,"pm10"=>0,"pm25"=>0,"zonghezhishu"=>2,"AQI"=>0,
 			   "SO2_change_rate"=>4,"NO2_change_rate"=>4,"CO_change_rate"=>4,"O3_change_rate"=>4,"pm10_change_rate"=>4,
 			   "pm25_change_rate"=>4,"zongheindex_change_rate"=>4}
 		model_column=Array['level','main_pol','data_real_time','maxindex']
-
 		data_ary=Array.new
 		(0...data.length).each do |t|
 			data_hash=Hash.new
@@ -470,11 +457,11 @@ class QinhuangdaoController < Casein::CaseinController
 		response = HTTParty.get(url,options)
 		json = JSON.parse(response.body)
 		# puts 0 if json['showapi_res_error'] == 0
-		@weather = Hash.new
+		@forecast_data = Hash.new
 		json['showapi_res_body'].each do |k,v|
 			if k[-1].to_i > 0 
 				tq = get_tq(v)
-				@weather[tq['day']] = tq
+				@forecast_data[tq['day']] = tq
 			end
 		end
 		temp = HourlyCityForecastAirQuality.new.air_quality_forecast('qinhuangdaoshi')
@@ -483,11 +470,11 @@ class QinhuangdaoController < Casein::CaseinController
 		temp.each do |k,v|
 			v["fore_lev"] = get_lev(v["AQI"])
 			key = k.to_time.strftime("%Y%m%d")
-			if @weather[key] != nil
-				@weather[key]=@weather[key].merge(v)
+			if @forecast_data[key] != nil
+				@forecast_data[key]=@forecast_data[key].merge(v)
 			end
 		end
-		@ret=@weather
+		# @ret=@weather
 	end
 	#天气处理与get_forecast合作使用
 	def get_tq(f1)
@@ -568,7 +555,8 @@ class QinhuangdaoController < Casein::CaseinController
 		end
 	end
 
-	def get_lev(a)
+=begin
+	def get_lev_old(a)
 		if (0 .. 50) === a
 			lev = 'you'
 		elsif (50 .. 100) === a
@@ -583,6 +571,141 @@ class QinhuangdaoController < Casein::CaseinController
 			lev = 'yanzhong'
 		end
 	end
+=end
+
+	def get_lev(aqi)
+		if aqi<=0
+			lev='yichang'
+		elsif aqi<=50
+			lev = 'you'
+		elsif aqi<=100
+			lev = 'yellow'
+		elsif aqi<=150
+			lev = 'qingdu'
+		elsif aqi<=200
+			lev = 'zhong'
+		elsif aqi<=300
+			lev = 'zhongdu'
+		else
+			lev = 'yanzhong'	
+		end
+	end
+
+	def getlevelColor(level)
+		if level==0
+	     lev='yichang'
+	   	elsif level==1
+	     lev = 'you'
+	   	elsif level==2
+	    lev = 'yellow'
+	   	elsif level==3
+	    lev = 'qingdu'
+	   	elsif level==4
+	    lev = 'zhong'
+	   	elsif level==5
+	    lev = 'zhongdu'
+	   	else
+	    lev = 'yanzhong'
+		end
+	end
+
+	def getPM25LevelIndex(pm2_5)
+		if pm2_5<=35
+	      level=1
+	    elsif pm2_5<=75
+	      level=2
+	    elsif pm2_5<=115
+	      level=3
+	    elsif pm2_5<150
+	      level=4
+	    elsif pm2_5<=250
+	      level=5
+	    else
+	      level=6
+		end	
+	end
+
+	def getPM10LevelIndex(pm10)
+	    if pm10<=50
+	      level=1
+	    elsif pm10<=150
+	      level=2
+	    elsif pm10<=250
+	      level=3
+	    elsif pm10<350
+	      level=4
+	    elsif pm10<=420
+	      level=5
+	    else
+	      level=6
+	    end	
+	end
+
+	def getSO2LevelIndex(so2)
+		if so2<=150
+	      level=1
+	    elsif so2<=500
+	      level=2
+	    elsif so2<=650
+	      level=3
+	    elsif so2<800
+	      level=4
+	    else
+	      level=5
+		end
+	end
+
+	def getCOLevelIndex(co)
+		if co<=5
+	      level=1
+	    elsif co<=10
+	      level=2
+	    elsif co<=35
+	      level=3
+	    elsif co<60
+	      level=4
+	    elsif co<90
+	      level=5
+	    else
+	      level=6
+		end
+	end
+
+	def getNO2LevelIndex(no2)
+		if no2<=100
+		      level=1
+		    elsif no2<=200
+		      level=2
+		    elsif no2<=700
+		      level=3
+		    elsif no2<1200
+		      level=4
+		    elsif no2<2340
+		      level=5
+		    else
+		      level=6
+		end
+	end
+
+    def getO3LevelIndex(o3)
+    	if o3<=160
+	      level=1
+	    elsif o3<=200
+	      level=2
+	    elsif o3<=300
+	      level=3
+	    elsif o3<400
+	      level=4
+	    elsif o3<800
+	      level=5
+	    else
+	      level=6
+    	end
+    end
+
+    def getPointIcon(str,main_pol)
+    	return (main_pol.include? str) ? 'point_icon8x8.jpg' : ''  	
+    end
 
 	def hb_real
 		hs = Hash.new
@@ -730,8 +853,8 @@ class QinhuangdaoController < Casein::CaseinController
 	def adj_percent(type="", city='ADJ_baoding', force = "bd")
 		nt = Time.now
 		i = 0
-		path = 'public/images/ftproot/Temp/Backup'+city+'/'
-		#path = '/mnt/share/Temp/Backup'+city+'/'
+		#path = 'public/images/ftproot/Temp/Backup'+city+'/'
+		path = '/mnt/share/Temp/Backup'+city+'/'
 		begin
 			#puts i
 			strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
@@ -841,20 +964,19 @@ class QinhuangdaoController < Casein::CaseinController
 		@sfcitiesrankbyday=change_data_type(get_db_data(TempSfcitiesDay),0)
 		@sfcitiesrankbymonth=change_data_type(get_db_data(TempSfcitiesMonth),0)
 		@sfcitiesrankbyyear=change_data_type(get_db_data(TempSfcitiesYear),0)
-		@banner=banner()
 	end
 
 	def forecast
-		@banner = banner()
 		@day_fdata = @banner["day_fdata"]
 		@post='130300'
 		@city_adj = @banner["city_adj"]
 		@adj_per1 = @banner["adj_per1"]
-		@forecast_data = get_forecast()
 	end
 
+	def ltjc
+
+	end
 	def compare
-		@banner = banner()
 	end
 	def sfcities_compare
 		render layout: getlayoutbyaction('sfcities_compare')
@@ -888,7 +1010,8 @@ class QinhuangdaoController < Casein::CaseinController
 		aqis = []
 		pri_pol = []
 		ch=nil
-		if $redis['qhd_hour_forecast'].nil?
+
+		unless Custom::Redis.get('qhd_hour_forecast')
 			c = City.find_by_city_name_pinyin('qinhuangdaoshi')
 			ch = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
 			Custom::Redis.set('qhd_hour_forecast',ch,3600*24)
@@ -909,11 +1032,33 @@ class QinhuangdaoController < Casein::CaseinController
 			end
 		end
 
-		lev_hs = {"you"=>"优", "yellow"=>"良", "qingdu"=>"轻度", "zhong"=>"中度","zhongdu"=>"重度", "yanzhong"=>"严重"}
+		lev_hs = {"you"=>"优", "yellow"=>"良", "qingdu"=>"轻度", "zhong"=>"中度","zhongdu"=>"重度", "yanzhong"=>"严重","yichang"=>"异常值"}
 
 		hs["lev"] = get_lev(hs["aqi"])
 		hs["lev_han"] = lev_hs[hs["lev"]]
+		hs["pm2_5_color"]=getlevelColor(getPM25LevelIndex(hs["pm2_5"]))
+		hs["pm10_color"]=getlevelColor(getPM10LevelIndex(hs["pm10"]))
+		hs["so2_color"]=getlevelColor(getSO2LevelIndex(hs["so2"]))
+		hs["co_color"]=getlevelColor(getCOLevelIndex(hs["co"]))
+		hs["no2_color"]=getlevelColor(getNO2LevelIndex(hs["no2"]))
+		hs["o3_color"]=getlevelColor(getO3LevelIndex(hs["o3"]))
 
+		if hs['main_pollutant']==nil || hs['main_pollutant']==""
+		hs['pm2_5_icon']=''
+		hs['pm10_icon']=''
+		hs['so2_icon']=''
+		hs['co_icon']=''
+		hs['no2_icon']=''
+		hs['o3_icon']=''
+		else
+				
+		hs['pm2_5_icon']=getPointIcon('PM2.5',hs['main_pollutant'])
+		hs['pm10_icon']=getPointIcon('PM10',hs['main_pollutant'])
+		hs['so2_icon']=getPointIcon('SO2',hs['main_pollutant'])
+		hs['co_icon']=getPointIcon('CO',hs['main_pollutant'])
+		hs['no2_icon']=getPointIcon('NO2',hs['main_pollutant'])
+		hs['o3_icon']=getPointIcon('O3',hs['main_pollutant'])
+        end
 		lev_arr = []
 		lev_han_arr= []
 		aqis.each do |aqi|
@@ -944,17 +1089,22 @@ class QinhuangdaoController < Casein::CaseinController
 		hs["city_adj"] = 'ADJ_qinhuangdao/'
 		force = 'qhd'
 		hs["adj_per1"] = adj_percent('SO2_120', hs["city_adj"], force)
-#		hs["adj_per2"] = adj_percent('NOX_120', hs["city_adj"], force)
-#		hs["adj_per3"] = adj_percent('CO_120', hs['city_adj'], force)
 
-		return hs
+		city_name_pinyin='qinhuangdaoshi'
+		@rank={'hour'=>(75-TempSfcitiesHour.city_rank(city_name_pinyin))}
+		@rank['day']=75-TempSfcitiesDay.city_rank(city_name_pinyin)
+		@rank['month']=75-TempSfcitiesMonth.city_rank(city_name_pinyin)
+		@rank['year']=75-TempSfcitiesYear.city_rank(city_name_pinyin)
+		@banner = hs
 	end 
 	#周边城市
 	def cities_around_fun
 		cities_hash={1=>"北京",8=>"天津",10=>"唐山",18=>"廊坊",14=>"保定",56=>"葫芦岛",49=>"锦州",16=>"承德"}
-		starttime=Time.mktime((Time.now-3600).year,(Time.now-3600).month,(Time.now-3600).day,(Time.now-3600).hour,0,0)
-		endtime=Time.mktime((Time.now-3600).year,(Time.now-3600).month,(Time.now-3600).day,(Time.now-3600).hour,59,59)
-		querydata=ChinaCitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (1,8,10,18,14,56,49,16)",starttime,endtime)
+		stime = ChinaCitiesHour.last.data_real_time.beginning_of_hour
+		etime = stime.end_of_hour
+		# starttime=Time.mktime((Time.now-3600).year,(Time.now-3600).month,(Time.now-3600).day,(Time.now-3600).hour,0,0)
+		# endtime=Time.mktime((Time.now-3600).year,(Time.now-3600).month,(Time.now-3600).day,(Time.now-3600).hour,59,59)
+		querydata=ChinaCitiesHour.where("data_real_time>=? AND data_real_time<=? AND city_id IN (1,8,10,18,14,56,49,16)",stime,etime).order(AQI: :desc)
 		@cities_around=querydata.map{ |data| { time: data.data_real_time.strftime("%Y-%m-%d %H:%M:%S"),cityname: cities_hash[data.city_id],aqi: data.AQI,pm2_5: data.pm25,pm10: data.pm10,so2: data.SO2,no2: data.NO2,co: data.CO,o3: data.O3,quality: data.level,primary_pollutant: data.main_pol,weather: data.weather,temp: data.temp,humi: data.humi,windspeed: data.windspeed,winddirection: data.winddirection}}
 		respond_to do |format|
 			format.html { }
@@ -965,14 +1115,20 @@ class QinhuangdaoController < Casein::CaseinController
 		end
 	end
 	def get_rank_chart_data
-		cityName = params[:city]
-		type = params[:ranktype]
-		stime = params[:startTime]
-		etime = params[:endTime]
+		cityName = params[:city]+"市"
+		type = params[:type]
+		stime = params[:startTime].to_time
+		etime = params[:endTime].to_time
+		@get_rank_chart_data = nil
 		if type == 'DAY'
-			TempSfcitiesDay.get_rank_chart_data(cityName,stime,etime)
+			@get_rank_chart_data = TempSfcitiesDay.get_rank_chart_data(cityName,stime,etime)
 		else
-			TempSfcitiesMonth.get_rank_chart_data(cityName,stime,etime)
+			@get_rank_chart_data = TempSfcitiesMonth.get_rank_chart_data(cityName,stime,etime)
+		end
+		respond_to do |format|
+			format.html {}
+			format.js {}
+			format.json{ render json: @get_rank_chart_data}
 		end
 	end
 end

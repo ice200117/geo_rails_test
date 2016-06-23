@@ -51,6 +51,14 @@ Rails.application.config.assets.precompile += %w(
 	data-turbolinks-track.js
 	cities_around.js
 	SfcitiesSelector.js
+	css/login.css
+	css/font-awesome.css
+	css/loginstyle.css
+	modernizr.custom.js
+	echarts.min.js
+	infographic.js
+	sandian.js
+	highcharts.js
   leaflet.js
   leaflet.css
 )

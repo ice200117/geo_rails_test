@@ -28,6 +28,7 @@ after_avg.puts(Time.now)
 
 default_9km_city = default_9km()
 cs = City.all
+#cs = City.where(id:18)
 cs.each do |c|
 	puts c.city_name
 	py = c.city_name_pinyin.strip
@@ -83,7 +84,8 @@ cs.each do |c|
 		data = ChinaCitiesHour.where(tmp)
 		next if data.length == 0
 		# byebug if hs[:AQI].to_i/data[0].AQI&&data[0].AQI != 0 
-		lev[get_lev(hs[:AQI].to_i)] << hs[:AQI].to_i/data[0].AQI if !data[0].AQI.nil? && data[0].AQI > 0
+		puts hs[:AQI].to_i/data[0].AQI if !data[0].AQI.nil? && data[0].AQI > 0
+		lev[get_lev(hs[:AQI].to_i)] << hs[:AQI].to_i/data[0].AQI if !data[0].AQI.nil? && data[0].AQI != 0
 	end
 	avg = Hash['you' =>nil,'yellow' =>nil,'qingdu'=>nil,'zhong'=>nil,'zhongdu'=>nil,'zhongdu'=>nil,'yanzhong'=>nil]
 	lev.each do |k,v|
@@ -119,6 +121,6 @@ cs.each do |c|
 end
 f_avg.close
 after_avg.close
-puts "--start--9km--"
+puts "--End--9km--"
 DaliyAvg.avg_9
 puts "OK"

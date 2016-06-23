@@ -4,11 +4,11 @@ class MonitorPointHour < ActiveRecord::Base
 	# validates_uniqueness_of :monitor_point_id, :scope => :data_real_time
 	validates :monitor_point_id, uniqueness: { scope: :data_real_time,message: "数据重复！" }
 	def last_hour_by_cityid(cityid)
-		if $redis['qhd_hour'].nil?
-			tmp=MonitorPointHour.last.data_real_time
+		if Custom::Redis.get('qhd_hour').nil?
+			tmp=MonitorPointHour.where(city_id: cityid).last.data_real_time
 			stime=tmp.beginning_of_hour
 			etime=tmp.end_of_hour
-			Custom::Redis.set('qhd_hour',City.find(cityid).monitor_point_hours.where("data_real_time >= ? AND data_real_time <=?",stime,etime))
+			Custom::Redis.set('qhd_hour',City.find(cityid).monitor_point_hours.where("data_real_time >= ? AND data_real_time <=?",stime,etime),3600)
 		else
 			Custom::Redis.get('qhd_hour')
 		end
@@ -21,6 +21,7 @@ class MonitorPointHour < ActiveRecord::Base
 		# if MonitorPointHour.where("monitor_point_id =? AND data_real_time >= ? AND data_real_time <= ?",d['id'],d['time'].to_time.beginning_of_hour,d['time'].to_time.end_of_hour).length == 0
 		# linedata=MonitorPointHour.new
 		linedata.monitor_point_id = d['id']
+
 		linedata.data_real_time = d['time']
 		linedata.city_id = d['city_id'] if !d['city_id'].nil?
 		linedata.AQI = d['aqi'] if !d['aqi'].nil?
@@ -51,6 +52,7 @@ class MonitorPointHour < ActiveRecord::Base
 		sql_str<<d['time'].to_time.years_ago(1).beginning_of_day
 		sql_str<<d['time'].to_time.years_ago(1).end_of_day
 		sql_str<<d['id']
+		puts sql_str
 		last_years_data = MonitorPointHour.where(sql_str)	
 		if last_years_data.length != 0
 			last_years=last_years_data[0]
@@ -76,7 +78,7 @@ class MonitorPointHour < ActiveRecord::Base
 				linedata.zongheindex_change_rate=(linedata.zonghezhishu-last_years.zonghezhishu)/last_years.zonghezhishu
 			end
 		end
-		linedata.save
+		# linedata.save
 		puts d['time'].to_s+' '+d['pointname']+' Save OK!'
 		# end
 	end

@@ -20,6 +20,17 @@
 								<tbody>
 									<tr>
 										<td>
+											<span class="gray">AQI日报范围</span>
+										</td>
+										<td>
+											<span class="list-alue" style="<%='font-size:12px' if t['min_forecast'].nil? %>
+												">
+                        <%= t['min_forecast'] != nil ? "#{t['min_forecast']}~#{t['max_forecast']}": dnil%>
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td>
 											<span class="gray">级别</span>
 										</td>
 										<td>
@@ -28,6 +39,14 @@
 												<span class="<%= t['fore_lev'] if t["fore_lev"] != nil %><%= t['fore_lev'] != nil ? ' small' : ' small1'%> ">
 													<%= t['level'] !=nil ? t["level"] : dnil%></span>
 											</span>
+                      <% if t['fore_lev'] != t['fore_lev1'] %>
+                        <span> ~ </span>
+											<span class="list-alue" style="<%='font-size:12px' if t['fore_lev1'].nil? %>
+												">
+												<span class="<%= t['fore_lev1'] if t["fore_lev1"] != nil %><%= t['fore_lev1'] != nil ? ' small' : ' small1'%> ">
+													<%= t['level1'] !=nil ? t["level1"] : dnil%></span>
+											</span>
+                      <% end %>
 										</td>
 									</tr>
 									<tr>
@@ -35,16 +54,16 @@
 											<span class="gray">首要污染物</span>
 										</td>
 										<td>
-											<span class="list-alue" style="<%='font-size:12px' if t['main_pol'].nil?%>
+											<span class="list-alue" style="<%='font-size:12px' if t['main_pollutant'].nil?%>
 												">
-												<%= t["main_pol"] != nil ? t["main_pol"] : dnil%></span>
+												<%= t["main_pollutant"] != nil ? t["main_pollutant"] : dnil%></span>
 										</td>
 									</tr>
 									<tr>
-										<td style="padding-top:15px;">
+										<td>
 											<span class="gray">天气</span>
 										</td>
-										<td class="list-weather" style="padding-top:10px;">
+										<td class="list-weather" >
 											<span >
 												<%= t["tq"] != nil ? t["tp"] : '-' %>
 												&nbsp;

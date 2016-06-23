@@ -360,6 +360,19 @@ ActiveRecord::Schema.define(version: 20160622125507) do
     t.integer  "rank"
   end
 
+  create_table "monitor_points", force: true do |t|
+    t.string   "region"
+    t.string   "pointname"
+    t.string   "level"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "city_id"
+  end
+
+  add_index "monitor_points", ["pointname", "city_id"], :name => "index_monitor_points_on_pointname_and_city_id"
+
   create_table "sources", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"

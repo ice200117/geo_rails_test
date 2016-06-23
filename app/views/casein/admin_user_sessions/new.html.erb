@@ -1,3 +1,5 @@
+<div class="login-container active">
+<a href="#"><img width="200" height="60" src="<%= image_url 'unicorn_logo.png' %>"></a>
 <%= form_for @admin_user_session, :url => casein_admin_user_session_path do |f| %>
 	<% if @admin_user_session.errors.any? %>
 		<div id="error_messages" class="alert alert-danger">
@@ -20,10 +22,10 @@
     <% end %>
 	
 	<div class="form-group">
-		<%= f.text_field :login, :placeholder => "用户名", :class => "form-control input-lg" %>
+		<%= f.text_field :login, :placeholder => "用户名", :class => "form-control input-lg", :style => "text-align:left"%>
 	</div>
 	<div class="form-group">
-		<%= f.password_field :password, :placeholder => "密码", :class => "form-control input-lg" %>
+		<%= f.password_field :password, :placeholder => "密码", :class => "form-control input-lg",:style => "text-align:left" %>
 	</div>
 
 	<div class="form-group">
@@ -35,7 +37,8 @@
 	</div>
 
 	<div class="form-group">
-		<%= f.submit "登陆", :class => "btn btn-success btn-lg btn-block" %>
+		<%= f.submit "登录", :class => "btn btn-success btn-lg btn-block",:style => "background-color: rgb(91, 181, 218);
+    border-color: #8ECCD9;" %>
 	</div>
 
 	<div class="form-group">
@@ -43,7 +46,7 @@
 	</div>
 	
 <% end %>
-
+</div>
 <%= form_tag casein_password_reset_url do %>
 	<div id="recover" style="display:none;">
 		<div class="form-group">

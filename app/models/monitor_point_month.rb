@@ -11,31 +11,28 @@ class MonitorPointMonth < ActiveRecord::Base
 	#重写保存(参数类型为哈希)
 	def save_with_arg(d)
 		return 'id or time is nil' if d['id'] == nil || d['time'] == nil
-		if MonitorPointMonth.where("monitor_point_id =? AND data_real_time >= ? AND data_real_time <= ?",d['id'], d['time'].beginning_of_day,d['time'].end_of_day).length == 0
-			linedata=MonitorPointMonth.new
-			linedata.monitor_point_id = d['id']
-			linedata.data_real_time = d['time']
-			linedata.city_id = d['city_id'] if !d['city_id'].nil?
-			linedata.AQI = d['aqi'] if !d['aqi'].nil?
-			linedata.SO2 = d['so2'] if !d['so2'].nil?
-			linedata.NO2 = d['no2'] if !d['no2'].nil?
-			linedata.CO = d['co'] if !d['co'].nil?
-			linedata.pm10 = d['pm10'] if !d['pm10'].nil?
-			linedata.pm25 = d['pm25'] if !d['pm25'].nil?
-			linedata.O3 = d['o3'] if !d['o3'].nil?
-			linedata.O3_8h = d['o3_8h'] if !d['o3_8h'].nil?
-			linedata.quality = d['quality'] if !d['quality'].nil?
-			linedata.level = d['level'] if !d['level'].nil?
-			linedata.main_pol = d['main_pol'] if !d['main_pol'].nil?
-			linedata.weather = d['weather'] if !d['weather'].nil?
-			linedata.temp = d['temp'] if !d['temp'].nil?
-			linedata.humi = d['humi'] if !d['humi'].nil?
-			linedata.winddirection = d['winddirection'] if !d['winddirection'].nil?
-			linedata.windspeed = d['windspeed'] if !d['windspeed'].nil?
-			linedata.windscale = d['windscale'] if !d['windscale'].nil?
-			if !d['so2'].nil? && !d['no2'].nil?&&!d['co'].nil?&&!d['pm10'].nil?&&!d['pm25'].nil?&&!d['o3'].nil?
-				linedata.zonghezhishu = d['so2'].to_f/60+d['no2'].to_f/40+d['pm10'].to_f/70+d['pm25'].to_f/35+d['co'].to_f/4+d['o3_8h'].to_f/160 
-			end
+		linedata=MonitorPointMonth.find_or_create_by(monitor_point_id:d['id'],data_real_time: (d['time'].beginning_of_hour..d['time'].end_of_hour))
+		linedata.city_id = d['city_id'] if !d['city_id'].nil?
+		linedata.AQI = d['aqi'] if !d['aqi'].nil?
+		linedata.SO2 = d['so2'] if !d['so2'].nil?
+		linedata.NO2 = d['no2'] if !d['no2'].nil?
+		linedata.CO = d['co'] if !d['co'].nil?
+		linedata.pm10 = d['pm10'] if !d['pm10'].nil?
+		linedata.pm25 = d['pm25'] if !d['pm25'].nil?
+		linedata.O3 = d['o3'] if !d['o3'].nil?
+		linedata.O3_8h = d['o3_8h'] if !d['o3_8h'].nil?
+		linedata.quality = d['quality'] if !d['quality'].nil?
+		linedata.level = d['level'] if !d['level'].nil?
+		linedata.main_pol = d['main_pol'] if !d['main_pol'].nil?
+		linedata.weather = d['weather'] if !d['weather'].nil?
+		linedata.temp = d['temp'] if !d['temp'].nil?
+		linedata.humi = d['humi'] if !d['humi'].nil?
+		linedata.winddirection = d['winddirection'] if !d['winddirection'].nil?
+		linedata.windspeed = d['windspeed'] if !d['windspeed'].nil?
+		linedata.windscale = d['windscale'] if !d['windscale'].nil?
+		if !d['so2'].nil? && !d['no2'].nil?&&!d['co'].nil?&&!d['pm10'].nil?&&!d['pm25'].nil?&&!d['o3'].nil?
+			linedata.zonghezhishu = d['so2'].to_f/60+d['no2'].to_f/40+d['pm10'].to_f/70+d['pm25'].to_f/35+d['co'].to_f/4+d['o3_8h'].to_f/160 
+		end
 			#计算同期对比
 			sql_str=Array.new
 			sql_str<<'data_real_time >= ? AND data_real_time <= ? AND city_id = ?'
@@ -71,4 +68,3 @@ class MonitorPointMonth < ActiveRecord::Base
 			puts d['time'].to_s+' '+d['pointname']+' Save OK!'
 		end
 	end
-end

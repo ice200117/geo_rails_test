@@ -1,12 +1,16 @@
 <span>更新时间: 
-	<%= data[:time].to_time.strftime("%Y-%m-%d") %>
+	<% if flag == 'monitor_hour' %>
+		<%= data[:time].to_time.strftime("%Y-%m-%d %H:00:00") %>
+	<% else %>
+		<%= data[:time].to_time.strftime("%Y-%m-%d") %>
+	<% end %>
 </span> 
 <table class="table table-hover">
 	<thead>
 		<tr>
 			<th>排名</th>
 			<th>
-				<% if flag == 'monitor' %>
+				<% if flag == 'monitor'||flag == 'monitor_hour' %>
 					<%= '县(市区)'%>
 				<% else %>
 					<%= '城市'%>
@@ -56,7 +60,6 @@
 					<%= tmp['O3']==nil ? '——' : tmp['O3'] %>
 					&nbsp&nbsp
 					<% if hasRate%>
-						<%= tmp['CO_change_rate']==nil ? '——' : (tmp['CO_change_rate']+ '%') %>
 						<%= tmp['O3_change_rate']==nil ? '——' : (tmp['O3_change_rate']+ '%') %>
 						<%= image_tag "#{tmp['img']}.jpg" if !tmp['O3_change_rate'].nil? %>
 					<% end %>
@@ -65,7 +68,6 @@
 					<%= tmp['pm10']==nil ? '——' : tmp['pm10'] %>
 					&nbsp&nbsp
 					<% if hasRate%>
-						<%= tmp['CO_change_rate']==nil ? '——' : (tmp['CO_change_rate']+ '%') %>
 						<%= tmp['pm10_change_rate']==nil ? '——' : (tmp['pm10_change_rate']+ '%') %>
 						<%= image_tag "#{tmp['img']}.jpg" if !tmp['pm10_change_rate'].nil? %>
 					<% end %>
@@ -74,7 +76,6 @@
 					<%= tmp['pm25']==nil ? '——' : tmp['pm25'] %>
 					&nbsp&nbsp
 					<% if hasRate%>
-						<%= tmp['CO_change_rate']==nil ? '——' : (tmp['CO_change_rate']+ '%') %>
 						<%= tmp['pm25_change_rate']==nil ? '——' : (tmp['pm25_change_rate']+ '%') %>
 						<%= image_tag "#{tmp['img']}.jpg" if !tmp['pm25_change_rate'].nil? %>
 					<% end %>
@@ -83,7 +84,6 @@
 					<%= tmp['zonghezhishu']==nil ? '——' : tmp['zonghezhishu'] %>
 					&nbsp&nbsp
 					<% if hasRate%>
-						<%= tmp['CO_change_rate']==nil ? '——' : (tmp['CO_change_rate']+ '%') %>
 						<%= tmp['zongheindex_change_rate']==nil ? '——' : (tmp['zongheindex_change_rate']+ '%') %>
 						<%= image_tag "#{tmp['img']}.jpg" if !tmp['zongheindex_change_rate'].nil? %>
 					<% end %>

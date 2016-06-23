@@ -1,19 +1,19 @@
 <%= render partial:"langfang/banner",locals:{banner:@banner} %>
-<div class="container">
+<div class="container" style="background-color:rgba(220, 220, 220, 0.5);">
 	<div class='row'>
 		<%= render partial:"langfang/fore_table",locals:{forecast_data:@forecast_data} %>
 	</div>
 	<div class='row'>
 		<font class="top11-title" style="color:black; padding:0px;margin:0px">未来5天趋势预报</font>
 	</div>
-	<input value="http://60.10.151.85:81/netpicture/cuacepicture/<%= Time.now.strftime("%Y%m%d") %>/750_554/" id='imagePath' type='hidden' />
+	<input value="http://60.10.135.153:3004/images/china_fc09/<%= Time.now.strftime('%Y%m%d') %>/Hourly/" id='imagePath' type='hidden' />
 	<div class = 'row'>
 		<div class='t-t' id='t-t'>
 			<a href='javascript:void(0)' class='cur'>PM2.5</a>
 			<a href='javascript:void(0)' >PM10</a>
 			<a href='javascript:void(0)' >SO2</a>
 			<a href='javascript:void(0)' >CO</a>
-			<a href='javascript:void(0)' >NO2</a>
+			<a href='javascript:void(0)' >∑NO2</a>
 			<a href='javascript:void(0)' >O3</a>
 			<a href='javascript:void(0)' >AQI</a>
 			<a href='javascript:void(0)' >能见度</a>
@@ -33,26 +33,19 @@
 					<div class="air-date" id="air-date">
 						<span class="aftertime-title">日期：</span>
 						<span class="dateElement">
-							<a href="javascript:;" title="<%= Time.now.strftime('%Y-%m-%d') %>" class="cur" id="date1" nextid="date2">
-								<%= Time.now.month %>月<%= Time.now.day %>日</a>
+							<a href="javascript:;" title="<%= Time.now.strftime('%Y-%m-%d') %>" class="cur" id="date1" nextid="date2"><%= Time.now.month %>月<%= Time.now.day %>日</a>
 						</span>
 						<span class="dateElement">
-							<a href="javascript:;" title="<%= 1.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date2" nextid="date3">
-								<%= 1.days.from_now.month %>月<%= 1.days.from_now.day %>日</a>
+							<a href="javascript:;" title="<%= 1.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date2" nextid="date3"><%= 1.days.from_now.month %>月<%= 1.days.from_now.day %>日</a>
 						</span>
 						<span class="dateElement">
-							<a href="javascript:;" title="<%= 2.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date3" nextid="date4">
-								<%= 2.days.from_now.month %>月<%= 2.days.from_now.day %>日</a>
+							<a href="javascript:;" title="<%= 2.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date3" nextid="date4"><%= 2.days.from_now.month %>月<%= 2.days.from_now.day %>日</a>
 						</span>
 						<span class="dateElement">
-							<a href="javascript:;" title="<%= 3.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date4" nextid="date5">
-								<%= 3.days.from_now.month %>月<%= 3.days.from_now.day %>日
-							</a>
+							<a href="javascript:;" title="<%= 3.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date4" nextid="date5"><%= 3.days.from_now.month %>月<%= 3.days.from_now.day %>日</a>
 						</span>
 						<span class="dateElement">
-							<a href="javascript:;" title="<%= 4.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date5" nextid="date1">
-								<%= 4.days.from_now.month %>月<%= 4.days.from_now.day %>日
-							</a>
+							<a href="javascript:;" title="<%= 4.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date5" nextid="date1"> <%= 4.days.from_now.month %>月<%= 4.days.from_now.day %>日 </a>
 						</span>
 					</div>
 					<div class="air-time">

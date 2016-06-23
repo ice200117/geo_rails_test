@@ -16,7 +16,7 @@ def parse_line(line, c)
   #hc.publish_datetime = sdate
   #hc.forecast_datetime = sdate+delta_hour.to_i*3600
   
-  hc = HourlyCityForecastAirQuality.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
+  hc = HourlyCityForecastAirQuality.from_partition(sdate).find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
   hc.AQI = line[14,4]
   hc.main_pol = line[18,13].strip
   hc.grade = line[31,1]

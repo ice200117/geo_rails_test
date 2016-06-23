@@ -14,8 +14,9 @@ def model(model,stime,etime)
 		v.each do |l|
 			count += 1
 			hs[l['id']] = count
-			puts l['data_real_time'].to_s+'   '+count.to_s
+      puts l['id'].to_s+' '+l['data_real_time'].to_s+'   '+count.to_s + ' '+l['zonghezhishu'].to_s
 		end
+		puts ' '
 	end
 	model.where(data_real_time:(stime..etime)).each do |l|
 		if hs[l.id].nil?
@@ -24,6 +25,9 @@ def model(model,stime,etime)
 			l.rank = hs[l.id] 
 		end
 		l.save
+		puts l.id.to_s+' '+l.data_real_time.to_s + ' ' + l.rank.to_s + ' ' + l.zonghezhishu.to_s + ' save ok!'
 	end
 end
 
+model(TempSfcitiesMonth,'20150101'.to_time.beginning_of_day,Time.now.beginning_of_day)
+model(TempSfcitiesYear,'20150101'.to_time.beginning_of_day,Time.now.beginning_of_day)

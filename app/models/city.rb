@@ -3,7 +3,6 @@ class City < ActiveRecord::Base
   has_many :hourly_city_forecast_air_qualities
   has_many :temp_hourly_forecasts
   has_many :day_cities
-  has_many :temp_sfcities_hours
   has_many :monitor_points
   has_many :china_cities_hours
   has_many :weather_hours
@@ -15,6 +14,11 @@ class City < ActiveRecord::Base
   has_many :monitor_point_years
   has_many :ann_forecast_data, :class_name => 'AnnForecastData'
   has_many :forecast_real_data
+  has_many :forecast_daily_data
+  has_many :temp_sfcities_hours
+  has_many :temp_sfcities_days
+  has_many :temp_sfcities_months
+  has_many :temp_sfcities_years
   
 #  validates_uniqueness_of :post_number
 

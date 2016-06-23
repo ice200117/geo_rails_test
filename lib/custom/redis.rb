@@ -8,24 +8,28 @@
 
 module Custom::Redis
 	OPEN = true
+	# OPEN = false
 	#缓存公用方法,time==0时永不过期
 	def self.set(name,data,time=0)
-		return false unless OPEN
-		$redis.del(name)
 		if $redis.set(name,data.to_json)=='OK'
-			time == 0 ? true : $redis.expire(name,time)
+			$redis.expire(name,time) if time != 0
+			data.as_json
 		else
-			false
+			nil
 		end
 	end
 
 	def self.get(name)
-		return false unless OPEN
+		return nil unless OPEN
 		data=$redis.get(name)
 		if data.nil?
 			nil
 		else
 			JSON.parse(data) 
 		end
-	end
+  end
+
+  def self.del(name)
+		$redis.del(name)
+  end
 end

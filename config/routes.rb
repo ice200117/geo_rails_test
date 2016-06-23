@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+
+	#Casein routes
+	namespace :casein do
+		resources :forecast_daily_data
+	end
+
 	#get 'counties/lookup'
 	get 'counties/to_geojson'
 
@@ -29,6 +35,7 @@ Rails.application.routes.draw do
 	# You can have the root of your site routed with "root"
 	#root 'welcome#index'
 	#root 'welcome#map'
+	#root 'qinhuangdao#pinggu'
 	root 'qinhuangdao#pinggu'
 	get '/compare' => 'welcome#compare'
 	get '/bdqx_compare' => 'welcome#bdqx_compare'  
@@ -52,7 +59,7 @@ Rails.application.routes.draw do
 	get 'welcome/get_history_data/:model/:time' => 'welcome#get_history_data'
 	get 'welcome/get_forecast_baoding' => 'welcome#get_forecast_baoding' 
 	get 'welcome/get_city_point' => 'welcome#get_city_point'  
-	get 'welcome/export_lfdata_xls' => 'welcome#export_lfdata_xls'  
+	get 'welcome/export_data_xls/:city' => 'welcome#export_data_xls'  
 	get '/adj_pie' => 'welcome#adj_pie'
 	get '/welcome/cities_around_fun' => 'welcome#cities_around_fun'
 
@@ -85,6 +92,7 @@ Rails.application.routes.draw do
 	get '/qinhuangdao/get_linechart_data' => 'qinhuangdao#get_linechart_data'
 	get '/qinhuangdao/get_rank_chart_data' => 'qinhuangdao#get_rank_chart_data'
 	get '/qinhuangdao/sourceAnalysisPieChart' => 'qinhuangdao#sourceAnalysisPieChart'
+	get '/qinhuangdao/ltjc' => 'qinhuangdao#ltjc'
 	
 	
 

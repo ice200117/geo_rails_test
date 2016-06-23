@@ -319,17 +319,17 @@ function getData()
         {
           citynum = data.rows[i].alldata.monitor_point_id;
           time = data.rows[i].timeformatted;
-          aqi = parseInt(data.rows[i].alldata.AQI);
-          pm2_5 = parseInt(data.rows[i].alldata.pm25);
-          pm10 = parseInt(data.rows[i].alldata.pm10);
-          co = parseFloat((parseFloat(data.rows[i].alldata.CO)).toFixed(3));
-          no2 = parseInt(data.rows[i].alldata.NO2);
-          o3 = parseInt(data.rows[i].alldata.O3);
-          so2 = parseInt(data.rows[i].alldata.SO2);
-          complexindex = parseFloat((parseFloat(data.rows[i].alldata.zonghezhishu)).toFixed(3));
-          temp = parseInt(data.rows[i].alldata.temp);
-          humi = parseInt(data.rows[i].alldata.humi);
-          wind = parseInt(data.rows[i].alldata.windscale);
+          aqi = nullValueJudgement_Int(data.rows[i].alldata.AQI);
+          pm2_5 = nullValueJudgement_Int(data.rows[i].alldata.pm25);
+          pm10 = nullValueJudgement_Int(data.rows[i].alldata.pm10);
+          co = (nullValueJudgement_Float(data.rows[i].alldata.CO)==null)?null:parseFloat((nullValueJudgement_Float(data.rows[i].alldata.CO)).toFixed(3));
+          no2 = nullValueJudgement_Int(data.rows[i].alldata.NO2);
+          o3 = nullValueJudgement_Int(data.rows[i].alldata.O3);
+          so2 = nullValueJudgement_Int(data.rows[i].alldata.SO2);
+          complexindex = (nullValueJudgement_Float(data.rows[i].alldata.zonghezhishu)==null)?null:parseFloat((nullValueJudgement_Float(data.rows[i].alldata.zonghezhishu)).toFixed(3));
+          temp = nullValueJudgement_Int(data.rows[i].alldata.temp);
+          humi = nullValueJudgement_Int(data.rows[i].alldata.humi);
+          wind = nullValueJudgement_Int(data.rows[i].alldata.windscale);
           winddirection = data.rows[i].alldata.winddirection;
           wdurl = getWindDirectionUrl(winddirection);
 

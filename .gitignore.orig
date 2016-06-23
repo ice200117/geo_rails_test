@@ -8,11 +8,9 @@
 /.bundle
 
 # Ignore all logfiles and tempfiles.
-/log/*
 !/log/.keep
 /tmp
 /vendor/rd_hourly_aqi.rb
-<<<<<<< HEAD
 /*.swp
 /cron_log.log
 /public/images
@@ -20,10 +18,4 @@
 /*.log
 /public/assets/*
 /public/images/*
-=======
-*.swp
-cron_log.log
-*.log
-public/assets/*
-!public/assets/images
->>>>>>> development
+/.byebug_history

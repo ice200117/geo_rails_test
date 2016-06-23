@@ -63,5 +63,3 @@ module AllSite
 		end
 	end
 end
-data = AllSite::Option.new
-data.save
