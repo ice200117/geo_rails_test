@@ -20,4 +20,4 @@
 /public/assets/*
 /public/images/*
 /.byebug_history
-/.dump.rdb
+/dump.rdb
