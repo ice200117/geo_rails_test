@@ -1,0 +1,177 @@
+
+var normalm = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
+  maxZoom: 18,
+  minZoom: 5
+});
+var imgm = L.tileLayer.chinaProvider('GaoDe.Satellite.Map', {
+  maxZoom: 18,
+  minZoom: 5
+});
+var imga = L.tileLayer.chinaProvider('GaoDe.Satellite.Annotion', {
+  maxZoom: 18,
+  minZoom: 5
+});
+
+var normal = L.layerGroup([normalm]),
+  image = L.layerGroup([imgm, imga]);
+
+var baseLayers = {
+  "地图": normal,
+  "影像": image,
+}
+
+function setMap(mapid, geoJson) {
+
+  // id map set 
+  var popup = L.popup();
+  var geolocationMap = L.map(mapid, {
+    layers: [normal],
+    center: [39.2, 117.3],
+    //center: [52.52020, 13.37570],
+    zoom: 8,
+    zoomControl: false
+  });
+
+  L.control.layers(baseLayers, null).addTo(geolocationMap);
+  L.control.zoom({
+    zoomInTitle: '放大',
+    zoomOutTitle: '缩小'
+  }).addTo(geolocationMap);
+
+  //var geojsonFeature = {
+  //"type": "Feature",
+  //"properties": {
+  //"name": "Coors Field",
+  //"amenity": "Baseball Stadium",
+  //"popupContent": "This is where the Rockies play!"
+  //},
+  //"geometry": {
+  //"type": "Point",
+  //"coordinates": [117.51, 42.15621]
+  //}
+  //};
+
+  //--------------Add color and popup of map.-----------------------
+  function onEachFeature(feature, layer) {
+    // does this feature have a property named popupContent?
+    if (feature.properties && feature.properties.height) {
+      layer.bindPopup(feature.properties.height);
+    }
+  }
+
+  <%# @cf.each do |c| %>
+    //L.geoJson(<%#=raw c.to_json%>, {
+  ////L.geoJson(geojsonFeature, {
+  //  onEachFeature: onEachFeature
+  //}).addTo(geolocationMap);
+  <%# end %>
+
+
+  <%# @geoJsonBlock.each do |c| %>
+    //L.geoJson(<%#=raw c.to_json%>, {
+  ////L.geoJson(geojsonFeature, {
+  //  style: function (feature) {
+  //return {color: feature.properties.color,
+  //fillColor: feature.properties.color,
+  //fillOpacity: 0.8,
+  //stroke: false
+  //};
+  //    },
+  //  onEachFeature: onEachFeature
+  //}).addTo(geolocationMap);
+  <%# end %>
+  //------------- Add color and popup of map.--------------------
+
+
+  // ------------- OSM building 2.5d ---------------
+  //var geoJSON = {
+  //"type": "FeatureCollection",
+  //"features": [{
+  //"type": "Feature",
+  //"id": 134,
+  //"geometry": {
+  //"type": "Polygon",
+  //"coordinates": [[
+  //[113.2999984741211,35.2],[113.2999984741211,35.3],[113.39999847412109,35.3],[113.39999847412109,35.2],[113.2999984741211,35.2]
+  //]]
+  //},
+  //"properties": {
+  ////"wallColor": "rgb(255,0,0)",
+  ////"roofColor": "rgb(255,128,0)",
+  //"wallColor": "#FFBE16",
+  //"roofColor": "#FFBE16",
+  //"height": 500,
+  //"minHeight": 0
+  //}
+  //}]
+  //};
+
+  new OSMBuildings(geolocationMap).set(geoJson)
+    .style({
+      shadows: false
+    });
+}
+
+
+
+/*
+   function getCenter(geoJson) {
+   var geometry, len = 0, lat = 0, lon = 0;
+
+   for (var i = 0, il = geoJson.features.length; i < il; i++) {
+   geometry = geoJson.features[i].geometry.coordinates[0];
+   if (geometry[0][0][0]) {
+   geometry = geometry[0];
+   }
+
+   len += geometry.length-1;
+   for (var j = 0, jl = geometry.length-1; j < jl; j++) {
+   lat += geometry[j][1];
+   lon += geometry[j][0];
+   }
+   }
+
+   return { lat:lat/len, lon:lon/len };
+   }
+
+
+ */
+
+/* -------------------------  获取用户坐标，并居中显示 ----------------------
+   function geolocationErrorOccurred(geolocationSupported, popup, latLng) {
+   popup.setLatLng(latLng);
+   popup.setContent(geolocationSupported ?
+   '<b>Error:</b> The Geolocation service failed.' :
+   '<b>Error:</b> This browser doesn\'t support geolocation.');
+   popup.openOn(geolocationMap);
+   }
+
+   if (navigator.geolocation) {
+   navigator.geolocation.getCurrentPosition(function(position) {
+   var latLng = {
+   lat: position.coords.latitude,
+   lng: position.coords.longitude
+   };
+
+   popup.setLatLng(latLng);
+   popup.setContent('This is your current location');
+   popup.openOn(geolocationMap);
+
+   geolocationMap.setView(latLng);
+   }, function() {
+   geolocationErrorOccurred(true, popup, geolocationMap.getCenter());
+   });
+   } else {
+//No browser support geolocation service
+geolocationErrorOccurred(false, popup, geolocationMap.getCenter());
+}
+ */
+
+/*
+   var map = L.map('map').setView([39.55, 116.71], 13);
+//L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ', {
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+maxZoom: 18,
+attribution: 'Your Atui',
+}).addTo(map);
+ */

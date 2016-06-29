@@ -18,7 +18,7 @@ Rails.application.config.assets.precompile += %w(
   css/timeliner_styling.css
   jquery-ui-datepicker.js
   css/jquery-ui.css
-	map_welcome.js 
+	adj_map.js 
 	css/styles.css 
 	css/button.css 
 	css/wdatepicker.css
