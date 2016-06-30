@@ -186,7 +186,7 @@ class LangfangController < ApplicationController
 			lev = 'zhongdu'
 		elsif (300 .. 500) === a
 			lev = 'yanzhong'
-		elsif 
+		else 
 			lev = 'null'
 		end
 

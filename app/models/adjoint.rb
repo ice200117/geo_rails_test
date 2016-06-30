@@ -69,7 +69,7 @@ class Adjoint
   def self.read_adj_nc(var, period)
     path = "#{Rails.root.to_s}/tmp/data/"
     # TODO, Find latest date of adj file.
-	  #path = 'public/images/ftproot/Temp/BackupADJ/'
+	#path = 'public/images/ftproot/Temp/BackupADJ/'
     fname = "CUACE_09km_adj_2016-06-25.nc"
     ncfile =path + '/' + fname;
     var_name = "#{var}_#{period}"
