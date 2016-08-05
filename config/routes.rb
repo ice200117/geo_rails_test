@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'coal_map' => 'map#coal'
+
 	#Casein routes
 	namespace :casein do
 		resources :forecast_daily_data

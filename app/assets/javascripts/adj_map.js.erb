@@ -20,6 +20,29 @@ var baseLayers = {
   "影像": image,
 }
 
+
+
+function initCoalMap(mapid, geoJson) {
+  // id map set 
+  var popup = L.popup();
+  var geolocationMap = L.map(mapid, {
+    layers: [normal],
+    center: [39.2, 117.3],
+    //center: [52.52020, 13.37570],
+    zoom: 8,
+    zoomControl: false
+  });
+
+  L.control.layers(baseLayers, null).addTo(geolocationMap);
+  L.control.zoom({
+    zoomInTitle: '放大',
+    zoomOutTitle: '缩小'
+  }).addTo(geolocationMap);
+
+  
+}
+
+
 function setMap(mapid, geoJson) {
 
   // id map set 
