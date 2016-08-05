@@ -13,6 +13,7 @@ module Casein
 
     # The server hostname where Casein will run
     def casein_config_hostname
+      root_path
 #      if Rails.env.production?
 #        'http://0.0.0.0:3004/langfang/index'
 #      else
