@@ -1,0 +1,43 @@
+<h1>Listing city_dailies</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>City</th>
+      <th>Publish time</th>
+      <th>Pm25</th>
+      <th>Pm10</th>
+      <th>O3</th>
+      <th>O3 8h</th>
+      <th>Co</th>
+      <th>So2</th>
+      <th>No2</th>
+      <th>Aqi</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @city_dailies.each do |city_daily| %>
+      <tr>
+        <td><%= city_daily.city_id %></td>
+        <td><%= city_daily.publish_time %></td>
+        <td><%= city_daily.pm25 %></td>
+        <td><%= city_daily.pm10 %></td>
+        <td><%= city_daily.o3 %></td>
+        <td><%= city_daily.o3_8h %></td>
+        <td><%= city_daily.co %></td>
+        <td><%= city_daily.so2 %></td>
+        <td><%= city_daily.no2 %></td>
+        <td><%= city_daily.aqi %></td>
+        <td><%= link_to 'Show', city_daily %></td>
+        <td><%= link_to 'Edit', edit_city_daily_path(city_daily) %></td>
+        <td><%= link_to 'Destroy', city_daily, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New City daily', new_city_daily_path %>

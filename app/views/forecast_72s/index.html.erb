@@ -1,0 +1,47 @@
+<h1>Listing forecast_72s</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Station</th>
+      <th>Pattern</th>
+      <th>Publish time</th>
+      <th>Predict time</th>
+      <th>Pm25</th>
+      <th>Pm10</th>
+      <th>O3</th>
+      <th>O3 8h</th>
+      <th>Co</th>
+      <th>So2</th>
+      <th>No2</th>
+      <th>Aqi</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @forecast_72s.each do |forecast_72| %>
+      <tr>
+        <td><%= forecast_72.station_id %></td>
+        <td><%= forecast_72.pattern %></td>
+        <td><%= forecast_72.publish_time %></td>
+        <td><%= forecast_72.predict_time %></td>
+        <td><%= forecast_72.pm25 %></td>
+        <td><%= forecast_72.pm10 %></td>
+        <td><%= forecast_72.o3 %></td>
+        <td><%= forecast_72.o3_8h %></td>
+        <td><%= forecast_72.co %></td>
+        <td><%= forecast_72.so2 %></td>
+        <td><%= forecast_72.no2 %></td>
+        <td><%= forecast_72.aqi %></td>
+        <td><%= link_to 'Show', forecast_72 %></td>
+        <td><%= link_to 'Edit', edit_forecast_72_path(forecast_72) %></td>
+        <td><%= link_to 'Destroy', forecast_72, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Forecast 72', new_forecast_72_path %>

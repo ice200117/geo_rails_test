@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>City:</strong>
+  <%= @city_daily.city_id %>
+</p>
+
+<p>
+  <strong>Publish time:</strong>
+  <%= @city_daily.publish_time %>
+</p>
+
+<p>
+  <strong>Pm25:</strong>
+  <%= @city_daily.pm25 %>
+</p>
+
+<p>
+  <strong>Pm10:</strong>
+  <%= @city_daily.pm10 %>
+</p>
+
+<p>
+  <strong>O3:</strong>
+  <%= @city_daily.o3 %>
+</p>
+
+<p>
+  <strong>O3 8h:</strong>
+  <%= @city_daily.o3_8h %>
+</p>
+
+<p>
+  <strong>Co:</strong>
+  <%= @city_daily.co %>
+</p>
+
+<p>
+  <strong>So2:</strong>
+  <%= @city_daily.so2 %>
+</p>
+
+<p>
+  <strong>No2:</strong>
+  <%= @city_daily.no2 %>
+</p>
+
+<p>
+  <strong>Aqi:</strong>
+  <%= @city_daily.aqi %>
+</p>
+
+<%= link_to 'Edit', edit_city_daily_path(@city_daily) %> |
+<%= link_to 'Back', city_dailies_path %>

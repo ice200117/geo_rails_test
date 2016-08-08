@@ -1,0 +1,43 @@
+<h1>Listing station_dailies</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Station</th>
+      <th>Publish time</th>
+      <th>Pm25</th>
+      <th>Pm10</th>
+      <th>O3</th>
+      <th>O3 8h</th>
+      <th>Co</th>
+      <th>So2</th>
+      <th>No2</th>
+      <th>Aqi</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @station_dailies.each do |station_daily| %>
+      <tr>
+        <td><%= station_daily.station_id %></td>
+        <td><%= station_daily.publish_time %></td>
+        <td><%= station_daily.pm25 %></td>
+        <td><%= station_daily.pm10 %></td>
+        <td><%= station_daily.o3 %></td>
+        <td><%= station_daily.o3_8h %></td>
+        <td><%= station_daily.co %></td>
+        <td><%= station_daily.so2 %></td>
+        <td><%= station_daily.no2 %></td>
+        <td><%= station_daily.aqi %></td>
+        <td><%= link_to 'Show', station_daily %></td>
+        <td><%= link_to 'Edit', edit_station_daily_path(station_daily) %></td>
+        <td><%= link_to 'Destroy', station_daily, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Station daily', new_station_daily_path %>

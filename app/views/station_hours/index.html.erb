@@ -1,0 +1,41 @@
+<h1>Listing station_hours</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Station</th>
+      <th>Pm25</th>
+      <th>Pm10</th>
+      <th>O3</th>
+      <th>O3 8h</th>
+      <th>Co</th>
+      <th>So2</th>
+      <th>No2</th>
+      <th>Aqi</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @station_hours.each do |station_hour| %>
+      <tr>
+        <td><%= station_hour.station_id %></td>
+        <td><%= station_hour.pm25 %></td>
+        <td><%= station_hour.pm10 %></td>
+        <td><%= station_hour.o3 %></td>
+        <td><%= station_hour.o3_8h %></td>
+        <td><%= station_hour.co %></td>
+        <td><%= station_hour.so2 %></td>
+        <td><%= station_hour.no2 %></td>
+        <td><%= station_hour.aqi %></td>
+        <td><%= link_to 'Show', station_hour %></td>
+        <td><%= link_to 'Edit', edit_station_hour_path(station_hour) %></td>
+        <td><%= link_to 'Destroy', station_hour, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Station hour', new_station_hour_path %>

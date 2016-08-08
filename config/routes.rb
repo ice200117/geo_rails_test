@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
 
+  resources :forecast_96s
+  resources :forecast_72s
+  resources :forecast_48s
+  resources :forecast_24s
+  resources :station_hours
+  resources :station_dailies
+  resources :city_hours
+  resources :city_dailies
   get 'coal_map' => 'map#coal'
 
 	#Casein routes
