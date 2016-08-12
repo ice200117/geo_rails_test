@@ -1,7 +1,7 @@
 class CreateForecast96s < ActiveRecord::Migration
   def change
     create_table :forecast_96s do |t|
-      t.references :station_id, index: true
+      t.references :station, index: true
       t.string :pattern
       t.date :publish_time
       t.date :predict_time

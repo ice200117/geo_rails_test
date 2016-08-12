@@ -1,7 +1,7 @@
 class CreateStationDailies < ActiveRecord::Migration
   def change
     create_table :station_dailies do |t|
-      t.references :station_id, index: true
+      t.references :station, index: true
       t.date :publish_time
       t.float :pm25
       t.float :pm10
