@@ -1,7 +1,7 @@
 class ForecastDailyDatum < ActiveRecord::Base
 	belongs_to :city
 
-	default_scope { where city_id: 18 } # default Langfang 
+	default_scope { where city_id: 11 } # default Langfang 
 	after_save do |f|
 		Custom::Redis.del('langfang_weather') 
 	end

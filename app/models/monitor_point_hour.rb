@@ -52,6 +52,7 @@ class MonitorPointHour < ActiveRecord::Base
 		sql_str<<d['time'].to_time.years_ago(1).beginning_of_day
 		sql_str<<d['time'].to_time.years_ago(1).end_of_day
 		sql_str<<d['id']
+		puts sql_str
 		last_years_data = MonitorPointHour.where(sql_str)	
 		if last_years_data.length != 0
 			last_years=last_years_data[0]

@@ -1,0 +1,459 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<script>L_PREFER_CANVAS = true;</script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+<!--
+<script src='./shared/mapbox.js'></script>
+<link href='./shared/mapbox.js' rel='stylesheet' />
+-->
+<!--
+<link href='./shared/style.css' rel='stylesheet' />
+-->
+<style type="text/css" media="screen">
+  body { margin:0; padding:0; }
+#map { position:absolute; top:0; bottom:0; width:100%; }
+#map { width:50%; }
+#snapshot {
+  position:absolute;
+  top:0;bottom:0;right:0;
+  width:50%;
+}
+</style>
+</head>
+<body>
+<div id='snapshot'></div>
+<div>
+  <div id='map'></div>
+  <button id="snap">Take a snapshot</button>
+</div>
+<!--
+<script src='../../leaflet-image.js'></script>
+-->
+<script>
+  var slice = [].slice;
+
+  function queue(parallelism) {
+    var q,
+        tasks = [],
+        started = 0, // number of tasks that have been started (and perhaps finished)
+        active = 0, // number of tasks currently being executed (started but not finished)
+        remaining = 0, // number of tasks not yet finished
+        popping, // inside a synchronous task callback?
+        error = null,
+        await = noop,
+        all;
+
+    if (!parallelism) parallelism = Infinity;
+
+    function pop() {
+      while (popping = started < tasks.length && active < parallelism) {
+        var i = started++,
+            t = tasks[i],
+            a = slice.call(t, 1);
+        a.push(callback(i));
+        ++active;
+        t[0].apply(null, a);
+      }
+    }
+
+    function callback(i) {
+      return function(e, r) {
+        --active;
+        if (error != null) return;
+        if (e != null) {
+          error = e; // ignore new tasks and squelch active callbacks
+          started = remaining = NaN; // stop queued tasks from starting
+          notify();
+        } else {
+          tasks[i] = r;
+          if (--remaining) popping || pop();
+          else notify();
+        }
+      };
+    }
+
+    function notify() {
+      if (error != null) await(error);
+      else if (all) await(error, tasks);
+      else await.apply(null, [error].concat(tasks));
+    }
+
+    return q = {
+      defer: function() {
+        if (!error) {
+          tasks.push(arguments);
+          ++remaining;
+          pop();
+        }
+        return q;
+      },
+      await: function(f) {
+        await = f;
+        all = false;
+        if (!remaining) notify();
+        return q;
+      },
+      awaitAll: function(f) {
+        await = f;
+        all = true;
+        if (!remaining) notify();
+        return q;
+      }
+    };
+  }
+  function noop() {}
+  
+  
+function leafletImage_big(map, width, height, callback) {
+
+    var layerQueue = new queue(1);
+
+    var canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    var ctx = canvas.getContext('2d');
+
+    // dummy canvas image when loadTile get 404 error
+    // and layer don't have errorTileUrl
+    var dummycanvas = document.createElement('canvas');
+    dummycanvas.width = 1;
+    dummycanvas.height = 1;
+    var dummyctx = dummycanvas.getContext('2d');
+    dummyctx.fillStyle = 'rgba(0,0,0,0)';
+    dummyctx.fillRect(0, 0, 1, 1);
+
+    map.eachLayer(drawTileLayer);
+    if (map._pathRoot) {
+        layerQueue.defer(handlePathRoot, map._pathRoot);
+    } else if (map._panes) {
+        var firstCanvas = map._panes.overlayPane.getElementsByTagName('canvas').item(0);
+        if (firstCanvas) { layerQueue.defer(handlePathRoot, firstCanvas); }
+    }
+    map.eachLayer(drawMarkerLayer);
+    layerQueue.awaitAll(layersDone);
+
+    function drawTileLayer(l) {
+        if (l instanceof L.TileLayer) layerQueue.defer(handleTileLayer, l);
+    }
+
+
+    function drawMarkerLayer(l) {
+        if (l instanceof L.Marker && l.options.icon instanceof L.Icon) {
+            layerQueue.defer(handleMarkerLayer, l);
+        }
+    }
+
+    function done() {
+        callback(null, canvas);
+    }
+
+    function layersDone(err, layers) {
+        if (err) throw err;
+        layers.forEach(function(layer) {
+            if (layer && layer.canvas) {
+                ctx.drawImage(layer.canvas, 0, 0);
+            }
+        });
+        done();
+    }
+
+    function handleTileLayer(layer, callback) {
+        var isCanvasLayer = (layer instanceof L.TileLayer.Canvas),
+            canvas = document.createElement('canvas');
+
+        canvas.width = width;
+        canvas.height = height;
+
+        var ctx = canvas.getContext('2d'),
+            size = map.getSize(),
+            bounds = map.getPixelBounds(),
+            origin = map.getPixelOrigin(),
+            zoom = map.getZoom(),
+            tileSize = layer.options.tileSize;
+
+        if (zoom > layer.options.maxZoom ||
+            zoom < layer.options.minZoom ||
+            (layer.options.format && !layer.options.tiles)) {
+            return callback();
+        }
+
+        var map_size = map.getSize();
+        var sizeDiff = L.point(width, height).subtract(size).divideBy(2);
+
+        var newBounds = {
+            min: bounds.min.subtract(sizeDiff),
+            max: bounds.max.add(sizeDiff)
+        };
+
+        var offset = new L.Point(
+            ((origin.x / tileSize) - Math.floor(origin.x / tileSize)) * tileSize,
+            ((origin.y / tileSize) - Math.floor(origin.y / tileSize)) * tileSize
+        );
+
+        var tileBounds = L.bounds(
+            newBounds.min.divideBy(tileSize)._floor(),
+            newBounds.max.divideBy(tileSize)._floor()),
+            tiles = [],
+            center = tileBounds.getCenter(),
+            j, i, point,
+            tileQueue = new queue();
+
+        for (j = tileBounds.min.y; j <= tileBounds.max.y; j++) {
+            for (i = tileBounds.min.x; i <= tileBounds.max.x; i++) {
+                tiles.push(new L.Point(i, j));
+            }
+        }
+
+        tiles.forEach(function(tilePoint) {
+            var originalTilePoint = tilePoint.clone();
+
+            if (layer._adjustTilePoint) {
+                layer._adjustTilePoint(tilePoint);
+            }
+
+            var tilePos = layer._getTilePos(originalTilePoint)
+                .subtract(newBounds.min)
+                .add(origin);
+
+            if (tilePoint.y >= 0) {
+                if (isCanvasLayer) {
+                    var tile = layer._tiles[tilePoint.x + ':' + tilePoint.y];
+                    tileQueue.defer(canvasTile, tile, tilePos, tileSize);
+                } else {
+                    var url = addCacheString(layer.getTileUrl(tilePoint));
+                    tileQueue.defer(loadTile, url, tilePos, tileSize);
+                }
+            }
+        });
+
+        tileQueue.awaitAll(tileQueueFinish);
+
+        function canvasTile(tile, tilePos, tileSize, callback) {
+            callback(null, {
+                img: tile,
+                pos: tilePos,
+                size: tileSize
+            });
+        }
+
+        function loadTile(url, tilePos, tileSize, callback) {
+            var im = new Image();
+            im.crossOrigin = '';
+            im.onload = function() {
+                callback(null, {
+                    img: this,
+                    pos: tilePos,
+                    size: tileSize
+                });
+            };
+            im.onerror = function(e) {
+                // use canvas instead of errorTileUrl if errorTileUrl get 404
+                if (layer.options.errorTileUrl != '' && e.target.errorCheck === undefined) {
+                    e.target.errorCheck = true;
+                    e.target.src = layer.options.errorTileUrl;
+                } else {
+                    callback(null, {
+                        img: dummycanvas,
+                        pos: tilePos,
+                        size: tileSize
+                    });
+                }
+            };
+            im.src = url;
+        }
+
+        function tileQueueFinish(err, data) {
+            data.forEach(drawTile);
+            callback(null, { canvas: canvas });
+        }
+
+        function drawTile(d) {
+            ctx.drawImage(d.img, Math.floor(d.pos.x), Math.floor(d.pos.y),
+                d.size, d.size);
+        }
+    }
+
+    function handlePathRoot(root, callback) {
+        var bounds = map.getPixelBounds(),
+            origin = map.getPixelOrigin(),
+            canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        var map_size = map.getSize();
+        var sizeDiff = L.point(width, height).subtract(map_size).divideBy(2);
+
+        var newBounds = {
+            min: bounds.min.subtract(sizeDiff),
+            max: bounds.max.add(sizeDiff)
+        };
+
+        var ctx = canvas.getContext('2d');
+        console.log(L.DomUtil.getPosition(root));
+        var pos1 = L.DomUtil.getPosition(root).subtract(bounds.min).add(origin);
+        var pos = L.DomUtil.getPosition(root).subtract(newBounds.min).add(origin);
+        try {
+            ctx.drawImage(root, pos.x, pos.y, canvas.width - (pos.x * 2), canvas.height - (pos.y * 2));
+            callback(null, {
+                canvas: canvas
+            });
+        } catch(e) {
+            console.error('Element could not be drawn on canvas', root); // eslint-disable-line no-console
+        }
+    }
+
+    function handleMarkerLayer(marker, callback) {
+        var canvas = document.createElement('canvas'),
+            ctx = canvas.getContext('2d'),
+            pixelBounds = map.getPixelBounds();
+
+        var map_size = map.getSize();
+        var sizeDiff = L.point(width, height).subtract(map_size).divideBy(2);
+        var newBounds = {
+            min: pixelBounds.min.subtract(sizeDiff),
+            max: pixelBounds.max.add(sizeDiff)
+        };
+
+
+        var  minPoint = new L.Point(newBounds.min.x, newBounds.min.y),
+            pixelPoint = map.project(marker.getLatLng())
+            isBase64 = /^data\:/.test(marker._icon.src),
+            url = isBase64 ? marker._icon.src : addCacheString(marker._icon.src),
+            im = new Image(),
+            options = marker.options.icon.options,
+            size = options.iconSize,
+            pos = pixelPoint.subtract(minPoint),
+            anchor = L.point(options.iconAnchor || size && size.divideBy(2, true));
+
+        if (size instanceof L.Point) size = [size.x, size.y];
+
+        var x = Math.round(pos.x - size[0] + anchor.x),
+            y = Math.round(pos.y - anchor.y);
+
+        canvas.width = width;
+        canvas.height = height;
+        im.crossOrigin = '';
+
+        im.onload = function () {
+            ctx.drawImage(this, x, y, size[0], size[1]);
+            callback(null, {
+                canvas: canvas
+            });
+        };
+
+        im.src = url;
+
+        if (isBase64) im.onload();
+    }
+
+    function addCacheString(url) {
+        return url + ((url.match(/\?/)) ? '&' : '?') + 'cache=' + (+new Date());
+    }
+};
+
+
+var snapshot = document.getElementById('snapshot');
+var map = L.map('map')
+  //.setView([39.36995, 116.90906], 12);
+  .setView([39.51995, 116.71906], 12);
+//L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+//}).addTo(map);
+L.tileLayer('http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}', {
+  maxzoom: 17
+  //subdomains: "1234" 
+}).addTo(map);
+//L.tileLayer('http://t{s}.tianditu.cn/DataServer?T=vec_w&X={x}&Y={y}&L={z}', {
+//  subdomains: "1234567" 
+//}).addTo(map);
+
+//var myIcon = L.divIcon({className: 'my-div-icon'});
+var myIcon = L.icon({
+iconUrl: "<%= asset_path('dot.png') %>",
+iconSize: [16, 16],
+    iconRetinaUrl: './shared/dot.png',
+    iconAnchor: [0, 0],
+    popupAnchor: [0, 0],
+    shadowUrl: './shared/dot.png',
+    shadowRetinaUrl: './shared/dot.png',
+    shadowSize: [0, 0],
+    shadowAnchor: [0, 0]
+});
+
+// diff between baidu 坐标
+//L.marker([39.515297-0.0060, 116.715353-0.0073], {icon: myIcon}).addTo(map)
+L.marker([39.515297, 116.715353], {icon: myIcon}).addTo(map)
+L.marker([39.115297, 116.715353]).addTo(map)
+//L.marker([39.5, 117.09]).addTo(map)
+    .bindPopup('A pretty CSS3 popup. <br> Easily customizable.');
+//var circle = L.circle([39.508, 117.11], 50000, {
+//    color: 'red',
+//    fillColor: '#f03',
+//    fillOpacity: 0.5
+//    }).addTo(map);
+var polygon = L.polygon([
+    [39.509, 116.68],
+    [39.603, 116.86],
+    [39.41, 116.747]
+]).addTo(map);
+
+
+var polygon = L.polygon([
+    [38.509+0.7, 116.68],
+    [38.603+0.7, 116.86],
+    [38.41+0.7, 116.747]
+]).addTo(map);
+
+
+  <% @cf.each do |c| %>
+    L.geoJson(<%=raw c.to_json%>, {
+    //onEachFeature: onEachFeature
+  }).addTo(map);
+  <% end %>
+
+//var width = 4000;
+//var height = 7000;
+var width = 4000;
+var height = 7000;
+
+// Add snapshot listener
+document.getElementById('snap').addEventListener('click', function() {
+  var width = +document.getElementById('width').value;
+  var height = +document.getElementById('height').value;
+  leafletImage(map, width, height, function(err, canvas) {
+    canvas.toBlob(function(blob) {
+      fileSaver.saveAs(blob, "map.png");
+    });
+  });
+});
+
+  leafletImage_big(map, width, height, function(err, canvas) {
+  snapshot.innerHTML = '';
+  snapshot.appendChild(canvas);
+            //canvas.toBlob(function(blob) {
+            //    fileSaver.saveAs(blob, "map.png");
+            //});
+        });
+
+
+
+
+//setTimeout(function() {
+//  leafletImage(map, doImage);
+//}, 2000);
+//
+//function doImage(err, canvas) {
+//  var img = document.createElement('img');
+//  var dimensions = map.getSize();
+//  img.width = dimensions.x;
+//  img.height = dimensions.y;
+//  img.src = canvas.toDataURL();
+//  snapshot.innerHTML = '';
+//  snapshot.appendChild(img);
+//}
+</script>
+</body>
+</html>

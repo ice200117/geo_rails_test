@@ -27,8 +27,8 @@ after_avg=File.open(path_fix+"after_avg.txt","w")
 after_avg.puts(Time.now)
 
 default_9km_city = default_9km()
-# cs = City.all
-cs = City.where(id:18)
+cs = City.all
+#cs = City.where(id:18)
 cs.each do |c|
 	puts c.city_name
 	py = c.city_name_pinyin.strip

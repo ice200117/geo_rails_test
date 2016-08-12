@@ -116,7 +116,7 @@ class HourlyCityForecastAirQuality < Partitioned::ByMonthlyTimeField
 			city_avg[c.city_name] = city_avg_today(c,spe) if c
 		else
 			# First method
-			#cs = City.where("id < 388")
+			#cs = City.wwGGD5m3here("id < 388")
 			#cs.each do |c|
 			#city_avg[c.city_name] = city_avg_today(c,spe)
 			#end

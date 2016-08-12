@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>AQI map</title>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%#= javascript_include_tag 'jquery.min', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'leaflet', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'vendor/leaflet.ChineseTmsProviders', :cache => true %>
     <%= javascript_include_tag 'vendor/OSMBuildings-Leaflet', :cache => true %>
@@ -11,235 +13,27 @@
     <!--<script src="https://www.mapquestapi.com/sdk/leaflet/v2.s/mq-map.js?key=2Y4uekEhb2LLbcLAWEZ4APZyvaAEhbVd"></script>-->
   </head>
   <body>
-    <div class="container">
-      <div id="map" style='width:1100px; height:530px'></div>
-      <div id="map1" style='width:500px; height:330px'></div>
+    <div class="container-fluid">
+
+        
+      <div class="col-xs-12">
+        <div style="position:absolute;top:20px;left:30%;padding:4px;background:rgba(255,255,255,0.9);z-index:2000;">2015年12月20日到12月25日京津冀地区SO2排放对廊坊的PM2.5浓度贡献分布</div>
+        <div id="map" style='width:100%; height:800px'> </div>
+        <div style="position: absolute; top: 100px; right: 20px;"><%= image_tag("adj_so2_legend.png") %></div>
+        <div style="position: absolute; bottom: 20px; width:200px ; right: 20px;"> 
+			<!--<span>单位：ug/m^3</span>-->
+          <%=pie_chart @perc, height: "200px"%>
+        </div>
+      </div>
+
     </div>
 
 
+
+    <%= javascript_include_tag 'adj_map', 'data-turbolinks-track' => true %>
     <script type="text/javascript" charset="utf-8">
-      var normalm = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
-        maxZoom: 18,
-        minZoom: 5
-      });
-var imgm = L.tileLayer.chinaProvider('GaoDe.Satellite.Map', {
-    maxZoom: 18,
-    minZoom: 5
-});
-var imga = L.tileLayer.chinaProvider('GaoDe.Satellite.Annotion', {
-    maxZoom: 18,
-    minZoom: 5
-});
-
-var normal = L.layerGroup([normalm]),
-    image = L.layerGroup([imgm, imga]);
-
-var baseLayers = {
-    "地图": normal,
-    "影像": image,
-}
-
-            window.onload = function() {
-                var popup = L.popup();
-                var geolocationMap = L.map('map', {
-                    layers: [normal],
-                    center: [35.2, 114.3],
-                    //center: [52.52020, 13.37570],
-                    zoom: 7,
-                    zoomControl: false
-                });
-
-L.control.layers(baseLayers, null).addTo(geolocationMap);
-L.control.zoom({
-    zoomInTitle: '放大',
-    zoomOutTitle: '缩小'
-}).addTo(geolocationMap);
-
-var geojsonFeature = {
-    "type": "Feature",
-    "properties": {
-        "name": "Coors Field",
-        "amenity": "Baseball Stadium",
-        "popupContent": "This is where the Rockies play!"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [117.51, 42.15621]
-    }
-};
-
-function onEachFeature(feature, layer) {
-    // does this feature have a property named popupContent?
-    if (feature.properties && feature.properties.height) {
-        layer.bindPopup(feature.properties.height);
-    }
-}
-
-<%# @cf.each do |c| %>
-//L.geoJson(<%#=raw c.to_json%>, {
-////L.geoJson(geojsonFeature, {
-//  onEachFeature: onEachFeature
-//}).addTo(geolocationMap);
-<%# end %>
-
-<%# @cs.each do |c| %>
-//L.geoJson(<%#=raw c.to_json%>, {
-////L.geoJson(geojsonFeature, {
-//  onEachFeature: onEachFeature
-//}).addTo(geolocationMap);
-<%# end %>
-
-<%# @geoJsonBlock.each do |c| %>
-//L.geoJson(<%#=raw c.to_json%>, {
-////L.geoJson(geojsonFeature, {
-//  style: function (feature) {
-//return {color: feature.properties.color,
-//fillColor: feature.properties.color,
-//fillOpacity: 0.8,
-//stroke: false
-//};
-//    },
-//  onEachFeature: onEachFeature
-//}).addTo(geolocationMap);
-<%# end %>
-
-
-// ------------- OSM building 2.5d ---------------
-//var osmb = new OSMBuildings(geolocationMap).load();
-
-var geoJSON = {
-  "type": "FeatureCollection",
-  "features": [{
-    "type": "Feature",
-    "id": 134,
-    "geometry": {
-      "type": "Polygon",
-      "coordinates": [[
-[113.2999984741211,35.2],[113.2999984741211,35.3],[113.39999847412109,35.3],[113.39999847412109,35.2],[113.2999984741211,35.2]
-//        [13.37356, 52.52064],
-//        [13.37350, 52.51971],
-//        [13.37664, 52.51973],
-//        [13.37594, 52.52062],
-//        [13.37356, 52.52064]
-      ]]
-    },
-    "properties": {
-      //"wallColor": "rgb(255,0,0)",
-      //"roofColor": "rgb(255,128,0)",
-      "wallColor": "#FFBE16",
-      "roofColor": "#FFBE16",
-      "height": 500,
-      "minHeight": 0
-    }
-  }]
-};
-
-
-//osmb = new OSMBuildings(geolocationMap).set(geoJSON)
-new OSMBuildings(geolocationMap).set(<%= raw @geoJsonBlock.to_json %>)
-									   .style({
-										   shadows: false
-									   });
-//                                .click(function(id) {
-//                                  console.log('feature height clicked:', id);
-//                                })
-//                                .bindPopup(feature.properties.height);
-
-/*
-function getCenter(geoJson) {
-  var geometry, len = 0, lat = 0, lon = 0;
-
-  for (var i = 0, il = geoJson.features.length; i < il; i++) {
-    geometry = geoJson.features[i].geometry.coordinates[0];
-    if (geometry[0][0][0]) {
-      geometry = geometry[0];
-    }
-
-    len += geometry.length-1;
-    for (var j = 0, jl = geometry.length-1; j < jl; j++) {
-      lat += geometry[j][1];
-      lon += geometry[j][0];
-    }
-  }
-
-  return { lat:lat/len, lon:lon/len };
-}
-
-function setGeoJSON(geoJsonBlock) {
-  try {
-    //var geoJson = JSON.parse(geoJsonBlock.value);
-    var geoJson = JSON.parse(geoJsonBlock);
-  } catch(e) {}
-  osmb.set(geoJson);
-  //var center = getCenter(geoJson);
-  //map.setView([center.lat, center.lon], 17)
-}
-
-//geoJsonBlock = document.querySelector('textarea');
-<% @geoJsonBlock.first do |geoJson| %>
-  setGeoJSON(<%= raw geoJson.to_json %>);
-<% end %>
-*/
-
-/*
-                function geolocationErrorOccurred(geolocationSupported, popup, latLng) {
-                    popup.setLatLng(latLng);
-                    popup.setContent(geolocationSupported ?
-                            '<b>Error:</b> The Geolocation service failed.' :
-                            '<b>Error:</b> This browser doesn\'t support geolocation.');
-                    popup.openOn(geolocationMap);
-                }
-
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        var latLng = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
-
-                        popup.setLatLng(latLng);
-                        popup.setContent('This is your current location');
-                        popup.openOn(geolocationMap);
-
-                        geolocationMap.setView(latLng);
-                    }, function() {
-                        geolocationErrorOccurred(true, popup, geolocationMap.getCenter());
-                    });
-                } else {
-                    //No browser support geolocation service
-                    geolocationErrorOccurred(false, popup, geolocationMap.getCenter());
-                }
-*/
-            }
-      /*
-      var map = L.map('map').setView([39.55, 116.71], 13);
-      //L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ', {
-      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-			maxZoom: 18,
-      attribution: 'Your Atui',
-		}).addTo(map);
-*/
-    </script>
-         <%= 
-           map(:container_id => "map1", :center => {
-         :latlng => [39.55, 116.71],
-         :zoom => 10
-       },
-       :markers => [
-         {
-           :latlng => [39.55, 116.71],
-           :popup => "leaflet-rails!"
-         }
-       ]) %>
-
-
-     <!--
-     <script>
-       <%# strnow = (Time.now - 60*60*24).strftime('%Y%m%d') %>
-       //$('#map4').backstretch("<%#= image_url 'china_fc/'+strnow+'/Hourly/Animate_CUACE_25km_AQI_'+strnow+'.gif', alt: 'China forecast' %>");
+      setMap('map', <%=(raw @geoJsonBlockSO2.to_json) unless @geoJsonBlockSO2.nil?%>);
      </script>
-     -->
-     <%#= javascript_include_tag 'map_welcome', 'data-turbolinks-track' => true %>
    </body>
  </html>
 

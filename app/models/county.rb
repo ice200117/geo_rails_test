@@ -43,6 +43,7 @@ class County < ActiveRecord::Base
 
   EWKB = RGeo::WKRep::WKBGenerator.new(:type_format => :ewkb,
                                        :emit_ewkb_srid => true, :hex_format => true)
+
   def self.containing_latlon(lat, lon)
     ewkb = EWKB.generate(FACTORY.point(lon, lat).projection)
     where("ST_Intersects(boundary, ST_GeomFromEWKB(E'\\\\x#{ewkb}'))")

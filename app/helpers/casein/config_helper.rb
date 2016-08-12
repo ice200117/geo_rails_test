@@ -13,11 +13,12 @@ module Casein
 
     # The server hostname where Casein will run
     def casein_config_hostname
-      if Rails.env.production?
-        'http://60.10.135.153:3004/langfang/index'
-      else
-        'http://0.0.0.0:3000/langfang/index'
-      end
+      root_path
+#      if Rails.env.production?
+#        'http://0.0.0.0:3004/langfang/index'
+#      else
+#        'http://0.0.0.0:3000/langfang/index'
+#      end
     end
 
     # The sender address used for email notifications

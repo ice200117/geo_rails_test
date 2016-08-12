@@ -10,33 +10,55 @@ def parse_line(line, c)
 	delta_hour = line[11,3]
 	sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
 
+	
+	#hc = HourlyCityForecastAirQuality.from_partition(sdate).find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
+	#hc.destroy
 
-	hc = HourlyCityForecastAirQuality.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
-	hc.AQI = line[14,4]
-	# hc.AQI = hc.AQI*2.51   # liubin 10/5/2015
-	hc.main_pol = line[18,13].strip
-	hc.grade = line[31,1]
-	hc.pm25 = line[99,6]
-	hc.pm10 = line[87,6]
-	hc.SO2 = line[39,6]
-	hc.CO = line[63,6]
-	hc.NO2 = line[51,6]
-	hc.O3 = line[75,6]
-	hc.VIS = line[32,7]
-	hc.save
+	hcc = {
+		:city_id => c.id,
+		:publish_datetime => sdate,
+		:forecast_datetime => sdate+delta_hour.to_i*3600,
+		:AQI => line[14,4],
+	    :main_pol => line[18,13].strip,
+	    :grade => line[31,1],
+	    :pm25 => line[99,6],
+	    :pm10 => line[87,6],
+	    :SO2 => line[39,6],
+	    :CO => line[63,6],
+	    :NO2 => line[51,6],
+	    :O3 => line[75,6],
+	    :VIS => line[32,7]
+	}
 
-	rc = ForecastRealDatum.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
-	rc.AQI = line[14,4]
-	rc.main_pol = line[18,13].strip
-	rc.grade = line[31,1]
-	rc.pm25 = line[99,6]
-	rc.pm10 = line[87,6]
-	rc.SO2 = line[39,6]
-	rc.CO = line[63,6]
-	rc.NO2 = line[51,6]
-	rc.O3 = line[75,6]
-	rc.VIS = line[32,7]
-	rc.save
+	#HourlyCityForecastAirQuality.create(hcc)
+
+	#hc = HourlyCityForecastAirQuality.from_partition(sdate).find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
+	#hc.AQI = line[14,4]
+	#hc.main_pol = line[18,13].strip
+	#hc.grade = line[31,1]
+	#hc.pm25 = line[99,6]
+	#hc.pm10 = line[87,6]
+	#hc.SO2 = line[39,6]
+	#hc.CO = line[63,6]
+	#hc.NO2 = line[51,6]
+	#hc.O3 = line[75,6]
+	#hc.VIS = line[32,7]
+	#hc.save
+
+	#rc = ForecastRealDatum.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
+	#rc.AQI = line[14,4]
+	#rc.main_pol = line[18,13].strip
+	#rc.grade = line[31,1]
+	#rc.pm25 = line[99,6]
+	#rc.pm10 = line[87,6]
+	#rc.SO2 = line[39,6]
+	#rc.CO = line[63,6]
+	#rc.NO2 = line[51,6]
+	#rc.O3 = line[75,6]
+	#rc.VIS = line[32,7]
+	#rc.save
+
+	hcc 
 
 	#puts '----------'
 	#puts hc.city_id
@@ -84,6 +106,7 @@ end
 #cs << City.find_by_city_name_pinyin('langfangshi')
 #cs << City.find_by_city_name_pinyin('huzhoushi')
 cs = City.all
+hcs = []
 cs.each do |c|
 	puts c.city_name_pinyin
 	#if c.city_name_pinyin.rstrip.eql?('langfangshi')
@@ -94,14 +117,19 @@ cs.each do |c|
 	f = nil
 	f = File.open(path+fn) if File::exists?(path+fn) 
 	next unless f
+
 	c.forecast_real_data.destroy_all
+	c.hourly_city_forecast_air_qualities.where(publish_datetime: Time.zone.parse(yesterday_str)).delete_all
+
 	f.readlines[2..-1].each do |line| 
-		parse_line(line, c)
+		hcs << parse_line(line, c)
 	end
 	f.close
 	puts fn+" update database successful!"
-	if py=='qinhuangdaoshi'
-		tmp=City.find_by_city_name_pinyin(py).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
-		Custom::Redis.set(py,tmp,3600*24)
-	end
 end
+HourlyCityForecastAirQuality.create(hcs)
+ForecastRealDatum.create(hcs)
+
+py = 'qinhuangdaoshi'
+tmp=City.find_by_city_name_pinyin(py).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
+Custom::Redis.set(py,tmp,3600*24)

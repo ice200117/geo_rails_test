@@ -14,12 +14,30 @@ class WelcomeController < ApplicationController
 		#system('ls')
 		#r = `rails r vendor/test.rb`
 		#puts r
+    params["var"]? var=params["var"] : var="SO2"
+    period = "120"
     
-    @cf = County.all.map {|c| c.to_geojson }
-    @cs = City.all.map {|c| c.to_geojson }
-    @geoJsonBlock = Adjoint.to_geojson
+    #@cf = County.all.map {|c| c.to_geojson }
+    #@cs = City.all.map {|c| c.to_geojson }
 
-    render layout: false
+		unless Custom::Redis.get('lf_adj_percent')
+      @geoJsonBlockSO2, @perc = Adjoint.to_geojson(var, period)
+      @perc = @perc.map {|k,v| [k , (v = v.round) ] }
+			Custom::Redis.set('lf_adj_percent',[@geoJsonBlockSO2, @perc],3600*24)
+		else
+	   @geoJsonBlockSO2, @perc = Custom::Redis.get('lf_adj_percent')
+		end
+
+    var = "BC"
+    #@geoJsonBlockBC = Adjoint.to_geojson(var, period)[1]
+
+		respond_to do |format|
+      format.html {
+        render layout: false
+      }
+			format.js   {}
+			format.json {}
+		end
 	end
 
 	def visits_by_day

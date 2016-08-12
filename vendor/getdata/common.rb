@@ -269,7 +269,7 @@ def save_db_common(model,t,time)
 		day_city.save
 		set_change_rate_to_db(model,city.id,time) if model.new.respond_to?("zongheindex_change_rate")
 	end
-	puts '=='+model.name+'=='+time.to_s+'=Save OK!==='
+	puts '=='+model.name+'=='+time.to_s+'=='+t['city'].to_s+'=Save OK!==='
 	out_log(model.name+time.to_s+t['city']) if city.nil?	
 end
 
