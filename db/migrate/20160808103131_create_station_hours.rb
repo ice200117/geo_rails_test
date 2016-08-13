@@ -1,7 +1,7 @@
 class CreateStationHours < ActiveRecord::Migration
   def change
     create_table :station_hours do |t|
-      t.references :station_id, index: true
+      t.references :station, index: true
       t.float :pm25
       t.float :pm10
       t.float :o3

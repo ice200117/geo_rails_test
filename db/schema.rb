@@ -97,7 +97,7 @@ ActiveRecord::Schema.define(version: 20160808103558) do
   end
 
   create_table "city_dailies", force: true do |t|
-    t.integer  "city_id_id"
+    t.integer  "city_id"
     t.date     "publish_time"
     t.float    "pm25"
     t.float    "pm10"
@@ -111,10 +111,10 @@ ActiveRecord::Schema.define(version: 20160808103558) do
     t.datetime "updated_at"
   end
 
-  add_index "city_dailies", ["city_id_id"], :name => "index_city_dailies_on_city_id_id"
+  add_index "city_dailies", ["city_id"], :name => "index_city_dailies_on_city_id"
 
   create_table "city_hours", force: true do |t|
-    t.integer  "city_id_id"
+    t.integer  "city_id"
     t.float    "pm25"
     t.float    "pm10"
     t.float    "o3"
@@ -127,7 +127,7 @@ ActiveRecord::Schema.define(version: 20160808103558) do
     t.datetime "updated_at"
   end
 
-  add_index "city_hours", ["city_id_id"], :name => "index_city_hours_on_city_id_id"
+  add_index "city_hours", ["city_id"], :name => "index_city_hours_on_city_id"
 
   create_table "counties", force: true do |t|
     t.string   "name"
@@ -486,7 +486,7 @@ ActiveRecord::Schema.define(version: 20160808103558) do
   end
 
   create_table "station_dailies", force: true do |t|
-    t.integer  "station_id_id"
+    t.integer  "station_id"
     t.date     "publish_time"
     t.float    "pm25"
     t.float    "pm10"
@@ -500,10 +500,10 @@ ActiveRecord::Schema.define(version: 20160808103558) do
     t.datetime "updated_at"
   end
 
-  add_index "station_dailies", ["station_id_id"], :name => "index_station_dailies_on_station_id_id"
+  add_index "station_dailies", ["station_id"], :name => "index_station_dailies_on_station_id"
 
   create_table "station_hours", force: true do |t|
-    t.integer  "station_id_id"
+    t.integer  "station_id"
     t.float    "pm25"
     t.float    "pm10"
     t.float    "o3"
@@ -516,7 +516,7 @@ ActiveRecord::Schema.define(version: 20160808103558) do
     t.datetime "updated_at"
   end
 
-  add_index "station_hours", ["station_id_id"], :name => "index_station_hours_on_station_id_id"
+  add_index "station_hours", ["station_id"], :name => "index_station_hours_on_station_id"
 
   create_table "temp_bd_days", force: true do |t|
     t.integer  "city_id"

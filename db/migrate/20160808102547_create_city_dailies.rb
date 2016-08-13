@@ -1,7 +1,7 @@
 class CreateCityDailies < ActiveRecord::Migration
   def change
     create_table :city_dailies do |t|
-      t.references :city_id, index: true
+      t.references :city, index: true
       t.date :publish_time
       t.float :pm25
       t.float :pm10
