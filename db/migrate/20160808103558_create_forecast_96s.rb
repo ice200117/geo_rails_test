@@ -3,8 +3,8 @@ class CreateForecast96s < ActiveRecord::Migration
     create_table :forecast_96s do |t|
       t.references :station, index: true
       t.string :pattern
-      t.date :publish_time
-      t.date :predict_time
+      t.datetime  :publish_time
+      t.datetime  :predict_time
       t.float :pm25
       t.float :pm10
       t.float :o3

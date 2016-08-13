@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160808103558) do
+ActiveRecord::Schema.define(version: 20160813074002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -167,8 +167,8 @@ ActiveRecord::Schema.define(version: 20160808103558) do
   create_table "forecast_24s", force: true do |t|
     t.integer  "station_id"
     t.string   "pattern"
-    t.date     "publish_time"
-    t.date     "predict_time"
+    t.datetime "publish_time"
+    t.datetime "predict_time"
     t.float    "pm25"
     t.float    "pm10"
     t.float    "o3"
@@ -186,8 +186,8 @@ ActiveRecord::Schema.define(version: 20160808103558) do
   create_table "forecast_48s", force: true do |t|
     t.integer  "station_id"
     t.string   "pattern"
-    t.date     "publish_time"
-    t.date     "predict_time"
+    t.datetime "publish_time"
+    t.datetime "predict_time"
     t.float    "pm25"
     t.float    "pm10"
     t.float    "o3"
@@ -205,8 +205,8 @@ ActiveRecord::Schema.define(version: 20160808103558) do
   create_table "forecast_72s", force: true do |t|
     t.integer  "station_id"
     t.string   "pattern"
-    t.date     "publish_time"
-    t.date     "predict_time"
+    t.datetime "publish_time"
+    t.datetime "predict_time"
     t.float    "pm25"
     t.float    "pm10"
     t.float    "o3"
@@ -224,8 +224,8 @@ ActiveRecord::Schema.define(version: 20160808103558) do
   create_table "forecast_96s", force: true do |t|
     t.integer  "station_id"
     t.string   "pattern"
-    t.date     "publish_time"
-    t.date     "predict_time"
+    t.datetime "publish_time"
+    t.datetime "predict_time"
     t.float    "pm25"
     t.float    "pm10"
     t.float    "o3"
@@ -239,6 +239,25 @@ ActiveRecord::Schema.define(version: 20160808103558) do
   end
 
   add_index "forecast_96s", ["station_id"], :name => "index_forecast_96s_on_station_id"
+
+  create_table "forecast_dailies", force: true do |t|
+    t.integer  "station_id"
+    t.string   "pattern"
+    t.date     "publish_date"
+    t.date     "predict_date"
+    t.float    "pm25"
+    t.float    "pm10"
+    t.float    "o3"
+    t.float    "o3_8h"
+    t.float    "co"
+    t.float    "so2"
+    t.float    "no2"
+    t.float    "aqi"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "forecast_dailies", ["station_id"], :name => "index_forecast_dailies_on_station_id"
 
   create_table "forecast_daily_data", force: true do |t|
     t.integer  "city_id"
