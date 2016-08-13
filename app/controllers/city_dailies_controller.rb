@@ -14,7 +14,7 @@ class CityDailiesController < ApplicationController
 
   # GET /city_dailies/new
   def new
-    @city_daily = CityDaily.new
+    qaity_daily = CityDaily.new
   end
 
   # GET /city_dailies/1/edit

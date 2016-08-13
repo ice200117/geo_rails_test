@@ -165,7 +165,7 @@ ActiveRecord::Schema.define(version: 20160808103558) do
   end
 
   create_table "forecast_24s", force: true do |t|
-    t.integer  "station_id_id"
+    t.integer  "station_id"
     t.string   "pattern"
     t.date     "publish_time"
     t.date     "predict_time"
@@ -181,10 +181,10 @@ ActiveRecord::Schema.define(version: 20160808103558) do
     t.datetime "updated_at"
   end
 
-  add_index "forecast_24s", ["station_id_id"], :name => "index_forecast_24s_on_station_id_id"
+  add_index "forecast_24s", ["station_id"], :name => "index_forecast_24s_on_station_id"
 
   create_table "forecast_48s", force: true do |t|
-    t.integer  "station_id_id"
+    t.integer  "station_id"
     t.string   "pattern"
     t.date     "publish_time"
     t.date     "predict_time"
@@ -200,10 +200,10 @@ ActiveRecord::Schema.define(version: 20160808103558) do
     t.datetime "updated_at"
   end
 
-  add_index "forecast_48s", ["station_id_id"], :name => "index_forecast_48s_on_station_id_id"
+  add_index "forecast_48s", ["station_id"], :name => "index_forecast_48s_on_station_id"
 
   create_table "forecast_72s", force: true do |t|
-    t.integer  "station_id_id"
+    t.integer  "station_id"
     t.string   "pattern"
     t.date     "publish_time"
     t.date     "predict_time"
@@ -219,10 +219,10 @@ ActiveRecord::Schema.define(version: 20160808103558) do
     t.datetime "updated_at"
   end
 
-  add_index "forecast_72s", ["station_id_id"], :name => "index_forecast_72s_on_station_id_id"
+  add_index "forecast_72s", ["station_id"], :name => "index_forecast_72s_on_station_id"
 
   create_table "forecast_96s", force: true do |t|
-    t.integer  "station_id_id"
+    t.integer  "station_id"
     t.string   "pattern"
     t.date     "publish_time"
     t.date     "predict_time"
@@ -238,7 +238,7 @@ ActiveRecord::Schema.define(version: 20160808103558) do
     t.datetime "updated_at"
   end
 
-  add_index "forecast_96s", ["station_id_id"], :name => "index_forecast_96s_on_station_id_id"
+  add_index "forecast_96s", ["station_id"], :name => "index_forecast_96s_on_station_id"
 
   create_table "forecast_daily_data", force: true do |t|
     t.integer  "city_id"
