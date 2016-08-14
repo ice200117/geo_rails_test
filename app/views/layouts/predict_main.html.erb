@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+    <title>秦皇岛空气质量预报预警系统</title>
+    <%= stylesheet_link_tag 'css/bootstrap/dist/css/bootstrap.min','css/font-awesome/css/font-awesome.min','css/custom.min', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'js/jquery/dist/jquery.min','data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
+  </head>
+
+  <body class="nav-md" style="background: #ffffff">
+    <div class="container body">
+       <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <center>     
+            <h1 style="white-space:nowrap;font-family:'黑体'"><i class="fa fa-bell-o"></i> 秦皇岛空气质量预报预警系统</h1>
+            </center>
+            <nav>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="">
+                <a href="javascript:;" class="user-profile dropdown-toggle">
+                  <i class="fa fa-user"></i>
+                  admin
+                </a>
+              </li>
+
+              <li role="presentation" class="dropdown">
+                <a href="javascript:;" class="dropdown-toggle info-number">
+                  <i class="fa fa-power-off"></i>
+                  退出 
+                </a>
+              </li>
+            </ul>
+              <ul class="nav nav-tabs nav-justified">
+                <li role="presentation" class="active"><a href="predict/index">首页</a></li>
+                <li role="presentation"><a href="predict/pollution_situation_analysis">分析</a></li>
+                <li role="presentation"><a href="predict/revise">预报</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+          <%= yield %>
+        <!-- /page content -->
+          </div>
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right" style="font-size: 15px;">
+            技术支持：<a href="#" style="font-weight: bold;">PM2.5小组</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+<%= javascript_include_tag "js/bootstrap/dist/js/bootstrap.min","js/fastclick/lib/fastclick","js/echarts/dist/echarts.min","js/custom.min"%>
+   <script type="text/javascript">
+      // 百度地图API功能
+      var map = new BMap.Map("allmap");    // 创建Map实例
+      map.centerAndZoom(new BMap.Point(119.600435,39.945906), 13);  // 初始化地图,设置中心点坐标和地图级别
+      map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+      map.setCurrentCity("秦皇岛");          // 设置地图显示的城市 此项是必须设置的
+      map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    </script>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '秦皇岛过去72小时AQI指标'
+            },
+            tooltip: {},
+            legend: {
+                data:['AQI二级标准限值','廊坊市AQI']
+            },
+            xAxis: {
+                data: ["07-29 11时","07-29 16时","07-29 21时","07-30 07时","07-30 12时","07-30 17时"]
+            },
+            yAxis: {},
+            series: [{
+                name: 'AQI二级标准限值',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 20]
+            },
+            {
+                            name: '廊坊市AQI',
+                            type: 'bar',
+                            data: [30, 50, 87, 60, 30, 12]
+                        }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>  
+  </body>
+</html>

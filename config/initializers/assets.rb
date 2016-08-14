@@ -59,6 +59,18 @@ Rails.application.config.assets.precompile += %w(
 	infographic.js
 	sandian.js
 	highcharts.js
-  leaflet.js
-  leaflet.css
+    leaflet.js
+    leaflet.css
+ 
+    css/bootstrap/dist/css/bootstrap.min.css
+    css/font-awesome/css/font-awesome.min.css
+    css/custom.min.css
+    js/jquery/dist/jquery.min.js
+    js/bootstrap/dist/js/bootstrap.min.js
+    js/fastclick/lib/fastclick.js
+    js/echarts/dist/echarts.min.js
+    js/custom.min.js
+    source_analysis_custom.js
+    js/icheck/skins/flat/green.css
+    css/jqvmap/dist/jqvmap.min.css
 )

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'predict/index'
+
   resources :forecast_96s
   resources :forecast_72s
   resources :forecast_48s
@@ -46,7 +48,7 @@ Rails.application.routes.draw do
 	#root 'welcome#index'
 	#root 'welcome#map'
 	#root 'qinhuangdao#pinggu'
-	root 'qinhuangdao#pinggu'
+	root 'predict#index'
 	get '/compare' => 'welcome#compare'
 	get '/bdqx_compare' => 'welcome#bdqx_compare'  
 	get '/sfcities_compare' => 'welcome#sfcities_compare' 
@@ -103,8 +105,15 @@ Rails.application.routes.draw do
 	get '/qinhuangdao/get_rank_chart_data' => 'qinhuangdao#get_rank_chart_data'
 	get '/qinhuangdao/sourceAnalysisPieChart' => 'qinhuangdao#sourceAnalysisPieChart'
 	get '/qinhuangdao/ltjc' => 'qinhuangdao#ltjc'
-	
-	
+
+
+	#秦皇岛空气质量预报预警
+	get 'predict/index' => 'predict#index'
+	get 'predict/pollution_situation_analysis' => 'predict#pollution_situation_analysis'
+	get 'predict/source_analysis' => 'predict#source_analysis'
+	get 'predict/revise' => 'predict#revise'
+
+
 
 	#廊坊路由
 	get 'langfang/index' => 'langfang#forecast'
