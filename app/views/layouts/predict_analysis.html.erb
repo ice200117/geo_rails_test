@@ -71,7 +71,7 @@
                                   </div></li>
                     </ul>
                   </li>
-                  <li><a href="source_analysis"> 源解析 <span class="fa fa-chevron-down"></span></a>
+                  <li><a href="<%= predict_source_analysis_path %>"> 源解析 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><label for="lc">类型:</label><input type="checkbox" name="lc"></li>
                       <li><label>区域:</label><select>
@@ -143,18 +143,16 @@
               </li>
             </ul>
               <ul class="nav nav-tabs nav-justified">
-                <li role="presentation"><a href="predict/index">首页</a></li>
-                <li role="presentation" class="active"><a href="predict/pollution_situation_analysis">分析</a></li>
-                <li role="presentation"><a href="predict/revise">预报</a></li>
+                <li role="presentation"><a href="<%= predict_index_path %>">首页</a></li>
+                <li role="presentation" class="active"><a href="<%= predict_pollution_situation_analysis_path %>">分析</a></li>
+                <li role="presentation"><a href="<%= predict_revise_path %>">预报</a></li>
               </ul>
             </nav>
           </div>
         </div>
         <!-- /top navigation -->
 <%= javascript_include_tag "js/bootstrap/dist/js/bootstrap.min","js/custom.min","js/echarts/dist/echarts.min"%>
-<script src="//cdn.bootcss.com/echarts/3.2.2/extension/dataTool.min.js"></script>
-<%= javascript_include_tag "js/echarts/map/js/china","js/echarts/map/js/world"%>
-<script src="//cdn.bootcss.com/echarts/3.2.2/extension/bmap.min.js"></script>
+
       <!-- page content -->
       	<%= yield %>
         <!-- /page content -->
