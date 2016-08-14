@@ -1,61 +1,138 @@
-<div class="container" style="background-color:rgba(220, 220, 220, 0.5);">
+ <%=stylesheet_link_tag 'css/air' %>
+ <%= javascript_include_tag 'pollution_situation_analysis_air','demo' %>
+ <style type="text/css">
+ .t-t{
+	color:#333333;
+	height:36px;
+	line-height:36px;
+	border-bottom:1px solid #ddd;
+	a{
+		font-size: 12px;
+		display: inline-block;
+		float: left;
+		line-height: 25px;
+		height: 25px;
+		text-decoration: none;
+		margin: 5px 0 0 5px;
+		padding: 0 12px;
+		background-color: #eaeaea;
+		color: #666;
+		&:hover,&.cur{
+			color: #fff;
+			background-color: #7ca9e6;
+			text-decoration: none;
+		}	
+	}
+}
+.t-c{
+	text-align:center;
+	img{
+		width:80%;
+	}
+}
+.row{
+	padding-left:70px;
+	padding-right:70px;
+}
+ </style>
+ <div class="right_col" role="main">
+          <div class="">
 
-	<div class='row'>
-		<font class="top11-title" style="color:black; padding:0px;margin:0px">未来5天趋势预报</font>
-	</div>
-	<input value="http://60.10.135.153:3004/images/china_fc09/<%= Time.now.strftime('%Y%m%d') %>/Hourly/" id='imagePath' type='hidden' />
-	<div class = 'row'>
-		<div class='t-t' id='t-t'>
-			<a href='javascript:void(0)' class='cur'>PM2.5</a>
-			<a href='javascript:void(0)' >PM10</a>
-			<a href='javascript:void(0)' >SO2</a>
-			<a href='javascript:void(0)' >CO</a>
-			<a href='javascript:void(0)' >NO2</a>
-			<a href='javascript:void(0)' >O3</a>
-			<a href='javascript:void(0)' >AQI</a>
-			<a href='javascript:void(0)' >能见度</a>
-		</div>
-	</div>
-	<div class="row">
-		<!--未来5天趋势预报图-->
-		<div id="item-content-air" class="t-c">
-			<!--img id="id0_0" src="" alt="" onclick='imageViewClick(this);' style='cursor:pointer;' onerror='showOtherPic(this)' width='100%' -->
-		</div>
-	</div>
-	<!--趋势预报end-->
-	<div class="row">
-		<div class="t-b">
-			<div class="ui-center">
-				<div class="en-air-top-banner" id="tip-banner">
-					<div class="air-date" id="air-date">
-						<span class="aftertime-title">日期：</span>
-						<span class="dateElement">
-							<a href="javascript:;" title="<%= Time.now.strftime('%Y-%m-%d') %>" class="cur" id="date1" nextid="date2"><%= Time.now.month %>月<%= Time.now.day %>日</a>
-						</span>
-						<span class="dateElement">
-							<a href="javascript:;" title="<%= 1.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date2" nextid="date3"><%= 1.days.from_now.month %>月<%= 1.days.from_now.day %>日</a>
-						</span>
-						<span class="dateElement">
-							<a href="javascript:;" title="<%= 2.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date3" nextid="date4"><%= 2.days.from_now.month %>月<%= 2.days.from_now.day %>日</a>
-						</span>
-						<span class="dateElement">
-							<a href="javascript:;" title="<%= 3.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date4" nextid="date5"><%= 3.days.from_now.month %>月<%= 3.days.from_now.day %>日</a>
-						</span>
-						<span class="dateElement">
-							<a href="javascript:;" title="<%= 4.days.from_now.strftime("%Y-%m-%d") %>" class="" id="date5" nextid="date1"> <%= 4.days.from_now.month %>月<%= 4.days.from_now.day %>日 </a>
-						</span>
-					</div>
-					<div class="air-time">
-						<div class="air-time-title" style="color:#000000">时间：</div>
-						<div class="air-time-content">
-							<a href="javascript:void(0)" class="ct" id="tc" style="left: -10px;">00</a>
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>污染形式分析</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <!--<ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>-->
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      <!--<input value="http://60.10.135.153:3004/images/china_fc09/<%#= Time.now.strftime('%Y%m%d') %>/Hourly/" id='imagePath' type='hidden' />-->
+                      <input value="http://60.10.135.153:3003/images/ftproot/Temp/post/figure/naqpms" id='imagePath' type='hidden' />
+                      	<div class='row'>
+							<div class='t-t' id='t-t'>
+								<a href='javascript:void(0)' class='cur'>PM2.5</a>
+								<a href='javascript:void(0)' >PM10</a>
+								<a href='javascript:void(0)' >O3</a>
+								<a href='javascript:void(0)' >CO</a>
+								<a href='javascript:void(0)' >SO2</a>
+								<a href='javascript:void(0)' >NO2</a>
+								<a href='javascript:void(0)' >沙尘</a>
+								<a href='javascript:void(0)' >海盐</a>
+								<a href='javascript:void(0)' >AQI</a>
+							</div>
+					 	</div>
+
+					 	<div class="row">
+							<!--未来5天趋势预报图-->
+							<div id="item-content-air" class="t-c">
+								<!--img id="id0_0" src="" alt="" onclick='imageViewClick(this);' style='cursor:pointer;' onerror='showOtherPic(this)' width='100%' -->
+							</div>
 						</div>
-						<div class="air-time-control">
-							<a href="javascript:void(0)" class="start" id="kg"></a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+
+						<div class="row">
+							<div class="t-b">
+								<div class="ui-center">
+									<div class="en-air-top-banner" id="tip-banner">
+										<div class="air-date" id="air-date">
+											<span class="aftertime-title">日期：</span>
+											<span class="dateElement">
+												<a href="javascript:;" title="2016053116" class="cur" id="date1" nextid="date2">5月31日</a>
+											</span>
+											<span class="dateElement">
+												<a href="javascript:;" title="2016053116" class="" id="date2" nextid="date3">5月32日</a>
+											</span>
+											<span class="dateElement">
+												<a href="javascript:;" title="2016053116" class="" id="date3" nextid="date4">5月33日</a>
+											</span>
+											<span class="dateElement">
+												<a href="javascript:;" title="2016053116" class="" id="date4" nextid="date5">5月34日</a>
+											</span>
+										</div>
+										<div class="air-time">
+											<div class="air-time-title" style="color:#000000">时间：</div>
+											<div class="air-time-content">
+												<a href="javascript:void(0)" class="ct" id="tc" style="left: -10px;">00</a>
+											</div>
+											<div class="air-time-control">
+												<a href="javascript:void(0)" class="start" id="kg"></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>	
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+	
+
+
+	

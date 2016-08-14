@@ -1,4 +1,4 @@
-var defaultModeName = 'CUACE';
+var defaultModeName = 'NAQPMS';
 var imagePath=$("#imagePath").val()+'/';
 var lastFactor="PM2.5";
 var myDate = new Date();
@@ -7,12 +7,12 @@ function getImageNames(modeName,factorName,date){
 	var names=[];
 	if(modeName == defaultModeName){
 		for(var i=0;i<24;i++){
-			var h=i;
+			var h='0'+i;
 			if(i<10){
 				h='0'+i;
 			}
       var imagePath=$("#imagePath").val()+'/';
-			names.push(imagePath+modeName+'_09km_'+factorName+'_'+date+'_'+h+'.png');
+			names.push(imagePath+'2016053116'+'/'+factorName+'Hourly_d01_'+modeName+'2016053016'+'_'+h+'.png');
 		}
 	} 
 	return names;
@@ -24,7 +24,7 @@ function showOtherPic(obj){
 function getImagesArray(){
 	var names=[];
 	for(var i=0;i<24;i++){
-		var h=i;
+		var h='0'+i;
 		if(i<10){
 			h='0'+i;
 		}
