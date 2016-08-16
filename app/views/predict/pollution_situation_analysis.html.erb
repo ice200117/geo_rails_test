@@ -1,5 +1,4 @@
  <%=stylesheet_link_tag 'css/air' %>
- <%= javascript_include_tag 'pollution_situation_analysis_air','demo' %>
  <style type="text/css">
  .t-t{
 	color:#333333;
@@ -25,56 +24,29 @@
 	}
 }
 .t-c{
-	text-align:center;
-	img{
-		width:80%;
-	}
-}
-.row{
-	padding-left:70px;
-	padding-right:70px;
+	width: 100%; height: 0;padding-bottom:60%;
 }
  </style>
  <div class="right_col" role="main">
           <div class="">
-
+			 <div class="page-title">
+              <div class="title_left">
+                <h3>污染形式分析</h3>
+              </div>
+            </div>          		
             <div class="clearfix"></div>
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>污染形式分析</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <!--<ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>-->
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
                   <div class="x_content">
                       <!--<input value="http://60.10.135.153:3004/images/china_fc09/<%#= Time.now.strftime('%Y%m%d') %>/Hourly/" id='imagePath' type='hidden' />-->
-                      <input value="http://60.10.135.153:3003/images/ftproot/Temp/post/figure/naqpms" id='imagePath' type='hidden' />
+                      <input value="http://60.10.135.153:3003/images/ftproot/Temp/post/figure/naqpms/2016053100" id='imagePath' type='hidden' />
                       	<div class='row'>
 							<div class='t-t' id='t-t'>
-								<a href='javascript:void(0)' class='cur'>PM2.5</a>
+								<a href='javascript:void(0)' class='cur'>PM25</a>
 								<a href='javascript:void(0)' >PM10</a>
 								<a href='javascript:void(0)' >O3</a>
 								<a href='javascript:void(0)' >CO</a>
 								<a href='javascript:void(0)' >SO2</a>
 								<a href='javascript:void(0)' >NO2</a>
-								<a href='javascript:void(0)' >沙尘</a>
-								<a href='javascript:void(0)' >海盐</a>
 								<a href='javascript:void(0)' >AQI</a>
 							</div>
 					 	</div>
@@ -93,16 +65,16 @@
 										<div class="air-date" id="air-date">
 											<span class="aftertime-title">日期：</span>
 											<span class="dateElement">
-												<a href="javascript:;" title="2016053116" class="cur" id="date1" nextid="date2">5月31日</a>
+												<a href="javascript:;" title="2016-05-31" class="cur" id="date1" nextid="date2">5月31日</a>
 											</span>
 											<span class="dateElement">
-												<a href="javascript:;" title="2016053116" class="" id="date2" nextid="date3">5月32日</a>
+												<a href="javascript:;" title="2016-06-01" class="" id="date2" nextid="date3">6月1日</a>
 											</span>
 											<span class="dateElement">
-												<a href="javascript:;" title="2016053116" class="" id="date3" nextid="date4">5月33日</a>
+												<a href="javascript:;" title="2016-06-02" class="" id="date3" nextid="date4">6月2日</a>
 											</span>
 											<span class="dateElement">
-												<a href="javascript:;" title="2016053116" class="" id="date4" nextid="date5">5月34日</a>
+												<a href="javascript:;" title="2016-06-03" class="" id="date4" nextid="date5">6月3日</a>
 											</span>
 										</div>
 										<div class="air-time">
@@ -121,14 +93,16 @@
 
 
                   </div>
-                </div>
-              </div>
-            </div>
+              
           </div>
         </div>
 
-
-
+ <%= javascript_include_tag 'pollution_situation_analysis_air','demo' %>
+<script type="text/javascript">
+$(window).load(function() {
+$("div#item-content-air img:first").attr("height","100%");
+        });
+</script>
 
 
 

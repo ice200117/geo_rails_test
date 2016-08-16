@@ -1,50 +1,50 @@
 var defaultModeName = 'NAQPMS';
 var imagePath=$("#imagePath").val()+'/';
-var lastFactor="PM2.5";
+var lastFactor="PM25";
 var myDate = new Date();
 var defaultHour = myDate.getHours();
 function getImageNames(modeName,factorName,date){
-	var names=[];
-	if(modeName == defaultModeName){
-		for(var i=0;i<24;i++){
-			var h='0'+i;
-			if(i<10){
-				h='0'+i;
-			}
+    var names=[];
+    if(modeName == defaultModeName){
+        for(var i=0;i<24;i++){
+            var h=i;
+            if(i<10){
+                h='0'+i;
+            }
       var imagePath=$("#imagePath").val()+'/';
-			names.push(imagePath+'2016053116'+'/'+factorName+'Hourly_d01_'+modeName+'2016053016'+'_'+h+'.png');
-		}
-	} 
-	return names;
+            names.push(imagePath+factorName+'Hourly_d01_'+modeName+'_'+date+'_'+h+'.png');
+        }
+    } 
+    return names;
 }
 function showOtherPic(obj){
     obj.src='<%= asset_path("noimage.jpg") %>';
 }
 //以下为图片预览放大时需要调用的
 function getImagesArray(){
-	var names=[];
-	for(var i=0;i<24;i++){
-		var h='0'+i;
-		if(i<10){
-			h='0'+i;
-		}
-		//nowSrc=http://221.6.106.213:10183/Products/Forecast/CUACE/20141105/Hourly/Move/CUACE_09km_PM10_2014-11-05_00.png 
-		var path = nowSrc.substring(0,nowSrc.lastIndexOf(".")-2);//nowSrc=http://221.6.106.213:10183/Products/Forecast/CUACE/20141105/Hourly/Move/CUACE_09km_PM10_2014-11-05_
-		var typeN = nowSrc.substring(nowSrc.lastIndexOf(".") ,nowSrc.length);
-		names.push(path+h+typeN);
-	}
-	return names;
+    var names=[];
+    for(var i=0;i<24;i++){
+        var h=i;
+        if(i<10){
+            h='0'+i;
+        }
+        //nowSrc=http://221.6.106.213:10183/Products/Forecast/CUACE/20141105/Hourly/Move/CUACE_09km_PM10_2014-11-05_00.png 
+        var path = nowSrc.substring(0,nowSrc.lastIndexOf(".")-2);//nowSrc=http://221.6.106.213:10183/Products/Forecast/CUACE/20141105/Hourly/Move/CUACE_09km_PM10_2014-11-05_
+        var typeN = nowSrc.substring(nowSrc.lastIndexOf(".") ,nowSrc.length);
+        names.push(path+h+typeN);
+    }
+    return names;
 }
 
 function getUrlPrefix(){
-	return '';
+    return '';
 }
 
 function getViewNameByName(name){
-	return '';
+    return '';
 }
 function getNowIndex(){
-	return  nowSrc.substring(nowSrc.length-6,nowSrc.length-4)*1;
+    return  nowSrc.substring(nowSrc.length-6,nowSrc.length-4)*1;
 }
 
 //时间轴控制
@@ -76,41 +76,41 @@ $(document).ready(function(){
             var x = e.pageX;
             var objX = Math.floor($('.air-time-content').offset().left);//751 768
             distance = x - objX - 1;
-			var eqNumber = 0;
+            var eqNumber = 0;
             var index = this.getSimilar(distance);
-			if(index != undefined){
-				if(typeof(index) == 'object'){
-					if((index.item1 - 0) > (Math.abs(index.item2) - 0)){
-						eqNumber = index.item2;
-					}
-					else{
-						eqNumber = index.item1;
-					}
-				}
-				else{
-					eqNumber = index;
-				}
-			}
+            if(index != undefined){
+                if(typeof(index) == 'object'){
+                    if((index.item1 - 0) > (Math.abs(index.item2) - 0)){
+                        eqNumber = index.item2;
+                    }
+                    else{
+                        eqNumber = index.item1;
+                    }
+                }
+                else{
+                    eqNumber = index;
+                }
+            }
             $('#tc').animate({left: this.setDistance[eqNumber] + 'px'});
-			$('#tc').html(this.formateTime(eqNumber));
+            $('#tc').html(this.formateTime(eqNumber));
             this.currentPointer = eqNumber;
             photo.init(this.currentDate, this.formateTime(eqNumber),lastFactor);
         },
         initTimePoint: function(time){
 
             $('#tc').css('left', this.setDistance[time] + 'px');
-			$('#tc').html(this.formateTime(time));
+            $('#tc').html(this.formateTime(time));
             this.currentPointer = time;
             //photo.init(this.currentDate, this.formateTime(time),lastFactor);
         },
-		formateTime: function(i){
+        formateTime: function(i){
             if(i < 10){
                 return '0' + i;// + ':00'
             }
             else{
                 return i ;
             }
-		},
+        },
         getSimilar: function(num){
             var steep = [];
             if(num < 3 || num > 472){
@@ -120,15 +120,15 @@ $(document).ready(function(){
                 var item = this.setDistance[i];
                 steep.push(num - item);
             }     
-			for(var j = 0; j < steep.length; j++){
-				var numItem = steep[j];
-				if(numItem == 0){
-					return j;
-				}
-				else if(numItem < 0){
-					return {'item1': j - 1, 'item2': j};
-				}
-			}
+            for(var j = 0; j < steep.length; j++){
+                var numItem = steep[j];
+                if(numItem == 0){
+                    return j;
+                }
+                else if(numItem < 0){
+                    return {'item1': j - 1, 'item2': j};
+                }
+            }
         },
         automatic: function(e){
             var el = e.currentTarget;
@@ -145,16 +145,16 @@ $(document).ready(function(){
                 clearInterval(this.intervalHandler);
             }
         },
-        startFunc: function(){        	
+        startFunc: function(){          
             if(this.currentPointer >= 24){
-            	//获取下一个时间的A标签
-            	var nextA=$("#air-date a.cur").attr("nextid");
-            	//去掉选中状态
-            	$("#air-date a.cur").attr("class","");
-            	//将当前时间改为第二天
-            	this.currentDate = $("#"+nextA).attr("title");
-            	//将第二天的A标签加上选中状态
-            	$("#"+nextA).attr("class","cur");
+                //获取下一个时间的A标签
+                var nextA=$("#air-date a.cur").attr("nextid");
+                //去掉选中状态
+                $("#air-date a.cur").attr("class","");
+                //将当前时间改为第二天
+                this.currentDate = $("#"+nextA).attr("title");
+                //将第二天的A标签加上选中状态
+                $("#"+nextA).attr("class","cur");
                 this.currentPointer = 0;  
             }
             //获取当前循环到的日期
@@ -181,14 +181,14 @@ $(document).ready(function(){
             this.timeButton.removeClass('stop');
             this.timeButton.addClass('start');
             this.isStart = false;
-    	    this.currentDate = date;
+            this.currentDate = date;
         }
     };
     var timeline = new TimeLine();
 
     //图片
     var PhotoGallery = function(){
-    	//this.data = [];
+        //this.data = [];
     };
 
     var first = 0;
@@ -196,29 +196,44 @@ $(document).ready(function(){
         init: function(D, H,factor){
             var data = this.getData(D,factor);//D=2014-10-10
             if(first==0){//第一次创建html
-        	    var html = [];
+                var html = [];
                 for(var i = 0; i < data.length; i++){
                     var items = data[i];
                     for(var j = 0; j < items.photoData.length; j++){
                         var item = items.photoData[j];
                         //193 height
-                        html.push('<img id="id'+i+'_'+j+'" style="cursor:pointer;" onerror="showOtherPic(this)" src="' + item.picListData[Math.abs(H)] + '"  >');
+                       
+                        var SW = new BMap.Point(116.7,38.5);
+                        var NE = new BMap.Point(120.4,41.8);
+                        groundOverlayOptions = {
+                            opacity: 0.7
+                        }
+                        imageLayer = new BMap.GroundOverlay(new BMap.Bounds(SW, NE), groundOverlayOptions);
+                        imageLayer.setImageURL(item.picListData[Math.abs(H)]);
+                        //html.push('<img id="id'+i+'_'+j+'" style="cursor:pointer;" onerror="showOtherPic(this)" src="' + item.picListData[Math.abs(H)] + '"  >');
                     }
-                    $('#item-content-air').html(html.join(""));
+                    //$('#item-content-air').html(html.join(""));
+                        var center = new BMap.Point(119.026458,39.926224);
+                        map = new BMap.Map("item-content-air",{minZoom:10});
+                        map.centerAndZoom(center, 10);
+                        map.enableScrollWheelZoom();
+                        map.addOverlay(imageLayer);
+                       // map.getPanes().attr("height","100%");
                 }
                 first =1;
             }else{//不是第一次只替换图片
-            	for(var i = 0; i < data.length; i++){
+                for(var i = 0; i < data.length; i++){
                     var items = data[i];
                     for(var j = 0; j < items.photoData.length; j++){
                         var item = items.photoData[j];
-                        $("#id" + i+"_"+j).attr("src",item.picListData[Math.abs(H)]);
+                        //$("#id" + i+"_"+j).attr("src",item.picListData[Math.abs(H)]);
+                        imageLayer.setImageURL(item.picListData[Math.abs(H)]);
                     }
                 }
             }
         },
         hourChange: function(){
-        	
+            
         },
         getData: function(date,factor){
             lastForecastTime = date;
@@ -239,10 +254,11 @@ $(document).ready(function(){
     };
     ForecastDate.prototype = {
         init: function(){
-			var day = new Date();
-			var dMonth=day.getMonth()+1
-      var dday=day.getDate()
-			var currentDate = day.getFullYear()+'-'+(dMonth>9?dMonth:'0'+dMonth)+'-'+(dday>9?dday:'0'+dday);
+            var day = new Date();
+            var dMonth=day.getMonth()+1
+            var dday=day.getDate()
+            //var currentDate = day.getFullYear()+'-'+(dMonth>9?dMonth:'0'+dMonth)+'-'+(dday>9?dday:'0'+dday);
+            var currentDate ='2016-05-31';
             this.selectData(currentDate);
             photo.init(currentDate,timeline.formateTime(defaultHour),lastFactor);
         },
@@ -256,25 +272,25 @@ $(document).ready(function(){
                     var forecastTime = $(this).attr("title");
                     //timeline.initFunc($(this).html());
                     timeline.initFunc(forecastTime,defaultHour);
-	                photo.init($(this).attr("title"),timeline.formateTime(defaultHour),lastFactor);
+                    photo.init($(this).attr("title"),timeline.formateTime(defaultHour),lastFactor);
                     // photo.init($(this).html(), '00');
                 });
             })
             
             //切换因子
-	            $('#t-t a').each(function(){
-	                $(this).click(function(event){
-	                    event.stopPropagation();
-	                    $('#t-t a').removeClass('cur');
-	                    $(this).addClass('cur');
-	                    var factor = $(this).html();
-	                    if(factor=='能见度'){
-	                    	factor = 'VIS';
-	                    }
-	                    timeline.initFunc(lastForecastTime,defaultHour);
-		                photo.init(lastForecastTime,timeline.formateTime(defaultHour),factor);
-	                });
-	            })
+                $('#t-t a').each(function(){
+                    $(this).click(function(event){
+                        event.stopPropagation();
+                        $('#t-t a').removeClass('cur');
+                        $(this).addClass('cur');
+                        var factor = $(this).html();
+                        if(factor=='能见度'){
+                            factor = 'VIS';
+                        }
+                        timeline.initFunc(lastForecastTime,defaultHour);
+                        photo.init(lastForecastTime,timeline.formateTime(defaultHour),factor);
+                    });
+                })
         }
     };
     

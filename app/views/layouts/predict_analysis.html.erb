@@ -27,7 +27,7 @@
               <div class="menu_section">
                 <br>
                 <ul class="nav side-menu">
-                  <li><a> 污染形势分析 <span class="fa fa-chevron-down"></span></a>
+                  <li><a href="<%= predict_pollution_situation_analysis_path %>"> 污染形势分析 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li style="white-space:nowrap;"><label>产品时间:</label><select>
                           <option>2016-08-01</option> 
@@ -54,8 +54,8 @@
                                   <a href="#" class="btn btn-default">CO</a>
                                   <a href="#" class="btn btn-default">SO2</a>
                                   <a href="#" class="btn btn-default">NO2</a>
-                                  <a href="#" class="btn btn-default">沙尘</a>
-                                  <a href="#" class="btn btn-default">海盐</a>
+                                  <!--<a href="#" class="btn btn-default">沙尘</a>
+                                  <a href="#" class="btn btn-default">海盐</a>-->
                                   <a href="#" class="btn btn-default">AQI</a>
                                 </div>                        </div></li>
                                 <li><div class="panel panel-default">
@@ -98,7 +98,7 @@
                       </select></li>
                     </ul>
                   </li>
-                  <li><a> 模式预报分析 <span class="fa fa-chevron-down"></span></a>
+                  <li><a href="<%= predict_model_forecast_analysis_path %>"> 模式预报分析 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><label>产品日期:</label><select>
                           <option>2016-08-03</option>  
@@ -109,7 +109,7 @@
                       </select></li>
                     </ul>
                   </li>
-                  <li><a> 站点对比分析 <span class="fa fa-chevron-down"></span></a>
+                  <li><a href="<%= predict_site_comparative_analysis_path %>"> 站点对比分析 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                     </ul>
                   </li>

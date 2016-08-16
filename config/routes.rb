@@ -111,6 +111,8 @@ Rails.application.routes.draw do
 	get 'predict/index' => 'predict#index'
 	get 'predict/pollution_situation_analysis' => 'predict#pollution_situation_analysis'
 	get 'predict/source_analysis' => 'predict#source_analysis'
+	get 'predict/model_forecast_analysis' => 'predict#model_forecast_analysis'
+	get 'predict/site_comparative_analysis' => 'predict#site_comparative_analysis'
 	get 'predict/revise' => 'predict#revise'
 
 
