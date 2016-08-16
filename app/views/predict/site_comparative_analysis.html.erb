@@ -1,85 +1,153 @@
-      <div class="form-group">
-          <label class="col-md-3 col-sm-3 col-xs-12 control-label">Checkboxes and radios
-            <br>
-            <small class="text-navy">Normal Bootstrap elements</small>
-          </label>        
-          <div class="col-md-9 col-sm-9 col-xs-12">
-          
-            <form role="form">
-            <label >预报模式：</label>
-                <label class="radio-inline">
+  <div class="right_col" role="main">
+          <div class="">
+            <div class="clearfix"></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <div class="x_panel">
+                            <div class="x_title">
+                              <h2>选择条件</h2>
+                              <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                                <li class="dropdown">
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                  <!--<ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Settings 1</a>
+                                    </li>
+                                    <li><a href="#">Settings 2</a>
+                                    </li>
+                                  </ul>-->
+                                </li>
+                                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                </li>
+                              </ul>
+                              <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="col-md-9 col-sm-9 col-xs-12">          
+            <h5>预报模式：</h5>
+            <div class="btn-group" data-toggle="buttons">
+               <label class="btn btn-primary">
                  <input type="radio"  value="option1" name="sex">AQI
-                 </label>
-               <label class="radio-inline">
+               </label>
+               <label class="btn btn-primary">
                  <input type="radio"  value="option2" name="sex">PM10
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-primary">
                  <input type="radio"  value="option3" name="sex">PM2.5
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-primary">
                  <input type="radio"  value="option3" name="sex">PM10(24)
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-primary">
                  <input type="radio"  value="option3" name="sex">PM2.5(24)
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-primary">
                  <input type="radio"  value="option3" name="sex">SO2
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-primary">
                  <input type="radio"  value="option3" name="sex">NO2
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-primary">
                  <input type="radio"  value="option3" name="sex">CO
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-primary">
                  <input type="radio"  value="option3" name="sex">O3
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-primary">
                  <input type="radio"  value="option3" name="sex">03(24)
                </label>
+               </div>
             </form>
           </div>
         </div>
-        
-         <div class="form-group pull-right">
-                
-          <div class="col-md-12 col-sm-12 col-xs-12">
-          
-            <form role="form">
-            <label >污染物指标：</label>
-                <label class="radio-inline">
+                            <div class="col-md-9 col-sm-9 col-xs-12"> 
+            <h5>时间范围：</h5>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-success">
+                 <input type="radio"  value="option1" name="sex">最近一天
+                 </label>
+               <label class="btn btn-success">
+                 <input type="radio"  value="option2" name="sex">最近一周
+               </label>
+               <label class="btn btn-success">
+                 <input type="radio"  value="option3" name="sex">最近一月
+               </label>
+               <label class="btn btn-success">
+                 <input type="radio"  value="option3" name="sex">最近一年
+               </label>
+               </div>
+               <label>
+                                <input class="form-control" placeholder="加上汉化的日期选择器@李海山">
+                                </label>
+                            </div>
+                            <div class="col-md-9 col-sm-9 col-xs-12"> 
+            <h5>时间步长：</h5>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-info">
+                 <input type="radio"  value="option1" name="sex">小时报
+                 </label>
+               <label class="btn btn-info">
+                 <input type="radio"  value="option2" name="sex">日报
+               </label>
+               </div>
+                            </div>
+                            <div class="col-md-9 col-sm-9 col-xs-12"> 
+            <h5>时效：</h5>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-warning">
+                 <input type="radio"  value="option1" name="sex">24h
+                 </label>
+               <label class="btn btn-warning">
+                 <input type="radio"  value="option2" name="sex">48h
+               </label>
+               <label class="btn btn-warning">
+                 <input type="radio"  value="option3" name="sex">72h
+               </label>
+               <label class="btn btn-warning">
+                 <input type="radio"  value="option3" name="sex">98h
+               </label>
+               </div>
+               </div>
+                         <div class="col-md-9 col-sm-9 col-xs-12"> 
+            <h5>污染物指标：</h5>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-danger">
                  <input type="radio"  value="option1" name="sex">AQI
                  </label>
-               <label class="radio-inline">
+               <label class="btn btn-danger">
                  <input type="radio"  value="option2" name="sex">PM10
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-danger">
                  <input type="radio"  value="option3" name="sex">PM2.5
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-danger">
                  <input type="radio"  value="option3" name="sex">PM10(24)
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-danger">
                  <input type="radio"  value="option3" name="sex">PM2.5(24)
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-danger">
                  <input type="radio"  value="option3" name="sex">SO2
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-danger">
                  <input type="radio"  value="option3" name="sex">NO2
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-danger">
                  <input type="radio"  value="option3" name="sex">CO
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-danger">
                  <input type="radio"  value="option3" name="sex">O3
                </label>
-               <label class="radio-inline">
+               <label class="btn btn-danger">
                  <input type="radio"  value="option3" name="sex">03(24)
                </label>
-            </form>
+               </div>
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
           </div>
-        </div>
       <div class="right_col" role="main">
           <div class="">
             <div class="clearfix"></div>
@@ -111,7 +179,6 @@
                         </div>
                       </div>
           </div>
-
                 <div class="right_col" role="main">
           <div class="">
             <div class="clearfix"></div>
@@ -147,7 +214,6 @@
                    //站点一
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('zddbfx'));
-
        var  option = {
     title: {
         text: 'AQI',
@@ -253,30 +319,23 @@
 // app.count = 11;
 // app.timeTicket = setInterval(function (){
 //     axisData = (new Date()).toLocaleTimeString().replace(/^\D*/,'');
-
 //     var data0 = option.series[0].data;
 //     var data1 = option.series[1].data;
 //     data0.shift();
 //     data0.push(Math.round(Math.random() * 1000));
 //     data1.shift();
 //     data1.push((Math.random() * 10 + 5).toFixed(1) - 0);
-
 //     option.xAxis[0].data.shift();
 //     option.xAxis[0].data.push(axisData);
 //     option.xAxis[1].data.shift();
 //     option.xAxis[1].data.push(app.count++);
-
 //     myChart.setOption(option);
 // }, 2100);
-
-
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
     //站点二
-
             // 基于准备好的dom，初始化echarts实例
         var myChart2 = echarts.init(document.getElementById('zddbfx2'));
-
         var  option2 = {
         title: {
             text: 'AQI',
@@ -373,23 +432,18 @@
     // app.count = 11;
     // app.timeTicket = setInterval(function (){
     //     axisData = (new Date()).toLocaleTimeString().replace(/^\D*/,'');
-
     //     var data0 = option.series[0].data;
     //     var data1 = option.series[1].data;
     //     data0.shift();
     //     data0.push(Math.round(Math.random() * 1000));
     //     data1.shift();
     //     data1.push((Math.random() * 10 + 5).toFixed(1) - 0);
-
     //     option.xAxis[0].data.shift();
     //     option.xAxis[0].data.push(axisData);
     //     option.xAxis[1].data.shift();
     //     option.xAxis[1].data.push(app.count++);
-
     //     myChart.setOption(option);
     // }, 2100);
-
-
             // 使用刚指定的配置项和数据显示图表。
             myChart2.setOption(option2);
         </script>

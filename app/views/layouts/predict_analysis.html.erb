@@ -11,7 +11,6 @@
     <%= stylesheet_link_tag 'css/bootstrap/dist/css/bootstrap.min','css/font-awesome/css/font-awesome.min',"js/icheck/skins/flat/green.css","css/jqvmap/dist/jqvmap.min.css",'css/custom.min', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'js/jquery/dist/jquery.min','data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
   </head>
 
   <body class="nav-md">
@@ -155,8 +154,12 @@
           </div>
         </div>
         <!-- /top navigation -->
-<%= javascript_include_tag "js/bootstrap/dist/js/bootstrap.min","js/custom.min","js/echarts/dist/echarts.min"%>
-
+    <%= javascript_include_tag "js/bootstrap/dist/js/bootstrap.min","js/custom.min","js/echarts/dist/echarts.min"%>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
       <!-- page content -->
       <div id='page_content'>
       	<%= yield %>
