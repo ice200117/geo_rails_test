@@ -281,8 +281,8 @@ $(document).ready(function(){
                 $('#t-t a').each(function(){
                     $(this).click(function(event){
                         event.stopPropagation();
-                        $('#t-t a').removeClass('cur');
-                        $(this).addClass('cur');
+                        $('#t-t a').removeClass('btn-primary');
+                        $(this).addClass('btn-primary');
                         var factor = $(this).html();
                         // if(factor=='能见度'){
                         //     factor = 'VIS';
