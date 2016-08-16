@@ -67,11 +67,185 @@
 <%= javascript_include_tag "js/bootstrap/dist/js/bootstrap.min","js/fastclick/lib/fastclick","js/echarts/dist/echarts.min","js/custom.min"%>
    <script type="text/javascript">
       // 百度地图API功能
+      var markerArr=[{"station_name":"卢龙县气象局","longitude":118.892,"latitude":39.893,"AQI":153,"level":"差"},
+
+{"station_name":"昌黎环保局","longitude":119.31,"latitude":39.667,"AQI":144,"level":"差"},
+{"station_name":"抚宁党校","longitude":118.892,"latitude":39.893,"AQI":135,"level":"差"},
+{"station_name":"青龙环保局","longitude":118.945,"latitude":40.411,"AQI":153,"level":"差"},
+{"station_name":"市政府","longitude":119.607,"latitude":39.9358,"AQI":89,"level":"良"},
+{"station_name":"第一关","longitude":119.7624,"latitude":40.0181,"AQI":87,"level":"良"},
+{"station_name":"建设大厦","longitude":118.892,"latitude":39.893,"AQI":87,"level":"良"},
+{"station_name":"北戴河","longitude":119.484,"latitude":39.835,"AQI":87,"level":"良"},
+{"station_name":"市监测站","longitude":119.595,"latitude":39.951,"AQI":75,"level":"良"}
+
+];
       var map = new BMap.Map("allmap");    // 创建Map实例
-      map.centerAndZoom(new BMap.Point(119.600435,39.945906), 13);  // 初始化地图,设置中心点坐标和地图级别
+      map.centerAndZoom(new BMap.Point(119.600435,39.945906), 6);  // 初始化地图,设置中心点坐标和地图级别
       map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
       map.setCurrentCity("秦皇岛");          // 设置地图显示的城市 此项是必须设置的
       map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+            map.addEventListener("zoomend", function()
+                {
+                    map.clearOverlays();
+                    showMapByPoint();
+                }); 
+      var ctrlNav = new window.BMap.NavigationControl({  
+        anchor: BMAP_ANCHOR_TOP_LEFT, 
+        type: BMAP_NAVIGATION_CONTROL_LARGE
+    });  
+    map.addControl(ctrlNav);   
+    var ctrlOve = new window.BMap.OverviewMapControl({  
+        anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+        isOpen: 1 
+    });  
+    map.addControl(ctrlOve);    
+    var ctrlSca = new window.BMap.ScaleControl({ 
+        anchor: BMAP_ANCHOR_BOTTOM_LEFT  
+    });  
+    map.addControl(ctrlSca);
+      map.clearOverlays(); 
+            showMapByPoint(); 
+
+
+    function showMapByPoint(){ 
+            for (var i = 0; i < markerArr.length; i++) {  
+                var p0 = markerArr[i].longitude;  
+                var p1 = markerArr[i].latitude;  
+                var maker = addMarker(new window.BMap.Point(p0, p1),markerArr[i]);  
+                addInfoWindow(maker, markerArr[i]);   
+                }
+            } 
+
+     function addMarker(point,markerdata) {
+
+
+        var maplevel = map.getZoom(); 
+        if(maplevel<7)
+          {
+            var icon = getIcon(markerdata.AQI);
+            var myIcon = new BMap.Icon(icon, new BMap.Size(16,16)); 
+            var marker = new BMap.Marker(point,{icon:myIcon});
+            map.addOverlay(marker); 
+            if(markerdata.AQI>50){
+               marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画 
+            }
+            return marker; 
+          }
+        else
+          { 
+                
+                /* var color;
+                 var opts = {
+                        position : point,    // 指定文本标注所在的地理位置
+                        offset   : new BMap.Size(-15, -10)    //设置文本偏移量
+                }
+                var label = new BMap.Label(markerdata.AQI, opts);  // 创建文本标注对象
+                if(markerdata.AQI<=150)
+                {
+                  color = "#28004D";
+                }
+                else
+                {
+                  color = "white";
+                }
+                label.setStyle({
+                   color : color,
+                   background: getColorByIndex(getAQILevelIndex(markerdata.AQI)),
+                   fontSize : "14px",
+                   border:'',
+                   width: "35px",
+                   textAlign:"center",
+                   height : "22px",
+                   lineHeight : "22px"
+                });
+                map.addOverlay(label);*/ 
+                //icon = 'http://api.map.baidu.com/img/markers.png'
+                //icon = "http://www.zq12369.com/map.php/resource/img/map/h" + getAQILevelIndex(markerdata.AQI) + ".png";              
+                //var myIcon = new BMap.Icon(icon, new BMap.Size(25,29));
+                //var marker = new BMap.Marker(point,{icon:myIcon});
+                var icon = getIcon(markerdata.AQI);
+                var myIcon = new BMap.Icon(icon, new BMap.Size(16,16)); 
+                var marker = new BMap.Marker(point,{icon:myIcon});
+                var labelcityname = new BMap.Label("<span style='height:20px;border:1px solid #999;font-size:14px;background:rgba(255,255,255,0.8)'>" + markerdata.station_name +"AQI:"+markerdata.AQI+ "</span>");
+                labelcityname.setStyle({  
+                   color : "black",
+                   //background: getColorByIndex(getAQILevelIndex(markerdata.AQI)),
+                   height : "20px",
+                   lineHeight : "20px",
+                   fontFamily:"微软雅黑",
+                   border:'none',
+                   background:'none'
+                });
+                var offset1 = new BMap.Size(28, 3);
+                labelcityname.setOffset(offset1);
+                  marker.setLabel(labelcityname);
+                //marker.setTitle(title);
+                map.addOverlay(marker);
+
+                if(markerdata.AQI>50){
+                    marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画 
+                }
+                //marker.setTitle(title);  
+                return marker; 
+              } 
+        }
+
+                function addInfoWindow(marker, stationdata) {  
+            //pop弹窗标题  
+            var title = '<div style="font-weight:bold;color:#CE5521;font-size:14px">' + stationdata.station_name + '</div>';  
+            //pop弹窗信息  
+            var html = [];  
+            html.push('<table border="1">');  
+            html.push('<tr>');  
+            html.push('<td>AQI</td>');  
+            html.push('<td>'+stationdata.AQI+'</td>');  
+            html.push('</tr>');
+            html.push('<tr>');  
+            html.push('<td>空气等级</td>');  
+            html.push('<td>'+stationdata.level+'</td>');  
+            html.push('</tr>');  
+            html.push('</table>');  
+            var infoWindow = new BMap.InfoWindow(html.join(""), { title: title, width: 300,height:200 });  
+            //创建一个信息窗实例，其中content支持HTML内容。1.2版本开始content参数支持传入DOM结点。
+            //join() 方法用于把数组中的所有元素放入一个字符串。元素是通过指定的分隔符进行分隔的。
+            //title String  信息窗标题文字，支持HTML内容。
+            //width Number  信息窗宽度，单位像素。取值范围：0, 220 - 730。如果您指定宽度为0，则信息窗口的宽度将按照其内容自动调整。
+            //height    Number  信息窗高度，单位像素。取值范围：0, 60 - 650。如果您指定高度为0，则信息窗口的高度将按照其内容自动调整。
+            var openInfoWinFun = function () {  
+                marker.openInfoWindow(infoWindow); //打开信息窗。 
+            };  
+            marker.addEventListener("click", openInfoWinFun);  
+            return openInfoWinFun;  
+        }
+
+        function getIcon(value)
+        {
+          var icon = null;
+          if(value<=0){
+               icon="<%= image_url "mapaqilevel/level00.png" %>";
+          }
+          else if(value<=50){
+               icon="<%= image_url "mapaqilevel/level11.png" %>";
+          }
+          else if(value<=100){
+            icon="<%= image_url "mapaqilevel/level22.png" %>";
+          }
+          else if(value<=150){
+            icon="<%= image_url "mapaqilevel/level33.png" %>";
+          }
+          else if(value<=200){
+            
+            icon="<%= image_url "mapaqilevel/level44.png" %>";
+          }
+          else if(value<=300){
+            icon="<%= image_url "mapaqilevel/level55.png" %>";
+          }
+          else{
+            icon="<%= image_url "mapaqilevel/level66.png" %>";
+          }         
+          return icon; 
+        }
     </script>
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
