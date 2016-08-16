@@ -284,9 +284,10 @@ $(document).ready(function(){
                         $('#t-t a').removeClass('cur');
                         $(this).addClass('cur');
                         var factor = $(this).html();
-                        if(factor=='能见度'){
-                            factor = 'VIS';
-                        }
+                        // if(factor=='能见度'){
+                        //     factor = 'VIS';
+                        // }
+                        $("#can-kao-bar").attr("src","http://60.10.135.153:3003/images/ftproot/Temp/post/figure/"+factor+"_bar.png");
                         timeline.initFunc(lastForecastTime,defaultHour);
                         photo.init(lastForecastTime,timeline.formateTime(defaultHour),factor);
                     });

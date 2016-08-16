@@ -109,6 +109,7 @@ Rails.application.routes.draw do
 
 	#秦皇岛空气质量预报预警
 	get 'predict/index' => 'predict#index'
+	get 'predict/analysis' => 'predict#analysis'
 	get 'predict/pollution_situation_analysis' => 'predict#pollution_situation_analysis'
 	get 'predict/source_analysis' => 'predict#source_analysis'
 	get 'predict/model_forecast_analysis' => 'predict#model_forecast_analysis'

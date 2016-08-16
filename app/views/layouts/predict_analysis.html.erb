@@ -27,7 +27,7 @@
               <div class="menu_section">
                 <br>
                 <ul class="nav side-menu">
-                  <li><a href="<%= predict_pollution_situation_analysis_path %>"> 污染形势分析 <span class="fa fa-chevron-down"></span></a>
+                  <li><a href="javascript:void(0)" onclick="$('#page_content').load('/predict/pollution_situation_analysis')"> 污染形势分析 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li style="white-space:nowrap;"><label>产品时间:</label><select>
                           <option>2016-08-01</option> 
@@ -43,21 +43,24 @@
                               <a href="#" class="btn btn-default">河北省</a>
                               <a href="#" class="btn btn-default">秦皇岛</a>
                             </div>                        </div></li>
-                            <li><div class="panel panel-default">
+                            <li>
+                            <div class="panel panel-default">
                                 <div class="panel-heading">
                                   <h4 class="panel-title">污染指标</h4>
                                 </div>
-                                <div class="panel-body">
-                                  <a href="#" class="btn btn-default">PM2.5</a>
-                                  <a href="#" class="btn btn-default">PM10</a>
-                                  <a href="#" class="btn btn-default">O3</a>
-                                  <a href="#" class="btn btn-default">CO</a>
-                                  <a href="#" class="btn btn-default">SO2</a>
-                                  <a href="#" class="btn btn-default">NO2</a>
+                                <div id='t-t' class="panel-body">
+                                  <a class="btn btn-default cur">PM25</a>
+                                  <a class="btn btn-default">PM10</a>
+                                  <a class="btn btn-default">O3</a>
+                                  <a class="btn btn-default">CO</a>
+                                  <a class="btn btn-default">SO2</a>
+                                  <a class="btn btn-default">NO2</a>
+                                  <a class="btn btn-default">AQI</a>
                                   <!--<a href="#" class="btn btn-default">沙尘</a>
                                   <a href="#" class="btn btn-default">海盐</a>-->
-                                  <a href="#" class="btn btn-default">AQI</a>
-                                </div>                        </div></li>
+                                </div>                       
+                                 </div>
+                                 </li>
                                 <li><div class="panel panel-default">
                                     <div class="panel-heading">
                                       <h4 class="panel-title">预报模式</h4>
@@ -71,7 +74,7 @@
                                   </div></li>
                     </ul>
                   </li>
-                  <li><a href="<%= predict_source_analysis_path %>"> 源解析 <span class="fa fa-chevron-down"></span></a>
+                  <li><a href="javascript:void(0)" onclick="$('#page_content').load('/predict/source_analysis')""> 源解析 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><label for="lc">类型:</label><input type="checkbox" name="lc"></li>
                       <li><label>区域:</label><select>
@@ -98,7 +101,7 @@
                       </select></li>
                     </ul>
                   </li>
-                  <li><a href="<%= predict_model_forecast_analysis_path %>"> 模式预报分析 <span class="fa fa-chevron-down"></span></a>
+                  <li><a href="javascript:void(0)" onclick="$('#page_content').load('/predict/model_forecast_analysis')"> 模式预报分析 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><label>产品日期:</label><select>
                           <option>2016-08-03</option>  
@@ -109,7 +112,7 @@
                       </select></li>
                     </ul>
                   </li>
-                  <li><a href="<%= predict_site_comparative_analysis_path %>"> 站点对比分析 <span class="fa fa-chevron-down"></span></a>
+                  <li><a href="javascript:void(0)" onclick="$('#page_content').load('/predict/site_comparative_analysis')"> 站点对比分析 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                     </ul>
                   </li>
@@ -144,7 +147,7 @@
             </ul>
               <ul class="nav nav-tabs nav-justified">
                 <li role="presentation"><a href="<%= predict_index_path %>">首页</a></li>
-                <li role="presentation" class="active"><a href="<%= predict_pollution_situation_analysis_path %>">分析</a></li>
+                <li role="presentation" class="active"><a href="<%= predict_analysis_path %>">分析</a></li>
                 <li role="presentation"><a href="<%= predict_revise_path %>">预报</a></li>
               </ul>
             </nav>
@@ -154,7 +157,9 @@
 <%= javascript_include_tag "js/bootstrap/dist/js/bootstrap.min","js/custom.min","js/echarts/dist/echarts.min"%>
 
       <!-- page content -->
+      <div id='page_content'>
       	<%= yield %>
+        </div>
         <!-- /page content -->
 
         <!-- footer content -->
