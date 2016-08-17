@@ -271,15 +271,15 @@
         {
             type: 'value',
             scale: true,
-            name: '价格',
-            max: 30,
+            name: 'AQI',
+            max: 200,
             min: 0,
             boundaryGap: [0.2, 0.2]
         },
         {
             type: 'value',
             scale: true,
-            name: '预购量',
+            name: '',
             max: 1200,
             min: 0,
             boundaryGap: [0.2, 0.2]
@@ -307,7 +307,7 @@
                 var res = [];
                 var len = 0;
                 while (len < 10) {
-                    res.push((Math.random()*10 + 5).toFixed(1) - 0);
+                    res.push((Math.random()*100 + 5).toFixed(1) - 0);
                     len++;
                 }
                 return res;
