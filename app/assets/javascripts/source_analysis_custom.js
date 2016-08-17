@@ -124,15 +124,16 @@
         [{name:'秦皇岛'}, {name:'邯郸',value:95}],
         [{name:'秦皇岛'}, {name:'邢台',value:90}],
         [{name:'秦皇岛'}, {name:'张家口',value:80}],
-        [{name:'秦皇岛'}, {name:'承德',value:70}]
-
+        [{name:'秦皇岛'}, {name:'承德',value:70}],
+        [{name:'秦皇岛'}, {name:'沈阳',value:70}]
     ];
 
     var SHData = [
     [{name:'秦皇岛'}, {name:'廊坊',value:30}],
     [{name:'秦皇岛'}, {name:'天津',value:20}],
     [{name:'秦皇岛'}, {name:'衡水',value:10}],
-    [{name:'秦皇岛'}, {name:'保定',value:15}]
+    [{name:'秦皇岛'}, {name:'保定',value:15}],
+    [{name:'秦皇岛'}, {name:'济南',value:15}]
     ];
 
     var GZData = [
