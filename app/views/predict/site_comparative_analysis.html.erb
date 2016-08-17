@@ -1,3 +1,5 @@
+        <%= stylesheet_link_tag 'css/daterangepicker-bs3.css' %>
+      <%= javascript_include_tag 'moment','daterangepicker','chart' %>
   <div class="right_col" role="main">
           <div class="">
             <div class="clearfix"></div>
@@ -77,7 +79,7 @@
                </label>
                </div>
                <label>
-                                <input class="form-control" placeholder="加上汉化的日期选择器@李海山">
+                                <input type="text" name="reservation" id="reservation" class="form-control">
                                 </label>
                             </div>
                             <div class="col-md-9 col-sm-9 col-xs-12"> 
@@ -210,7 +212,7 @@
                         </div>
                       </div>
           </div>
-                   <script type="text/javascript">
+<script type="text/javascript">
                    //站点一
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('zddbfx'));
@@ -425,4 +427,30 @@
     // }, 2100);
             // 使用刚指定的配置项和数据显示图表。
             myChart2.setOption(option2);
+
+
+      /*日期范围选择*/
+
+  endTime = new Date();
+  startTime=new Date();
+  startTime.setMonth(startTime.getMonth() - 1);
+  startDate = startTime.pattern('yyyy-MM-dd');
+  endDate = endTime.pattern('yyyy-MM-dd');
+  startTime= startDate;
+  endTime=endDate;
+  $(function(){
+    $('#reservation').val(startDate + ' - ' + endDate);
+  $('#reservation').daterangepicker({ startDate: startDate, endDate: endDate});
+  $('#reservation').daterangepicker(
+  { 
+    format: 'YYYY-MM-DD'
+  },
+  function(start, end, label) {
+    //alert('A date range was chosen: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    //getChartData(start.format('YYYY-MM-DD'),end.format('YYYY-MM-DD'));
+    startTime = start.format('YYYY-MM-DD');
+    endTime = end.format('YYYY-MM-DD');
+  }
+  );  
+  });    
         </script>
