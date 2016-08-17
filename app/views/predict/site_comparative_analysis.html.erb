@@ -215,122 +215,99 @@
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('zddbfx'));
        var  option = {
-    title: {
-        text: 'AQI',
-        //subtext: '纯属虚构'
-    },
-    tooltip: {
-        trigger: 'axis'
-    },
-    legend: {
-        data:['NAQPMS', '实例']
-    },
-    //进行视图的转换，刷新，保存图片
-    toolbox: {
-        show: true,
-        feature: {
-            dataView: {readOnly: false},
-            restore: {},
-            saveAsImage: {}
-        }
-    },
-    dataZoom: {
-        show: false,
-        start: 0,
-        end: 100
-    },
-    xAxis: [
-        {
-            type: 'category',
-            boundaryGap: true,
-            data: (function (){
-                var now = new Date();
-                var res = [];
-                var len = 10;
-                while (len--) {
-                    res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-                    now = new Date(now - 2000);
-                }
-                return res;
-            })()
-        },
-        {
-            type: 'category',
-            boundaryGap: true,
-            data: (function (){
-                var res = [];
-                var len = 10;
-                while (len--) {
-                    res.push(len + 1);
-                }
-                return res;
-            })()
-        }
-    ],
-    yAxis: [
-        {
-            type: 'value',
-            scale: true,
-            name: '价格',
-            max: 30,
-            min: 0,
-            boundaryGap: [0.2, 0.2]
-        },
-        {
-            type: 'value',
-            scale: true,
-            name: '预购量',
-            max: 1200,
-            min: 0,
-            boundaryGap: [0.2, 0.2]
-        }
-    ],
-    series: [
-        {
-            name:'实例',
-            type:'bar',
-            xAxisIndex: 1,
-            yAxisIndex: 1,
-            data:(function (){
-                var res = [];
-                var len = 10;
-                while (len--) {
-                    res.push(Math.round(Math.random() * 1000));
-                }
-                return res;
-            })()
-        },
-        {
-            name:'NAQPMS',
-            type:'line',
-            data:(function (){
-                var res = [];
-                var len = 0;
-                while (len < 10) {
-                    res.push((Math.random()*10 + 5).toFixed(1) - 0);
-                    len++;
-                }
-                return res;
-            })()
-        }
-    ]
-};
-// clearInterval(app.timeTicket);
-// app.count = 11;
-// app.timeTicket = setInterval(function (){
-//     axisData = (new Date()).toLocaleTimeString().replace(/^\D*/,'');
-//     var data0 = option.series[0].data;
-//     var data1 = option.series[1].data;
-//     data0.shift();
-//     data0.push(Math.round(Math.random() * 1000));
-//     data1.shift();
-//     data1.push((Math.random() * 10 + 5).toFixed(1) - 0);
-//     option.xAxis[0].data.shift();
-//     option.xAxis[0].data.push(axisData);
-//     option.xAxis[1].data.shift();
-//     option.xAxis[1].data.push(app.count++);
-//     myChart.setOption(option);
-// }, 2100);
+       title: {
+           text: 'AQI',
+           // subtext: '纯属虚构'
+       },
+       tooltip: {
+           trigger: 'axis'
+       },
+       legend: {
+           data:['NAQPMS', '实例']
+       },
+       //进行视图的转换，刷新，保存图片
+       toolbox: {
+           show: true,
+           feature: {
+               dataView: {readOnly: false},
+               restore: {},
+               saveAsImage: {}
+           }
+       },
+       dataZoom: {
+           show: false,
+           start: 0,
+           end: 100
+       },
+       xAxis: [
+           {
+               type: 'category',
+               boundaryGap: true,
+               data: ['8-1 10时','8-1 15时','8-1 20时','8-2 1时','8-3 6时','8-3 11时','8-3 16时','8-3 21时','8-4 2时','8-5 7时','8-5 12时','8-5 1时','8-5 1时']
+           },
+           {
+               type: 'category',
+               boundaryGap: true,
+               data: (function (){
+                   var res = [];
+                   var len = 10;
+                   while (len--) {
+                       res.push(len + 1);
+                   }
+                   return res;
+               })()
+           }
+       ],
+       yAxis: [
+           {
+               type: 'value',
+               scale: true,
+               name: 'AQI',
+               max: 200,
+               min: 0,
+               boundaryGap: [0.2, 0.2]
+           },
+           {
+               type: 'value',
+               scale: true,
+               name: '',
+               max: 200,
+               min: 0,
+               boundaryGap: [0.2, 0.2]
+           }
+       ],
+       series: [
+           {
+               name:'实例',
+               type:'bar',
+               xAxisIndex: 1,
+               yAxisIndex: 1,
+               // data:(function (){
+               //     var res = [];
+               //     var len = 10;
+               //     while (len--) {
+               //         res.push(Math.round(Math.random() * 1000));
+               //     }
+               //     return res;
+               // })()
+               data:['50','36','35','90','52','37','68','54','59','73','83','80','90']
+           },
+           {
+               name:'NAQPMS',
+               type:'line',
+               // data:(function (){
+               //     var res = [];
+               //     var len = 0;
+               //     while (len < 10) {
+               //         res.push((Math.random()*10 + 5).toFixed(1) - 0);
+               //         len++;
+               //     }
+               //     return res;
+               // })()
+               data:['40','48','30','45','44','30','90','46','59','90','80','90','90']
+           }
+       ]
+   };
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
     //站点二
@@ -385,7 +362,7 @@
                 type: 'value',
                 scale: true,
                 name: 'AQI',
-                max: 30,
+                max: 200,
                 min: 0,
                 boundaryGap: [0.2, 0.2]
             },
@@ -393,7 +370,7 @@
                 type: 'value',
                 scale: true,
                 name: '',
-                max: 1200,
+                max: 200,
                 min: 0,
                 boundaryGap: [0.2, 0.2]
             }
@@ -404,27 +381,29 @@
                 type:'bar',
                 xAxisIndex: 1,
                 yAxisIndex: 1,
-                data:(function (){
-                    var res = [];
-                    var len = 10;
-                    while (len--) {
-                        res.push(Math.round(Math.random() * 1000));
-                    }
-                    return res;
-                })()
+                // data:(function (){
+                //     var res = [];
+                //     var len = 10;
+                //     while (len--) {
+                //         res.push(Math.round(Math.random() * 1000));
+                //     }
+                //     return res;
+                // })()
+                data:['50','36','35','56','52','37','26','54','59','73','83','80','90']
             },
             {
                 name:'NAQPMS',
                 type:'line',
-                data:(function (){
-                    var res = [];
-                    var len = 0;
-                    while (len < 10) {
-                        res.push((Math.random()*10 + 5).toFixed(1) - 0);
-                        len++;
-                    }
-                    return res;
-                })()
+                // data:(function (){
+                //     var res = [];
+                //     var len = 0;
+                //     while (len < 10) {
+                //         res.push((Math.random()*10 + 5).toFixed(1) - 0);
+                //         len++;
+                //     }
+                //     return res;
+                // })()
+                data:['40','48','30','45','44','30','90','46','59','90','80','90','90']
             }
         ]
     };
