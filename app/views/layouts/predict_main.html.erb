@@ -193,19 +193,20 @@
 
                 function addInfoWindow(marker, stationdata) {  
             //pop弹窗标题  
-            var title = '<div style="font-weight:bold;color:#CE5521;font-size:14px">' + stationdata.station_name + '</div>';  
+            var title = '<h2>' + stationdata.station_name +'</h2></div><div class="x_content"><div class="col-xs-6"><div class="table-responsive">';  
             //pop弹窗信息  
             var html = [];  
-            html.push('<table border="1">');  
+            html.push('<table class="table"><tbody>');  
             html.push('<tr>');  
-            html.push('<td>AQI</td>');  
+            html.push('<th style="width:50%">AQI</th>');  
             html.push('<td>'+stationdata.AQI+'</td>');  
             html.push('</tr>');
             html.push('<tr>');  
-            html.push('<td>空气等级</td>');  
+            html.push('<th>空气等级</th>');  
             html.push('<td>'+stationdata.level+'</td>');  
             html.push('</tr>');  
-            html.push('</table>');  
+            html.push('</tbody></table>');  
+            html.push('</div></div>')
             var infoWindow = new BMap.InfoWindow(html.join(""), { title: title, width: 300,height:200 });  
             //创建一个信息窗实例，其中content支持HTML内容。1.2版本开始content参数支持传入DOM结点。
             //join() 方法用于把数组中的所有元素放入一个字符串。元素是通过指定的分隔符进行分隔的。
