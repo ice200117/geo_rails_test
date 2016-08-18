@@ -213,11 +213,17 @@ $(document).ready(function(){
                         //html.push('<img id="id'+i+'_'+j+'" style="cursor:pointer;" onerror="showOtherPic(this)" src="' + item.picListData[Math.abs(H)] + '"  >');
                     }
                     //$('#item-content-air').html(html.join(""));
-                        var center = new BMap.Point(119.026458,39.926224);
-                        map = new BMap.Map("item-content-air",{minZoom:10});
-                        map.centerAndZoom(center, 10);
+                        var center = new BMap.Point(119.173848,39.94148);
+                        map = new BMap.Map("item-content-air",{minZoom:11});
+                        map.centerAndZoom(center, 11);
                         map.enableScrollWheelZoom();
                         map.addOverlay(imageLayer);
+                        map.addEventListener("tilesloaded", function()
+                        {
+                           $("div#item-content-air img:first").attr("height","100%");
+                        });
+                        //$("div#item-content-air img:first").attr("height","100%");
+
                        // map.getPanes().attr("height","100%");
                 }
                 first =1;
