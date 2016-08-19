@@ -218,6 +218,11 @@ $(document).ready(function(){
                         map.centerAndZoom(center, 11);
                         map.enableScrollWheelZoom();
                         map.addOverlay(imageLayer);
+                          var ctrlNav = new window.BMap.NavigationControl({  
+                            anchor: BMAP_ANCHOR_TOP_LEFT, 
+                            type: BMAP_NAVIGATION_CONTROL_LARGE
+                        });  
+                        map.addControl(ctrlNav); 
                         map.addEventListener("tilesloaded", function()
                         {
                            $("div#item-content-air img:first").attr("height","100%");
