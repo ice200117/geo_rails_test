@@ -284,10 +284,10 @@ $(document).ready(function(){
             })
             
             //切换因子
-                $('#t-t a').each(function(){
+                $('#t-t button').each(function(){
                     $(this).click(function(event){
                         event.stopPropagation();
-                        $('#t-t a').removeClass('btn-primary');
+                        $('#t-t button').removeClass('btn-primary');
                         $(this).addClass('btn-primary');
                         var factor = $(this).html();
                         // if(factor=='能见度'){
