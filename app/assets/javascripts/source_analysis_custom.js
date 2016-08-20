@@ -251,7 +251,7 @@
             label: {
                 emphasis: {
                     show: false
-                }
+                },
             },
             roam: true,
             itemStyle: {
@@ -262,7 +262,9 @@
                 emphasis: {
                     areaColor: '#2a333d'
                 }
-            }
+            },
+            center: [119.2126,40.0232],
+            zoom: 4
         },
         series: series
     };;
