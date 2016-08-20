@@ -1,101 +1,97 @@
- <%=stylesheet_link_tag 'css/air' %>
- <style type="text/css">
- .t-t{
-	a{
-		font-size: 12px;
-		display: inline-block;
-		float: left;
-		line-height: 25px;
-		height: 25px;
-		text-decoration: none;
-		margin: 5px 0 0 5px;
-		padding: 0 12px;
-		background-color: #eaeaea;
-		color: #666;
-		&:hover,&.cur{
-			color: #fff;
-			background-color: #7ca9e6;
+<%=stylesheet_link_tag 'css/air' %>
+<style type="text/css">
+	.t-t{
+		a{
+			font-size: 12px;
+			display: inline-block;
+			float: left;
+			line-height: 25px;
+			height: 25px;
 			text-decoration: none;
-		}	
+			margin: 5px 0 0 5px;
+			padding: 0 12px;
+			background-color: #eaeaea;
+			color: #666;
+			&:hover,&.cur{
+				color: #fff;
+				background-color: #7ca9e6;
+				text-decoration: none;
+			}	
+		}
 	}
-}
-.t-c{
-	width: 100%; height: 0;padding-bottom:60%;
-}
- </style>
- <div class="right_col" role="main">
-          <div class="">
-			 <div class="page-title">
-              <div class="title_left">
-                <h3>污染形式分析</h3>
-              </div>
-            </div>          		
-            <div class="clearfix"></div>
+	.t-c{
+		width: 100%; height: 0;padding-bottom:60%;
+	}
+</style>
+<div class="right_col" role="main">
+	<div class="">
+		<div class="page-title">
+			<div class="title_left">
+				<h3>污染形式分析</h3>
+			</div>
+		</div>          		
+		<div class="clearfix"></div>
 
-                  <div class="x_content">
-                      <!--<input value="http://60.10.135.153:3004/images/china_fc09/<%#= Time.now.strftime('%Y%m%d') %>/Hourly/" id='imagePath' type='hidden' />-->
-                      <input value="http://60.10.135.153:3003/images/ftproot/Temp/post/figure/naqpms/2016053100" id='imagePath' type='hidden' />
-					 	<div class="row">
-							<!--未来5天趋势预报图-->
-							<div id="item-content-air" class="t-c">
-								<!--img id="id0_0" src="" alt="" onclick='imageViewClick(this);' style='cursor:pointer;' onerror='showOtherPic(this)' width='100%' -->
+		<div class="x_content">
+			<!--<input value="http://60.10.135.153:3004/images/china_fc09/<%#= Time.now.strftime('%Y%m%d') %>/Hourly/" id='imagePath' type='hidden' />-->
+			<input value="http://60.10.135.153:3003/images/ftproot/Temp/post/figure/naqpms/2016053100" id='imagePath' type='hidden' />
+			<div class="row">
+				<!--未来5天趋势预报图-->
+				<div id="item-content-air" class="t-c">
+					<!--img id="id0_0" src="" alt="" onclick='imageViewClick(this);' style='cursor:pointer;' onerror='showOtherPic(this)' width='100%' -->
+				</div>
+				<div class='air-time' style='position:absolute;top:auto;bottom:0;left:65%;right:0;margin:auto;height:150px;width:40%'>
+					<img id="can-kao-bar" src="http://60.10.135.153:3003/images/ftproot/Temp/post/figure/PM25_bar.png" width="90%">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="t-b">
+					<div class="ui-center">
+						<div class="en-air-top-banner" id="tip-banner">
+							<div class="air-date" id="air-date">
+								<span class="aftertime-title">日期：</span>
+								<span class="dateElement">
+									<a href="javascript:;" title="2016-05-31" class="cur" id="date1" nextid="date2">5月31日</a>
+								</span>
+								<span class="dateElement">
+									<a href="javascript:;" title="2016-06-01" class="" id="date2" nextid="date3">6月1日</a>
+								</span>
+								<span class="dateElement">
+									<a href="javascript:;" title="2016-06-02" class="" id="date3" nextid="date4">6月2日</a>
+								</span>
+								<span class="dateElement">
+									<a href="javascript:;" title="2016-06-03" class="" id="date4" nextid="date1">6月3日</a>
+								</span>
 							</div>
-						</div>
-
-						<div class="row">
-							<div class="t-b">
-								<div class="ui-center">
-									<div class="en-air-top-banner" id="tip-banner">
-										<div class="air-date" id="air-date">
-											<span class="aftertime-title">日期：</span>
-											<span class="dateElement">
-												<a href="javascript:;" title="2016-05-31" class="cur" id="date1" nextid="date2">5月31日</a>
-											</span>
-											<span class="dateElement">
-												<a href="javascript:;" title="2016-06-01" class="" id="date2" nextid="date3">6月1日</a>
-											</span>
-											<span class="dateElement">
-												<a href="javascript:;" title="2016-06-02" class="" id="date3" nextid="date4">6月2日</a>
-											</span>
-											<span class="dateElement">
-												<a href="javascript:;" title="2016-06-03" class="" id="date4" nextid="date1">6月3日</a>
-											</span>
-										</div>
-										<div class="air-time">
-											<div class="air-time-title" style="color:#000000">时间：</div>
-											<div class="air-time-content">
-												<a href="javascript:void(0)" class="ct" id="tc" style="left: -10px;">00</a>
-											</div>
-											<div class="air-time-control">
-												<a href="javascript:void(0)" class="start" id="kg"></a>
-											</div>
-										</div>
-
-										<div class="air-time">	
-											<img id="can-kao-bar" src="http://60.10.135.153:3003/images/ftproot/Temp/post/figure/PM25_bar.png" width="90%">
-										</div>	
-
-									</div>
+							<div class="air-time">
+								<div class="air-time-title" style="color:#000000">时间：</div>
+								<div class="air-time-content">
+									<a href="javascript:void(0)" class="ct" id="tc" style="left: -10px;">00</a>
+								</div>
+								<div class="air-time-control">
+									<a href="javascript:void(0)" class="start" id="kg"></a>
 								</div>
 							</div>
-						</div>	
+
+							<div class="air-time">	
+								<img id="can-kao-bar" src="http://60.10.135.153:3003/images/ftproot/Temp/post/figure/PM25_bar.png" width="90%">
+							</div>	
+
+						</div>
+					</div>
+				</div>
+			</div>	
 
 
-                  </div>
-              
-          </div>
-        </div>
+		</div>
 
- <%= javascript_include_tag 'pollution_situation_analysis_air','demo' %>
+	</div>
+</div>
+
+<%= javascript_include_tag 'pollution_situation_analysis_air','demo' %>
 <script type="text/javascript">
-   // $(window).load(function() {
-   // $("div#item-content-air img:first").attr("height","100%");
-   //         });
+	// $(window).load(function() {
+	// $("div#item-content-air img:first").attr("height","100%");
+	//         });
 </script>
-
-
-
-	
-
-
-	
