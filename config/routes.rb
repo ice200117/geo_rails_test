@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'predict/index'
 
   resources :forecast_96s
   resources :forecast_72s
