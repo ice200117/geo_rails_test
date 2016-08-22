@@ -214,8 +214,8 @@ $(document).ready(function(){
                     }
                     //$('#item-content-air').html(html.join(""));
                         var center = new BMap.Point(119.599285,39.942808);
-                        map = new BMap.Map("item-content-air",{minZoom:11});
-                        map.centerAndZoom(center, 11);
+                        map = new BMap.Map("item-content-air",{minZoom:10});
+                        map.centerAndZoom(center, 10);
                         map.enableScrollWheelZoom();
                         map.addOverlay(imageLayer);
                           var ctrlNav = new window.BMap.NavigationControl({  
@@ -227,6 +227,39 @@ $(document).ready(function(){
                         {
                            $("div#item-content-air img:first").attr("height","100%");
                         });
+                        // 定义一个控件类,即function
+                        function barControl(){
+                          // 默认停靠位置和偏移量
+                          this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
+                          this.defaultOffset = new BMap.Size(10, 10);
+                        }
+                        // 通过JavaScript的prototype属性继承于BMap.Control
+                        barControl.prototype = new BMap.Control();
+                        // 自定义控件必须实现自己的initialize方法,并且将控件的DOM元素返回
+                        // 在本方法中创建个div元素作为控件的容器,并将其添加到地图容器中
+                        barControl.prototype.initialize = function(map){
+                          // 创建一个DOM元素
+                          var barcontainer = document.createElement("div");
+                          var barimg = document.createElement("img");
+                          barimg.setAttribute("id","can-kao-bar");
+                          barimg.setAttribute("src","http://60.10.135.153:3003/images/ftproot/Temp/post/figure/PM25_bar.png");
+                          // 添加文字说明
+                          barcontainer.appendChild(barimg);
+                          // 设置样式
+                         // div.style.backgroundColor = "white";
+                          // 绑定事件,点击一次放大两级
+                          // div.onclick = function(e){
+                          //   map.setZoom(map.getZoom() + 2);
+                          // }
+                          // 添加DOM元素到地图中
+                          map.getContainer().appendChild(barcontainer);
+                          // 将DOM元素返回
+                          return barcontainer;
+                        }
+                        // 创建控件
+                        var myBarControl = new barControl();
+                        // 添加到地图当中
+                        map.addControl(myBarControl);
                         //$("div#item-content-air img:first").attr("height","100%");
 
                        // map.getPanes().attr("height","100%");
