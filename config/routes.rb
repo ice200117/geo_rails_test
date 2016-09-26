@@ -11,8 +11,8 @@ Rails.application.routes.draw do
 	get 'counties/to_geojson'
 
 	get 'querys/aqis_by_city' => 'querys#aqis_by_city'
+	get 'querys/aqis_by_city/city' => 'querys#aqis_by_cityid'
 	get 'querys/aqis_by_city/:city' => 'querys#aqis_by_city'
-	# get 'querys/aqis_by_city/city' => 'querys#aqis_by_cityid'
 	# get 'querys/aqis_by_city/city/id/:cityid' => 'querys#aqis_by_cityid'
 	get 'querys' => 'querys#cities'
 	get 'querys/all_cities' => 'querys#all_cities2'

@@ -58,11 +58,12 @@ def parse_line(line, c)
 end
 
 #strtime = Time.mktime(Time.new.strftime("%Y%m%d")+'08')
-if Time.new.hour >18
-	strtime = Time.new.strftime("%Y%m%d")+'20'
-else
-	strtime = (Time.new-1.day).strftime("%Y%m%d")+'20'
-end
+#if Time.new.hour >18
+#	strtime = Time.new.strftime("%Y%m%d")+'20'
+#else
+#	strtime = (Time.new-1.day).strftime("%Y%m%d")+'20'
+#end
+strtime = (Time.new-1.day).strftime("%Y%m%d")+'20'
 #strtime = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
 puts 'deal date = ', strtime
 
@@ -70,8 +71,8 @@ puts 'deal date = ', strtime
 puts strtime
 
 # path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
-path = "/mnt/share/Temp/station_15km_orig/#{strtime[0,8]}/"
-# path = "/mnt/share/Temp/station_15km/#{strtime[0,8]}/"
+# path = "/mnt/share/Temp/station_15km_orig/#{strtime[0,8]}/"
+path = "/mnt/share/Temp/station_15km_orig/#{strtime}/"
 
 # Read hua bei city, do not read data of these city.
 firstline = true
@@ -96,12 +97,13 @@ cs.each do |c|
   #if c.city_name_pinyin.rstrip.eql?('langfangshi')
   py = c.city_name_pinyin.strip
 
-#  next if hb_city.include?(py)
+  #next if hb_city.include?(py)
 
 
   fn = "CN_ENVAQFC_#{py}_#{strtime}_00000-12000.TXT"
   f = nil
   f = File.open(path+fn) if File::exists?(path+fn) 
+  puts path+fn
   next unless f
   f.readlines[2..-1].each do |line| 
     parse_line(line, c)

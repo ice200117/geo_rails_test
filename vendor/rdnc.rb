@@ -14,6 +14,7 @@ def read_adj (ncfile, city_file, var_name)
   data = var.get
   #puts data.shape
   
+  
   x = Array.new
   y = Array.new
   #puts city_file
