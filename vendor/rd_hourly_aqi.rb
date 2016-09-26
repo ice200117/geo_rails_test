@@ -94,7 +94,7 @@ end
 cs = City.all
 cs.each do |c|
   puts c.city_name_pinyin
-  #if c.city_name_pinyin.rstrip.eql?('langfangshi')
+  next if c.city_name_pinyin.rstrip.eql?('baichengshi')
   py = c.city_name_pinyin.strip
 
   next if hb_city.include?(py)
@@ -105,6 +105,7 @@ cs.each do |c|
   f = File.open(path+fn) if File::exists?(path+fn) 
   next unless f
   f.readlines[2..-1].each do |line| 
+	puts line
     parse_line(line, c)
   end
   f.close

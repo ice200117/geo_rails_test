@@ -6,7 +6,7 @@ require_relative './calculate_sfcities_rank.rb'
 time=Time.now.yesterday
 
 #秦皇岛日数据
-# Qinhuangdao::Qinhuangdao.new.day
+Qinhuangdao::Qinhuangdao.new.day
 
 # tmp=MonitorPointDay.last.data_real_time
 # stime=tmp.beginning_of_day
@@ -72,3 +72,5 @@ save_db(hs,TempSfcitiesYear) if hs
 
 model(TempSfcitiesMonth,time.beginning_of_day,time.end_of_day)
 model(TempSfcitiesYear,time.beginning_of_day,time.end_of_day)
+
+$redis.flushdb

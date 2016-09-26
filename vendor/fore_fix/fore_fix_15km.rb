@@ -13,11 +13,12 @@ puts strtime
 puts yesterday_str
 
 #path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
-path = "/mnt/share/Temp/station_15km_orig/#{strtime[0,8]}/"
+#path = "/mnt/share/Temp/station_15km_orig/#{strtime[0,8]}/"
+path = "/mnt/share/Temp/station_15km_orig/#{yesterday_str}/"
 puts path
 # path_fix = "/vagrant/fix/station_25km/#{strtime[0,8]}/"
 #path_fix = "/mnt/share/Temp/station_orig/#{strtime[0,8]}/"
-path_fix = "/mnt/share/Temp/station_15km/#{strtime[0,8]}/"
+path_fix = "/mnt/share/Temp/station_15km/#{yesterday_str}/"
 
 Dir::mkdir(path_fix) if !Dir.exists?(path_fix)
 f_avg=File.new(path_fix+"avg.txt","w")

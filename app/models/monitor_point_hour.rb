@@ -78,7 +78,7 @@ class MonitorPointHour < ActiveRecord::Base
 				linedata.zongheindex_change_rate=(linedata.zonghezhishu-last_years.zonghezhishu)/last_years.zonghezhishu
 			end
 		end
-		# linedata.save
+		linedata.save
 		puts d['time'].to_s+' '+d['pointname']+' Save OK!'
 		# end
 	end
