@@ -29,40 +29,13 @@ class ForecastRealDatum < ActiveRecord::Base
              NO2: ch.NO2,
              O3: ch.O3,
              VIS: ch.VIS,
-             PS:   ch.ps,
-             TG:   ch.tg,
-             RC:   ch.rc,
-             RN:   ch.rn,
-             TTP:  ch.ttp,
-             TER:  ch.ter,
-             XMF:  ch.xmf,
-             DMF:  ch.dmf,
-             COR:  ch.cor,
-             XLAT: ch.xlat,
-             XLON: ch.xlon,
-             LU:   ch.lu,
-             PBLN: ch.pbln,
-             PBLR: ch.pblr,
-             SHF:  ch.shf,
-             LHF:  ch.lhf,
-             UST:  ch.ust,
-             SWD:  ch.swd,
-             LWD:  ch.lwd,
-             SWO:  ch.swo,
-             LWO:  ch.lwo,
-             T2M:  ch.t2m,
-             Q2M:  ch.q2m,
-             U10:  ch.u10,
-             V10:  ch.v10,
-             WD:   ch.wd,
-             WS:   ch.ws,
-             PSLV: ch.pslv,
-             PWAT: ch.pwat,
-             CLFRLO: ch.clfrlo,
-             CLFRMI: ch.clfrmi,
-             CLFRHI: ch.clfrhi
-      }
-      #end
+             press:   ch.ps,
+             rain:  ch.ttp,
+             pblh: ch.pbln,
+             t:  ch.t2m,
+             rh:  ch.q2m,
+             windDir:   ch.wd,
+             windSpeed:   ch.ws }
     end
 
     cf[:forecast_data] = hf
@@ -94,8 +67,14 @@ class ForecastRealDatum < ActiveRecord::Base
                CO: ch.CO,
                NO2: ch.NO2,
                O3: ch.O3,
-               VIS: ch.VIS }
-        #end
+               VIS: ch.VIS ,
+             press:   ch.ps,
+             rain:  ch.ttp,
+             pblh: ch.pbln,
+             t:  ch.t2m,
+             rh:  ch.q2m,
+             windDir:   ch.wd,
+             windSpeed:   ch.ws }
       end
 
       if hf.length > 0
