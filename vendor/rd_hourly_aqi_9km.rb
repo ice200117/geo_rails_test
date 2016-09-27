@@ -30,7 +30,7 @@ def fw_line(line, c)
   sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
   wind = Custom::DataMath.getDSFromUv(l[23],l[24])
   { sdate+delta_hour.to_i*3600 =>{
-    :ps => l[1],
+    :ps => l[1].to_f / 100,
     :tg => l[2],
     :rc => l[3],
     :rn => l[4],

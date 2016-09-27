@@ -29,13 +29,13 @@ class ForecastRealDatum < ActiveRecord::Base
              NO2: ch.NO2,
              O3: ch.O3,
              VIS: ch.VIS,
-             press:   ch.ps,
-             rain:  ch.ttp,
-             pblh: ch.pbln,
-             t:  ch.t2m,
-             rh:  ch.q2m,
-             windDir:   ch.wd,
-             windSpeed:   ch.ws }
+             press:   ch.ps.round,
+             rain:  ch.ttp.round,
+             pblh: ch.pbln.round,
+             t:  ch.t2m.round(1),
+             rh:  ch.q2m.round,
+             windDir:   ch.wd.round,
+             windSpeed:   ch.ws.round(1) }
     end
 
     cf[:forecast_data] = hf
@@ -68,13 +68,13 @@ class ForecastRealDatum < ActiveRecord::Base
                NO2: ch.NO2,
                O3: ch.O3,
                VIS: ch.VIS ,
-             press:   ch.ps,
-             rain:  ch.ttp,
-             pblh: ch.pbln,
-             t:  ch.t2m,
-             rh:  ch.q2m,
-             windDir:   ch.wd,
-             windSpeed:   ch.ws }
+               press:   ch.ps.round,
+               rain:  ch.ttp.round,
+               pblh: ch.pbln.round,
+               t:  ch.t2m.round(1),
+               rh:  ch.q2m.round,
+               windDir:   ch.wd.round,
+               windSpeed:   ch.ws.round(1) }
       end
 
       if hf.length > 0
