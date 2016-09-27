@@ -1,21 +1,5 @@
 #!/usr/bin/ruby
-
-def wind_utils(u,v)
-  #u经风向 v纬风向 
-  s = Math.sqrt(u*u+v*v)
-  if u == 0
-    v > 0 ? d = 90 : d = 270
-    return {:s=>s,:d=>d}
-  end
-
-  d = Math.atan(v.abs/u.abs.to_f)/Math::PI*180
-  if v > 0
-    d = 180 - d if u < 0
-  else
-    u > 0 ? d = 360 - d : d += 180
-  end
-  return {:s=>s,:d=>d}
-end
+#require 'custom/data_math'
 
 def parse_line(line, c)
   l = line.split(' ')
@@ -43,7 +27,7 @@ def fw_line(line, c)
   sd = l[0][0,10]
   delta_hour = l[0][11,3]
   sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
-  wind = wind_utils(l[23],l[24])
+  wind = Custom::DataMath.getDSFromUv(l[23],l[24])
   { sdate+delta_hour.to_i*3600 =>{
     :ps => l[1],
     :tg => l[2],
@@ -88,6 +72,8 @@ path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 path15 = "/mnt/share/Temp/station_15km_orig/#{yesterday_str}/"
 # path = "/Users/baoxi/Workspace/temp/station_9km/#{strtime[0,8]}/"
 # path15 = "/Users/baoxi/Workspace/temp/station_15km_orig/#{yesterday_str}/"
+path = "/mnt/share/tmp/"
+path15 = "/mnt/share/tmp/"
 
 # Read hua bei city, do not read data of these city.
 firstline = true
@@ -137,10 +123,9 @@ cs.each do |c|
   f.close
   puts fn+" update database successful!"
 end
-byebug
 HourlyCityForecastAirQuality.create(hcs)
 ForecastRealDatum.create(hcs)
 
 py = 'qinhuangdaoshi'
 tmp=City.find_by_city_name_pinyin(py).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
-Custom::Redis.set(py,tmp,3600*24)
+#Custom::Redis.set(py,tmp,3600*24)
