@@ -84,13 +84,13 @@ end
 
 yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
 strtime = Time.now.strftime("%Y%m%d")+'20'
-yesterday_str = '2016092520'
-strtime = '2016092620'
+# yesterday_str = '2016092520'
+# strtime = '2016092620'
 puts strtime
-# path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
-# path15 = "/mnt/share/Temp/station_15km_orig/#{yesterday_str}/"
-path = "/Users/baoxi/Workspace/temp/station_9km/#{strtime[0,8]}/"
-path15 = "/Users/baoxi/Workspace/temp/station_15km_orig/#{yesterday_str}/"
+path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
+path15 = "/mnt/share/Temp/station_15km_orig/#{yesterday_str}/"
+# path = "/Users/baoxi/Workspace/temp/station_9km/#{strtime[0,8]}/"
+# path15 = "/Users/baoxi/Workspace/temp/station_15km_orig/#{yesterday_str}/"
 
 # Read hua bei city, do not read data of these city.
 firstline = true
@@ -116,34 +116,33 @@ cs.each do |c|
   fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
   fw = "CN_MET_#{py}_#{yesterday_str}_00000-12000.TXT"
   next unless hb_city.include?(py) #非华北地区城市跳过
-  next if py != 'langfangshi'
   f = nil
   f = File.open(path+fn) if File::exists?(path+fn)
   next unless f
   c.forecast_real_data.destroy_all
-  # c.hourly_city_forecast_air_qualities.where(publish_datetime: Time.zone.parse(yesterday_str)).delete_all
-
-  f.readlines[2..-1].each do |line|
-    hcs << parse_line(line, c)
-  end
+  c.hourly_city_forecast_air_qualities.where(publish_datetime: Time.zone.parse(yesterday_str)).delete_all
 
   f1 = nil
   f1 = File.open(path15+fw) if File::exists?(path15+fw)
+  tmp = Hash.new
   if f1
-    tmp = {}
     f1.readlines[2..-1].each do |line|
       tmp.merge!(fw_line(line, c))
     end
-    hcs.map do |l|
-      l.merge!(tmp[l[:forecast_datetime]]) unless tmp[l[:forecast_datetime]].nil?
-    end
   end
+
+  f.readlines[2..-1].each do |line|
+    td = parse_line(line, c)
+    td.merge!(tmp[td[:forecast_datetime]]) if !tmp[td[:forecast_datetime]].nil?
+    hcs << td
+  end
+
   f.close
   puts fn+" update database successful!"
 end
-# HourlyCityForecastAirQuality.create(hcs)
+HourlyCityForecastAirQuality.create(hcs)
 ForecastRealDatum.create(hcs)
 
-# py = 'qinhuangdaoshi'
-# tmp=City.find_by_city_name_pinyin(py).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
-# Custom::Redis.set(py,tmp,3600*24)
+py = 'qinhuangdaoshi'
+tmp=City.find_by_city_name_pinyin(py).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
+Custom::Redis.set(py,tmp,3600*24)

@@ -130,20 +130,21 @@ cs.each do |c|
   c.forecast_real_data.destroy_all
   c.hourly_city_forecast_air_qualities.where(publish_datetime: Time.zone.parse(strftime[0,8])).delete_all
 
-  f.readlines[2..-1].each do |line|
-    hcs << parse_line(line, c)
-  end
   f1 = nil
   f1 = File.open(path+fw) if File::exists?(path+fw)
+  tmp = Hash.new
   if f1
-    tmp = {}
     f1.readlines[2..-1].each do |line|
       tmp.merge!(fw_line(line, c))
     end
-    hcs.map do |l|
-      l.merge!(tmp[l[:forecast_datetime]]) unless tmp[l[:forecast_datetime]].nil?
-    end
   end
+
+  f.readlines[2..-1].each do |line|
+    td = parse_line(line, c)
+    td.merge!(tmp[td[:forecast_datetime]]) if !tmp[td[:forecast_datetime]].nil?
+    hcs << td
+  end
+
   f.close
   puts fn+" update database successful!"
 end
