@@ -44,11 +44,17 @@ class HourlyCityForecastAirQuality < Partitioned::ByMonthlyTimeField
 		  pm10: ch.pm10,
 		  SO2: ch.SO2,
 		  CO: ch.CO,
-		  NO2: ch.NO2,
-		  O3: ch.O3,
-		  VIS: ch.VIS }
-			#end
-		end
+      NO2: ch.NO2,
+      O3: ch.O3,
+      VIS: ch.VIS ,
+      press:   ch.ps,
+      rain:  ch.ttp,
+      pblh: ch.pbln,
+      t:  ch.t2m,
+      rh:  ch.q2m,
+      windDir:   ch.wd,
+      windSpeed:   ch.ws }
+    end
 		cf[:forecast_data] = hf
 		return cf
 	end
