@@ -33,7 +33,7 @@ gem 'sprockets-rails'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-group :development, :test do
+group :development do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 
@@ -47,8 +47,6 @@ group :development, :test do
   gem 'database_cleaner'
 
   #Load .env file!
-end
-group :development do
   gem 'web-console', '~> 2.0'
   gem 'pry'
   gem 'pry-rails'
