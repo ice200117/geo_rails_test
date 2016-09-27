@@ -72,8 +72,6 @@ path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 path15 = "/mnt/share/Temp/station_15km_orig/#{yesterday_str}/"
 # path = "/Users/baoxi/Workspace/temp/station_9km/#{strtime[0,8]}/"
 # path15 = "/Users/baoxi/Workspace/temp/station_15km_orig/#{yesterday_str}/"
-path = "/mnt/share/tmp/"
-path15 = "/mnt/share/tmp/"
 
 # Read hua bei city, do not read data of these city.
 firstline = true
