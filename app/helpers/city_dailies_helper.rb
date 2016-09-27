@@ -1,0 +1,2 @@
+module CityDailiesHelper
+end

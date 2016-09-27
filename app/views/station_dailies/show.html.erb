@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Station:</strong>
+  <%= @station_daily.station_id %>
+</p>
+
+<p>
+  <strong>Publish time:</strong>
+  <%= @station_daily.publish_time %>
+</p>
+
+<p>
+  <strong>Pm25:</strong>
+  <%= @station_daily.pm25 %>
+</p>
+
+<p>
+  <strong>Pm10:</strong>
+  <%= @station_daily.pm10 %>
+</p>
+
+<p>
+  <strong>O3:</strong>
+  <%= @station_daily.o3 %>
+</p>
+
+<p>
+  <strong>O3 8h:</strong>
+  <%= @station_daily.o3_8h %>
+</p>
+
+<p>
+  <strong>Co:</strong>
+  <%= @station_daily.co %>
+</p>
+
+<p>
+  <strong>So2:</strong>
+  <%= @station_daily.so2 %>
+</p>
+
+<p>
+  <strong>No2:</strong>
+  <%= @station_daily.no2 %>
+</p>
+
+<p>
+  <strong>Aqi:</strong>
+  <%= @station_daily.aqi %>
+</p>
+
+<%= link_to 'Edit', edit_station_daily_path(@station_daily) %> |
+<%= link_to 'Back', station_dailies_path %>

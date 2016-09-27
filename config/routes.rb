@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
 
+
+  resources :forecast_96s
+  resources :forecast_72s
+  resources :forecast_48s
+  resources :forecast_24s
+  resources :station_hours
+  resources :station_dailies
+  resources :city_hours
+  resources :city_dailies
   get 'coal_map' => 'map#coal'
 
 	#Casein routes
@@ -37,8 +46,8 @@ Rails.application.routes.draw do
 	# You can have the root of your site routed with "root"
 	#root 'welcome#index'
 	#root 'welcome#map'
-	#root 'qinhuangdao#pinggu'
 	root 'qinhuangdao#pinggu'
+	#root 'predict#index'
 	get '/compare' => 'welcome#compare'
 	get '/bdqx_compare' => 'welcome#bdqx_compare'  
 	get '/sfcities_compare' => 'welcome#sfcities_compare' 
@@ -95,8 +104,18 @@ Rails.application.routes.draw do
 	get '/qinhuangdao/get_rank_chart_data' => 'qinhuangdao#get_rank_chart_data'
 	get '/qinhuangdao/sourceAnalysisPieChart' => 'qinhuangdao#sourceAnalysisPieChart'
 	get '/qinhuangdao/ltjc' => 'qinhuangdao#ltjc'
-	
-	
+
+
+	#秦皇岛空气质量预报预警
+	get 'predict/index' => 'predict#index'
+	get 'predict/analysis' => 'predict#analysis'
+	get 'predict/pollution_situation_analysis' => 'predict#pollution_situation_analysis'
+	get 'predict/source_analysis' => 'predict#source_analysis'
+	get 'predict/model_forecast_analysis' => 'predict#model_forecast_analysis'
+	get 'predict/site_comparative_analysis' => 'predict#site_comparative_analysis'
+	get 'predict/revise' => 'predict#revise'
+
+
 
 	#廊坊路由
 	get 'langfang/index' => 'langfang#forecast'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160629040558) do
+ActiveRecord::Schema.define(version: 20160927021150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,39 @@ ActiveRecord::Schema.define(version: 20160629040558) do
     t.integer "cityid"
   end
 
+  create_table "city_dailies", force: true do |t|
+    t.integer  "city_id"
+    t.date     "publish_time"
+    t.float    "pm25"
+    t.float    "pm10"
+    t.float    "o3"
+    t.float    "o3_8h"
+    t.float    "co"
+    t.float    "so2"
+    t.float    "no2"
+    t.float    "aqi"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "city_dailies", ["city_id"], :name => "index_city_dailies_on_city_id"
+
+  create_table "city_hours", force: true do |t|
+    t.integer  "city_id"
+    t.float    "pm25"
+    t.float    "pm10"
+    t.float    "o3"
+    t.float    "o3_8h"
+    t.float    "co"
+    t.float    "so2"
+    t.float    "no2"
+    t.float    "aqi"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "city_hours", ["city_id"], :name => "index_city_hours_on_city_id"
+
   create_table "counties", force: true do |t|
     t.string    "name"
     t.float     "area"
@@ -132,6 +165,101 @@ ActiveRecord::Schema.define(version: 20160629040558) do
     t.timestamp "created_at",              precision: 6
     t.timestamp "updated_at",              precision: 6
   end
+
+  create_table "forecast_24s", force: true do |t|
+    t.integer  "station_id"
+    t.string   "pattern"
+    t.datetime "publish_time"
+    t.datetime "predict_time"
+    t.float    "pm25"
+    t.float    "pm10"
+    t.float    "o3"
+    t.float    "o3_8h"
+    t.float    "co"
+    t.float    "so2"
+    t.float    "no2"
+    t.float    "aqi"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "forecast_24s", ["station_id"], :name => "index_forecast_24s_on_station_id"
+
+  create_table "forecast_48s", force: true do |t|
+    t.integer  "station_id"
+    t.string   "pattern"
+    t.datetime "publish_time"
+    t.datetime "predict_time"
+    t.float    "pm25"
+    t.float    "pm10"
+    t.float    "o3"
+    t.float    "o3_8h"
+    t.float    "co"
+    t.float    "so2"
+    t.float    "no2"
+    t.float    "aqi"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "forecast_48s", ["station_id"], :name => "index_forecast_48s_on_station_id"
+
+  create_table "forecast_72s", force: true do |t|
+    t.integer  "station_id"
+    t.string   "pattern"
+    t.datetime "publish_time"
+    t.datetime "predict_time"
+    t.float    "pm25"
+    t.float    "pm10"
+    t.float    "o3"
+    t.float    "o3_8h"
+    t.float    "co"
+    t.float    "so2"
+    t.float    "no2"
+    t.float    "aqi"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "forecast_72s", ["station_id"], :name => "index_forecast_72s_on_station_id"
+
+  create_table "forecast_96s", force: true do |t|
+    t.integer  "station_id"
+    t.string   "pattern"
+    t.datetime "publish_time"
+    t.datetime "predict_time"
+    t.float    "pm25"
+    t.float    "pm10"
+    t.float    "o3"
+    t.float    "o3_8h"
+    t.float    "co"
+    t.float    "so2"
+    t.float    "no2"
+    t.float    "aqi"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "forecast_96s", ["station_id"], :name => "index_forecast_96s_on_station_id"
+
+  create_table "forecast_dailies", force: true do |t|
+    t.integer  "station_id"
+    t.string   "pattern"
+    t.date     "publish_date"
+    t.date     "predict_date"
+    t.float    "pm25"
+    t.float    "pm10"
+    t.float    "o3"
+    t.float    "o3_8h"
+    t.float    "co"
+    t.float    "so2"
+    t.float    "no2"
+    t.float    "aqi"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "forecast_dailies", ["station_id"], :name => "index_forecast_dailies_on_station_id"
 
   create_table "forecast_daily_data", force: true do |t|
     t.integer  "city_id"
@@ -178,6 +306,38 @@ ActiveRecord::Schema.define(version: 20160629040558) do
     t.float    "VIS"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "ps"
+    t.float    "tg"
+    t.float    "rc"
+    t.float    "rn"
+    t.float    "ttp"
+    t.float    "ter"
+    t.float    "xmf"
+    t.float    "dmf"
+    t.float    "cor"
+    t.float    "xlat"
+    t.float    "xlon"
+    t.float    "lu"
+    t.float    "pbln"
+    t.float    "pblr"
+    t.float    "shf"
+    t.float    "lhf"
+    t.float    "ust"
+    t.float    "swd"
+    t.float    "lwd"
+    t.float    "swo"
+    t.float    "lwo"
+    t.float    "t2m"
+    t.float    "q2m"
+    t.float    "u10"
+    t.float    "v10"
+    t.float    "wd"
+    t.float    "ws"
+    t.float    "pslv"
+    t.float    "pwat"
+    t.float    "clfrlo"
+    t.float    "clfrmi"
+    t.float    "clfrhi"
   end
 
   add_index "forecast_real_data", ["city_id", "publish_datetime", "forecast_datetime"], :name => "index_real_forecast_aqi_city_pubtime_foretime", :unique => true
@@ -198,6 +358,38 @@ ActiveRecord::Schema.define(version: 20160629040558) do
     t.float     "VIS"
     t.timestamp "created_at",        precision: 6
     t.timestamp "updated_at",        precision: 6
+    t.float     "ps"
+    t.float     "tg"
+    t.float     "rc"
+    t.float     "rn"
+    t.float     "ttp"
+    t.float     "ter"
+    t.float     "xmf"
+    t.float     "dmf"
+    t.float     "cor"
+    t.float     "xlat"
+    t.float     "xlon"
+    t.float     "lu"
+    t.float     "pbln"
+    t.float     "pblr"
+    t.float     "shf"
+    t.float     "lhf"
+    t.float     "ust"
+    t.float     "swd"
+    t.float     "lwd"
+    t.float     "swo"
+    t.float     "lwo"
+    t.float     "t2m"
+    t.float     "q2m"
+    t.float     "u10"
+    t.float     "v10"
+    t.float     "wd"
+    t.float     "ws"
+    t.float     "pslv"
+    t.float     "pwat"
+    t.float     "clfrlo"
+    t.float     "clfrmi"
+    t.float     "clfrhi"
   end
 
   add_index "hourly_city_forecast_air_qualities", ["city_id", "publish_datetime", "forecast_datetime"], :name => "index_hourlyaqi_city_pubtime_foretime", :unique => true
@@ -369,6 +561,39 @@ ActiveRecord::Schema.define(version: 20160629040558) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "station_dailies", force: true do |t|
+    t.integer  "station_id"
+    t.date     "publish_time"
+    t.float    "pm25"
+    t.float    "pm10"
+    t.float    "o3"
+    t.float    "o3_8h"
+    t.float    "co"
+    t.float    "so2"
+    t.float    "no2"
+    t.float    "aqi"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "station_dailies", ["station_id"], :name => "index_station_dailies_on_station_id"
+
+  create_table "station_hours", force: true do |t|
+    t.integer  "station_id"
+    t.float    "pm25"
+    t.float    "pm10"
+    t.float    "o3"
+    t.float    "o3_8h"
+    t.float    "co"
+    t.float    "so2"
+    t.float    "no2"
+    t.float    "aqi"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "station_hours", ["station_id"], :name => "index_station_hours_on_station_id"
 
   create_table "temp_bd_days", force: true do |t|
     t.integer   "city_id"

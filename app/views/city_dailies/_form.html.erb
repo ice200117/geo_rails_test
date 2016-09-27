@@ -1,0 +1,20 @@
+<%= simple_form_for(@city_daily) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :city_id %>
+    <%= f.input :publish_time %>
+    <%= f.input :pm25 %>
+    <%= f.input :pm10 %>
+    <%= f.input :o3 %>
+    <%= f.input :o3_8h %>
+    <%= f.input :co %>
+    <%= f.input :so2 %>
+    <%= f.input :no2 %>
+    <%= f.input :aqi %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <!-- meta, title, css, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>秦皇岛空气质量预报预警系统</title>
+    <%= stylesheet_link_tag 'css/bootstrap/dist/css/bootstrap.min','css/font-awesome/css/font-awesome.min',"js/icheck/skins/flat/green.css","css/jqvmap/dist/jqvmap.min.css",'css/custom.min', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'js/jquery/dist/jquery.min','data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+            </div>
+            <div class="clearfix"></div>
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <br>
+                <ul class="nav side-menu">
+                  <li><a href="javascript:void(0)" onclick="$('#page_content').load('/predict/pollution_situation_analysis')"> 污染形势分析 <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu" style="display: block">
+                      <li style="white-space:nowrap;"><label>产品时间:</label><select>
+                          <option>2016-08-01</option> 
+                          <option>2016-07-31</option> 
+                          <option>2016-06-30</option> 
+                        </select></li>
+                        <li><div class="panel panel-default">
+                            <div class="panel-heading">
+                              <h4 class="panel-title">预报区域</h4>
+                            </div>
+                            <div class="panel-body">
+                              <button  class="btn btn-default btn-primary">秦皇岛</button>
+                              <button  class="btn btn-default">中东部</button>
+                              <button  class="btn btn-default">河北省</button>
+                            </div>                        </div></li>
+                            <li>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                  <h4 class="panel-title">污染指标</h4>
+                                </div>
+                                <div id='t-t' class="panel-body">
+                                  <button class="btn btn-default btn-primary">PM25</button>
+                                  <button class="btn btn-default">PM10</button>
+                                  <button class="btn btn-default">O3</button>
+                                  <button class="btn btn-default">CO</button>
+                                  <button class="btn btn-default">SO2</button>
+                                  <button class="btn btn-default">NO2</button>
+                                  <button class="btn btn-default">AQI</button>
+                                  <!--<a href="#" class="btn btn-default">沙尘</a>
+                                  <a href="#" class="btn btn-default">海盐</a>-->
+                                </div>                       
+                                 </div>
+                                 </li>
+                                <li><div class="panel panel-default">
+                                    <div class="panel-heading">
+                                      <h4 class="panel-title">预报模式</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                      <button class="btn btn-default btn-primary">NAQPMS</button>
+                                      <button class="btn btn-default">CMAQ</button>
+                                      <button class="btn btn-default">CAMX</button>
+                                      <button class="btn btn-default">WRFCH</button>
+                                    </div>           
+                                  </div></li>
+                    </ul>
+                  </li>
+                  <li><a href="javascript:void(0)" onclick="$('#page_content').load('/predict/source_analysis')""> 源解析 <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><label for="lc">类型:</label><input type="checkbox" name="lc"></li>
+                      <li><label>区域:</label><select>
+                          <option>河北省</option> 
+                          <option>秦皇岛</option> 
+                          <option>中东部</option> 
+                      </select></li>
+                      <li><label>层高:</label><select>
+                          <option>近地层</option>  
+                          <option>大气边界层</option>  
+                      </select></li>
+                      <li><label>产品日期:</label><select>
+                          <option>2016-08-03</option>  
+                          <option>2016-08-02</option> 
+                          <option>2016-08-01</option> 
+                          <option>2016-07-31</option> 
+                          <option>2016-07-30</option> 
+                      </select></li>
+                      <li><label>区域:</label><select>
+                          <option>PM2.5</option>  
+                          <option>O3</option> 
+                          <option>PM10</option> 
+                          <option>NO2</option> 
+                      </select></li>
+                    </ul>
+                  </li>
+                  <li><a href="javascript:void(0)" onclick="$('#page_content').load('/predict/model_forecast_analysis')"> 模式预报分析 <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><label>产品日期:</label><select>
+                          <option>2016-08-03</option>  
+                          <option>2016-08-02</option> 
+                          <option>2016-08-01</option> 
+                          <option>2016-07-31</option> 
+                          <option>2016-07-30</option> 
+                      </select></li>
+                    </ul>
+                  </li>
+                  <li><a href="javascript:void(0)" onclick="$('#page_content').load('/predict/site_comparative_analysis')"> 站点对比分析 <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /sidebar menu -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <center>     
+            <h1 style="white-space:nowrap;font-family:'黑体'"><!--<i class="fa fa-bell-o"></i>-->秦皇岛空气质量预报预警系统</h1>
+            </center>
+            <nav>
+            <!--<ul class="nav navbar-nav navbar-right">
+              <li class="">
+                <a href="javascript:;" class="user-profile dropdown-toggle">
+                  <i class="fa fa-user"></i>
+                  admin
+                </a>
+              </li>
+
+              <li role="presentation" class="dropdown">
+                <a href="javascript:;" class="dropdown-toggle info-number">
+                  <i class="fa fa-power-off"></i>
+                  退出 
+                </a>
+              </li>
+            </ul>-->
+              <ul class="nav nav-tabs nav-justified">
+                <li role="presentation"><a href="<%= predict_index_path %>">首页</a></li>
+                <li role="presentation" class="active"><a href="<%= predict_analysis_path %>">分析</a></li>
+                <li role="presentation"><a href="<%= predict_revise_path %>">预报</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+    <%= javascript_include_tag "js/bootstrap/dist/js/bootstrap.min","js/custom.min","js/echarts/dist/echarts.min"%>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+      <!-- page content -->
+      <div id='page_content'>
+      	<%= yield %>
+       </div>
+      <!-- /page content -->
+
+        <!-- footer content -->
+
+        <footer>
+          <!-- <div class="pull-right" style="font-size: 15px;">
+            技术支持：<a href="#" style="font-weight: bold;">PM2.5小组</a>
+          </div> -->
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+  </body>
+</html>

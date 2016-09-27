@@ -1,0 +1,64 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Station:</strong>
+  <%= @forecast_96.station_id %>
+</p>
+
+<p>
+  <strong>Pattern:</strong>
+  <%= @forecast_96.pattern %>
+</p>
+
+<p>
+  <strong>Publish time:</strong>
+  <%= @forecast_96.publish_time %>
+</p>
+
+<p>
+  <strong>Predict time:</strong>
+  <%= @forecast_96.predict_time %>
+</p>
+
+<p>
+  <strong>Pm25:</strong>
+  <%= @forecast_96.pm25 %>
+</p>
+
+<p>
+  <strong>Pm10:</strong>
+  <%= @forecast_96.pm10 %>
+</p>
+
+<p>
+  <strong>O3:</strong>
+  <%= @forecast_96.o3 %>
+</p>
+
+<p>
+  <strong>O3 8h:</strong>
+  <%= @forecast_96.o3_8h %>
+</p>
+
+<p>
+  <strong>Co:</strong>
+  <%= @forecast_96.co %>
+</p>
+
+<p>
+  <strong>So2:</strong>
+  <%= @forecast_96.so2 %>
+</p>
+
+<p>
+  <strong>No2:</strong>
+  <%= @forecast_96.no2 %>
+</p>
+
+<p>
+  <strong>Aqi:</strong>
+  <%= @forecast_96.aqi %>
+</p>
+
+<%= link_to 'Edit', edit_forecast_96_path(@forecast_96) %> |
+<%= link_to 'Back', forecast_96s_path %>

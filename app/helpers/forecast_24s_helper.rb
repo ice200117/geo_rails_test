@@ -1,0 +1,2 @@
+module Forecast24sHelper
+end

@@ -19,6 +19,12 @@ class City < ActiveRecord::Base
   has_many :temp_sfcities_days
   has_many :temp_sfcities_months
   has_many :temp_sfcities_years
+
+  has_many :forecast24s, class_name: "Forecast24", foreign_key: "station_id"
+  has_many :forecast48s, class_name: "Forecast48", foreign_key: "station_id"
+  has_many :forecast72s, class_name: "Forecast72", foreign_key: "station_id"
+  has_many :forecast96s, class_name: "Forecast96", foreign_key: "station_id"
+  has_many :forecast_dailies, class_name: "ForecastDaily", foreign_key: "station_id"
   
 #  validates_uniqueness_of :post_number
 

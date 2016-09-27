@@ -1,0 +1,450 @@
+        <%= stylesheet_link_tag 'css/daterangepicker-bs3.css' %>
+      <%= javascript_include_tag 'moment','daterangepicker','chart' %>
+  <div class="right_col" role="main">
+          <div class="">
+            <div class="clearfix"></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <div class="x_panel">
+                            <div class="x_title">
+                              <h2>选择条件</h2>
+                              <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                                <li class="dropdown">
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                  <!--<ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Settings 1</a>
+                                    </li>
+                                    <li><a href="#">Settings 2</a>
+                                    </li>
+                                  </ul>-->
+                                </li>
+                                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                </li>
+                              </ul>
+                              <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="col-md-9 col-sm-9 col-xs-12">          
+            <h5>预报模式：</h5>
+            <div class="btn-group" data-toggle="buttons">
+               <label class="btn btn-primary">
+                 <input type="radio"  value="option1" name="sex">NAQPMS
+               </label>
+               <label class="btn btn-primary">
+                 <input type="radio"  value="option2" name="sex">CMAQ
+               </label>
+               <label class="btn btn-primary">
+                 <input type="radio"  value="option3" name="sex">CAMX
+               </label>
+               <label class="btn btn-primary">
+                 <input type="radio"  value="option3" name="sex">WRFCH
+               </label>
+               <label class="btn btn-primary">
+                 <input type="radio"  value="option3" name="sex">集合预报
+               </label>
+               <label class="btn btn-primary">
+                 <input type="radio"  value="option3" name="sex">动力统计
+               </label>
+               <label class="btn btn-primary">
+                 <input type="radio"  value="option3" name="sex">神经网络
+               </label>
+             
+               </div>
+            </form>
+          </div>
+        </div>
+              <div class="col-md-9 col-sm-9 col-xs-12"> 
+               <h5>时间范围：</h5>
+               <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-success">
+                 <input type="radio"  value="option1" name="sex">最近一天
+                 </label>
+               <label class="btn btn-success">
+                 <input type="radio"  value="option2" name="sex">最近一周
+               </label>
+               <label class="btn btn-success">
+                 <input type="radio"  value="option3" name="sex">最近一月
+               </label>
+               <label class="btn btn-success">
+                 <input type="radio"  value="option3" name="sex">最近一年
+               </label>
+               </div>
+               <label>
+
+                                <input type="text" name="reservation" id="reservation" class="form-control">
+                                </label>
+
+                            </div>
+                            <div class="col-md-9 col-sm-9 col-xs-12"> 
+            <h5>时间步长：</h5>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-info">
+                 <input type="radio"  value="option1" name="sex">小时报
+                 </label>
+               <label class="btn btn-info">
+                 <input type="radio"  value="option2" name="sex">日报
+               </label>
+               </div>
+                            </div>
+                            <div class="col-md-9 col-sm-9 col-xs-12"> 
+            <h5>时效：</h5>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-warning">
+                 <input type="radio"  value="option1" name="sex">24h
+                 </label>
+               <label class="btn btn-warning">
+                 <input type="radio"  value="option2" name="sex">48h
+               </label>
+               <label class="btn btn-warning">
+                 <input type="radio"  value="option3" name="sex">72h
+               </label>
+               <label class="btn btn-warning">
+                 <input type="radio"  value="option3" name="sex">98h
+               </label>
+               </div>
+               </div>
+                         <div class="col-md-9 col-sm-9 col-xs-12"> 
+            <h5>污染物指标：</h5>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-danger">
+                 <input type="radio"  value="option1" name="sex">AQI
+                 </label>
+               <label class="btn btn-danger">
+                 <input type="radio"  value="option2" name="sex">PM10
+               </label>
+               <label class="btn btn-danger">
+                 <input type="radio"  value="option3" name="sex">PM2.5
+               </label>
+               <label class="btn btn-danger">
+                 <input type="radio"  value="option3" name="sex">PM10(24)
+               </label>
+               <label class="btn btn-danger">
+                 <input type="radio"  value="option3" name="sex">PM2.5(24)
+               </label>
+               <label class="btn btn-danger">
+                 <input type="radio"  value="option3" name="sex">SO2
+               </label>
+               <label class="btn btn-danger">
+                 <input type="radio"  value="option3" name="sex">NO2
+               </label>
+               <label class="btn btn-danger">
+                 <input type="radio"  value="option3" name="sex">CO
+               </label>
+               <label class="btn btn-danger">
+                 <input type="radio"  value="option3" name="sex">O3
+               </label>
+               <label class="btn btn-danger">
+                 <input type="radio"  value="option3" name="sex">03(8)
+               </label>
+               </div>
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+          </div>
+      <div class="right_col" role="main">
+          <div class="">
+            <div class="clearfix"></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <div class="x_panel">
+                            <div class="x_title">
+                              <h2>站点一</h2>
+                              <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                                <li class="dropdown">
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                  <!--<ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Settings 1</a>
+                                    </li>
+                                    <li><a href="#">Settings 2</a>
+                                    </li>
+                                  </ul>-->
+                                </li>
+                                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                </li>
+                              </ul>
+                              <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div id="zddbfx" style="width:100%;height:350px;"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+          </div>
+                <div class="right_col" role="main">
+          <div class="">
+            <div class="clearfix"></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <div class="x_panel">
+                            <div class="x_title">
+                              <h2>站点二</h2>
+                              <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                                <li class="dropdown">
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                  <!--<ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Settings 1</a>
+                                    </li>
+                                    <li><a href="#">Settings 2</a>
+                                    </li>
+                                  </ul>-->
+                                </li>
+                                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                </li>
+                              </ul>
+                              <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div id="zddbfx2" style="width:100%;height:350px;"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+          </div>
+<script type="text/javascript">
+                   //站点一
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('zddbfx'));
+       var  option = {
+       title: {
+           text: 'AQI',
+           // subtext: '纯属虚构'
+       },
+       tooltip: {
+           trigger: 'axis'
+       },
+       legend: {
+           data:['NAQPMS', '实例']
+       },
+       //进行视图的转换，刷新，保存图片
+       toolbox: {
+           show: true,
+           feature: {
+               dataView: {readOnly: false},
+               restore: {},
+               saveAsImage: {}
+           }
+       },
+       dataZoom: {
+           show: false,
+           start: 0,
+           end: 100
+       },
+       xAxis: [
+           {
+               type: 'category',
+               boundaryGap: true,
+               data: ['8-1 10时','8-1 15时','8-1 20时','8-2 1时','8-3 6时','8-3 11时','8-3 16时','8-3 21时','8-4 2时','8-5 7时','8-5 12时','8-5 1时','8-5 1时']
+           },
+           {
+               type: 'category',
+               boundaryGap: true,
+               data: (function (){
+                   var res = [];
+                   var len = 10;
+                   while (len--) {
+                       res.push(len + 1);
+                   }
+                   return res;
+               })()
+           }
+       ],
+       yAxis: [
+           {
+               type: 'value',
+               scale: true,
+               name: 'AQI',
+               max: 200,
+               min: 0,
+               boundaryGap: [0.2, 0.2]
+           },
+           {
+               type: 'value',
+               scale: true,
+               name: '',
+               max: 200,
+               min: 0,
+               boundaryGap: [0.2, 0.2]
+           }
+       ],
+       series: [
+           {
+               name:'实例',
+               type:'bar',
+               xAxisIndex: 1,
+               yAxisIndex: 1,
+               // data:(function (){
+               //     var res = [];
+               //     var len = 10;
+               //     while (len--) {
+               //         res.push(Math.round(Math.random() * 1000));
+               //     }
+               //     return res;
+               // })()
+               data:['50','36','35','90','52','37','68','54','59','73','83','80','90']
+           },
+           {
+               name:'NAQPMS',
+               type:'line',
+               // data:(function (){
+               //     var res = [];
+               //     var len = 0;
+               //     while (len < 10) {
+               //         res.push((Math.random()*10 + 5).toFixed(1) - 0);
+               //         len++;
+               //     }
+               //     return res;
+               // })()
+               data:['40','48','30','45','44','30','90','46','59','90','80','90','90']
+           }
+       ]
+   };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    //站点二
+            // 基于准备好的dom，初始化echarts实例
+        var myChart2 = echarts.init(document.getElementById('zddbfx2'));
+        var  option2 = {
+        title: {
+            text: 'AQI',
+            // subtext: '纯属虚构'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['NAQPMS', '实例']
+        },
+        //进行视图的转换，刷新，保存图片
+        toolbox: {
+            show: true,
+            feature: {
+                dataView: {readOnly: false},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        dataZoom: {
+            show: false,
+            start: 0,
+            end: 100
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: true,
+                data: ['8-1 10时','8-1 15时','8-1 20时','8-2 1时','8-3 6时','8-3 11时','8-3 16时','8-3 21时','8-4 2时','8-5 7时','8-5 12时','8-5 1时','8-5 1时']
+            },
+            {
+                type: 'category',
+                boundaryGap: true,
+                data: (function (){
+                    var res = [];
+                    var len = 10;
+                    while (len--) {
+                        res.push(len + 1);
+                    }
+                    return res;
+                })()
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                scale: true,
+                name: 'AQI',
+                max: 200,
+                min: 0,
+                boundaryGap: [0.2, 0.2]
+            },
+            {
+                type: 'value',
+                scale: true,
+                name: '',
+                max: 200,
+                min: 0,
+                boundaryGap: [0.2, 0.2]
+            }
+        ],
+        series: [
+            {
+                name:'实例',
+                type:'bar',
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                // data:(function (){
+                //     var res = [];
+                //     var len = 10;
+                //     while (len--) {
+                //         res.push(Math.round(Math.random() * 1000));
+                //     }
+                //     return res;
+                // })()
+                data:['50','36','35','56','52','37','26','54','59','73','83','80','90']
+            },
+            {
+                name:'NAQPMS',
+                type:'line',
+                // data:(function (){
+                //     var res = [];
+                //     var len = 0;
+                //     while (len < 10) {
+                //         res.push((Math.random()*10 + 5).toFixed(1) - 0);
+                //         len++;
+                //     }
+                //     return res;
+                // })()
+                data:['40','48','30','45','44','30','90','46','59','90','80','90','90']
+            }
+        ]
+    };
+    // clearInterval(app.timeTicket);
+    // app.count = 11;
+    // app.timeTicket = setInterval(function (){
+    //     axisData = (new Date()).toLocaleTimeString().replace(/^\D*/,'');
+    //     var data0 = option.series[0].data;
+    //     var data1 = option.series[1].data;
+    //     data0.shift();
+    //     data0.push(Math.round(Math.random() * 1000));
+    //     data1.shift();
+    //     data1.push((Math.random() * 10 + 5).toFixed(1) - 0);
+    //     option.xAxis[0].data.shift();
+    //     option.xAxis[0].data.push(axisData);
+    //     option.xAxis[1].data.shift();
+    //     option.xAxis[1].data.push(app.count++);
+    //     myChart.setOption(option);
+    // }, 2100);
+            // 使用刚指定的配置项和数据显示图表。
+            myChart2.setOption(option2);
+
+
+      /*日期范围选择*/
+
+  endTime = new Date();
+  startTime=new Date();
+  startTime.setMonth(startTime.getMonth() - 1);
+  startDate = startTime.pattern('yyyy-MM-dd');
+  endDate = endTime.pattern('yyyy-MM-dd');
+  startTime= startDate;
+  endTime=endDate;
+  $(function(){
+    $('#reservation').val(startDate + ' - ' + endDate);
+  $('#reservation').daterangepicker({ startDate: startDate, endDate: endDate});
+  $('#reservation').daterangepicker(
+  { 
+    format: 'YYYY-MM-DD'
+  },
+  function(start, end, label) {
+    //alert('A date range was chosen: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    //getChartData(start.format('YYYY-MM-DD'),end.format('YYYY-MM-DD'));
+    startTime = start.format('YYYY-MM-DD');
+    endTime = end.format('YYYY-MM-DD');
+  }
+  );  
+  });    
+        </script>

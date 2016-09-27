@@ -45,8 +45,9 @@ def cal_var ( ncfile, var_name )
 end
 
 #path = "/vagrant/geo_rails_test/public/images/ftproot/Temp/ADJ/"
-path = "/vagrant/geo_rails_test/public/images/ftproot/Temp/"
-ncfile = path + "CUACE_09km_adj_2015-12-25.nc"
+path = "/mnt/share/tmp/"
+#ncfile = path + "CUACE_09km_adj_2015-12-25.nc"
+ncfile = "/mnt/share/tmp/CUACE_09km_adj_2016-09-26.nc"
   CITY_LIST = [
   "MeteoInfo/baoding.txt",
   "MeteoInfo/beijing.txt",
@@ -60,12 +61,16 @@ ncfile = path + "CUACE_09km_adj_2015-12-25.nc"
   "MeteoInfo/tangshan.txt",
   "MeteoInfo/tianjin.txt",
   "MeteoInfo/xingtai.txt",
+  "MeteoInfo/yantai.txt",
+  "MeteoInfo/dongying.txt",
+  "MeteoInfo/huludao.txt",
+  "MeteoInfo/chaoyang.txt",
   "MeteoInfo/zhangjiakou.txt" ]
 var_list = ["CO_120", "NOX_120", "SO2_120"]
 var_list.each { |var_name|
   pl = (cal_var ncfile, var_name)
   puts var_name
-  pl.sort.last(3).each { |p|
+  pl.sort.last(17).each { |p|
     print CITY_LIST[pl.index(p)], "   ", p, "\n"
   }
 }

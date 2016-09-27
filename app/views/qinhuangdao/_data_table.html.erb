@@ -26,7 +26,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		<% data = data[:cities].sort_by{|a| a['zonghezhishu']}%>
+		<% if flag == 'monitor_hour' %>
+		  <% data = data[:cities].sort_by{|a| a['AQI']}%>
+	  <% else %>
+		  <% data = data[:cities].sort_by{|a| a['zonghezhishu']}%>
+    <% end %>
 		<% for i in (0...data.length)%>
 			<% tmp=data[data.length-1-i] %>
 			<tr>

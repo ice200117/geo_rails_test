@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>秦皇岛空气质量实时管控平台</title>
 		<%= stylesheet_link_tag 'application','qinhuangdao','css/styles','css/air','css/jquery-ui',"css/bootstrap.min", 'css/bootstrap-table.min', media: 'all', 'data-turbolinks-track' => true %>
-		<%= javascript_include_tag 'application',"jquery-ui-datepicker",'air','demo','data-turbolinks-track'=> true %>
+		<%= javascript_include_tag 'application','air','demo','data-turbolinks-track'=> true %>
 		<%= csrf_meta_tags %>
 		<%= favicon_link_tag '/favicon.png' %>
 		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
@@ -36,6 +36,7 @@
 						</ul>
 					</li>-->
 					<li><a id="zq-map" href="http://www.zq12369.com/map.php" target="_blank">地图模式</a></li>
+					<li><a id="zq-map" href="<%= predict_index_path %>" target="_blank">预报会商</a></li>
 					<%# <li><a id="welcome-case" href="/case">典型案例</a></li> %>
 					<%# <li><a id="welcome-about" href="/about">联系我们</a></li> %>
 				</ul>
@@ -86,7 +87,7 @@
              <span style=" display:block; width:270px; margin-left:20px; float:left;">
              <a href="http://yjb.mep.gov.cn/" target="_blank">中华人民共和国环境保护部<br> </a>
              <a href="http://www.hnep.gov.cn/" target="_blank">河南省环保厅<br> </a>
-             <a href="http://www.zzepb.gov.cn/" target="_blank">郑州市环境保护局<br> </a>
+             <a href="http://www.zzepb.gov.cn/" target="_blank">秦皇岛市环境保护局<br> </a>
              </span>
           </li>
           <li><strong>特别鸣谢</strong><br>
@@ -104,10 +105,12 @@
     </ul>
    
 </div>
+<!--
 <div style="clear:both;text-align:center;padding:30px 0px;font-size:14px;color:#3490C7;">
 	版权所有：廊坊市海宏环保科技有限公司&nbsp&nbsp&nbsp技术支持：廊坊市海宏环保科技有限公司
 	
 </div>
+-->
 	</body>
 	<script type="text/javascript">
 		$(function() {

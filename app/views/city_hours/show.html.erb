@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>City:</strong>
+  <%= @city_hour.city_id %>
+</p>
+
+<p>
+  <strong>Pm25:</strong>
+  <%= @city_hour.pm25 %>
+</p>
+
+<p>
+  <strong>Pm10:</strong>
+  <%= @city_hour.pm10 %>
+</p>
+
+<p>
+  <strong>O3:</strong>
+  <%= @city_hour.o3 %>
+</p>
+
+<p>
+  <strong>O3 8h:</strong>
+  <%= @city_hour.o3_8h %>
+</p>
+
+<p>
+  <strong>Co:</strong>
+  <%= @city_hour.co %>
+</p>
+
+<p>
+  <strong>So2:</strong>
+  <%= @city_hour.so2 %>
+</p>
+
+<p>
+  <strong>No2:</strong>
+  <%= @city_hour.no2 %>
+</p>
+
+<p>
+  <strong>Aqi:</strong>
+  <%= @city_hour.aqi %>
+</p>
+
+<%= link_to 'Edit', edit_city_hour_path(@city_hour) %> |
+<%= link_to 'Back', city_hours_path %>

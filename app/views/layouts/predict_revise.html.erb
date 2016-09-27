@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>秦皇岛空气质量预报预警系统</title>
+ <%= stylesheet_link_tag 'css/bootstrap/dist/css/bootstrap.min','css/font-awesome/css/font-awesome.min','css/custom.min', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'js/jquery/dist/jquery.min','data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body class="nav-md" style="background: #ffffff">
+    <div class="container body">
+
+       <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <center>     
+            <h1 style="white-space:nowrap;font-family:'黑体'"><!--<i class="fa fa-bell-o"></i>-->秦皇岛空气质量预报预警系统</h1>
+            </center>
+            <nav>
+            <!--<ul class="nav navbar-nav navbar-right">
+              <li class="">
+                <a href="javascript:;" class="user-profile dropdown-toggle">
+                  <i class="fa fa-user"></i>
+                  admin
+                </a>
+              </li>
+
+              <li role="presentation" class="dropdown">
+                <a href="javascript:;" class="dropdown-toggle info-number">
+                  <i class="fa fa-power-off"></i>
+                  退出 
+                </a>
+              </li>
+            </ul>-->
+              <ul class="nav nav-tabs nav-justified">
+                <li role="presentation"><a href="<%= predict_index_path %>">首页</a></li>
+                <li role="presentation"><a href="<%= predict_analysis_path %>">分析</a></li>
+                <li role="presentation" class="active"><a href="<%= predict_revise_path %>">预报</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+          <%= yield %>
+        <!-- /page content -->
+
+        <!-- footer content -->
+       <footer>
+        <!--  <div class="pull-right" style="font-size: 15px;">
+           技术支持：<a href="#" style="font-weight: bold;">PM2.5小组</a>
+         </div> -->
+         <div class="clearfix"></div>
+       </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+<%= javascript_include_tag "js/bootstrap/dist/js/bootstrap.min","js/fastclick/lib/fastclick","js/custom.min"%>
+  </body>
+</html>

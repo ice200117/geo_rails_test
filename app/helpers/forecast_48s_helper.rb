@@ -1,0 +1,2 @@
+module Forecast48sHelper
+end
