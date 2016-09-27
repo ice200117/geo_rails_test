@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-#require 'custom/data_math'
 
 def parse_line(line, c)
   l = line.split(' ')
@@ -15,7 +14,9 @@ def parse_line(line, c)
     :grade => l[3],
     :pm25 => l[15],
     :pm10 => l[13],
-    :SO2 => l[5], :CO => l[9], :NO2 => l[7],
+    :SO2 => l[5],
+    :CO => l[9],
+    :NO2 => l[7],
     :O3 => l[11],
     :VIS => l[4]
   }
@@ -96,28 +97,28 @@ cs.each do |c|
   py = c.city_name_pinyin.strip
   fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
   fw = "CN_MET_#{py}_#{yesterday_str}_00000-12000.TXT"
-  next unless hb_city.include?(py)
+  next unless hb_city.include?(py) #非华北地区城市跳过
   f = nil
   f = File.open(path+fn) if File::exists?(path+fn)
   next unless f
   c.forecast_real_data.destroy_all
   c.hourly_city_forecast_air_qualities.where(publish_datetime: Time.zone.parse(yesterday_str)).delete_all
 
-  f.readlines[2..-1].each do |line|
-    hcs << parse_line(line, c)
-  end
-
   f1 = nil
   f1 = File.open(path15+fw) if File::exists?(path15+fw)
+  tmp = Hash.new
   if f1
-    tmp = {}
     f1.readlines[2..-1].each do |line|
       tmp.merge!(fw_line(line, c))
     end
-    hcs.map do |l|
-      l.merge!(tmp[l[:forecast_datetime]]) unless tmp[l[:forecast_datetime]].nil?
-    end
   end
+
+  f.readlines[2..-1].each do |line|
+    td = parse_line(line, c)
+    td.merge!(tmp[td[:forecast_datetime]]) if !tmp[td[:forecast_datetime]].nil?
+    hcs << td
+  end
+
   f.close
   puts fn+" update database successful!"
 end
