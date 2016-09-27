@@ -2,24 +2,6 @@
 #hs = HourlyCityForecastAirQuality.all
 #hs.each { |h| h.destroy }
 
-
-def wind_utils(u,v)
-  #u经风向 v纬风向
-  s = Math.sqrt(u*u+v*v)
-  if u == 0
-    v > 0 ? d = 90 : d = 270
-    return {:s=>s,:d=>d}
-  end
-
-  d = Math.atan(v.abs/u.abs.to_f)/Math::PI*180
-  if v > 0
-    d = 180 - d if u < 0
-  else
-    u > 0 ? d = 360 - d : d += 180
-  end
-  return {:s=>s,:d=>d}
-end
-
 def parse_line(line, c)
   l = line.split(' ')
   sd = l[0][0,10]
@@ -47,7 +29,7 @@ def fw_line(line, c)
   sd = l[0][0,10]
   delta_hour = l[0][11,3]
   sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
-  wind = wind_utils(l[23].to_f,l[24].to_f)
+  wind = Custom::DataMath.getDSFromUv(l[23],l[24])
   { sdate+delta_hour.to_i*3600 =>{
     :ps => l[1],
     :tg => l[2],

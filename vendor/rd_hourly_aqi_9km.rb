@@ -1,22 +1,5 @@
 #!/usr/bin/ruby
 
-def wind_utils(u,v)
-  #uç»é£å‘ vçº¬é£å‘
-  s = Math.sqrt(u*u+v*v)
-  if u == 0
-    v > 0 ? d = 90 : d = 270
-    return {:s=>s,:d=>d}
-  end
-
-  d = Math.atan(v.abs/u.abs.to_f)/Math::PI*180
-  if v > 0
-    d = 180 - d if u < 0
-  else
-    u > 0 ? d = 360 - d : d += 180
-  end
-  return {:s=>s,:d=>d}
-end
-
 def parse_line(line, c)
   l = line.split(' ')
   sd = l[0][0,10]
@@ -45,7 +28,7 @@ def fw_line(line, c)
   sd = l[0][0,10]
   delta_hour = l[0][11,3]
   sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
-  wind = wind_utils(l[23].to_f,l[24].to_f)
+  wind = Custom::DataMath.getDSFromUv(l[23],l[24])
   { sdate+delta_hour.to_i*3600 =>{
     :ps => l[1],
     :tg => l[2],
@@ -84,8 +67,7 @@ end
 
 yesterday_str = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'20'
 strtime = Time.now.strftime("%Y%m%d")+'20'
-# yesterday_str = '2016092520'
-# strtime = '2016092620'
+
 puts strtime
 path = "/mnt/share/Temp/station_9km/#{strtime[0,8]}/"
 path15 = "/mnt/share/Temp/station_15km_orig/#{yesterday_str}/"
@@ -115,7 +97,7 @@ cs.each do |c|
   py = c.city_name_pinyin.strip
   fn = "XJ_ENVAQFC_#{py}_#{yesterday_str}_00000-07200.TXT"
   fw = "CN_MET_#{py}_#{yesterday_str}_00000-12000.TXT"
-  next unless hb_city.include?(py) #éååŒ—åœ°åŒºåŸå¸‚è·³è¿‡
+  next unless hb_city.include?(py) #·Ç»ª±±µØÇø³ÇÊĞÌø¹ı
   f = nil
   f = File.open(path+fn) if File::exists?(path+fn)
   next unless f
@@ -145,4 +127,4 @@ ForecastRealDatum.create(hcs)
 
 py = 'qinhuangdaoshi'
 tmp=City.find_by_city_name_pinyin(py).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
-Custom::Redis.set(py,tmp,3600*24)
+#Custom::Redis.set(py,tmp,3600*24)
