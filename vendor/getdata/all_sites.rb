@@ -47,6 +47,7 @@ module AllSite
 					puts l+' '+'is nil!'
 				end
 				l['id'] = mp.id
+				puts l
 				MonitorPointHour.new.save_with_arg(l)
 				count = count + 1
 

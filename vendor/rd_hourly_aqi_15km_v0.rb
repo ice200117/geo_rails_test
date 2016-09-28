@@ -7,7 +7,6 @@ def parse_line(line, c)
   
   #hc = HourlyCityForecastAirQuality.new
   c.forecast_real_data.destroy_all
-
   sd = line[0,10]
   delta_hour = line[11,3]
   sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
@@ -29,7 +28,6 @@ def parse_line(line, c)
   hc.VIS = line[32,7]
   hc.save
 
-
   # Put data to real time table.
   rc = ForecastRealDatum.find_or_create_by(city_id: c.id, publish_datetime: sdate, forecast_datetime: sdate+delta_hour.to_i*3600 )
   rc.AQI = line[14,4]
@@ -43,7 +41,6 @@ def parse_line(line, c)
   rc.O3 = line[75,6]
   rc.VIS = line[32,7]
   rc.save
-
   #puts '----------'
   #puts hc.city_id
   #puts hc.publish_datetime.
@@ -62,17 +59,19 @@ end
 
 #strtime = Time.mktime(Time.new.strftime("%Y%m%d")+'08')
 if Time.new.hour >18
-	strtime = Time.new.strftime("%Y%m%d")+'08'
+	strtime = Time.new.strftime("%Y%m%d")+'20'
 else
-	strtime = (Time.new-1.day).strftime("%Y%m%d")+'08'
+	strtime = (Time.new-1.day).strftime("%Y%m%d")+'20'
 end
 #strtime = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
 puts 'deal date = ', strtime
 
-#strtime = '2016010808'
-#puts strtime
+#strtime = '2016012720'
+puts strtime
 
-path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
+# path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
+path = "/mnt/share/Temp/station_15km_orig/#{strtime[0,8]}/"
+# path = "/mnt/share/Temp/station_15km/#{strtime[0,8]}/"
 
 # Read hua bei city, do not read data of these city.
 firstline = true
@@ -94,18 +93,17 @@ end
 cs = City.all
 cs.each do |c|
   puts c.city_name_pinyin
-  next if c.city_name_pinyin.rstrip.eql?('baichengshi')
+  #if c.city_name_pinyin.rstrip.eql?('langfangshi')
   py = c.city_name_pinyin.strip
 
-  next if hb_city.include?(py)
+#  next if hb_city.include?(py)
 
 
-  fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
+  fn = "CN_ENVAQFC_#{py}_#{strtime}_00000-12000.TXT"
   f = nil
   f = File.open(path+fn) if File::exists?(path+fn) 
   next unless f
   f.readlines[2..-1].each do |line| 
-	puts line
     parse_line(line, c)
   end
   f.close
