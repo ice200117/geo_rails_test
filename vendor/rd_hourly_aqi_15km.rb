@@ -103,7 +103,7 @@ hcs = []
 cs.each do |c|
   puts c.city_name_pinyin
   py = c.city_name_pinyin.strip
-  next if hb_city.include?(py) #华北城市跳过
+  #next if hb_city.include?(py) #华北城市跳过
 
   fn = "CN_ENVAQFC_#{py}_#{strtime}_00000-12000.TXT"
   fw = "CN_MET_#{py}_#{strtime}_00000-12000.TXT"
@@ -111,7 +111,7 @@ cs.each do |c|
   f = File.open(path+fn) if File::exists?(path+fn)
   next unless f
   c.forecast_real_data.destroy_all
-  c.hourly_city_forecast_air_qualities.where(publish_datetime: Time.zone.parse(strftime[0,8])).delete_all
+  c.hourly_city_forecast_air_qualities.where(publish_datetime: Time.zone.parse(strtime)).delete_all
 
   f1 = nil
   f1 = File.open(path+fw) if File::exists?(path+fw)
