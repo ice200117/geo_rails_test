@@ -74,4 +74,6 @@ Rails.application.config.assets.precompile += %w(
     js/icheck/skins/flat/green.css
     css/jqvmap/dist/jqvmap.min.css
     pollution_situation_analysis_air.js
+    buttons.css
+    img/ico.png
 )
