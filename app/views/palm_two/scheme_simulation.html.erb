@@ -1,4 +1,4 @@
-        <%= stylesheet_link_tag 'buttons'%>
+        <%= stylesheet_link_tag 'buttons','css/normalize-css/normalize','css/ion.rangeSlider/css/ion.rangeSlider','css/ion.rangeSlider/css/ion.rangeSlider.skinHTML5' %>
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
@@ -89,28 +89,24 @@
                     <td>冶金</td>
                     </tr>
                     <tr>
-                    <td>河北前进钢铁集团有限公</td>
-                    <td>冶金</td>
+                    <td>文安县亮明玻璃厂</td>
+                    <td>平板玻璃制造</td>
                     </tr>
                     <tr>
-                    <td>河北前进钢铁集团有限公</td>
-                    <td>冶金</td>
+                    <td>河北南玻玻璃有限公司</td>
+                    <td>平板玻璃制造</td>
                     </tr>
                     <tr>
-                    <td>河北前进钢铁集团有限公</td>
-                    <td>冶金</td>
+                    <td>永清县永辛雨和保温材料</td>
+                    <td>其他建筑材料</td>
                     </tr>
                     <tr>
-                    <td>河北前进钢铁集团有限公</td>
-                    <td>冶金</td>
+                    <td>博美（永清）玻璃有限公</td>
+                    <td>玻璃仪器制造</td>
                     </tr>
                     <tr>
-                    <td>河北前进钢铁集团有限公</td>
-                    <td>冶金</td>
-                    </tr>
-                    <tr>
-                    <td>河北前进钢铁集团有限公</td>
-                    <td>冶金</td>
+                    <td>霸州市圣马力奥陶瓷有限</td>
+                    <td>卫生陶瓷制品</td>
                     </tr>
                     <tr>
                     <td>河北前进钢铁集团有限公</td>
@@ -123,24 +119,39 @@
                     导出
                   </button>
                   <div class="ln_solid"></div>
-                    <div class="row">
-                      <div class="btn-toolbar">
-                      <label>预警级别</label>
-
-                        <div class="btn-group">
-                          <button class="btn btn-info" type="button">I</button>
-                          <button class="btn btn-info active" type="button">II</button>
-                          <button class="btn btn-info" type="button">III</button>
-                          <button class="btn btn-info" type="button">IV</button>
-                        </div>
+                  <div class="row">
+                    <div class="btn-toolbar">
+                      <div class="btn-group">
+                      <label>预警级别:</label>
+                      </div>
+                      <div class="btn-group">
+                        <button class="btn btn-info" type="button">I</button>
+                        <button class="btn btn-info active" type="button">II</button>
+                        <button class="btn btn-info" type="button">III</button>
+                        <button class="btn btn-info" type="button">IV</button>
                       </div>
                     </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                  <label>行业选择:</label>
+                    <button class="btn btn-round btn-success" type="button">电力</button>
+                    <button class="btn btn-round btn-success active" type="button">冶金</button>
+                    <button class="btn btn-round btn-success" type="button">化工</button>
+                    <button class="btn btn-round btn-success" type="button">石油</button>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <label>减排百分比:</label>
+                    <input type="text" value="" id="range" name="range" />
+                  </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+ <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min' %>       
 <!-- 网格追踪 -->
 <script type="text/javascript">
   var center = new BMap.Point(116.72176308539945,39.034435261707975);
@@ -357,13 +368,13 @@ var temp_str2 = '<div class="shangb">\
       return "#330C02";
   }
 
-  $(function(){
-    $('.j-zc-index-slider')
-            .unslider({
-              dots: true
-            });
+  // $(function(){
+  //   $('.j-zc-index-slider')
+  //           .unslider({
+  //             dots: true
+  //           });
 
-  });
+  // });
 </script>    
 <!-- 清单统计 -->
        <script type="text/javascript">
@@ -485,4 +496,15 @@ if (option && typeof option === "object") {
     $(document).ready(function() {
         TableManageButtons.init();
     });
+</script>
+<!-- Slider -->
+<script type="text/javascript">
+   $(document).ready(function() {
+    $("#range").ionRangeSlider({
+    min: 0,
+    max: 100,
+    from: 30,
+});
+   });
+
 </script>
