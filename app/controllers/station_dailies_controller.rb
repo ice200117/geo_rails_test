@@ -25,7 +25,6 @@ class StationDailiesController < ApplicationController
   # POST /station_dailies.json
   def create
     @station_daily = StationDaily.new(station_daily_params)
-
     respond_to do |format|
       if @station_daily.save
         format.html { redirect_to @station_daily, notice: 'Station daily was successfully created.' }

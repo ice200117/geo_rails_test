@@ -72,8 +72,12 @@ class QuerysController < ApplicationController
     else
       varnames = ["CO_120", "NOX_120", "SO2_120"]
     end
+    if params['citypy']
+      params['citypy'][-3,3] == 'shi' ? citypy = params['citypy'][0...-3] : citypy = params['citypy']
+    end
     #puts varnames
-    path = '/mnt/share/Temp/BackupADJ/'
+    # citypy.nil? ? path = '/mnt/share/Temp/BackupADJ/' : path = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
+    citypy.nil? ? path = '/Users/baoxi/Workspace/temp/BackupADJ/' : path = '/Users/baoxi/Workspace/temp/BackupADJ_'+citypy+'/'
     #if @@alt
     #  @@alt = false
     #  puts 'langfang'
@@ -91,7 +95,6 @@ class QuerysController < ApplicationController
       ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
       i = i + 1
     end until File::exists?(ncfile)
-
     #puts ncfile
     file = NetCDF.open(ncfile)
     @dataArr = Hash.new
@@ -99,7 +102,6 @@ class QuerysController < ApplicationController
       data = file.var(var).get
       @dataArr[var] = data[0..-1,0..-1,0,0].to_a
     end
-    #render json: @dataArr.to_json
     respond_to do |format|
       format.html { render json: @dataArr}
       if params[:callback]
@@ -108,7 +110,6 @@ class QuerysController < ApplicationController
         format.json { render json: @dataArr}
       end
     end
-
   end
 
   def aqis_by_city
