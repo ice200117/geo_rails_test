@@ -203,7 +203,7 @@ module Qinhuangdao
 			mp.each do |t|
 				nameid[t.pointname] = t.id
 			end
-			stime="20150501".to_time
+			stime="20160621".to_time
 			etime=Time.now
 			while stime<etime
 				data=request_zq("HOUR",stime)
@@ -240,7 +240,7 @@ module Qinhuangdao
 			mp.each do |t|
 				nameid[t.pointname] = t.id
 			end
-			stime="20150105".to_time.beginning_of_day
+			stime="20160621".to_time.beginning_of_day
 			etime=Time.now.yesterday.end_of_day
 			while stime<etime
 				tmp = Hash.new

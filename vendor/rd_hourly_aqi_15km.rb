@@ -31,11 +31,11 @@ def fw_line(line, c)
   sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
   wind = Custom::DataMath.getDSFromUv(l[23],l[24])
   { sdate+delta_hour.to_i*3600 =>{
-    :ps => l[1],
+    :ps => l[1].to_f / 100,
     :tg => l[2],
     :rc => l[3],
     :rn => l[4],
-    :ttp => l[3].to_f+l[4].to_f,
+    :ttp => (l[3].to_f+l[4].to_f) * 10,
     :ter => l[5],
     :xmf => l[6],
     :dmf => l[7],
@@ -52,8 +52,8 @@ def fw_line(line, c)
     :lwd => l[18],
     :swo => l[19],
     :lwo => l[20],
-    :t2m => l[21],
-    :q2m => l[22],
+    :t2m => l[21].to_f - 273.15,
+    :q2m => l[30],
     :u10 => l[23],
     :v10 => l[24],
     :wd => wind[:d],
@@ -66,11 +66,12 @@ def fw_line(line, c)
   }}
 end
 #strtime = Time.mktime(Time.new.strftime("%Y%m%d")+'08')
-if Time.new.hour >18
-	strtime = Time.new.strftime("%Y%m%d")+'20'
-else
-	strtime = (Time.new-1.day).strftime("%Y%m%d")+'20'
-end
+#if Time.new.hour >18
+#	strtime = Time.new.strftime("%Y%m%d")+'20'
+#else
+#	strtime = (Time.new-1.day).strftime("%Y%m%d")+'20'
+#end
+strtime = (Time.new-1.day).strftime("%Y%m%d")+'20'
 #strtime = Time.at(Time.now.to_i - 86400).strftime("%Y%m%d")+'08'
 puts 'deal date = ', strtime
 # strtime = '2016092520'
@@ -102,7 +103,7 @@ hcs = []
 cs.each do |c|
   puts c.city_name_pinyin
   py = c.city_name_pinyin.strip
-  next if hb_city.include?(py) #华北城市跳过
+  #next if hb_city.include?(py) #华北城市跳过
 
   fn = "CN_ENVAQFC_#{py}_#{strtime}_00000-12000.TXT"
   fw = "CN_MET_#{py}_#{strtime}_00000-12000.TXT"
@@ -110,7 +111,7 @@ cs.each do |c|
   f = File.open(path+fn) if File::exists?(path+fn)
   next unless f
   c.forecast_real_data.destroy_all
-  c.hourly_city_forecast_air_qualities.where(publish_datetime: Time.zone.parse(strftime[0,8])).delete_all
+  c.hourly_city_forecast_air_qualities.where(publish_datetime: Time.zone.parse(strtime)).delete_all
 
   f1 = nil
   f1 = File.open(path+fw) if File::exists?(path+fw)

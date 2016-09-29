@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
 
+  get 'palm_two/index'
+
   resources :forecast_96s
   resources :forecast_72s
   resources :forecast_48s
@@ -20,8 +22,8 @@ Rails.application.routes.draw do
 	get 'counties/to_geojson'
 
 	get 'querys/aqis_by_city' => 'querys#aqis_by_city'
+	get 'querys/aqis_by_city/city' => 'querys#aqis_by_cityid'
 	get 'querys/aqis_by_city/:city' => 'querys#aqis_by_city'
-	# get 'querys/aqis_by_city/city' => 'querys#aqis_by_cityid'
 	# get 'querys/aqis_by_city/city/id/:cityid' => 'querys#aqis_by_cityid'
 	get 'querys' => 'querys#cities'
 	get 'querys/all_cities' => 'querys#all_cities2'
@@ -120,4 +122,7 @@ Rails.application.routes.draw do
 	#廊坊路由
 	get 'langfang/index' => 'langfang#forecast'
 	get 'langfang/lf_forecast_pics'
+
+	#palm 2.0
+	get 'palm_two/scheme_simulation' => 'palm_two#scheme_simulation'
 end
