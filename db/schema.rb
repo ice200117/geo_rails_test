@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160927021150) do
+ActiveRecord::Schema.define(version: 20160929043615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -160,6 +160,25 @@ ActiveRecord::Schema.define(version: 20160927021150) do
     t.float    "pm10_change_rate"
     t.float    "pm25_change_rate"
     t.float    "zongheindex_change_rate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "enterprises", force: true do |t|
+    t.string   "en_name"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.float    "dust_concentration"
+    t.float    "dust_convert"
+    t.float    "dust_discharge"
+    t.float    "so2_concentration"
+    t.float    "so2_convert"
+    t.float    "so2_discharge"
+    t.float    "nox_concentration"
+    t.float    "nox_convert"
+    t.float    "nox_discharge"
+    t.float    "temperature"
+    t.float    "discharge_height"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
