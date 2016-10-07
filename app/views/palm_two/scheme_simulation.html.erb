@@ -79,39 +79,13 @@
                     <table id="enterpriseList" class="table table-striped table-bordered" style="white-space: nowrap">
                   <thead>
                    <tr>
+                   <th>序号</th>
                     <th>企业名称</th>
                     <th>行业类别</th>
                    </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                    <td>河北前进钢铁集团有限公</td>
-                    <td>冶金</td>
-                    </tr>
-                    <tr>
-                    <td>文安县亮明玻璃厂</td>
-                    <td>平板玻璃制造</td>
-                    </tr>
-                    <tr>
-                    <td>河北南玻玻璃有限公司</td>
-                    <td>平板玻璃制造</td>
-                    </tr>
-                    <tr>
-                    <td>永清县永辛雨和保温材料</td>
-                    <td>其他建筑材料</td>
-                    </tr>
-                    <tr>
-                    <td>博美（永清）玻璃有限公</td>
-                    <td>玻璃仪器制造</td>
-                    </tr>
-                    <tr>
-                    <td>霸州市圣马力奥陶瓷有限</td>
-                    <td>卫生陶瓷制品</td>
-                    </tr>
-                    <tr>
-                    <td>河北前进钢铁集团有限公</td>
-                    <td>冶金</td>
-                    </tr>
+                    
                     </tbody>
                   </table>
                   <button onclick="tableToExcel(&#39;enterpriseList&#39;, &#39;export table&#39;)" class="button-buttons button-glow button-rounded button-primary">
@@ -440,7 +414,7 @@ if (option && typeof option === "object") {
 </script>
 <!-- 初始化表格 -->
 <script type="text/javascript">
- var reloadSuccess=function() {}
+        
         var handleDataTableButtons = function() {
            enterpriseList=$("#enterpriseList").DataTable({
               language: {
@@ -493,8 +467,16 @@ if (option && typeof option === "object") {
             }
           };
         }();
+        var loadEnterpriseData=function() {
+                var dataurl='/palm_two/scheme_simulation.json';
+                enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
+                  alert("数据加载成功！");
+        });
+            }
     $(document).ready(function() {
         TableManageButtons.init();
+        loadEnterpriseData();
+
     });
 </script>
 <!-- Slider -->
