@@ -29,7 +29,7 @@ def parse_line(line, c)
   #puts hc.publish_datetime.
   #puts hc.forecast_datetime
   #puts hc.AQI
-  #puts hc.main_pol 
+  #puts hc.main_pol
   #puts hc.grade
   #puts hc.pm25
   #puts hc.pm10
@@ -57,14 +57,13 @@ cs.each do |c|
     #py = c.city_name_pinyin.strip
     #fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
     fn = "XJ_ENVAQFC_0052_HEBE_Langfang_2015042320_00000-07200.TXT"
-    f = File.open(path+fn) if File::exists?(path+fn) 
+    f = File.open(path+fn) if File::exists?(path+fn)
     puts fn
     next unless f
-    f.readlines[2..-1].each do |line| 
+    f.readlines[2..-1].each do |line|
       parse_line(line, c)
     end
     puts fn+" successful!"
     f.close
   end
 end
-
