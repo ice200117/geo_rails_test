@@ -235,7 +235,7 @@
   }
   function change(type,citypy){
     map.clearOverlays();
-    $.get('http://60.10.135.153:3003/querys/adj.js',{var:type,citypy:citypy},function(rdata){
+    $.get('http://60.10.135.153:3003/querys/adj',{var:type,citypy:citypy},function(rdata){
       var data = rdata[type];
       for(var i=0;i<70;i++){
         for(var j=0;j<120;j++){
@@ -247,7 +247,7 @@
           }
         }
       }
-    },'jsonp');
+    },'json');
   }
   change("NOX_120","zhengzhoushi");
   // var temp_str = '<tr class="tr_class">\
