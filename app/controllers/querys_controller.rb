@@ -76,8 +76,8 @@ class QuerysController < ApplicationController
       params['citypy'][-3,3] == 'shi' ? citypy = params['citypy'][0...-3] : citypy = params['citypy']
     end
     #puts varnames
-    # citypy.nil? ? path = '/mnt/share/Temp/BackupADJ/' : path = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
-    citypy.nil? ? path = '/Users/baoxi/Workspace/temp/BackupADJ/' : path = '/Users/baoxi/Workspace/temp/BackupADJ_'+citypy+'/'
+    citypy.nil? ? path = '/mnt/share/Temp/BackupADJ/' : path = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
+    # citypy.nil? ? path = '/Users/baoxi/Workspace/temp/BackupADJ/' : path = '/Users/baoxi/Workspace/temp/BackupADJ_'+citypy+'/'
     #if @@alt
     #  @@alt = false
     #  puts 'langfang'
