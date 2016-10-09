@@ -45,7 +45,8 @@
                           <div id="gridTracking" style="width:745px;height:592px;"></div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                         <div id="listStatistics" style="width:745px;height:592px;"></div>
+                         <div id="proportionOfIndustry" style="width:745px;height:592px;"></div>
+                         <div id="enterpriseDistributionStatistics" style="width:745px;height:592px;"></div>
                         </div>
                        
                       </div>
@@ -190,10 +191,10 @@
   function initGridLinesAndGridData(type,citypy){
      $.get('/querys/adj',{var:type,citypy:citypy},function(rdata){
       var data = rdata[type];
-      var xmin = rdata[xmin];
-      var ymin = rdata[ymin];
-      var xmax = rdata[xmax];
-      var ymax = rdata[ymax];
+      var xmin = rdata['xmin'];
+      var ymin = rdata['ymin'];
+      var xmax = rdata['xmax'];
+      var ymax = rdata['ymax'];
       gridLines(xmin,ymin,xmax,ymax);
       gridData(xmin,ymin,data);
     },'json');
@@ -202,10 +203,10 @@
     map.clearOverlays();
     $.get('/querys/adj',{var:type,citypy:citypy},function(rdata){
       var data = rdata[type];
-      var xmin = rdata[xmin];
-      var ymin = rdata[ymin];
-      var xmax = rdata[xmax];
-      var ymax = rdata[ymax];
+      var xmin = rdata['xmin'];
+      var ymin = rdata['ymin'];
+      var xmax = rdata['xmax'];
+      var ymax = rdata['ymax'];
       gridData(xmin,ymin,data);
     },'json');
   }
@@ -251,7 +252,7 @@
 </script>    
 <!-- 清单统计 -->
 <script type="text/javascript">
-var dom = document.getElementById("listStatistics");
+var dom = document.getElementById("proportionOfIndustry");
 var myChart = echarts.init(dom);
 var app = {};
 option = null;
@@ -297,6 +298,55 @@ if (option && typeof option === "object") {
     myChart.setOption(option, true);
 }
        </script>
+<!-- 区域内企业分布统计 -->
+<script>
+var dom1 = document.getElementById("enterpriseDistributionStatistics");
+var myChart1 = echarts.init(dom1);
+var app1 = {};
+option1 = null;
+app1.title = '区域内企业分布统计 - 条形图';
+
+option1 = {
+    title: {
+        text: '区域内企业分布统计'
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow'
+        }
+    },
+    legend: {
+        data: ['企业数量']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: {
+        type: 'value',
+        boundaryGap: [0, 0.01]
+    },
+    yAxis: {
+        type: 'category',
+        data: ['郑东新区','金水区','管城区','惠济区','中原区','高新区','二七区','经开区']
+    },
+    series: [
+        {
+            name: '企业数量',
+            type: 'bar',
+            data: [18203, 23489, 29034, 104970, 131744, 630230,19325, 23438]
+        }
+    ]
+};
+;
+if (option1 && typeof option1 === "object") {
+    myChart1.setOption(option1, true);
+}
+</script>
+
 <!-- tableToExcel -->
 <script>
     var tableToExcel = function() {
@@ -384,6 +434,15 @@ if (option && typeof option === "object") {
     min: 0,
     max: 100,
     from: 30,
+    onStart: function (data) {
+    },
+    onChange: function (data) {
+    },
+    onFinish: function (data) {
+        console.log(data);
+    },
+    onUpdate: function (data) {
+    }
 });
    });
 
