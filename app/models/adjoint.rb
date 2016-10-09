@@ -134,9 +134,9 @@ class Adjoint
     # 输入路径，正则表达式规则
     # 输出最新更新的文件路径
     file = [nil,nil] #文件名数组，第一个参数用来放置文件路径，第二个参数用来放最新修改时间
-    Dir.glob(ncp+rule).each do |f|
-      return nil if File.exist?(f.to_s)
-      if File::mtime(f)>file[1].to_i } #遍历路径下的所有文件，找到最新更新的获取路径
+    Dir.glob(path+rule).each do |f|
+      return nil if !File.exist?(f.to_s)
+      if File::mtime(f).to_i > file[1].to_i  #遍历路径下的所有文件，找到最新更新的获取路径
         file[0] = f
         file[1] = File.mtime(f)
       end
@@ -154,51 +154,67 @@ class Adjoint
     end
     ncfile = latest_file(ncp,'*.nc')
     return nil if ncfile.nil?
-    ncd = NetCDF.open(ncfile)
-    ncd = ncd.var(var_name).get
+    cdf = NetCDF.open(ncfile)
+    ncd = cdf.var(var_name).get
     return nil if ncd.nil?
-    ncd
+    {'data'=>ncd[0..-1,0..-1,0,0].to_a,'xmax'=>cdf.var('lat').get.max,'ymax'=>cdf.var('lon').get.max,'xmin'=>cdf.var('lat').get.min,'ymin'=>cdf.var('lon').get.min}
   end
 
   def self.read_grid(cityname)
     # 获取指定城市格点号
     # 输入城市名称
     # 返回该城市格点标号
-
+    cityname = cityname[0...-3] if cityname[-3,3] == 'shi'
     if Rails.env.development?
-      gdf = '/Users/baoxi/Workspace/temp/'+cityname #格点文件
+      gdf = '/Users/baoxi/Workspace/temp/'+cityname+'.txt' #格点文件
     else
-      gdf = '/Users/baoxi/Workspace/temp/'+cityname
+      gdf = '/Users/baoxi/Workspace/temp/'+cityname+'.txt'
     end
     lines = File.open(gdf,'r')
     return nil if lines.nil?
     data = []
-    lines[1..-1].each do |l|
+    lines.readlines.to_a[1..-1].each do |l|
       l = l.split(' ')
-      data << [l[0],l[1],l[2],l[3]]
+      data << [l[0].to_i,l[1].to_i,l[2].to_f,l[3].to_f]
     end
     data
   end
 
-  def self.emission(var_name,cityname,emission,percent,date)
-    ncd = ready_nc(var_name,cityname)
+  def self.emission(var_name,cityname,percent,date)
+    rncd = ready_nc(var_name,cityname)
+    ncd = rncd['data'].clone
+    rncd.delete('data')
     grd = read_grid(cityname)
     return nil if ncd.nil? or grd.nil?
     sum = ncd.flatten.sum #污染物总值
     city = [] #该市污染物数值
-    grd.each do |l| #获取城市数据
-      city << ncd[l[0]-1][l[1]-1]
+    grds = [] #储存不含有格点下标的数
+    grd.map do |l| #获取城市数据
+      city << ncd[l[1]-1][l[0]-1]
+      l << ncd[l[1]-1][l[0]-1]
+      grds << [l[2],l[3]]
     end
     sumc = city.sum
     frd = ForecastRealDatum.new.air_quality_forecast(cityname)
     aqi = frd[frd.keys.max]['AQI'] #预报aqi
-    return {'grid'=>ncd,'aqi'=>aqi} if percent == 0 or sum == 0 or sumc == 0
+    return {'map'=>ncd,'grid'=>grds,'aqi'=>aqi} if percent == 0 or sum == 0 or sumc == 0
     per_sum = sumc/sum.to_f #市内污染／总值
     aqi = (1 - per_sum*percent)*aqi
-    sumg = 0
-    city.each_with_index do |i|
-      sumg += i
-      if sumg/sumc >= percent
+    sumg = 0 #各个格点数值和
+    grdt = []
+    grdp = []
+    grds.clear
+    grd.sort_by{|x| x[4]}.reverse.each do |i|
+      sumg += i[4]
+      grdt << i[4]
+      grds << [i[0],i[1]]
+      grdp << [i[2],i[3]]
+      break if sumg/sumc >= percent
     end
+    ncd.map!{|l| l = Array.new(l.size){|e| e = 0}}
+    grdt.each_index do |i|
+      ncd[grds[i][1]-1][grds[i][0]-1] = grdt[i]
+    end
+    {'map'=>ncd,'grid'=>grdp,'aqi'=>aqi}.merge(rncd)
   end
 end
