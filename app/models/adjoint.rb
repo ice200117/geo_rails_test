@@ -137,6 +137,7 @@ class Adjoint
       ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
       i = i + 1
     end until File::exists?(ncfile)
+    ncfile
   end
 
   def self.ready_nc(var_name,cityname)
