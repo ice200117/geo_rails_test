@@ -7,10 +7,10 @@ class Enterprise < ActiveRecord::Base
 			gridPoint=gridPoint[1..-2]
 			gridPoints=gridPoint.split(",")
 			gridPoints.each do |grid|
-				xmin=grid['xmin']#longitude
-				xmax=grid['xmax']
-				ymin=grid['ymin']#latitude
-				ymax=grid['ymax']
+				xmin=grid.xmin#longitude
+				xmax=grid.xmax
+				ymin=grid.ymin#latitude
+				ymax=grid.ymax
 				tmp=Enterprise.where(longitude: xmin..xmax).where(latitude: ymin..ymax)
 				result+=tmp
 			end
