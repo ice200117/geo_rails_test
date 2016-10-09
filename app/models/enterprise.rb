@@ -1,8 +1,8 @@
 class Enterprise < ActiveRecord::Base
 	def get_enterprise_data(gridPoint,init)
 		result=[]
-		if init==1
-		result=Enterprise.all
+		if init.to_i==1
+			result=Enterprise.all
 		else
 			gridPoint.each do |grid|
 				xmin=grid['xmin']#longitude
