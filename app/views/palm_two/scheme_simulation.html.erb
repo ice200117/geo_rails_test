@@ -440,7 +440,18 @@ if (option1 && typeof option1 === "object") {
     onChange: function (data) {
     },
     onFinish: function (data) {
-        console.log(data);
+        $.ajax({            
+            url: '/palm_two/get_all_data',
+            data:{,
+                  'factor':'<%= @factor %>',
+                  'citynamepy':'<%= @citynamepy %>',
+                  'percent':data.from/100},
+            type: "get",
+            dataType : "json",            
+            success: function (data) { 
+              
+           }
+    });       
     },
     onUpdate: function (data) {
     }

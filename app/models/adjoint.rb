@@ -211,6 +211,6 @@ class Adjoint
     grdt.each_index do |i|
       ncd[grds[i][1]-1][grds[i][0]-1] = grdt[i]
     end
-    {'map'=>ncd,'grid'=>grdp,'aqi'=>aqi}.merge(rncd)
+    {'map'=>ncd,'grid'=>grdp,'aqi'=>aqi}.merge(rncd)#map 网格数据；grid：企业坐标[{}];
   end
 end

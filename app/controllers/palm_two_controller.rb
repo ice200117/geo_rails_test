@@ -34,4 +34,18 @@ class PalmTwoController < ApplicationController
     end
 
   end
+
+  def get_all_data
+    factor=params['factor']
+    citynamepy=params['citynamepy']
+    percent=params['percent'].to_f
+    all_data=Adjoint.emission(factor,citynamepy,percent,nil)
+    respond_to do |format|
+        format.json {
+            render json: all_data
+        }
+    end    
+      
+  end
+
 end
