@@ -202,17 +202,19 @@ class Adjoint
     aqi = (1 - per_sum*percent)*aqi
     sumg = 0 #各个格点数值和
     grdt = []
+    grdp = []
     grds.clear
     grd.sort_by{|x| x[4]}.reverse.each do |i|
       sumg += i[4]
       grdt << i[4]
       grds << [i[0],i[1]]
+      grdp << [i[2],i[3]]
       break if sumg/sumc >= percent
     end
     ncd.map!{|l| l = Array.new(l.size){|e| e = 0}}
     grdt.each_index do |i|
       ncd[grds[i][1]-1][grds[i][0]-1] = grdt[i]
     end
-    {'map'=>ncd,'grid'=>grds,'aqi'=>aqi}.merge(rncd)
+    {'map'=>ncd,'grid'=>grdp,'aqi'=>aqi}.merge(rncd)
   end
 end
