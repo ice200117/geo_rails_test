@@ -6,6 +6,7 @@ class PalmTwoController < ApplicationController
         format.html {
             # @citynamepy=params['cityname']
             # @factor=params['factor']
+            
             @citynamepy='zhengzhoushi'
             @factor='NOX_120'
             c = City.find_by city_name_pinyin: @citynamepy

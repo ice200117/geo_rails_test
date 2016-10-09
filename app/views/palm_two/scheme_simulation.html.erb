@@ -128,7 +128,7 @@
  <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min' %>       
 <!-- 网格追踪 -->
 <script type="text/javascript">
-  var center = new BMap.Point(@longitude,@latitude);
+  var center = new BMap.Point(<%= @longitude %>,<%= @latitude %>);
   // var marker = new BMap.Marker(center);// 创建标注
   // 创建Map实例
   var map = new BMap.Map("gridTracking",{minZoom:8});
@@ -209,7 +209,7 @@
       gridData(xmin,ymin,data);
     },'json');
   }
-  initGridLinesAndGridData(@factor,@citynamepy);
+  initGridLinesAndGridData('<%= @factor %>','<%= @citynamepy %>');
   function click(e){
     var p = e.target;
     var xmin = p.getBounds().getSouthWest().lng;//西南

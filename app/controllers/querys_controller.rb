@@ -78,6 +78,8 @@ class QuerysController < ApplicationController
     #puts varnames
     citypy.nil? ? path = '/mnt/share/Temp/BackupADJ/' : path = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
     # citypy.nil? ? path = '/Users/baoxi/Workspace/temp/BackupADJ/' : path = '/Users/baoxi/Workspace/temp/BackupADJ_'+citypy+'/'
+    #citypy.nil? ? path = '/mnt/share/Temp/BackupADJ/' : path = '/vagrant/palm/nc/'
+
     #if @@alt
     #  @@alt = false
     #  puts 'langfang'
