@@ -164,7 +164,7 @@ class Adjoint
     if Rails.env.development?
       gdf = '/Users/baoxi/Workspace/temp/'+cityname+'.txt' #格点文件
     else
-      gdf = '/mnt/share/Temp/BackupADJ_+='+cityname+'/grid_index/'+cityname+'.txt'
+      gdf = '/mnt/share/Temp/BackupADJ_'+cityname+'/grid_index/'+cityname+'.txt'
     end
     lines = File.open(gdf,'r')
     return nil if lines.nil?
