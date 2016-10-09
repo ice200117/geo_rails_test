@@ -1,7 +1,7 @@
 class Enterprise < ActiveRecord::Base
-	def get_enterprise_data(gridPoint,init)
+	def get_enterprise_data(gridPoint)
 		result=[]
-		if init.to_i==1
+		if init=='init'
 			result=Enterprise.all
 		else
 
