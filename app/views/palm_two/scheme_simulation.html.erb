@@ -1,5 +1,14 @@
         <%= stylesheet_link_tag 'buttons','css/normalize-css/normalize','css/ion.rangeSlider/css/ion.rangeSlider','css/ion.rangeSlider/css/ion.rangeSlider.skinHTML5' %>
         <div class="right_col" role="main">
+                  <!-- top tiles -->
+          <div class="row tile_count">
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <!-- <span class="count_top"><i class="fa fa-user"></i> Total Users</span> -->
+              <div id='aqimn' class="count"></div>
+              <!-- <span class="count_bottom"><i class="green">4% </i> From last Week</span> -->
+            </div>
+          </div>
+          <!-- /top tiles -->
           <div class="">
             <div class="page-title">
               <div class="title_left">
@@ -199,16 +208,9 @@
       gridData(xmin,ymin,data);
     },'json');
   }
-  function changeGridData(type,citypy){
-    map.clearOverlays();
-    $.get('/querys/adj',{var:type,citypy:citypy},function(rdata){
-      var data = rdata[type];
-      var xmin = rdata['xmin'];
-      var ymin = rdata['ymin'];
-      var xmax = rdata['xmax'];
-      var ymax = rdata['ymax'];
+  function changeGridData(xmin,ymin,data){
+      map.clearOverlays();
       gridData(xmin,ymin,data);
-    },'json');
   }
   initGridLinesAndGridData('<%= @factor %>','<%= @citynamepy %>');
   function click(e){
@@ -449,7 +451,9 @@ if (option1 && typeof option1 === "object") {
             type: "get",
             dataType : "json",            
             success: function (data) { 
-              
+              changeGridData(data.xmin,data.ymin,data.map);
+              loadEnterpriseData(data.grid);
+              $('#aqimn').append(data.aqi);
            }
     });       
     },
