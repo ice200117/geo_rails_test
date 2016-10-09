@@ -224,7 +224,7 @@
       xmax: xmax,
       ymax: ymax
     });
-    loadEnterpriseData(gridPoint);
+    loadEnterpriseData(gridPoint,0);
   }
 
   function getColor(val){
@@ -416,8 +416,8 @@ if (option1 && typeof option1 === "object") {
             }
           };
         }();
-        var loadEnterpriseData=function(gridPoint='init') {
-                var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint;
+        var loadEnterpriseData=function(gridPoint,init=1) {
+                var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint+'&init='+init;
                 enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
         });
             }
