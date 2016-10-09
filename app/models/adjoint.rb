@@ -154,7 +154,7 @@ class Adjoint
     cdf = NetCDF.open(ncfile)
     ncd = cdf.var(var_name).get
     return nil if ncd.nil?
-    {'data'=>ncd[0..-1,0..-1,0,0].to_a,'xmax'=>cdf.var('lat').get.max,'ymax'=>cdf.var('lon').get.max,'xmin'=>cdf.var('lat').get.min,'ymin'=>cdf.var('lon').get.min}
+    {'data'=>ncd[0..-1,0..-1,0,0].to_a,'xmax'=>cdf.var('lon').get.max,'ymax'=>cdf.var('lat').get.max,'xmin'=>cdf.var('lon').get.min,'ymin'=>cdf.var('lat').get.min}
   end
 
   def self.read_grid(cityname)
@@ -193,7 +193,7 @@ class Adjoint
     sumc = city.sum
     frd = ForecastRealDatum.new.air_quality_forecast(cityname)
     aqi = frd[frd.keys.max]['AQI'] #预报aqi
-    return {'map'=>ncd,'grid'=>grds,'aqi'=>aqi} if percent == 0 or sum == 0 or sumc == 0
+    return {'map'=>ncd,'grid'=>grds,'aqi'=>aqi}.merge(rncd) if percent == 0 or sum == 0 or sumc == 0
     per_sum = sumc/sum.to_f #市内污染／总值
     aqi = (1 - per_sum*percent)*aqi
     sumg = 0 #各个格点数值和
