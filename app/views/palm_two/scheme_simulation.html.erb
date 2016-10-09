@@ -128,8 +128,8 @@
  <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min' %>       
 <!-- 网格追踪 -->
 <script type="text/javascript">
-  var center = new BMap.Point(116.72176308539945,39.034435261707975);
-  var marker = new BMap.Marker(center);// 创建标注
+  var center = new BMap.Point(@longitude,@latitude);
+  // var marker = new BMap.Marker(center);// 创建标注
   // 创建Map实例
   var map = new BMap.Map("gridTracking",{minZoom:8});
   map.centerAndZoom(center,8);
@@ -161,82 +161,21 @@
     }
   }];
   map.setMapStyle({styleJson:mapStyle});
-  var xmin = 110,ymin = 35.8,xmax = 121.9,ymax = 42.7;
-//  try{
-//    BMapLib.AreaRestriction.setBounds(map,new BMap.Bounds(new BMap.Point(xmin,ymin),new BMap.Point(xmax,ymax)));
-//  }catch(e){
-//    alert(e);
-//  }
-  var lineOption = {strokeColor:"black",strokeWeight:0.3,strokeOpacity:0.7,enableMassClear:false,enableClicking:false};
-  var rectangleOption = {strokeColor:"black",strokeWeight:0.3,strokeOpacity:0,fillColor:"red",fillOpacity:0.7};
-  for(var i = 0; i < 70; i++){
-    map.addOverlay(new BMap.Polyline([new BMap.Point(xmin,(ymin + 0.1 * i)),new BMap.Point(xmax,(ymin + 0.1 * i))],lineOption));
+  //网格线
+  function gridLines(xmin,ymin,xmax,ymax)
+  {
+      var lineOption = {strokeColor:"black",strokeWeight:0.3,strokeOpacity:0.7,enableMassClear:false,enableClicking:false};
+      for(var i = 0; i < 70; i++){
+        map.addOverlay(new BMap.Polyline([new BMap.Point(xmin,(ymin + 0.1 * i)),new BMap.Point(xmax,(ymin + 0.1 * i))],lineOption));
+      }
+      for(var i = 0; i < 120; i++){
+        map.addOverlay(new BMap.Polyline([new BMap.Point((xmin + 0.1 * i),ymin),new BMap.Point((xmin + 0.1 * i),ymax)],lineOption));
+      } 
   }
-  for(var i = 0; i < 120; i++){
-    map.addOverlay(new BMap.Polyline([new BMap.Point((xmin + 0.1 * i),ymin),new BMap.Point((xmin + 0.1 * i),ymax)],lineOption));
-  }
-  // $(function(){
-    // $(".change").click(function(){
-    //   if($(this).is(".active")){
-    //     return;
-    //   }
-    //   $(this).addClass("active").siblings().removeClass("active");
-    //   change($(this).data("val"));
-    // });
-    // $.get("/percenter/findCompanyByTime.jhtm",function(data){
-    //   if(data.length <= 0){
-    //     return;
-    //   }
-    //   $("#company_list").empty().append($.makeList(temp_str,data,function(k,v){
-    //     return {
-    //       companyname:v.companyname.substring(0,11),
-    //       industry:v.industry.substring(0,6)
-    //     };
-    //   }));
-    // },"json");
-    // $(document).on("click","a.location",function(e){
-    //   e.preventDefault();
-    //   deletePoint();
-    //   var point = new BMap.Point($(this).data("lng"),$(this).data("lat"));
-    //   marker.setPosition(point);
-    //   $.get("/percenter/findCompany.jhtm",{id:$(this).data("id")},function(data){
-    //     var infoWindow = new BMap.InfoWindow($.format(temp_str2,data),{width:295,height:180,enableMessage:false});  // 创建信息窗口对象
-    //     map.openInfoWindow(infoWindow,point); //开启信息窗口
-    //     map.addOverlay(marker);
-    //     map.panTo(point);
-    //   },"json");
-    // });
-    // $(document).on("click","#company_list tr",function(e){
-    //   e.preventDefault();
-    //   $.post("/product/searchByCompanyId.jhtm",{companyId:$(this).find("a").data("id")},function(data){
-    //     $("#company_jstj").empty().append($.makeList(temp_str3,data));
-    //   });
-    // });
-    // $("#search_company").click(function(){
-    //   if($("#add_city").data("id")=='' && $("#industry").data("id")=='' && $("#company_name").val() == ''){
-    //     return;
-    //   }
-    //   $.post("/percenter/searchCompany.jhtm",{
-    //     add_city:($("#add_city").val() !='' ? $("#add_city").data("id"):''),
-    //     industry:$("#industry").val(),
-    //     name:$("#company_name").val()
-    //   },function(data){
-    //     $("#company_list").empty().append($.makeList(temp_str,data,function(k,v){
-    //       return {
-    //         companyname:v.companyname.substring(0,11),
-    //         industry:v.industry.substring(0,6)
-    //       };
-    //     }));
-    //   },"json");
-    // });
-  // });
-  function deletePoint(){
-    map.removeOverlay(marker);
-  }
-  function change(type,citypy){
-    map.clearOverlays();
-    $.get('http://60.10.135.153:3003/querys/adj',{var:type,citypy:citypy},function(rdata){
-      var data = rdata[type];
+  //网格数据
+  function gridData(xmin,ymin,data)
+  {
+    var rectangleOption = {strokeColor:"black",strokeWeight:0.3,strokeOpacity:0,fillColor:"red",fillOpacity:0.7};
       for(var i=0;i<70;i++){
         for(var j=0;j<120;j++){
           if(data[i][j]>0.05){
@@ -247,66 +186,44 @@
           }
         }
       }
+  }
+  function initGridLinesAndGridData(type,citypy){
+     $.get('/querys/adj',{var:type,citypy:citypy},function(rdata){
+      var data = rdata[type];
+      var xmin = rdata[xmin];
+      var ymin = rdata[ymin];
+      var xmax = rdata[xmax];
+      var ymax = rdata[ymax];
+      gridLines(xmin,ymin,xmax,ymax);
+      gridData(xmin,ymin,data);
     },'json');
   }
-  change("NOX_120","zhengzhoushi");
-  // var temp_str = '<tr class="tr_class">\
-  //         <td>{companyname}</td>\
-  //         <td class="text-muted-2">{industry}</td>\
-  //         <td class="text-center">\
-  //           <a href="#" class="location" data-lat="{point_lat}" data-lng="{point_lng}" data-id="{id}">\
-  //             <img src="/template/5/default/_files/zcw/img/icon-2.png">\
-  //           </a>\
-  //         </td>\
-  //         </tr>';
-  /* var temp_str2 = '<table>\
-<tr>\
-  <td>企业名称</td>\
-  <td>{companyname}</td>\
-</tr>\
-<tr>\
-  <td>企业行业</td>\
-  <td>{industry}</td>\
-</tr>\
-<tr>\
-  <td>企业地址</td>\
-  <td>{address}</td>\
-</tr>\
-<tr>\
-  <td>主要污染物</td>\
-  <td>{mainpollute}</td>\
-</tr>\
-</table>'; */
-// var temp_str2 = '<div class="shangb">\
-//           <h3 class="matitle">{companyname}</h3>\
-//           <div class="lie_t"><span class="hengys">企业行业</span><span class="hen_title">{industry}</span></div>\
-//           <div class="lie_t"><span class="hengys">污染物</span><span class="hen_wr">{mainpollute}</span></div>\
-//       </div>\
-//       <ul class="lixk">\
-//           <li class="lixf">{contactName}</li>\
-//           <li class="lixs">{contacttype}</li>\
-//           <li class="lixt">{address}</li>\
-//       </ul>'
-  // var temp_str3 = '<div class="col-sm-6">\
-  //         <div class="zc-tec-list-item">\
-  // <h4><a href="/product/detail.jhtm?id={infoId}&nodeId=269">{title}</a></h4>\
-  // <dl class="dl-horizontal">\
-  // <dt class="text-muted">所属方向：</dt>\
-  // <dd>{author}</dd>\
-  // <dt class="text-muted">所属品类：</dt>\
-  // <dd>{artTime}</dd>\
-  // <dt class="text-muted">技术成熟度：</dt>\
-  // <dd>{mtaDesc}</dd>\
-  // <dt class="text-muted">成果内容：</dt>\
-  // <dd>{publishDate}</dd>\
-  // </dl>\
-  // </div>\
-  // </div>';
+  function changeGridData(type,citypy){
+    map.clearOverlays();
+    $.get('/querys/adj',{var:type,citypy:citypy},function(rdata){
+      var data = rdata[type];
+      var xmin = rdata[xmin];
+      var ymin = rdata[ymin];
+      var xmax = rdata[xmax];
+      var ymax = rdata[ymax];
+      gridData(xmin,ymin,data);
+    },'json');
+  }
+  initGridLinesAndGridData(@factor,@citynamepy);
   function click(e){
     var p = e.target;
-    var xmin = p.getBounds().getSouthWest().lng;
-    var ymin = p.getBounds().getSouthWest().lat;
-    loadEnterpriseData(xmin,ymin);
+    var xmin = p.getBounds().getSouthWest().lng;//西南
+    var ymin = p.getBounds().getSouthWest().lat;//西南
+    var xmax = xmin+0.1;
+    var ymax = ymin+0.1;
+    var gridPoint=[];
+    gridPoint.push({
+      xmin: xmin,
+      ymin: ymin,
+      xmax: xmax,
+      ymax: ymax
+    });
+    loadEnterpriseData(gridPoint);
   }
 
   function getColor(val){
@@ -331,17 +248,9 @@
     else
       return "#330C02";
   }
-
-  // $(function(){
-  //   $('.j-zc-index-slider')
-  //           .unslider({
-  //             dots: true
-  //           });
-
-  // });
 </script>    
 <!-- 清单统计 -->
-       <script type="text/javascript">
+<script type="text/javascript">
 var dom = document.getElementById("listStatistics");
 var myChart = echarts.init(dom);
 var app = {};
@@ -457,8 +366,8 @@ if (option && typeof option === "object") {
             }
           };
         }();
-        var loadEnterpriseData=function(xmin,ymin) {
-                var dataurl='/palm_two/scheme_simulation.json?xmin='+xmin+'&xmax='+(xmin+0.1)+'&ymin='+ymin+'&ymax='+(ymin+0.1);
+        var loadEnterpriseData=function(gridPoint='init') {
+                var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint;
                 enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
         });
             }

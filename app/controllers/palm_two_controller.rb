@@ -3,11 +3,19 @@ class PalmTwoController < ApplicationController
   def scheme_simulation
 
   	respond_to do |format|
-        format.html {}
+        format.html {
+            # @citynamepy=params['cityname']
+            # @factor=params['factor']
+            @citynamepy='zhengzhoushi'
+            @factor='NOX_120'
+            c = City.find_by city_name_pinyin: @citynamepy
+            @latitude=c.latitude
+            @longitude=c.longitude
+        }
         format.json {
         	enterprise_data=Hash.new
         	result = []
-            r_data=Enterprise.new.get_enterprise_data
+            r_data=Enterprise.new.get_enterprise_data(params['gridPoint'])
             number=1
             r_data.each do |enterprise|
             	tmp=[]
