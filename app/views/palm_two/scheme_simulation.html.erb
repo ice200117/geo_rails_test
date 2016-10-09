@@ -417,7 +417,7 @@ if (option1 && typeof option1 === "object") {
           };
         }();
         var loadEnterpriseData=function(gridPoint,init=1) {
-                var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint+'&init='+init;
+                var dataurl='/palm_two/scheme_simulation.json?gridPoint='+JSON.stringify(gridPoint)+'&init='+init;
                 enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
         });
             }
