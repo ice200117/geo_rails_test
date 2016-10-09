@@ -16,7 +16,7 @@ class PalmTwoController < ApplicationController
         format.json {
         	enterprise_data=Hash.new
         	result = []
-            r_data=Enterprise.new.get_enterprise_data(params['gridPoint'],params['init'])
+            r_data=Enterprise.new.get_enterprise_data(JSON.parse(params['gridPoint']),params['init'])
             number=1
             r_data.each do |enterprise|
             	tmp=[]

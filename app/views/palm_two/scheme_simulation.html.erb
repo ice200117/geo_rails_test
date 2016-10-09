@@ -218,12 +218,12 @@
     var xmax = xmin+0.1;
     var ymax = ymin+0.1;
     var gridPoint=[];
-    var tmp=[];
-    tmp.push(xmin);
-    tmp.push(ymin);
-    tmp.push(xmax);
-    tmp.push(ymax);
-    gridPoint.push(tmp);
+    gridPoint.push({
+      xmin: xmin,
+      ymin: ymin,
+      xmax: xmax,
+      ymax: ymax
+    });
     loadEnterpriseData(gridPoint,0);
   }
 
