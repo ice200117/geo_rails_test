@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160929043615) do
+ActiveRecord::Schema.define(version: 20161009111729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,7 +139,10 @@ ActiveRecord::Schema.define(version: 20160929043615) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.spatial  "boundary",   limit: {:srid=>3857, :type=>"multi_polygon"}
+    t.integer  "city_id"
   end
+
+  add_index "counties", ["city_id"], :name => "index_counties_on_city_id"
 
   create_table "day_cities", force: true do |t|
     t.integer  "city_id"
