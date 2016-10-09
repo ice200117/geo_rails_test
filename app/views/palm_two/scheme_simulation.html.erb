@@ -436,7 +436,7 @@ if (option1 && typeof option1 === "object") {
     $("#range").ionRangeSlider({
     min: 0,
     max: 100,
-    from: 30,
+    from: 0,
     onStart: function (data) {
     },
     onChange: function (data) {
@@ -452,8 +452,8 @@ if (option1 && typeof option1 === "object") {
             dataType : "json",            
             success: function (data) { 
               changeGridData(data.xmin,data.ymin,data.map);
-              loadEnterpriseData(data.grid);
-              $('#aqimn').append(data.aqi);
+              loadEnterpriseData(JSON.stringify(data.grid));
+              $('#aqimn').append("AQI:"+Math.round(data.aqi));
            }
     });       
     },
