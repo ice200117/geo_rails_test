@@ -4,7 +4,9 @@ class Enterprise < ActiveRecord::Base
 		if init.to_i==1
 			result=Enterprise.all
 		else
-			gridPoint.each do |grid|
+			gridPoint=gridPoint[1..-2]
+			gridPoints=gridPoint.split(",")
+			gridPoints.each do |grid|
 				xmin=grid['xmin']#longitude
 				xmax=grid['xmax']
 				ymin=grid['ymin']#latitude
