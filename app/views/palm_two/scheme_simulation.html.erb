@@ -453,6 +453,7 @@ if (option1 && typeof option1 === "object") {
             success: function (data) { 
               changeGridData(data.xmin,data.ymin,data.map);
               loadEnterpriseData(JSON.stringify(data.grid));
+              $("#aqimn").empty();
               $('#aqimn').append("AQI:"+Math.round(data.aqi));
            }
     });       
