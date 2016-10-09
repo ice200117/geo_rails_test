@@ -1,4 +1,6 @@
 class County < ActiveRecord::Base
+	belongs_to :city
+
   # Create a simple mercator factory. This factory itself is
   # geographic (latitude-longitude) but it also contains a
   # companion projection factory that uses EPSG 3785.

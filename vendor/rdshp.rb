@@ -4,6 +4,11 @@ cl.each { |c| c.destroy }
 
 require 'iconv'
 
+def find_city(adcode)
+  post = (adcode[0,4]+'00').to_i
+  City.find_by_post_number(post)
+end
+
 mct_proj4 = '+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs '
 mct_wkt = <<WKT
 WKT
@@ -24,15 +29,15 @@ wgs84_wkt = <<WKT
     AUTHORITY["EPSG","4326"]]
 WKT
 w_factory = RGeo::Geographic.spherical_factory(:srid => 4326, :proj4 => wgs84_proj4, :coord_sys => wgs84_wkt)
-RGeo::Shapefile::Reader.open('vendor/map/heibei.shp', :factory => County::FACTORY) do |file|
+RGeo::Shapefile::Reader.open('vendor/map/county.shp', :factory => County::FACTORY) do |file|
   file.each do |record|
     name = record['NAME99']
     name = Iconv.conv('UTF-8//IGNORE', 'GB2312//IGNORE', name)
     area = record['AREA']
     perimeter = record['PERIMETER']
     adcode = record['ADCODE99']
-    centroid_y = record['CENTROID_Y']
-    centroid_x = record['CENTROID_X']
+    #centroid_y = record['CENTROID_Y']
+    #centroid_x = record['CENTROID_X']
     puts name
 
     c = County.new
@@ -40,8 +45,9 @@ RGeo::Shapefile::Reader.open('vendor/map/heibei.shp', :factory => County::FACTOR
     c.area       =  area      
     c.perimeter  =  perimeter 
     c.adcode     =  adcode    
-    c.centroid_y =  centroid_y
-    c.centroid_x =  centroid_x
+    c.city = find_city(adcode)
+    #c.centroid_y =  centroid_y
+    #c.centroid_x =  centroid_x
 
     #boundarys = record.geometry.projection
     #record.geometry.projection.each do |poly|
@@ -56,3 +62,4 @@ RGeo::Shapefile::Reader.open('vendor/map/heibei.shp', :factory => County::FACTOR
     c.save 
   end
 end
+
