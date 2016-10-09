@@ -417,14 +417,14 @@ if (option1 && typeof option1 === "object") {
             }
           };
         }();
-        var loadEnterpriseData=function(gridPoint='init') {
+        var loadEnterpriseData=function(gridPoint) {
                 var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint;
                 enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
         });
             }
     $(document).ready(function() {
         TableManageButtons.init();
-        loadEnterpriseData();
+        loadEnterpriseData("");
 
     });
 </script>
