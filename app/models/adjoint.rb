@@ -146,7 +146,7 @@ class Adjoint
     if Rails.env.development?
       ncp = '/Users/baoxi/Workspace/temp/'
     else
-      ncp = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
+      ncp = '/mnt/share/Temp/BackupADJ_'+cityname+'/'
       # ncp = '/Users/baoxi/Workspace/temp/'
     end
     ncfile = latest_file(ncp)

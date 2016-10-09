@@ -442,7 +442,7 @@ if (option1 && typeof option1 === "object") {
     onFinish: function (data) {
         $.ajax({            
             url: '/palm_two/get_all_data',
-            data:{,
+            data:{
                   'factor':'<%= @factor %>',
                   'citynamepy':'<%= @citynamepy %>',
                   'percent':data.from/100},
