@@ -224,6 +224,7 @@
       xmax: xmax,
       ymax: ymax
     });
+    gridPoint=JSON.stringify(gridPoint)
     loadEnterpriseData(gridPoint);
   }
 
@@ -417,7 +418,7 @@ if (option1 && typeof option1 === "object") {
           };
         }();
         var loadEnterpriseData=function(gridPoint='init') {
-                var dataurl='/palm_two/scheme_simulation.json?gridPoint='+JSON.stringify(gridPoint)+'&init='+init;
+                var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint;
                 enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
         });
             }
