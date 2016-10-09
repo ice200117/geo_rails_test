@@ -21,10 +21,10 @@ class QuerysController < ApplicationController
                   "CO_24", "NOX_24", "SO2_24" ]
     end
     #puts varnames
-    path = '/mnt/share/Temp/BackupADJ/'
+    path = '/mnt/share/Temp/BackupADJ_langfangshi/'
 
     if params[:city_name]
-      path = '/mnt/share/Temp/BackupADJ_baoding/'
+      path = '/mnt/share/Temp/BackupADJ_baodingshi/'
     end
     #if @@alt
     #  @@alt = false
@@ -72,36 +72,19 @@ class QuerysController < ApplicationController
     else
       varnames = ["CO_120", "NOX_120", "SO2_120"]
     end
-    if params['citypy']
-      params['citypy'][-3,3] == 'shi' ? citypy = params['citypy'][0...-3] : citypy = params['citypy']
-    end
-    #puts varnames
-    citypy.nil? ? path = '/mnt/share/Temp/BackupADJ/' : path = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
-    # citypy.nil? ? path = '/Users/baoxi/Workspace/temp/BackupADJ/' : path = '/Users/baoxi/Workspace/temp/BackupADJ_'+citypy+'/'
-    #if @@alt
-    #  @@alt = false
-    #  puts 'langfang'
-    #  path = '/mnt/share/Temp/BackupADJ/'
-    #else
-    #  @@alt = true
-    #  puts 'baoding'
-    #  path = '/mnt/share/Temp/BackupADJ_baoding/'
-    #end
-    nt = Time.now
-    i = 0
-    begin
-      #puts i
-      strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
-      ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
-      i = i + 1
-    end until File::exists?(ncfile)
-    #puts ncfile
+    citypy = params['citypy']
+    citypy.nil? ? path = '/mnt/share/Temp/BackupADJ_langfangshi/' : path = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
+    ncfile = Adjoint.latest_file(path)
     file = NetCDF.open(ncfile)
     @dataArr = Hash.new
     varnames.each do |var|
       data = file.var(var).get
       @dataArr[var] = data[0..-1,0..-1,0,0].to_a
     end
+    @dataArr['ymin'] = file.var('lat').get.min
+    @dataArr['ymax'] = file.var('lat').get.max
+    @dataArr['xmin'] = file.var('lon').get.min
+    @dataArr['xmax'] = file.var('lon').get.max
     respond_to do |format|
       format.html { render json: @dataArr}
       if params[:callback]

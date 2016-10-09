@@ -129,19 +129,14 @@ class Adjoint
     perc
   end
 
-  def self.latest_file(path,rule)
-    # 获取指定路径下，指定匹配规则的最新更新的文件
-    # 输入路径，正则表达式规则
-    # 输出最新更新的文件路径
-    file = [nil,nil] #文件名数组，第一个参数用来放置文件路径，第二个参数用来放最新修改时间
-    Dir.glob(path+rule).each do |f|
-      return nil if !File.exist?(f.to_s)
-      if File::mtime(f).to_i > file[1].to_i  #遍历路径下的所有文件，找到最新更新的获取路径
-        file[0] = f
-        file[1] = File.mtime(f)
-      end
-    end
-    file[0]
+  def self.latest_file(path)
+    nt = Time.now
+    i = 0
+    begin
+      strtime = (nt-60*60*24*i).strftime("%Y-%m-%d")
+      ncfile = path + 'CUACE_09km_adj_'+strtime+'.nc'
+      i = i + 1
+    end until File::exists?(ncfile)
   end
 
   def self.ready_nc(var_name,cityname)
@@ -150,9 +145,10 @@ class Adjoint
     if Rails.env.development?
       ncp = '/Users/baoxi/Workspace/temp/'
     else
-      ncp = '/Users/baoxi/Workspace/temp/'
+      ncp = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
+      # ncp = '/Users/baoxi/Workspace/temp/'
     end
-    ncfile = latest_file(ncp,'*.nc')
+    ncfile = latest_file(ncp)
     return nil if ncfile.nil?
     cdf = NetCDF.open(ncfile)
     ncd = cdf.var(var_name).get
@@ -164,11 +160,10 @@ class Adjoint
     # 获取指定城市格点号
     # 输入城市名称
     # 返回该城市格点标号
-    cityname = cityname[0...-3] if cityname[-3,3] == 'shi'
     if Rails.env.development?
       gdf = '/Users/baoxi/Workspace/temp/'+cityname+'.txt' #格点文件
     else
-      gdf = '/Users/baoxi/Workspace/temp/'+cityname+'.txt'
+      gdf = '/mnt/share/Temp/BackupADJ_+='+cityname+'/grid_index/'+cityname+'.txt'
     end
     lines = File.open(gdf,'r')
     return nil if lines.nil?
@@ -192,7 +187,7 @@ class Adjoint
     grd.map do |l| #获取城市数据
       city << ncd[l[1]-1][l[0]-1]
       l << ncd[l[1]-1][l[0]-1]
-      grds << [l[2],l[3]]
+      grds << {'xmin'=>l[2],'ymin'=>l[3],'xmax'=>l[2].to_f+0.1,'ymax'=>l[3].to_f+0.1}
     end
     sumc = city.sum
     frd = ForecastRealDatum.new.air_quality_forecast(cityname)
@@ -208,7 +203,7 @@ class Adjoint
       sumg += i[4]
       grdt << i[4]
       grds << [i[0],i[1]]
-      grdp << [i[2],i[3]]
+      grdp << {'xmin'=>i[2],'ymin'=>i[3],'xmax'=>i[2].to_f+0.1,'ymax'=>i[3].to_f+0.1}
       break if sumg/sumc >= percent
     end
     ncd.map!{|l| l = Array.new(l.size){|e| e = 0}}
