@@ -1,5 +1,5 @@
 class Enterprise < ActiveRecord::Base
-	def get_enterprise_data(gridPoint)
+	def get_enterprise_data(gridPoint="")
 		result=[]
 		if gridPoint==''
 			result=Enterprise.all
