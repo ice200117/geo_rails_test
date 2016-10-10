@@ -130,6 +130,7 @@ class Adjoint
   end
 
   def self.latest_file(path)
+    # return nil if !File.directory?(path) and 
     nt = Time.now
     i = 0
     begin
@@ -192,7 +193,8 @@ class Adjoint
     end
     sumc = city.sum
     frd = ForecastRealDatum.new.air_quality_forecast(cityname)
-    return {'map'=>ncd,'grid'=>grds,'time'=>frd.keys.max,'aqi'=>frd[frd.keys.max]['AQI'],}.merge(rncd) if percent == 0 or sum == 0 or sumc == 0
+    aqi = frd[frd.keys.max]['AQI']
+    return {'map'=>ncd,'grid'=>grds,'time'=>frd.keys.max,'aqi'=>aqi}.merge(rncd) if percent == 0 or sum == 0 or sumc == 0
     per_sum = sumc/sum.to_f #市内污染／总值
     aqi = (1 - per_sum*percent)*aqi
     sumg = 0 #各个格点数值和
@@ -211,5 +213,12 @@ class Adjoint
       ncd[grds[i][1]-1][grds[i][0]-1] = grdt[i]
     end
     {'map'=>ncd,'grid'=>grdp,'time'=>frd.keys.max,'aqi'=>frd[frd.keys.max]['AQI']}.merge(rncd)#map 网格数据；grid：企业坐标[{}];
+  end
+
+  def self.evaluate(cityname,stime,etime)
+    mdata = TempSfcitiesDay.includes(:city).where('cities.city_name_pinyin'=>cityname,data_real_time:(stime.to_time.beginning_of_day..etime.to_time.end_of_day))
+    return nil if mdata.size == 0
+    fdata = ForecastRealDatum.includes(:city).where('cities.city_name_pinyin'=>cityname,)
+
   end
 end
