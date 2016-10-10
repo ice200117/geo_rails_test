@@ -15,6 +15,7 @@ class PalmTwoController < ApplicationController
               @latitude=c.latitude
               @longitude=c.longitude
             end
+            render 'page_lost_city',layout: false unless c
         }
         format.json {
         	enterprise_data=Hash.new
