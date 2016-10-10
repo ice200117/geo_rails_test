@@ -126,4 +126,5 @@ Rails.application.routes.draw do
 	#palm 2.0
 	get 'palm_two/scheme_simulation' => 'palm_two#scheme_simulation'
 	get 'palm_two/get_all_data' => 'palm_two#get_all_data'
+	get 'palm_two/effect_evaluation' => 'palm_two#effect_evaluation'
 end
