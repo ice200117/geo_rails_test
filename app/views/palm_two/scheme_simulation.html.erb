@@ -456,8 +456,13 @@ if (option1 && typeof option1 === "object") {
               loadEnterpriseData(JSON.stringify(data.grid));
               $("#aqimn").empty();
               $('#aqimn').append("预计减排后AQI为:"+Math.round(data.aqi));
-              $("#map_title").empty();
-              $('#map_title').append("需管控的网格分布");
+              if(data.from==0){
+                $("#map_title").empty();
+                $('#map_title').append("周边地区排放对我市的污染贡献分布");
+              }else{
+                $("#map_title").empty();
+                $('#map_title').append("需管控的网格分布");
+              }
            }
     });       
     },
