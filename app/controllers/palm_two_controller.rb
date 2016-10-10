@@ -52,4 +52,9 @@ class PalmTwoController < ApplicationController
       
   end
 
+
+  def effect_evaluation
+      
+  end
+
 end
