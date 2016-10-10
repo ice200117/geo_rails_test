@@ -232,29 +232,30 @@ class HourlyCityForecastAirQuality < Partitioned::ByMonthlyTimeField
       tmp.each do |k,v|
         v.delete_if{|x| !((k.tomorrow.beginning_of_day.to_f..k.tomorrow.end_of_day.to_f) === x.forecast_datetime.to_f)}
       end
+      tmp1 = {}
+      tmp.keys.each{|x| tmp1[x.to_date+1] = tmp[x];tmp.delete(x)}
+      tmp = tmp1
       Custom::Redis.set(pinyin+stime.to_s+etime.to_s,tmp,3600)
     else 
       tmp=Custom::Redis.get(pinyin+stime.to_s+etime.to_s)
     end
     tmp.each do |k,v|
-      six = {'so2'=>[],'no2'=>[],'pm10'=>[],'pm25'=>[],'co'=>[],'o3'=>[],'o3_8h'=>[]}
+      six = {'SO2'=>[],'NO2'=>[],'pm10'=>[],'pm25'=>[],'CO'=>[],'O3'=>[]}
       v.each do |l|
-        six.each{|m,n| (m == 'pm10' or m == 'pm25') ? six[m] << l[m].to_f : six[m] << l[m.upcase].to_f}
+        six.keys.each{|x| six[x] << l[x].to_f}
       end
       six.each do |m,n|
-        if m == 'o3'
+        if m == 'O3'
           j = []
           (0..16).each do |a|
             j << n[a..a+7].sum
           end
-          six['o3_8h'] = j.max/8
+          six[m] = j.max/8
         else
-          next if m == 'o3_8h'
           (n.sum == 0 or n.size == 0) ? six[m] = 0 : six[m] = n.sum/n.size 
         end
       end
-      six['zhzs'] = six['so2'].to_f.round(2)/60+six['no2'].to_f.round(2)/40+six['pm10'].to_f.round(2)/70+six['pm25'].to_f.round(2)/35+six['co'].to_f.round(2)/4+six['o3_8h'].to_f.round(2)/160
-      six.delete('o3')
+      six['zhzs'] = six['SO2'].to_f.round(2)/60+six['NO2'].to_f.round(2)/40+six['pm10'].to_f.round(2)/70+six['pm25'].to_f.round(2)/35+six['CO'].to_f.round(2)/4+six['O3'].to_f.round(2)/160
       six['aqi'] = get_aqi(six)['aqi']
       tmp[k] = six
     end
@@ -266,11 +267,11 @@ class HourlyCityForecastAirQuality < Partitioned::ByMonthlyTimeField
 		#返回值为aqi和首要污染物return {'aqi'=>1,'main_poll'=>O3}
 		init=Hash.new
 		init['iaqi']={0=>0,1=>50,2=>100,3=>150,4=>200,5=>300,6=>400,7=>500}
-		init['so2']=[0,50,150,475,800,1600,2100,2620]
-		init['no2']=[0,40,80,180,280,565,750,940]
+		init['SO2']=[0,50,150,475,800,1600,2100,2620]
+		init['NO2']=[0,40,80,180,280,565,750,940]
 		init['pm10']=[0,50,150,250,350,420,500,600]
-		init['co']=[0,2,4,14,24,36,48,60]
-		init['o3_8h']=[0,100,160,215,265,800]
+		init['CO']=[0,2,4,14,24,36,48,60]
+		init['O3']=[0,100,160,215,265,800]
 		init['pm25']=[0,35,75,115,150,250,350,500]
 		init['subindex'] = []
 		data.each do |k,v|
