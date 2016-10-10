@@ -1,8 +1,8 @@
         <%= stylesheet_link_tag 'buttons','css/normalize-css/normalize','css/ion.rangeSlider/css/ion.rangeSlider','css/ion.rangeSlider/css/ion.rangeSlider.skinHTML5' %>
-        <div class="right_col" role="main">
+        <div class="right_col" style="margin-top:0px; margin-bottom:1px; height:0px" role="main">
                   <!-- top tiles -->
-          <div class="row tile_count">
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+          <div class="row tile_count" style="margin:1px; padding:0px; height:0px">
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count" style="margin:0px; padding:0px; height:0px">
               <!-- <span class="count_top"><i class="fa fa-user"></i> Total Users</span> -->
               <!-- <span class="count_bottom"><i class="green">4% </i> From last Week</span> -->
             </div>
@@ -46,19 +46,19 @@
                       <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                         <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">网格追踪</a>
                         </li>
-                        <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">企业统计</a>
+                        <li role="presentation" class="" onclick="setTimeout('myChart.resize();myChart1.resize()', 300)"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">企业统计</a>
                         </li>
                        
                       </ul>
                       <div id="myTabContent" class="tab-content">
                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
                           <div id="map_title" style="position:absolute;top:50px;left:30%;padding:4px;background:rgba(255,255,255,0.9);z-index:2000;">周边地区排放对我市的污染贡献分布</div>
-                          <div id="gridTracking" style="width:100%;height:692px;" onResize="$(this).style.width='100%'"></div>
+                          <div id="gridTracking" style="width:100%;height:692px;"></div>
                           <div style="position: absolute; top: 200px; right: 20px;"><%= image_tag("adj_so2_legend.png") %></div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                         <div id="proportionOfIndustry" style="width:545px;height:392px;" onResize="$(this).style.width='100%'"></div>
-                         <div id="enterpriseDistributionStatistics" style="width:545px;height:392px;"></div>
+                         <div id="proportionOfIndustry" style="width:100%;height:392px;"></div>
+                         <div id="enterpriseDistributionStatistics" style="width:100%;height:392px;"></div>
                         </div>
                        
                       </div>
@@ -300,6 +300,7 @@ option = {
 };
 if (option && typeof option === "object") {
     myChart.setOption(option, true);
+    window.onresize=myChart.resize;
 }
        </script>
 <!-- 区域内企业分布统计 -->
@@ -348,6 +349,7 @@ option1 = {
 ;
 if (option1 && typeof option1 === "object") {
     myChart1.setOption(option1, true);
+    window.onresize=myChart1.resize;
 }
 </script>
 
@@ -442,13 +444,13 @@ if (option1 && typeof option1 === "object") {
     },
     onChange: function (data) {
     },
-    onFinish: function (data) {
+    onFinish: function (data_in) {
         $.ajax({            
             url: '/palm_two/get_all_data',
             data:{
                   'factor':'<%= @factor %>',
                   'citynamepy':'<%= @citynamepy %>',
-                  'percent':data.from/100},
+                  'percent':data_in.from/100},
             type: "get",
             dataType : "json",            
             success: function (data) { 
@@ -456,7 +458,7 @@ if (option1 && typeof option1 === "object") {
               loadEnterpriseData(JSON.stringify(data.grid));
               $("#aqimn").empty();
               $('#aqimn').append("预计减排后AQI为:"+Math.round(data.aqi));
-              if(data.from==0){
+              if(data_in.from==0){
                 $("#map_title").empty();
                 $('#map_title').append("周边地区排放对我市的污染贡献分布");
               }else{

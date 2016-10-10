@@ -8,11 +8,13 @@ class PalmTwoController < ApplicationController
             # @factor=params['factor']
             
             @citynamepy='zhengzhoushi'
-            @citynamepy=params['cityname'] unless params['cityname'] ==""
+            @citynamepy=params['cityname'] unless params['cityname'].nil?
             @factor='NOX_120'
             c = City.find_by city_name_pinyin: @citynamepy
-            @latitude=c.latitude
-            @longitude=c.longitude
+            if c
+              @latitude=c.latitude
+              @longitude=c.longitude
+            end
         }
         format.json {
         	enterprise_data=Hash.new
