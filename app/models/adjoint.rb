@@ -192,8 +192,7 @@ class Adjoint
     end
     sumc = city.sum
     frd = ForecastRealDatum.new.air_quality_forecast(cityname)
-    aqi = frd[frd.keys.max]['AQI'] #预报aqi
-    return {'map'=>ncd,'grid'=>grds,'aqi'=>aqi}.merge(rncd) if percent == 0 or sum == 0 or sumc == 0
+    return {'map'=>ncd,'grid'=>grds,'time'=>frd.keys.max,'aqi'=>frd[frd.keys.max]['AQI'],}.merge(rncd) if percent == 0 or sum == 0 or sumc == 0
     per_sum = sumc/sum.to_f #市内污染／总值
     aqi = (1 - per_sum*percent)*aqi
     sumg = 0 #各个格点数值和
@@ -211,6 +210,6 @@ class Adjoint
     grdt.each_index do |i|
       ncd[grds[i][1]-1][grds[i][0]-1] = grdt[i]
     end
-    {'map'=>ncd,'grid'=>grdp,'aqi'=>aqi}.merge(rncd)#map 网格数据；grid：企业坐标[{}];
+    {'map'=>ncd,'grid'=>grdp,'time'=>frd.keys.max,'aqi'=>frd[frd.keys.max]['AQI']}.merge(rncd)#map 网格数据；grid：企业坐标[{}];
   end
 end
