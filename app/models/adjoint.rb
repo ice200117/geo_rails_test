@@ -212,7 +212,7 @@ class Adjoint
     grdt.each_index do |i|
       ncd[grds[i][1]-1][grds[i][0]-1] = grdt[i]
     end
-    {'map'=>ncd,'grid'=>grdp,'time'=>frd.keys.max,'aqi'=>frd[frd.keys.max]['AQI']}.merge(rncd)#map 网格数据；grid：企业坐标[{}];
+    {'map'=>ncd,'grid'=>grdp,'time'=>frd.keys.max,'aqi'=>aqi}.merge(rncd)#map 网格数据；grid：企业坐标[{}];
   end
 
   def self.evaluate(cityname,stime,etime)
