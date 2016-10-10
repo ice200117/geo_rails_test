@@ -130,7 +130,7 @@ class Adjoint
   end
 
   def self.latest_file(path)
-    # return nil if !File.directory?(path) and 
+    return nil if !File.directory?(path) or Dir::entries(path).size == 0
     nt = Time.now
     i = 0
     begin
@@ -212,13 +212,22 @@ class Adjoint
     grdt.each_index do |i|
       ncd[grds[i][1]-1][grds[i][0]-1] = grdt[i]
     end
-    {'map'=>ncd,'grid'=>grdp,'time'=>frd.keys.max,'aqi'=>frd[frd.keys.max]['AQI']}.merge(rncd)#map 网格数据；grid：企业坐标[{}];
+    {'map'=>ncd,'grid'=>grdp,'time'=>frd.keys.max,'aqi'=>aqi}.merge(rncd)#map 网格数据；grid：企业坐标[{}];
   end
 
   def self.evaluate(cityname,stime,etime)
-    mdata = TempSfcitiesDay.includes(:city).where('cities.city_name_pinyin'=>cityname,data_real_time:(stime.to_time.beginning_of_day..etime.to_time.end_of_day))
+    #计算下降率
+    #输入城市拼音，开始时间和结束时间
+    #返回各项污染物实测值、预报值和下降率，格式：{2015-01-01:{'aqi'=>{'m'=>1,'f'=>1,'p'=>0.1}}},m:实测值，f：预报值，p：下降率
+    mdata = TempSfcitiesDay.includes(:city).where('cities.city_name_pinyin'=>cityname,data_real_time:(stime.to_time.beginning_of_day..etime.to_time.end_of_day)).to_a.group_by_day(&:data_real_time)
     return nil if mdata.size == 0
-    fdata = ForecastRealDatum.includes(:city).where('cities.city_name_pinyin'=>cityname,)
+    fdata = HourlyCityForecastAirQuality.new.forecast_24h(cityname,stime.etime)
+    fdata.each do |k,v|
+      next if mdata[k].nil?
+      v.each do |m,n|
+        next if n.to_i == 0 or mdata[k][m].to_i == 0
 
+      end
+    end
   end
 end

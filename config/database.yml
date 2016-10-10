@@ -8,8 +8,8 @@ default: &default
 
 development:
   <<: *default
-  database: geo_rails_test_development
-  #database: geo_rails_test_production
+  # database: geo_rails_test_development
+  database: geo_rails_test_production
   host: 60.10.135.153
   port: 5432
 
