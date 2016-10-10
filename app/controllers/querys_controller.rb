@@ -74,8 +74,8 @@ class QuerysController < ApplicationController
     end
 
     citypy = params['citypy']
-    # citypy.nil? ? path = '/mnt/share/Temp/BackupADJ_langfangshi/' : path = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
-    citypy.nil? ? path = '/Users/baoxi/Workspace/temp/' : path = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
+    citypy.nil? ? path = '/mnt/share/Temp/BackupADJ_langfangshi/' : path = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
+    # citypy.nil? ? path = '/Users/baoxi/Workspace/temp/' : path = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
     ncfile = Adjoint.latest_file(path)
     file = NetCDF.open(ncfile)
     @dataArr = Hash.new

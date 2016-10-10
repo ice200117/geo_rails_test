@@ -461,7 +461,7 @@ $(document).ready(function() {
             changeGridData(data.xmin,data.ymin,data.map);
             loadEnterpriseData(JSON.stringify(data.grid));
             $("#aqimn").empty();
-            $('#aqimn').append("预计减排后AQI为:"+Math.round(data.aqi));
+            $('#aqimn').append("预计减排后AQI为: <strong>"+Math.round(data.aqi) +"</strong>");
             if(data_in.from==0){
               $("#map_title").empty();
               $('#map_title').append("周边地区排放对我市的污染贡献分布");

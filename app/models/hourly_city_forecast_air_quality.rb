@@ -224,4 +224,41 @@ class HourlyCityForecastAirQuality < Partitioned::ByMonthlyTimeField
       fore_data
     end
   end
+	#指定五天城市预报
+	def past_forecast(pinyin,stime,etime)
+		unless Custom::Redis.get(pinyin+'_past')
+			tmp = City.find_by_city_name_pinyin(pinyin).hourly_city_forecast_air_qualities.order(:publish_datetime).last(120).group_by_day(&:forecast_datetime)
+			Custom::Redis.set(pinyin+'_past',tmp,3600)
+		else 
+			tmp=Custom::Redis.get(pinyin)
+		end
+		fore_data = Hash.new
+		tmp.each do |time,data|
+			temp = Hash.new 
+			sum = 0
+			num = 0
+			tmpd = Hash.new
+
+			ary = Array.new
+			data.each do |t|
+				sum += t['AQI'];num += 1 if t['AQI'] != 0
+				ary << t['AQI']
+				td = false
+				if tmpd[t['main_pol']] == nil
+					tmpd[t['main_pol']] = 1
+				else
+					tmpd[t['main_pol']] += 1
+				end
+			end
+
+			temp['max'] = ary.max
+			temp['min'] = ary.min
+
+			temp["main_pol"]=tmpd.sort{|a,b| a[1] <=> b[1]}.last.first.to_s
+			temp["AQI"] = sum/num
+			temp["level"] = get_lev(sum/num)
+			fore_data[time] = temp
+		end
+		fore_data
+	end
 end
