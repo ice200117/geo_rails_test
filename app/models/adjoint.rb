@@ -62,7 +62,7 @@ class Adjoint
     scale_v = {"SO2"=> 1, "BC"=>1E-9 }
     @entity_factory ||= RGeo::GeoJSON::EntityFactory.instance
     @entity_factory.feature(polygon, i, :height => (datum[:percent]*scale[var]).to_s, :color=> get_color(datum[:percent]*scale_v[var]),
-    :roofColor=> get_color(datum[:percent]*scale_v[var]))
+                            :roofColor=> get_color(datum[:percent]*scale_v[var]))
     #@entity_factory.feature(polygon, i, :height => datum[:percent], :color=>"rgb(255,0,0)")
   end
 
@@ -130,7 +130,7 @@ class Adjoint
   end
 
   def self.latest_file(path)
-    # return nil if !File.directory?(path) and 
+    return nil if !File.directory?(path) or Dir::entries(path).size == 0
     nt = Time.now
     i = 0
     begin
@@ -216,9 +216,28 @@ class Adjoint
   end
 
   def self.evaluate(cityname,stime,etime)
-    mdata = TempSfcitiesDay.includes(:city).where('cities.city_name_pinyin'=>cityname,data_real_time:(stime.to_time.beginning_of_day..etime.to_time.end_of_day))
+    #计算下降率
+    #输入城市拼音，开始时间和结束时间
+    #返回各项污染物实测值、预报值和下降率，格式：{2015-01-01:{'aqi'=>{'m'=>1,'f'=>1,'p'=>0.1}}},m:实测值，f：预报值，p：下降率
+    mdata = TempSfcitiesDay.includes(:city).where('cities.city_name_pinyin'=>cityname,data_real_time:(stime.to_time.beginning_of_day..etime.to_time.end_of_day)).to_a.group_by_day(&:data_real_time)
     return nil if mdata.size == 0
-    fdata = ForecastRealDatum.includes(:city).where('cities.city_name_pinyin'=>cityname,)
-
+    fdata = HourlyCityForecastAirQuality.new.forecast_24h(cityname,stime,etime)
+    fdt = Hash.new
+    fdata.each do |k,v|
+      next if mdata[k].nil? || mdata[k].size == 0
+      v.each do |m,n|
+        tmp = Hash.new
+        if mdata[k][0][m].to_f == 0
+          tmp['m'] = nil;tmp['f'] = n;tmp['p'] = nil;
+        elsif mdata[k][0][m].to_f != 0
+          tmp['m'] = mdata[k][0][m].to_f
+          tmp['f'] = n
+          tmp['p'] = (tmp['f']-tmp['m'])/tmp['m']
+        end
+        v[m] = tmp
+      end
+      fdt[k] = v
+    end
+    fdt
   end
 end
