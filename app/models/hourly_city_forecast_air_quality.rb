@@ -256,7 +256,7 @@ class HourlyCityForecastAirQuality < Partitioned::ByMonthlyTimeField
         end
       end
       six['zhzs'] = six['SO2'].to_f.round(2)/60+six['NO2'].to_f.round(2)/40+six['pm10'].to_f.round(2)/70+six['pm25'].to_f.round(2)/35+six['CO'].to_f.round(2)/4+six['O3'].to_f.round(2)/160
-      six['aqi'] = get_aqi(six)['aqi']
+      six['AQI'] = get_aqi(six)['aqi']
       tmp[k] = six
     end
     tmp

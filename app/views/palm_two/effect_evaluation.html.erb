@@ -113,9 +113,9 @@
                   <tr>
                     <td><%= i+=1 %></td>
                     <td><%= k.strftime("%m月%d日")%></td>
-                    <td><%= v['aqi']['f'].nil? ? '-' : v['aqi']['f'].round(0)%></td>
-                    <td><%= v['aqi']['m'].nil? ? '-' : v['aqi']['m'].round(0) %></td>
-                    <td><%= v['aqi']['p'].nil? ? '-' : (v['aqi']['p']*100).round(2).to_s+'%' %></td>
+                    <td><%= v['AQI']['f'].nil? ? '-' : v['AQI']['f'].round(0)%></td>
+                    <td><%= v['AQI']['m'].nil? ? '-' : v['AQI']['m'].round(0) %></td>
+                    <td><%= v['AQI']['p'].nil? ? '-' : (v['AQI']['p']*100).round(2).to_s+'%' %></td>
                     <td><%= v['pm25']['f'].nil? ? '-' : v['pm25']['f'].round(0) %></td>
                     <td><%= v['pm25']['m'].nil? ? '-' : v['pm25']['m'].round(0) %></td>
                     <td><%= v['pm25']['p'].nil? ? '-' : (v['pm25']['p']*100).round(2).to_s+'%' %></td>
