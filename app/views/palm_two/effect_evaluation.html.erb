@@ -149,7 +149,7 @@
   <script>
     document.getElementById('convert').addEventListener('click', function(e) {
       e.preventDefault();
-      var content = "<!DOCTYPE html><html><head></head><body>"+document.getElementById("export_table").outerHTML+"</body></html>";
+      var content = "<!DOCTYPE html><html><head><%= stylesheet_link_tag 'css/bootstrap/dist/css/bootstrap.min','css/custom.min' %></head><body>"+document.getElementById("export_table").outerHTML+"</body></html>";
       var converted = htmlDocx.asBlob(content, {orientation: 'portrait'});
       saveAs(converted, 'export.docx');
     });
