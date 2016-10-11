@@ -96,4 +96,6 @@ Rails.application.config.assets.precompile += %w(
 	css/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css
 	css/datatables.net-responsive-bs/css/responsive.bootstrap.min.css
 	css/datatables.net-scroller-bs/css/scroller.bootstrap.min.css
+	js/html-docx/FileSaver.js
+	js/html-docx/html-docx.js
 )
