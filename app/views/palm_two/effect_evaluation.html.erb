@@ -1,3 +1,4 @@
+<%= javascript_include_tag 'js/html-docx/FileSaver','js/html-docx/html-docx' %>
 <style type="text/css">
   body{
     font-size:14px;
@@ -66,7 +67,7 @@
             <button type="button" class="btn btn-info btn_my">+</button>
 
 
-            <table class="table table-bordered text-center">
+            <table id='export_table' class="table table-bordered text-center">
               <thead>
                 <tr>
                   <th class="text-center" colspan="23">重污染天气应急减排污染表</th>
@@ -138,11 +139,18 @@
                 <% end %>
               </tbody>
             </table>
-            <button type="button" class="btn btn-link btn-lg container">导出并打印</button>
+            <button id="convert" type="button" class="btn btn-link btn-lg container">导出并打印</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
+  <script>
+    document.getElementById('convert').addEventListener('click', function(e) {
+      e.preventDefault();
+      var content = "<!DOCTYPE html><html><head></head><body>"+document.getElementById("export_table").outerHTML+"</body></html>";
+      var converted = htmlDocx.asBlob(content, {orientation: 'portrait'});
+      saveAs(converted, 'export.docx');
+    });
+  </script>
