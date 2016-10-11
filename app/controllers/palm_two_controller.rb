@@ -54,7 +54,12 @@ class PalmTwoController < ApplicationController
 
 
   def effect_evaluation
-      
+    params['cityname'].nil? ? cityname = 'langfangshi' : cityname = params['cityname']
+    @evaluate = Adjoint.evaluate(cityname,Time.now.days_ago(5),Time.now.yesterday)
+    respond_to do |format|
+      format.html
+      format.json{render json: @evaluate}
+    end
   end
 
 end

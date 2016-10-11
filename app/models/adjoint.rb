@@ -222,19 +222,22 @@ class Adjoint
     mdata = TempSfcitiesDay.includes(:city).where('cities.city_name_pinyin'=>cityname,data_real_time:(stime.to_time.beginning_of_day..etime.to_time.end_of_day)).to_a.group_by_day(&:data_real_time)
     return nil if mdata.size == 0
     fdata = HourlyCityForecastAirQuality.new.forecast_24h(cityname,stime,etime)
+    fdt = Hash.new
     fdata.each do |k,v|
-      next if mdata[k.to_date].size == 0
+      next if mdata[k].nil? || mdata[k].size == 0
       v.each do |m,n|
         tmp = Hash.new
-        tmp['m'] = '-';tmp['f'] = n;tmp['p'] = '-';next if mdata[k.to_date][0][m].to_f == 0
-        if mdata[k.to_date][0][m].to_f != 0
-          tmp['m'] = mdata[k.to_date][0][m].to_f
+        if mdata[k][0][m].to_f == 0
+          tmp['m'] = nil;tmp['f'] = n;tmp['p'] = nil;
+        elsif mdata[k][0][m].to_f != 0
+          tmp['m'] = mdata[k][0][m].to_f
           tmp['f'] = n
           tmp['p'] = (tmp['f']-tmp['m'])/tmp['m']
         end
         v[m] = tmp
       end
+      fdt[k] = v
     end
-    fdata
+    fdt
   end
 end

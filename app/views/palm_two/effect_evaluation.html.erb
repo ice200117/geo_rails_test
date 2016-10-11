@@ -1,14 +1,17 @@
-     <style type="text/css">
-     .btn-group-lg>.btn, .btn-lg {
-      font-size: 30px;
-      font-style:italic;
-     }
-      .btn_my{
-        padding:30px 15px;
-        width: 5%;
-        margin-right: 3%;
-      }
-    </style>
+<style type="text/css">
+  body{
+    font-size:14px;
+  }
+  .btn-group-lg>.btn, .btn-lg {
+    font-size: 20px;
+    font-style:italic;
+  }
+  .btn_my{
+    padding:30px 15px;
+    width: 5%;
+    margin-right: 3%;
+  }
+</style>
 <div class="right_col" style="margin-top:0px; margin-bottom:1px; height:0px" role="main">
   <!-- top tiles -->
   <div class="row tile_count" style="margin:1px; padding:0px; height:0px">
@@ -66,8 +69,8 @@
             <table class="table table-bordered text-center">
               <thead>
                 <tr>
-                  <th class="text-center" colspan="17">重污染天气应急减排污染表</th>
-                  
+                  <th class="text-center" colspan="23">重污染天气应急减排污染表</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -78,7 +81,9 @@
                   <td colspan="3">PM2.5</td>
                   <td colspan="3">PM10</td>
                   <td colspan="3">NO2</td>
-                  <td colspan="3">其他</td>
+                  <td colspan="3">SO2</td>
+                  <td colspan="3">CO</td>
+                  <td colspan="3">O3</td>
                 </tr>
                 <tr>
                   <td>预报值</td>
@@ -96,102 +101,41 @@
                   <td>预报值</td>
                   <td>实测值</td>
                   <td>下降率</td>
+                  <td>预报值</td>
+                  <td>实测值</td>
+                  <td>下降率</td>
+                  <td>预报值</td>
+                  <td>实测值</td>
+                  <td>下降率</td>
                 </tr>
-                <tr>
-                  <td>1</td>
-                  <td>X月X日</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>X月X日</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>X月X日</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>X月X日</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>X月X日</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
+                <% i = 0%>
+                <% @evaluate.each do |k,v| %>
+                  <tr>
+                    <td><%= i+=1 %></td>
+                    <td><%= k.strftime("%m月%d日")%></td>
+                    <td><%= v['aqi']['f'].nil? ? '-' : v['aqi']['f'].round(0)%></td>
+                    <td><%= v['aqi']['m'].nil? ? '-' : v['aqi']['m'].round(0) %></td>
+                    <td><%= v['aqi']['p'].nil? ? '-' : (v['aqi']['p']*100).round(2).to_s+'%' %></td>
+                    <td><%= v['pm25']['f'].nil? ? '-' : v['pm25']['f'].round(0) %></td>
+                    <td><%= v['pm25']['m'].nil? ? '-' : v['pm25']['m'].round(0) %></td>
+                    <td><%= v['pm25']['p'].nil? ? '-' : (v['pm25']['p']*100).round(2).to_s+'%' %></td>
+                    <td><%= v['pm10']['f'].nil? ? '-' : v['pm10']['f'].round(0) %></td>
+                    <td><%= v['pm10']['m'].nil? ? '-' : v['pm10']['m'].round(0) %></td>
+                    <td><%= v['pm10']['p'].nil? ? '-' : (v['pm10']['p']*100).round(2).to_s+'%' %></td>
+                    <td><%= v['NO2']['f'].nil? ? '-' : v['NO2']['f'].round(0) %></td>
+                    <td><%= v['NO2']['m'].nil? ? '-' : v['NO2']['m'].round(0) %></td>
+                    <td><%= v['NO2']['p'].nil? ? '-' : (v['NO2']['p']*100).round(2).to_s+'%' %></td>
+                    <td><%= v['SO2']['f'].nil? ? '-' : v['SO2']['f'].round(0) %></td>
+                    <td><%= v['SO2']['m'].nil? ? '-' : v['SO2']['m'].round(0) %></td>
+                    <td><%= v['SO2']['p'].nil? ? '-' : (v['SO2']['p']*100).round(2).to_s+'%' %></td>
+                    <td><%= v['CO']['f'].nil? ? '-' : v['CO']['f'].round(1) %></td>
+                    <td><%= v['CO']['m'].nil? ? '-' : v['CO']['m'].round(1) %></td>
+                    <td><%= v['CO']['p'].nil? ? '-' : (v['CO']['p']*100).round(2).to_s+'%' %></td>
+                    <td><%= v['O3']['f'].nil? ? '-' : v['O3']['f'].round(0) %></td>
+                    <td><%= v['O3']['m'].nil? ? '-' : v['O3']['m'].round(0) %></td>
+                    <td><%= v['O3']['p'].nil? ? '-' : (v['O3']['p']*100).round(2).to_s+'%' %></td>
+                  </tr>
+                <% end %>
               </tbody>
             </table>
             <button type="button" class="btn btn-link btn-lg container">导出并打印</button>
@@ -200,5 +144,5 @@
       </div>
     </div>
   </div>
-  </div>
- 
+</div>
+
