@@ -11,7 +11,8 @@ def get_rank_json(flag,option)
 	begin
 		if flag == 'shishi_rank_74'
 			#真气网74城市实时/日排名
-			response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+option[:secret]+'&type='+option[:type]+'&key='+option[:key])
+			# response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+option[:secret]+'&type='+option[:type]+'&key='+option[:key])
+			response = HTTParty.post('http://www.izhenqi.cn/api/palmapi.php',:body=>option)
 		elsif flag == 'history_74' 
 			#74城市和京津冀历史日接口
 			response = HTTParty.post('http://www.izhenqi.cn/api/getdata_history.php', :body => option)
@@ -31,7 +32,7 @@ def get_rank_json(flag,option)
 			#全国城市小时数据
 			response = HTTParty.post('http://www.izhenqi.cn/api/dataapi.php',:body => option)
 		end
-		if flag == 'all_city_by_hour'
+		if flag == 'all_city_by_hour' or flag == 'shishi_rank_74'
 			data=JSON.parse(Base64.decode64(response.body))
 		else
 			data=JSON.parse(response.body)
