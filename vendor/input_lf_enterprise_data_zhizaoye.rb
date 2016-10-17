@@ -15,7 +15,7 @@ def deal_excel(file)
 	data
 end
 def input
-	file = './vendor/lf_enterprise_data_lb.xls'
+	file = './vendor/lf_enterprise_data_lb_zhizaoye.xls'
 	deal_excel(file).each do |l|
 		tmp = Hash.new
         tmp['en_name'] = l[0].strip if !l[0].nil?#企业名称
