@@ -5,13 +5,15 @@ require_relative './all_sites.rb'
 hs=Hash.new
 oneday=60*60*24
 
-#全国城市实时数据
-hs = Hash.new
-hs[:secret] = "70ad4cb02984355c0f08f2e84be72c9c"
-hs[:method] = "GETCITYDATA"
-hs[:type]='HOUR'
-hs = ten_times_test(ChinaCitiesHour,'all_city_by_hour',hs)
-save_db(hs,ChinaCitiesHour)
+Thread.new do 
+	#全国城市实时数据
+	hs = Hash.new
+	hs[:secret] = "70ad4cb02984355c0f08f2e84be72c9c"
+	hs[:method] = "GETCITYDATA"
+	hs[:type]='HOUR'
+	hs = ten_times_test(ChinaCitiesHour,'all_city_by_hour',hs)
+	# save_db(hs,ChinaCitiesHour)
+end
 
 # 获取全国站点数据
 data = AllSite::Option.new
