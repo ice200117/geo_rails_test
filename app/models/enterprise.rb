@@ -1,4 +1,5 @@
 class Enterprise < ActiveRecord::Base
+	belongs_to :city
 	def get_enterprise_data(gridPoint="")
 		result=[]
 		if gridPoint==''
