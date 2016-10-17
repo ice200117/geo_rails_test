@@ -1,4 +1,4 @@
-<%= stylesheet_link_tag 'buttons','css/normalize-css/normalize','css/ion.rangeSlider/css/ion.rangeSlider','css/ion.rangeSlider/css/ion.rangeSlider.skinHTML5' %>
+<%= stylesheet_link_tag 'buttons','css/normalize-css/normalize','css/ion.rangeSlider/css/ion.rangeSlider','css/ion.rangeSlider/css/ion.rangeSlider.skinHTML5','css/iCheck/skins/flat/green' %>
 <div class="right_col" style="margin-top:0px; margin-bottom:1px; height:0px" role="main">
   <!-- top tiles -->
   <div class="row tile_count" style="margin:1px; padding:0px; height:0px">
@@ -89,7 +89,17 @@
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
-            <table id="enterpriseList" class="table table-striped table-bordered" style="white-space: nowrap">
+            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+              <ul id="myTab1" class="nav nav-tabs bar_tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tab_content11" id="home-tab1" role="tab" data-toggle="tab" aria-expanded="true">模拟拖条</a>
+                </li>
+                <li role="presentation" class=""><a href="#tab_content21" role="tab" id="profile-tab1" data-toggle="tab" aria-expanded="false">企业勾选</a>
+                </li>
+
+              </ul>
+              <div id="myTab1Content" class="tab-content">
+                <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab1">
+             <table id="enterpriseList" class="table table-striped table-bordered" style="white-space: nowrap">
               <thead>
                 <tr>
                   <th>序号</th>
@@ -131,13 +141,42 @@
               <label>减排百分比:</label>
               <input type="text" value="" id="range" name="range" />
             </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab_content21" aria-labelledby="profile-tab1">
+                  <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
+                      <thead>
+                        <tr>
+                          <th><input type="checkbox" id="check-all" class="flat"></th>
+                          <th>序号</th>
+                          <th>企业名称</th>
+                          <th>NOX排放量占比</th>
+                        </tr>
+                      </thead>
+
+
+                      <tbody>
+                        <tr>
+                          <td><input type="checkbox" class="flat" name="table_records"></td>
+                          <td>Tiger Nixon</td>
+                          <td>System Architect</td>
+                          <td>Edinburgh</td>
+                        </tr>
+                        
+                      </tbody>
+                    </table>
+                    <button onclick="" class="button-buttons button-glow button-rounded button-primary">查询</button>
+                </div>
+
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
   </div>
   </div>
-  <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min' %>       
+  <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min','js/iCheck/icheck.min' %>       
   <!-- 网格追踪 -->
   <script type="text/javascript">
     var center = new BMap.Point(<%= @longitude %>,<%= @latitude %>);

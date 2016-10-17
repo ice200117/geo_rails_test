@@ -98,4 +98,6 @@ Rails.application.config.assets.precompile += %w(
 	css/datatables.net-scroller-bs/css/scroller.bootstrap.min.css
 	js/html-docx/FileSaver.js
 	js/html-docx/html-docx.js
+	css/iCheck/skins/flat/green.css
+	js/iCheck/icheck.min.js
 )
