@@ -1,12 +1,10 @@
 class PalmTwoController < ApplicationController
   layout 'palm_two'
   def scheme_simulation
-
   	respond_to do |format|
         format.html {
             # @citynamepy=params['cityname']
             # @factor=params['factor']
-            
             @citynamepy='zhengzhoushi'
             @citynamepy=params['cityname'] unless params['cityname'].nil?
             @factor='NOX_120'
@@ -22,7 +20,7 @@ class PalmTwoController < ApplicationController
         	result = []
             str =""
             str = JSON.parse(params['gridPoint']) unless params['gridPoint']==""
-            r_data=Enterprise.new.get_enterprise_data(str)
+            r_data=Enterprise.new.get_enterprise_data(citynamepy,str)
             number=1
             r_data.each do |enterprise|
             	tmp=[]
@@ -49,9 +47,7 @@ class PalmTwoController < ApplicationController
             render json: all_data
         }
     end    
-      
   end
-
 
   def effect_evaluation
     params['cityname'].nil? ? cityname = 'langfangshi' : cityname = params['cityname']
@@ -61,5 +57,4 @@ class PalmTwoController < ApplicationController
       format.json{render json: @evaluate}
     end
   end
-
 end

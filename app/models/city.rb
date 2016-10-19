@@ -1,5 +1,5 @@
 class City < ActiveRecord::Base
-  before_save       :setLonLat
+  before_save :setLonLat
   has_many :hourly_city_forecast_air_qualities
   has_many :temp_hourly_forecasts
   has_many :day_cities
@@ -25,7 +25,7 @@ class City < ActiveRecord::Base
   has_many :forecast72s, class_name: "Forecast72", foreign_key: "station_id"
   has_many :forecast96s, class_name: "Forecast96", foreign_key: "station_id"
   has_many :forecast_dailies, class_name: "ForecastDaily", foreign_key: "station_id"
-
+  has_many :enterprises
   has_many :counties
   has_many :enterprises
 #  validates_uniqueness_of :post_number
@@ -45,6 +45,4 @@ class City < ActiveRecord::Base
   def to_geojson
     RGeo::GeoJSON.encode(to_feature)
   end
-
-
 end
