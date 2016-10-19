@@ -427,7 +427,7 @@ var TableManageButtons = function() {
   };
 }();
 var loadEnterpriseData=function(gridPoint) {
-  var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint;
+  var dataurl='/palm_two/scheme_simulation.json?citypy=<%= @citynamepy %>&gridPoint='+gridPoint;
   enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
   });
 }
