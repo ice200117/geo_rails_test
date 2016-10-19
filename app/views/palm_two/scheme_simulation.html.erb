@@ -157,19 +157,19 @@
                       <tbody>
                         <tr>
                           <td><input type="checkbox" class="flat" name="table_records"></td>
-                          <td>Tiger Nixon</td>
+                          <td>111</td>
                           <td>System Architect</td>
                           <td>Edinburgh</td>
                         </tr>
                         <tr>
                           <td><input type="checkbox" class="flat" name="table_records"></td>
-                          <td>Tiger Nixon</td>
+                          <td>222</td>
                           <td>System Architect</td>
                           <td>Edinburgh</td>
                         </tr>
                         <tr>
                           <td><input type="checkbox" class="flat" name="table_records"></td>
-                          <td>Tiger Nixon</td>
+                          <td>333</td>
                           <td>System Architect</td>
                           <td>Edinburgh</td>
                         </tr>
@@ -423,7 +423,99 @@ if (option1 && typeof option1 === "object") {
 </script>
 <!-- 初始化表格 -->
 <script type="text/javascript">
+//checkbox的监听
 
+var checkboxListenInit=function(){
+  $('.bulk_action input.flat').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+      });
+  enterpriseCheckTable.on('draw.dt', function() {
+    $('.bulk_action input.flat').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+      });
+// table中的所有的checkbox的监听
+    // $('.bulk_action input').on('ifChecked', function () {
+
+    // });
+    // $('.bulk_action input').on('ifUnchecked', function () {
+
+    // });
+// thead中的全选checkbox的监听
+$('.bulk_action input#check-all').on('ifChecked', function () {
+    $(".bulk_action input[name='table_records']").iCheck('check');
+});
+$('.bulk_action input#check-all').on('ifUnchecked', function () {
+    $(".bulk_action input[name='table_records']").iCheck('uncheck');
+});
+// tbody中的checkbox的监听
+$(".bulk_action input[name='table_records']").on('ifChecked', function () {
+    if($(".bulk_action input[name='table_records']").length==$(".bulk_action input[name='table_records']:checked").length)
+    {
+      $('.bulk_action input#check-all').iCheck('check');
+    }
+    else
+    {
+      $('.bulk_action input#check-all').iCheck('indeterminate');
+    }
+    $(this).parent().parent().parent().addClass('selected');
+});
+$(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
+    if($(".bulk_action input[name='table_records']:checked").length==0)
+    {
+      $('.bulk_action input#check-all').iCheck('uncheck');
+      $('.bulk_action input#check-all').iCheck('determinate');
+    }
+    else
+    {
+      $('.bulk_action input#check-all').iCheck('indeterminate');
+    }
+    $(this).parent().parent().parent().removeClass('selected');
+});
+    
+        });
+  // table中的所有的checkbox的监听
+    // $('.bulk_action input').on('ifChecked', function () {
+
+    // });
+    // $('.bulk_action input').on('ifUnchecked', function () {
+
+    // });
+// thead中的全选checkbox的监听
+$('.bulk_action input#check-all').on('ifChecked', function () {
+    $(".bulk_action input[name='table_records']").iCheck('check');
+});
+$('.bulk_action input#check-all').on('ifUnchecked', function () {
+    $(".bulk_action input[name='table_records']").iCheck('uncheck');
+});
+// tbody中的checkbox的监听
+$(".bulk_action input[name='table_records']").on('ifChecked', function () {
+    if($(".bulk_action input[name='table_records']").length==$(".bulk_action input[name='table_records']:checked").length)
+    {
+      $('.bulk_action input#check-all').iCheck('check');
+    }
+    else
+    {
+      $('.bulk_action input#check-all').iCheck('indeterminate');
+    }
+    $(this).parent().parent().parent().addClass('selected');
+});
+$(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
+    if($(".bulk_action input[name='table_records']:checked").length==0)
+    {
+      $('.bulk_action input#check-all').iCheck('uncheck');
+      $('.bulk_action input#check-all').iCheck('determinate');
+    }
+    else
+    {
+      $('.bulk_action input#check-all').iCheck('indeterminate');
+    }
+    $(this).parent().parent().parent().removeClass('selected');
+});
+
+}
+
+
+// 企业勾选表格datatable的初始化函数
   var enterpriseCheckTableinit=function(){
         enterpriseCheckTable=$("#enterpriseCheckTable").DataTable({
       language: {
@@ -451,7 +543,19 @@ if (option1 && typeof option1 === "object") {
         },
       },
       "dom": '<lf<t>ip>',
-      "paging": flase
+      "paging": false,
+       "order": [[ 1, 'asc' ]],
+      "columnDefs":[
+        {
+            //设置第一列不参与搜索
+            "targets":[0],
+            "serchable":false
+        },
+        { 
+          "orderable": false,
+           "targets": 0 
+         }
+    ]
 
     });
   }
@@ -515,6 +619,8 @@ var loadEnterpriseData=function(gridPoint) {
 }
 $(document).ready(function() {
   TableManageButtons.init();
+  enterpriseCheckTableinit();
+  checkboxListenInit();
   loadEnterpriseData("");
 
 });
@@ -560,54 +666,4 @@ $(document).ready(function() {
   });
 
 </script>
-<!-- 企业勾选 -->
- <script type="text/javascript">
-$(document).ready(function() {
-    if ($("input.flat")[0]) {
-        $(document).ready(function () {
-            $('input.flat').iCheck({
-                checkboxClass: 'icheckbox_flat-green',
-            });
-        });
-    }
-});
 
-// table中的所有的checkbox的监听
-    // $('.bulk_action input').on('ifChecked', function () {
-
-    // });
-    // $('.bulk_action input').on('ifUnchecked', function () {
-
-    // });
-// thead中的全选checkbox的监听
-$('.bulk_action input#check-all').on('ifChecked', function () {
-    $(".bulk_action input[name='table_records']").iCheck('check');
-});
-$('.bulk_action input#check-all').on('ifUnchecked', function () {
-    $(".bulk_action input[name='table_records']").iCheck('uncheck');
-});
-// tbody中的checkbox的监听
-$(".bulk_action input[name='table_records']").on('ifChecked', function () {
-    if($(".bulk_action input[name='table_records']").length==$(".bulk_action input[name='table_records']:checked").length)
-    {
-      $('.bulk_action input#check-all').iCheck('check');
-    }
-    else
-    {
-      $('.bulk_action input#check-all').iCheck('indeterminate');
-    }
-    $(this).parent().parent().parent().addClass('selected');
-});
-$(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
-    if($(".bulk_action input[name='table_records']:checked").length==0)
-    {
-      $('.bulk_action input#check-all').iCheck('uncheck');
-      $('.bulk_action input#check-all').iCheck('determinate');
-    }
-    else
-    {
-      $('.bulk_action input#check-all').iCheck('indeterminate');
-    }
-    $(this).parent().parent().parent().removeClass('selected');
-});
-  </script>   
