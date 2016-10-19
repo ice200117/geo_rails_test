@@ -1,5 +1,6 @@
 class Enterprise < ActiveRecord::Base
 	belongs_to :city
+	belongs_to :county
 	def get_enterprise_data(gridPoint="")
 		result=[]
 		if gridPoint==''

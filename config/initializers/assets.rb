@@ -70,6 +70,7 @@ Rails.application.config.assets.precompile += %w(
     js/fastclick/lib/fastclick.js
     js/echarts/dist/echarts.min.js
     js/custom.min.js
+    js/custom.js
     source_analysis_custom.js
     js/icheck/skins/flat/green.css
     css/jqvmap/dist/jqvmap.min.css
