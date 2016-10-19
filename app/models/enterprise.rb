@@ -1,5 +1,7 @@
 class Enterprise < ActiveRecord::Base
-  def get_enterprise_data(citypy,gridPoint="")
+	belongs_to :city
+	belongs_to :county
+  def get_enterprise_data(gridPoint="")
     if gridPoint==''
       result=Enterprise.all
     else
@@ -34,5 +36,6 @@ class Enterprise < ActiveRecord::Base
     gset.map! do |l|
       l['proportion'] = l[pollutant].to_f/esum
     end
+    gset
   end
 end

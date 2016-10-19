@@ -27,7 +27,7 @@ class City < ActiveRecord::Base
   has_many :forecast_dailies, class_name: "ForecastDaily", foreign_key: "station_id"
   has_many :enterprises
   has_many :counties
-  
+  has_many :enterprises
 #  validates_uniqueness_of :post_number
 
   set_rgeo_factory_for_column(:lonlat,
