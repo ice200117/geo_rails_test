@@ -1,4 +1,4 @@
-<%= stylesheet_link_tag 'buttons','css/normalize-css/normalize','css/ion.rangeSlider/css/ion.rangeSlider','css/ion.rangeSlider/css/ion.rangeSlider.skinHTML5' %>
+<%= stylesheet_link_tag 'buttons','css/normalize-css/normalize','css/ion.rangeSlider/css/ion.rangeSlider','css/ion.rangeSlider/css/ion.rangeSlider.skinHTML5','css/iCheck/skins/flat/green' %>
 <div class="right_col" style="margin-top:0px; margin-bottom:1px; height:0px" role="main">
   <!-- top tiles -->
   <div class="row tile_count" style="margin:1px; padding:0px; height:0px">
@@ -89,12 +89,22 @@
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
-            <table id="enterpriseList" class="table table-striped table-bordered" style="white-space: nowrap">
+            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+              <ul id="myTab1" class="nav nav-tabs bar_tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tab_content11" id="home-tab1" role="tab" data-toggle="tab" aria-expanded="true">模拟拖条</a>
+                </li>
+                <li role="presentation" class=""><a href="#tab_content21" role="tab" id="profile-tab1" data-toggle="tab" aria-expanded="false">企业勾选</a>
+                </li>
+
+              </ul>
+              <div id="myTab1Content" class="tab-content">
+                <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab1">
+             <table id="enterpriseList" class="table table-striped table-bordered" style="white-space: nowrap">
               <thead>
                 <tr>
                   <th>序号</th>
                   <th>企业名称</th>
-                  <th>行业类别</th>
+                  <th>NOX排放量占比</th>
                 </tr>
               </thead>
               <tbody>
@@ -131,13 +141,53 @@
               <label>减排百分比:</label>
               <input type="text" value="" id="range" name="range" />
             </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab_content21" aria-labelledby="profile-tab1">
+                  <table id="enterpriseCheckTable" class="table table-striped jambo_table table-bordered bulk_action">
+                      <thead style="background: #ffffff;color: #73879C;">
+                        <tr>
+                          <th><input type="checkbox" id="check-all" class="flat"></th>
+                          <th>序号</th>
+                          <th>企业名称</th>
+                          <th>NOX排放量占比</th>
+                        </tr>
+                      </thead>
+
+
+                      <tbody>
+                        <tr>
+                          <td><input type="checkbox" class="flat" name="table_records"></td>
+                          <td>Tiger Nixon</td>
+                          <td>System Architect</td>
+                          <td>Edinburgh</td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" class="flat" name="table_records"></td>
+                          <td>Tiger Nixon</td>
+                          <td>System Architect</td>
+                          <td>Edinburgh</td>
+                        </tr>
+                        <tr>
+                          <td><input type="checkbox" class="flat" name="table_records"></td>
+                          <td>Tiger Nixon</td>
+                          <td>System Architect</td>
+                          <td>Edinburgh</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <button onclick="" class="button-buttons button-glow button-rounded button-primary">查询</button>
+                </div>
+
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
   </div>
   </div>
-  <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min' %>       
+  <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min','js/iCheck/icheck.min' %>   
   <!-- 网格追踪 -->
   <script type="text/javascript">
     var center = new BMap.Point(<%= @longitude %>,<%= @latitude %>);
@@ -374,6 +424,38 @@ if (option1 && typeof option1 === "object") {
 <!-- 初始化表格 -->
 <script type="text/javascript">
 
+  var enterpriseCheckTableinit=function(){
+        enterpriseCheckTable=$("#enterpriseCheckTable").DataTable({
+      language: {
+        "sProcessing": "处理中...",
+        "sLengthMenu": "显示 _MENU_ 行",
+        "sZeroRecords": "没有匹配结果",
+        "sInfo": "显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项",
+        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+        "sInfoPostFix": "",
+        "sSearch": "搜索:",
+        "sUrl": "",
+        "sEmptyTable": "表中数据为空",
+        "sLoadingRecords": "载入中...",
+        "sInfoThousands": ",",
+        "oPaginate": {
+          "sFirst": "首页",
+          "sPrevious": "上页",
+          "sNext": "下页",
+          "sLast": "末页"
+        },
+        "oAria": {
+          "sSortAscending": ": 以升序排列此列",
+          "sSortDescending": ": 以降序排列此列"
+        },
+      },
+      "dom": '<lf<t>ip>',
+      "paging": flase
+
+    });
+  }
+
   var handleDataTableButtons = function() {
     enterpriseList=$("#enterpriseList").DataTable({
       language: {
@@ -427,7 +509,7 @@ var TableManageButtons = function() {
   };
 }();
 var loadEnterpriseData=function(gridPoint) {
-  var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint;
+  var dataurl='/palm_two/scheme_simulation.json?citypy=<%= @citynamepy %>&gridPoint='+gridPoint;
   enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
   });
 }
@@ -478,3 +560,54 @@ $(document).ready(function() {
   });
 
 </script>
+<!-- 企业勾选 -->
+ <script type="text/javascript">
+$(document).ready(function() {
+    if ($("input.flat")[0]) {
+        $(document).ready(function () {
+            $('input.flat').iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+            });
+        });
+    }
+});
+
+// table中的所有的checkbox的监听
+    // $('.bulk_action input').on('ifChecked', function () {
+
+    // });
+    // $('.bulk_action input').on('ifUnchecked', function () {
+
+    // });
+// thead中的全选checkbox的监听
+$('.bulk_action input#check-all').on('ifChecked', function () {
+    $(".bulk_action input[name='table_records']").iCheck('check');
+});
+$('.bulk_action input#check-all').on('ifUnchecked', function () {
+    $(".bulk_action input[name='table_records']").iCheck('uncheck');
+});
+// tbody中的checkbox的监听
+$(".bulk_action input[name='table_records']").on('ifChecked', function () {
+    if($(".bulk_action input[name='table_records']").length==$(".bulk_action input[name='table_records']:checked").length)
+    {
+      $('.bulk_action input#check-all').iCheck('check');
+    }
+    else
+    {
+      $('.bulk_action input#check-all').iCheck('indeterminate');
+    }
+    $(this).parent().parent().parent().addClass('selected');
+});
+$(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
+    if($(".bulk_action input[name='table_records']:checked").length==0)
+    {
+      $('.bulk_action input#check-all').iCheck('uncheck');
+      $('.bulk_action input#check-all').iCheck('determinate');
+    }
+    else
+    {
+      $('.bulk_action input#check-all').iCheck('indeterminate');
+    }
+    $(this).parent().parent().parent().removeClass('selected');
+});
+  </script>   

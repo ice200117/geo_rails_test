@@ -70,6 +70,7 @@ Rails.application.config.assets.precompile += %w(
     js/fastclick/lib/fastclick.js
     js/echarts/dist/echarts.min.js
     js/custom.min.js
+    js/custom.js
     source_analysis_custom.js
     js/icheck/skins/flat/green.css
     css/jqvmap/dist/jqvmap.min.css
@@ -96,4 +97,8 @@ Rails.application.config.assets.precompile += %w(
 	css/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css
 	css/datatables.net-responsive-bs/css/responsive.bootstrap.min.css
 	css/datatables.net-scroller-bs/css/scroller.bootstrap.min.css
+	js/html-docx/FileSaver.js
+	js/html-docx/html-docx.js
+	css/iCheck/skins/flat/green.css
+	js/iCheck/icheck.min.js
 )

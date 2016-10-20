@@ -27,6 +27,9 @@
     .icheckbox_flat-green.checked.disabled {
         background-position: -66px 0;
     }
+    .icheckbox_flat-green.indeterminate {
+        background-position: -66px 0;
+    }
 
 .iradio_flat-green {
     background-position: -88px 0;

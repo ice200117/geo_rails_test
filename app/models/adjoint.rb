@@ -177,7 +177,10 @@ class Adjoint
     data
   end
 
-  def self.emission(var_name,cityname,percent,date)
+  def self.emission(var_name,cityname,percent,option)
+    # 获取地图污染信息，减排aqi，时间
+    # 输入污染类型，城市，百分比，以及其他参数option={'date'=>时间类型变量,'type'=>'电子行业','level'=>预警级别}
+    # 输出污染数据，格点坐标，时间，aqi等
     rncd = ready_nc(var_name,cityname)
     ncd = rncd['data'].clone
     rncd.delete('data')
@@ -222,19 +225,62 @@ class Adjoint
     mdata = TempSfcitiesDay.includes(:city).where('cities.city_name_pinyin'=>cityname,data_real_time:(stime.to_time.beginning_of_day..etime.to_time.end_of_day)).to_a.group_by_day(&:data_real_time)
     return nil if mdata.size == 0
     fdata = HourlyCityForecastAirQuality.new.forecast_24h(cityname,stime,etime)
+    fdt = Hash.new
     fdata.each do |k,v|
-      next if mdata[k.to_date].size == 0
+      next if mdata[k].nil? || mdata[k].size == 0
       v.each do |m,n|
         tmp = Hash.new
-        tmp['m'] = '-';tmp['f'] = n;tmp['p'] = '-';next if mdata[k.to_date][0][m].to_f == 0
-        if mdata[k.to_date][0][m].to_f != 0
-          tmp['m'] = mdata[k.to_date][0][m].to_f
+        if mdata[k][0][m].to_f == 0
+          tmp['m'] = nil;tmp['f'] = n;tmp['p'] = nil;
+        elsif mdata[k][0][m].to_f != 0
+          tmp['m'] = mdata[k][0][m].to_f
           tmp['f'] = n
           tmp['p'] = (tmp['f']-tmp['m'])/tmp['m']
         end
         v[m] = tmp
       end
+      fdt[k] = v
     end
-    fdata
+    fdt
+  end
+  def emission_by_enterpise(var_name,cityname,percent,option)
+    # 获取地图污染信息，减排aqi，时间
+    # 输入污染类型，城市，百分比，以及其他参数option={'date'=>时间类型变量,'type'=>'电子行业','level'=>预警级别}
+    # 输出污染数据，格点坐标，时间，aqi,企业信息等
+    rncd = ready_nc(var_name,cityname)
+    ncd = rncd['data'].clone
+    rncd.delete('data')
+    grd = read_grid(cityname)
+    return nil if ncd.nil? or grd.nil?
+    sum = ncd.flatten.sum #污染物总值
+    city = [] #该市污染物数值
+    grds = [] #储存不含有格点下标的数
+    grd.map do |l| #获取城市数据
+      city << ncd[l[1]-1][l[0]-1]
+      l << ncd[l[1]-1][l[0]-1]
+      grds << {'xmin'=>l[2],'ymin'=>l[3],'xmax'=>l[2].to_f+0.1,'ymax'=>l[3].to_f+0.1}
+    end
+    sumc = city.sum
+    frd = ForecastRealDatum.new.air_quality_forecast(cityname)
+    aqi = frd[frd.keys.max]['AQI']
+    return {'map'=>ncd,'grid'=>grds,'time'=>frd.keys.max,'aqi'=>aqi}.merge(rncd) if percent == 0 or sum == 0 or sumc == 0
+    per_sum = sumc/sum.to_f #市内污染／总值
+    aqi = (1 - per_sum*percent)*aqi
+    sumg = 0 #各个格点数值和
+    grdt = []
+    grdp = []
+    grds.clear
+    grd.sort_by{|x| x[4]}.reverse.each do |i|
+      sumg += i[4]
+      grdt << i[4]
+      grds << [i[0],i[1]]
+      grdp << {'xmin'=>i[2],'ymin'=>i[3],'xmax'=>i[2].to_f+0.1,'ymax'=>i[3].to_f+0.1}
+      break if sumg/sumc >= percent
+    end
+    ncd.map!{|l| l = Array.new(l.size){|e| e = 0}}
+    grdt.each_index do |i|
+      ncd[grds[i][1]-1][grds[i][0]-1] = grdt[i]
+    end
+    {'map'=>ncd,'grid'=>grdp,'time'=>frd.keys.max,'aqi'=>aqi}.merge(rncd)#map 网格数据；grid：企业坐标[{}];
   end
 end

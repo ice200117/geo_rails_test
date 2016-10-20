@@ -32,7 +32,7 @@ def get_rank_json(flag,option)
 			#全国城市小时数据
 			response = HTTParty.post('http://www.izhenqi.cn/api/dataapi.php',:body => option)
 		end
-		if flag == 'all_city_by_hour' || flag == 'shishi_rank_74'
+		if flag == 'all_city_by_hour' or flag == 'shishi_rank_74'
 			data=JSON.parse(Base64.decode64(response.body))
 		else
 			data=JSON.parse(response.body)

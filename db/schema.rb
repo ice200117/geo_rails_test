@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161009111729) do
+ActiveRecord::Schema.define(version: 20161019043445) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -184,7 +184,20 @@ ActiveRecord::Schema.define(version: 20161009111729) do
     t.float    "discharge_height"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "en_category"
+    t.float    "nmvoc"
+    t.float    "co"
+    t.float    "nh3"
+    t.float    "pm10"
+    t.float    "pm25"
+    t.float    "bc"
+    t.float    "oc"
+    t.integer  "city_id"
+    t.integer  "county_id"
   end
+
+  add_index "enterprises", ["city_id"], :name => "index_enterprises_on_city_id"
+  add_index "enterprises", ["county_id"], :name => "index_enterprises_on_county_id"
 
   create_table "forecast_24s", force: true do |t|
     t.integer  "station_id"

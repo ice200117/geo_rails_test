@@ -4,13 +4,18 @@ def deal_excel(file)
 	book = Spreadsheet.open(file)
 	sheet = book.worksheet(0)
 	data = Array.new
+	firstline = true
 	sheet.each do |l|
+		if firstline
+            firstline = false
+            next
+        end
 		data<<l
 	end
 	data
 end
 def input
-	file = './vendor/enterprise.xls'
+	file = './vendor/lf_enterprise_data_lb_zhizaoye.xls'
 	deal_excel(file).each do |l|
 		tmp = Hash.new
         tmp['en_name'] = l[0].strip if !l[0].nil?#企业名称
@@ -27,6 +32,15 @@ def input
 		tmp['nox_discharge'] = l[11] if !l[11].nil?#nox排放量
 		tmp['temperature'] = l[12] if !l[12].nil?#温度
 		tmp['discharge_height'] = l[13] if !l[13].nil?#排放高度
+		tmp['en_category'] = '制造业'
+		tmp['nmvoc'] = l[15] if !l[15].nil?
+		tmp['co'] = l[16] if !l[16].nil?
+		tmp['nh3'] = l[17] if !l[17].nil?
+		tmp['pm10'] = l[18] if !l[18].nil?
+		tmp['pm25'] = l[19] if !l[19].nil?
+		tmp['bc'] = l[20] if !l[20].nil?
+		tmp['oc'] = l[21] if !l[21].nil?
+		tmp['city_id'] = 18
 		result = Enterprise.create(tmp)
 		if result
 			puts tmp.to_s+' '+'input ok!'
