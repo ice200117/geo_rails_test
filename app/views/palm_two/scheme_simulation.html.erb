@@ -104,7 +104,7 @@
                 <tr>
                   <th>序号</th>
                   <th>企业名称</th>
-                  <th>NOX排放量占比</th>
+                  <th>污染贡献率</th>
                 </tr>
               </thead>
               <tbody>
@@ -149,33 +149,30 @@
                           <th><input type="checkbox" id="check-all" class="flat"></th>
                           <th>序号</th>
                           <th>企业名称</th>
-                          <th>NOX排放量占比</th>
+                          <th>污染贡献率</th>
+                          <th>所属区县</th>
                         </tr>
                       </thead>
 
 
                       <tbody>
-                        <tr>
-                          <td><input type="checkbox" class="flat" name="table_records"></td>
-                          <td>111</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" class="flat" name="table_records"></td>
-                          <td>222</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" class="flat" name="table_records"></td>
-                          <td>333</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                        </tr>
+                       
                       </tbody>
+                      <tfoot>
+                      <tr>
+                      <th></th>
+                      <th>序号</th>
+                      <th>企业名称</th>
+                      <th>污染贡献率</th>
+                      <th>所属区县</th>
+                        </tr>
+                      </tfoot>
                     </table>
                     <button onclick="" class="button-buttons button-glow button-rounded button-primary">查询</button>
+                    <div class="row">
+                    <label>减排百分比:</label>
+                    <input type="text" value="" id="rangedisable" name="range" />
+                  </div>
                 </div>
 
               </div>
@@ -423,56 +420,18 @@ if (option1 && typeof option1 === "object") {
 </script>
 <!-- 初始化表格 -->
 <script type="text/javascript">
+
+
+//checkbox的样式
+var checkboxStyleInit=function(){
+ $('.bulk_action input.flat').iCheck({
+          checkboxClass: 'icheckbox_flat-green'
+      });
+}
 //checkbox的监听
 
 var checkboxListenInit=function(){
-  $('.bulk_action input.flat').iCheck({
-          checkboxClass: 'icheckbox_flat-green',
-      });
-  enterpriseCheckTable.on('draw.dt', function() {
-    $('.bulk_action input.flat').iCheck({
-          checkboxClass: 'icheckbox_flat-green',
-      });
-// table中的所有的checkbox的监听
-    // $('.bulk_action input').on('ifChecked', function () {
-
-    // });
-    // $('.bulk_action input').on('ifUnchecked', function () {
-
-    // });
-// thead中的全选checkbox的监听
-$('.bulk_action input#check-all').on('ifChecked', function () {
-    $(".bulk_action input[name='table_records']").iCheck('check');
-});
-$('.bulk_action input#check-all').on('ifUnchecked', function () {
-    $(".bulk_action input[name='table_records']").iCheck('uncheck');
-});
-// tbody中的checkbox的监听
-$(".bulk_action input[name='table_records']").on('ifChecked', function () {
-    if($(".bulk_action input[name='table_records']").length==$(".bulk_action input[name='table_records']:checked").length)
-    {
-      $('.bulk_action input#check-all').iCheck('check');
-    }
-    else
-    {
-      $('.bulk_action input#check-all').iCheck('indeterminate');
-    }
-    $(this).parent().parent().parent().addClass('selected');
-});
-$(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
-    if($(".bulk_action input[name='table_records']:checked").length==0)
-    {
-      $('.bulk_action input#check-all').iCheck('uncheck');
-      $('.bulk_action input#check-all').iCheck('determinate');
-    }
-    else
-    {
-      $('.bulk_action input#check-all').iCheck('indeterminate');
-    }
-    $(this).parent().parent().parent().removeClass('selected');
-});
-    
-        });
+  
   // table中的所有的checkbox的监听
     // $('.bulk_action input').on('ifChecked', function () {
 
@@ -543,21 +502,61 @@ $(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
         },
       },
       "dom": '<lf<t>ip>',
+      "scrollY": "500px",
+      // "scrollCollapse": "true",
       "paging": false,
        "order": [[ 1, 'asc' ]],
-      "columnDefs":[
-        {
-            //设置第一列不参与搜索
-            "targets":[0],
-            "serchable":false
-        },
-        { 
-          "orderable": false,
-           "targets": 0 
+      ajax: {
+          url: "/palm_two/get_checkboxtable_data.json?citynamepy="+"<%= @citynamepy %>",
+          type: "get"
+      },
+      columns: [{
+          data: null
+      },
+      {
+          data: "number"
+      },
+      {
+          data: "en_name"
+      },
+      {
+        data: "pollution_contribution_rate"
+      },
+      {
+        data: "county_name"
+      }],
+      'columnDefs': [{
+         'targets': 0,
+         'searchable': false,
+         'orderable': false,
+         'className': 'dt-body-center',
+         'render': function (data, type, row, meta){
+             return '<input type="checkbox" class="flat" name="table_records" value="' + row.id + '">';
          }
-    ]
+      }],
 
     });
+    enterpriseCheckTable.on('xhr.dt', function ( e, settings, json, xhr ) {
+       checkboxStyleInit();
+    } );
+    enterpriseCheckTable.on('draw.dt', function() {
+
+      if($(".bulk_action input[name='table_records']").length!=$(".bulk_action input[name='table_records']:checked").length && $(".bulk_action input[name='table_records']:checked").length!=0)
+      {
+        $('.bulk_action input#check-all').iCheck('indeterminate');
+      }
+      else if($(".bulk_action input[name='table_records']").length==$(".bulk_action input[name='table_records']:checked").length && $(".bulk_action input[name='table_records']").length!=0)
+      {
+        $('.bulk_action input#check-all').iCheck('check');
+      }
+      else
+      {
+        $('.bulk_action input#check-all').iCheck('uncheck');
+        $('.bulk_action input#check-all').iCheck('determinate');
+      }
+      checkboxListenInit();
+
+        });
   }
 
   var handleDataTableButtons = function() {
@@ -613,13 +612,14 @@ var TableManageButtons = function() {
   };
 }();
 var loadEnterpriseData=function(gridPoint) {
-  var dataurl='/palm_two/scheme_simulation.json?citypy=<%= @citynamepy %>&gridPoint='+gridPoint;
+  var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint;
   enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
   });
 }
 $(document).ready(function() {
   TableManageButtons.init();
   enterpriseCheckTableinit();
+  checkboxStyleInit();
   checkboxListenInit();
   loadEnterpriseData("");
 
@@ -663,6 +663,24 @@ $(document).ready(function() {
       onUpdate: function (data) {
       }
     });
+
+
+    $("#rangedisable").ionRangeSlider({
+      min: 0,
+      max: 100,
+      from: 0,
+      disable: true,
+      onStart: function (data) {
+      },
+      onChange: function (data) {
+      },
+      onFinish: function (data_in) {
+     
+      },
+      onUpdate: function (data) {
+      }
+    });
+    
   });
 
 </script>

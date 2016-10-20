@@ -37,6 +37,31 @@ class PalmTwoController < ApplicationController
 
   end
 
+
+  def get_checkboxtable_data
+    checkboxtable_data=Hash.new
+    result=[]
+    city=City.find_by_city_name_pinyin(params['citynamepy'])
+    r_data=city.enterprises
+    number=1
+    r_data.each do |enterprise|
+      tmp=Hash.new
+      tmp['id']=enterprise['id']
+      tmp['number']=number
+      tmp['en_name']=enterprise['en_name']
+      tmp['pollution_contribution_rate']=number
+      tmp['county_name']=enterprise['county_id'].nil? ? '' : County.find_by_id(enterprise['county_id']).name
+      result<<tmp
+      number+=1
+    end
+    checkboxtable_data['data']=result
+    respond_to do |format|
+      format.json {
+        render json: checkboxtable_data
+      }
+    end
+  end
+
   def get_all_data
     factor=params['factor']
     citynamepy=params['citynamepy']
