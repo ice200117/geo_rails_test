@@ -48,9 +48,9 @@ module AllSite
 				end
 				l['id'] = mp.id
 				puts l
-        Thread.new do
-          MonitorPointHour.new.save_with_arg(l)
-        end
+				Thread.new do 
+					MonitorPointHour.new.save_with_arg(l)
+				end
 				count = count + 1
 
 				# 剔除多余的邯郸错误数据，导致不能画图。

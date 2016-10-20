@@ -12,7 +12,7 @@ def get_rank_json(flag,option)
 		if flag == 'shishi_rank_74'
 			#真气网74城市实时/日排名
 			# response = HTTParty.get('http://www.izhenqi.cn/api/getdata_cityrank.php?secret='+option[:secret]+'&type='+option[:type]+'&key='+option[:key])
-			response = HTTParty.post('http://www.izhenqi.cn/api/palmapi.php',:body=>option)
+			response = HTTParty.post('http://www.izhenqi.cn/api/palmapi.php',:body => option)
 		elsif flag == 'history_74' 
 			#74城市和京津冀历史日接口
 			response = HTTParty.post('http://www.izhenqi.cn/api/getdata_history.php', :body => option)
@@ -66,13 +66,12 @@ def column_name_modify(hs)
 	hs
 end
 
-def get_zonghezhishu(model)
+def get_zonghezhishu(dayCity)
 	#计算综合指数 需要6项指标的数据
 	#先将当天的数据存储到数据库，再调用综合指数计算方法
 	#年平均二级标准SO2:60,NO2:40,PM10:70,PM2.5:35
 	#二级标准:CO 24小时平均4,O3日最大8小时平均160
 	#参数 id=城市id
-	dayCity=model.last
 	tmp = dayCity.SO2.to_f/60+dayCity.NO2.to_f/40+dayCity.pm10.to_f/70+dayCity.pm25.to_f/35+dayCity.CO.to_f/4+dayCity.O3.to_f/160
 	tmp
 end
@@ -144,19 +143,17 @@ def percentile(array,num)
 end
 
 #计算同期对比
-def get_change_rate(model,id,time)
+def get_change_rate(now_years,id,time)
 	sql_str=Array.new
 	sql_str<<'data_real_time >= ? AND data_real_time <= ? AND city_id = ?'
 	sql_str<<time.to_time.years_ago(1).beginning_of_day
 	sql_str<<time.to_time.years_ago(1).end_of_day
 	sql_str<<id
-	last_years_data = model.where(sql_str)	
+	last_years_data = now_years.class.where(sql_str)	
 	if last_years_data.length == 0
 		return false
 	end
 	last_years=last_years_data[0]
-
-	now_years = model.last
 
 	hs=Hash.new
 	if !now_years.SO2.nil? && !last_years.SO2.nil?
@@ -184,10 +181,9 @@ def get_change_rate(model,id,time)
 end
 
 #保存同期对比
-def set_change_rate_to_db(model,id,time)
-	day_city = model.last
+def set_change_rate_to_db(day_city,id,time)
 	if day_city.data_real_time.year.to_i>2014.to_i 
-		change_rate = get_change_rate(model,id,time)
+		change_rate = get_change_rate(day_city,id,time)
 		return if !change_rate
 		day_city.SO2_change_rate=change_rate[:SO2]
 		day_city.NO2_change_rate=change_rate[:NO2]
@@ -260,15 +256,14 @@ def save_db_common(model,t,time)
 	day_city.save
 
 	if model.new.respond_to?('zonghezhishu')
-		day_city = model.last
 		#判断接口是否提供综合指数
 		if t['complexindex'] != nil && t['complexindex'] != 0
 			day_city.zonghezhishu = t['complexindex']
 		else
-			day_city.zonghezhishu = get_zonghezhishu(model)
+			day_city.zonghezhishu = get_zonghezhishu(day_city.clone)
 		end
 		day_city.save
-		set_change_rate_to_db(model,city.id,time) if model.new.respond_to?("zongheindex_change_rate")
+		set_change_rate_to_db(day_city,city.id,time) if model.new.respond_to?("zongheindex_change_rate")
 	end
 	puts '=='+model.name+'=='+time.to_s+'=='+t['city'].to_s+'=Save OK!==='
 	out_log(model.name+time.to_s+t['city']) if city.nil?	

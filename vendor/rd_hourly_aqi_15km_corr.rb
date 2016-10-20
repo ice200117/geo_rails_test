@@ -3,34 +3,36 @@
 #hs.each { |h| h.destroy }
 #
 
-require_relative 'correction'
-
-def adjust_aqi(l, c, is_corr=true)
-#  CORR = {zhengzhoushi:0.6,
-#		  xianshi:0.6,
-#		  pingdingshanshi:0.3,
-#		  beijingshi:1.3}
+def adjust_aqi(l, c)
   d = Hash.new
-
-  if CORR[c.city_name_pinyin.to_sym] and is_corr
-	aqi = l[1].to_f*CORR[c.city_name_pinyin.to_sym]
-	pm25 = l[15].to_f*CORR[c.city_name_pinyin.to_sym]
+  if c.city_name_pinyin == 'zhengzhoushi'
+	  aqi = l[1].to_f*0.6
+	  pm25 = l[15].to_f*0.6
+  elsif c.city_name_pinyin == 'xianshi'
+	  aqi = l[1].to_f*0.6
+	  pm25 = l[15].to_f*0.6
+  elsif c.city_name_pinyin == 'pingdingshanshi'
+	  aqi = l[1].to_f*0.2
+	  pm25 = l[15].to_f*0.2
+  elsif c.city_name_pinyin == 'beijingshi'
+	  aqi = l[1].to_f*1.3
+	  pm25 = l[15].to_f*1.3
   else
-	aqi = l[1].to_f
-	pm25 = l[15].to_f
+	  aqi = l[1].to_f
+	  pm25 = l[15].to_f
   end
   d['aqi'] = aqi
   d['pm25'] = pm25
   d
 end
 
-def parse_line(line, c, is_corr)
+def parse_line(line, c)
   l = line.split(' ')
   sd = l[0][0,10]
   delta_hour = l[0][11,3]
   sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
 
-  d = adjust_aqi(l, c, is_corr)
+  d = adjust_aqi(l, c)
 
   hcc = {
     :city_id => c.id,
@@ -124,11 +126,11 @@ end
 
 cs = City.all
 hcs = []
-adjust_hcs = []
 cs.each do |c|
   puts c.city_name_pinyin
   py = c.city_name_pinyin.strip
   #next if hb_city.include?(py) #华北城市跳过
+  if c.city_name_pinyin == 'beijingshi' or c.city_name_pinyin == 'zhengzhoushi'
 
   fn = "CN_ENVAQFC_#{py}_#{strtime}_00000-12000.TXT"
   fw = "CN_MET_#{py}_#{strtime}_00000-12000.TXT"
@@ -136,7 +138,7 @@ cs.each do |c|
   f = File.open(path+fn) if File::exists?(path+fn)
   next unless f
   c.forecast_real_data.destroy_all
-  c.hourly_city_forecast_air_qualities.where(publish_datetime: Time.zone.parse(strtime)).delete_all
+  #c.hourly_city_forecast_air_qualities.where(publish_datetime: Time.zone.parse(strtime)).delete_all
 
   f1 = nil
   f1 = File.open(path+fw) if File::exists?(path+fw)
@@ -148,16 +150,14 @@ cs.each do |c|
   end
 
   f.readlines[2..-1].each do |line|
-    td = parse_line(line, c, false)
+    td = parse_line(line, c)
     td.merge!(tmp[td[:forecast_datetime]]) if !tmp[td[:forecast_datetime]].nil?
     hcs << td
-    td = parse_line(line, c, true)
-    td.merge!(tmp[td[:forecast_datetime]]) if !tmp[td[:forecast_datetime]].nil?
-    adjust_hcs << td
   end
 
   f.close
   puts fn+" update database successful!"
+  end
 end
-HourlyCityForecastAirQuality.create(hcs)
-ForecastRealDatum.create(adjust_hcs)
+#HourlyCityForecastAirQuality.create(hcs)
+ForecastRealDatum.create(hcs)

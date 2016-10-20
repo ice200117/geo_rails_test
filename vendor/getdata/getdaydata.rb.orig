@@ -1,24 +1,36 @@
+<<<<<<< HEAD
 require_relative './common.rb'
 require_relative './get_qinhuangdao_data.rb'
-<<<<<<< HEAD
-require_relative './bd_day.rb'
-
-# time=Time.now.yesterday
-=======
 require_relative './calculate_sfcities_rank.rb'
 # require_relative './bd_day.rb'
+
 time=Time.now.yesterday
->>>>>>> master
+
+#秦皇岛日数据
+Qinhuangdao::Qinhuangdao.new.day
+
+# tmp=MonitorPointDay.last.data_real_time
+# stime=tmp.beginning_of_day
+# etime=tmp.end_of_day
+=======
+require_relative './common.rb'
+# require_relative './get_qinhuangdao_data.rb'
+# require_relative './calculate_sfcities_rank.rb'
+# require_relative './bd_day.rb'
+
+time=Time.now.yesterday
+
 #秦皇岛日数据
 # Qinhuangdao::Qinhuangdao.new.day
 
 # tmp=MonitorPointDay.last.data_real_time
 # stime=tmp.beginning_of_day
 # etime=tmp.end_of_day
+>>>>>>> 6675b10d0ccde3c267c6ff8157e6690e36286680
 # Custom::Redis.set('qhd_hour',MonitorPointDay.where(city_id: 11,data_real_time: (stime..etime)))
 
-# Qinhuangdao::Qinhuangdao.new.month
-# Qinhuangdao::Qinhuangdao.new.year
+Qinhuangdao::Qinhuangdao.new.month
+Qinhuangdao::Qinhuangdao.new.year
 
 #保定日数据
 # hs=ten_times_test('TempBdDay','shishi_74',{secret:'BAODINGRANK',type:'DAY'})
@@ -50,6 +62,7 @@ time=Time.now.yesterday
 # common_get_month_year('langfang',TempLfYear,time)
 
 #京津冀日数据
+<<<<<<< HEAD
 time=Time.now.yesterday
 hs=ten_times_test('TempJjjDay','history_74',{secret:'JINGJINJIDATA',type:'DAY',date:time})
 save_db(hs,TempJjjDay)
@@ -61,7 +74,21 @@ common_get_month_year('jjj',TempJjjMonth,time)
 common_get_month_year('jjj',TempJjjYear,time)
 
 #74城市日数据
-hs=ten_times_test('TempSfcitiesDay','shishi_rank_74',{secret:'CHINARANK',type:'DAY'})
+hs=ten_times_test('TempSfcitiesDay','shishi_rank_74',{secret:'eb3d87df64f2fa171dad1cfc9a8999b3',method:'GETDATA',name:'CHINA',type:'DAY'})
+=======
+# time=Time.now.yesterday
+# hs=ten_times_test('TempJjjDay','history_74',{secret:'JINGJINJIDATA',type:'DAY',date:time})
+# save_db(hs,TempJjjDay)
+
+#京津冀月数据
+# common_get_month_year('jjj',TempJjjMonth,time)
+
+#京津冀年数据
+# common_get_month_year('jjj',TempJjjYear,time)
+
+#74城市日数据
+hs=ten_times_test('TempSfcitiesDay','shishi_rank_74',{secret:'eb3d87df64f2fa171dad1cfc9a8999b3',method:'GETDATA',name:'CHINA',type:'DAY'})
+>>>>>>> 6675b10d0ccde3c267c6ff8157e6690e36286680
 save_db(hs,TempSfcitiesDay) if hs
 
 #74城市月数据
@@ -76,3 +103,5 @@ save_db(hs,TempSfcitiesYear) if hs
 
 model(TempSfcitiesMonth,time.beginning_of_day,time.end_of_day)
 model(TempSfcitiesYear,time.beginning_of_day,time.end_of_day)
+
+$redis.flushdb

@@ -13,8 +13,8 @@ time=Time.now.yesterday
 # etime=tmp.end_of_day
 # Custom::Redis.set('qhd_hour',MonitorPointDay.where(city_id: 11,data_real_time: (stime..etime)))
 
-# Qinhuangdao::Qinhuangdao.new.month
-# Qinhuangdao::Qinhuangdao.new.year
+Qinhuangdao::Qinhuangdao.new.month
+Qinhuangdao::Qinhuangdao.new.year
 
 #保定日数据
 # hs=ten_times_test('TempBdDay','shishi_74',{secret:'BAODINGRANK',type:'DAY'})
