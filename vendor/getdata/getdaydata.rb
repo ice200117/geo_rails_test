@@ -13,8 +13,8 @@ Qinhuangdao::Qinhuangdao.new.day
 # etime=tmp.end_of_day
 # Custom::Redis.set('qhd_hour',MonitorPointDay.where(city_id: 11,data_real_time: (stime..etime)))
 
-# Qinhuangdao::Qinhuangdao.new.month
-# Qinhuangdao::Qinhuangdao.new.year
+Qinhuangdao::Qinhuangdao.new.month
+Qinhuangdao::Qinhuangdao.new.year
 
 #保定日数据
 # hs=ten_times_test('TempBdDay','shishi_74',{secret:'BAODINGRANK',type:'DAY'})
@@ -57,7 +57,7 @@ common_get_month_year('jjj',TempJjjMonth,time)
 common_get_month_year('jjj',TempJjjYear,time)
 
 #74城市日数据
-hs=ten_times_test('TempSfcitiesDay','shishi_rank_74',{secret:'CHINARANK',type:'DAY'})
+hs=ten_times_test('TempSfcitiesDay','shishi_rank_74',{secret:'eb3d87df64f2fa171dad1cfc9a8999b3',method:'GETDATA',name:'CHINA',type:'DAY'})
 save_db(hs,TempSfcitiesDay) if hs
 
 #74城市月数据

@@ -5,16 +5,19 @@ require_relative './all_sites.rb'
 hs=Hash.new
 oneday=60*60*24
 
-#全国城市实时数据
-hs = Hash.new
-hs[:secret] = "70ad4cb02984355c0f08f2e84be72c9c"
-hs[:method] = "GETCITYDATA"
-hs[:type]='HOUR'
-hs = ten_times_test(ChinaCitiesHour,'all_city_by_hour',hs)
-save_db(hs,ChinaCitiesHour)
+Thread.new do 
+	#全国城市实时数据
+	hs = Hash.new
+	hs[:secret] = "70ad4cb02984355c0f08f2e84be72c9c"
+	hs[:method] = "GETCITYDATA"
+	hs[:type]='HOUR'
+	hs = ten_times_test(ChinaCitiesHour,'all_city_by_hour',hs)
+	# save_db(hs,ChinaCitiesHour)
+end
 
 # 获取全国站点数据
-AllSite::Option.new.save
+data = AllSite::Option.new
+data.save
 
 #保定实时数据
 # hs = ten_times_test(TempBdHour,'shishi_rank_data','BAODINGRANK','HOUR',nil)
@@ -52,4 +55,4 @@ save_db(hs,TempSfcitiesHour)
 # 		city(c)  #调起fore_fix_one_city中的city方法
 # 		save_in_db(c) #调用rd_hourly_aqi_every_hour中的写入方法
 # 	end
-#end
+# end

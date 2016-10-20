@@ -145,4 +145,53 @@ class ForecastRealDatum < ActiveRecord::Base
       lev = '严重污染'
     end
   end
+
+
+	def self.today_avg(city_name_pinyin=nil,spe=:AQI)
+		city_avg = {}
+		if city_name_pinyin
+			c = City.find_by_city_name_pinyin(city_name_pinyin)
+
+			city_avg[c.city_name] = city_avg_today(c,spe) if c
+		else
+			# First method
+			#cs = City.wwGGD5m3here("id < 388")
+			#cs.each do |c|
+			#city_avg[c.city_name] = city_avg_today(c,spe)
+			#end
+
+			# Sencond method
+			nowday = Time.zone.now
+			cs = City.includes(:forecast_real_data).where(forecast_real_data: {publish_datetime: 5.days.ago.beginning_of_day..nowday.end_of_day, forecast_datetime: nowday.beginning_of_day..nowday}).order("forecast_real_data.publish_datetime")
+			cs.each do |cl|
+				fs = cl.forecast_real_data
+				latest_publish_datetime = fs.last.publish_datetime
+				aqi_sum = 0; i = 0
+				fs.each do |f|
+					if f.publish_datetime == latest_publish_datetime
+						aqi_sum += f.send(spe)
+						i += 1
+					end
+				end
+				city_avg[cl.city_name] = {latest_publish_datetime.strftime("%Y-%m-%d_%H") => (aqi_sum/i).round }
+			end
+		end
+		city_avg
+	end
+
+	def self.city_avg_today(city=nil,spe=:AQI)
+		return nil unless city
+		fs = city.forecast_real_data.order(:publish_datetime).last(120)
+
+		aqi_sum = 0
+		i = 0
+		fs.each do |f|
+			if f.forecast_datetime >= Time.zone.now.beginning_of_day and f.forecast_datetime <= Time.zone.now
+				aqi_sum += f.send(spe)
+				i += 1
+			end
+		end
+		i > 0 ? {fs[0].publish_datetime.strftime("%Y-%m-%d_%H") => (aqi_sum/i).round }   : nil
+
+	end
 end
