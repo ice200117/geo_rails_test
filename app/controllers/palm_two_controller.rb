@@ -12,6 +12,12 @@ class PalmTwoController < ApplicationController
             if c
               @latitude=c.latitude
               @longitude=c.longitude
+              @ccs=[]
+              @en_count=[]
+              c.counties.each do |cc|
+                @ccs<<cc.name
+                @en_count<<cc.enterprises.size
+              end
             end
             render 'page_lost_city',layout: false unless c
         }

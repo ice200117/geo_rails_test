@@ -187,6 +187,50 @@
   <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min','js/iCheck/icheck.min' %>   
   <!-- 网格追踪 -->
   <script type="text/javascript">
+ // 区域内企业分布统计
+var tiaoxingtuInit=function (){
+var dom1 = document.getElementById("enterpriseDistributionStatistics");
+myChart1 = echarts.init(dom1);
+option1 = {
+  title: {
+    text: '区域内企业分布统计'
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
+  legend: {
+    data: ['企业数量']
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'value',
+    boundaryGap: [0, 0.01]
+  },
+  yAxis: {
+    type: 'category',
+    data: eval('('+'<%= @ccs %>'.replace(/&quot;/g,"\"")+')')//区县名称数组
+  },
+  series: [
+    {
+      name: '企业数量',
+      type: 'bar',
+      data: <%= @en_count %>//各区县对应的企业数量数组
+    }
+  ]
+};
+window.onresize = function(){
+    myChart1.resize();
+  };
+}
+
     function query_gou_xuan_en_data(){
       var en_ids=[];
       $(".bulk_action input[name='table_records']:checked").each(function(){
@@ -320,7 +364,7 @@ function getColor(val){
 </script>    
 <!-- 清单统计 -->
 <script type="text/javascript">
-  var dom = document.getElementById("proportionOfIndustry");
+var dom = document.getElementById("proportionOfIndustry");
 var myChart = echarts.init(dom);
 var app = {};
 option = null;
@@ -364,61 +408,12 @@ option = {
 };
 if (option && typeof option === "object") {
   myChart.setOption(option, true);
-  <%# window.onresize = myChart.resize; %>
-}
-</script>
-<!-- 区域内企业分布统计 -->
-<script>
-  var dom1 = document.getElementById("enterpriseDistributionStatistics");
-var myChart1 = echarts.init(dom1);
-var app1 = {};
-option1 = null;
-app1.title = '区域内企业分布统计 - 条形图';
-
-option1 = {
-  title: {
-    text: '区域内企业分布统计'
-  },
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'shadow'
-    }
-  },
-  legend: {
-    data: ['企业数量']
-  },
-  grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
-    containLabel: true
-  },
-  xAxis: {
-    type: 'value',
-    boundaryGap: [0, 0.01]
-  },
-  yAxis: {
-    type: 'category',
-    data: ['郑东新区','金水区','管城区','惠济区','中原区','高新区','二七区','经开区']
-  },
-  series: [
-    {
-      name: '企业数量',
-      type: 'bar',
-      data: [18203, 23489, 29034, 104970, 131744, 630230,19325, 23438]
-    }
-  ]
-};
-;
-if (option1 && typeof option1 === "object") {
-  myChart1.setOption(option1, true);
-  window.onresize = function(){
+    window.onresize = function(){
     myChart.resize();
-    myChart1.resize();
   };
 }
 </script>
+
 
 <!-- tableToExcel -->
 <script>
@@ -634,6 +629,8 @@ var loadEnterpriseData=function(gridPoint) {
 }
 $(document).ready(function() {
   TableManageButtons.init();
+  tiaoxingtuInit();
+  myChart1.setOption(option1, true);
   enterpriseCheckTableinit();
   checkboxStyleInit();
   checkboxListenInit();
