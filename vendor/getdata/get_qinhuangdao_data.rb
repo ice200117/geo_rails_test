@@ -43,10 +43,11 @@ module Qinhuangdao
 
 		def month
 			mp=MonitorPoint.where("city_id = 11")
+			return false if mp.size == 0
 			mp.each do |l|
 				line = nil
 				tmp = someday_data('month',Time.now.yesterday,l.id)
-				line=tmp if !tmp.nil?
+				!tmp.nil? ? line=tmp : next
 				line['id'] = l.id
 				line['time'] = Time.now.yesterday
 				line['pointname']=l.pointname
@@ -60,7 +61,7 @@ module Qinhuangdao
 			mp.each do |l|
 				line = nil
 				tmp = someday_data('year',Time.now.yesterday,l.id)
-				line=tmp if !tmp.nil?
+				!tmp.nil? ? line=tmp : next
 				line['id'] = l.id
 				line['time'] = Time.now.yesterday
 				line['pointname']=l.pointname
@@ -128,7 +129,6 @@ module Qinhuangdao
 			elsif flag =='month'
 				temp=MonitorPointDay.where("monitor_point_id = ? AND data_real_time >= ? AND data_real_time <=?",id,time.beginning_of_month,time.end_of_day)
 				puts time
-				byebug
 			elsif flag =='year'
 				temp=MonitorPointDay.where("monitor_point_id = ? AND data_real_time >= ? AND data_real_time <=?",id,time.beginning_of_year,time.end_of_day)
 			end

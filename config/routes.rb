@@ -127,4 +127,7 @@ Rails.application.routes.draw do
 	get 'palm_two/scheme_simulation' => 'palm_two#scheme_simulation'
 	get 'palm_two/get_all_data' => 'palm_two#get_all_data'
 	get 'palm_two/effect_evaluation' => 'palm_two#effect_evaluation'
+	get 'palm_two/get_checkboxtable_data' => 'palm_two#get_checkboxtable_data'
+	get 'palm_two/query_gou_xuan_en_data_all' => 'palm_two#query_gou_xuan_en_data_all'
+	
 end

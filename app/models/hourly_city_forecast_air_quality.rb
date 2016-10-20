@@ -181,23 +181,24 @@ class HourlyCityForecastAirQuality < Partitioned::ByMonthlyTimeField
     tmp2 = []
     tmp3 = []
     tmp4 = []
+	start_point = 1
     data.each do |d|
-      if d.forecast_datetime >= d.publish_datetime+12.hours and d.forecast_datetime < d.publish_datetime+36.hours
+      if d.forecast_datetime >= d.publish_datetime+start_point.hours and d.forecast_datetime < d.publish_datetime+(start_point+24).hours
         unless tmp1.include? d.forecast_datetime
           fore_data_24 << [d.forecast_datetime, d.AQI]
           tmp1 << d.forecast_datetime
         end
-      elsif d.forecast_datetime >= d.publish_datetime+36.hours and d.forecast_datetime < d.publish_datetime+60.hours
+      elsif d.forecast_datetime >= d.publish_datetime+(start_point+24).hours and d.forecast_datetime < d.publish_datetime+(start_point+48).hours
         unless tmp2.include? d.forecast_datetime
           fore_data_48 << [d.forecast_datetime, d.AQI]
           tmp2 << d.forecast_datetime
         end
-      elsif d.forecast_datetime >= d.publish_datetime+60.hours and d.forecast_datetime < d.publish_datetime+84.hours
+      elsif d.forecast_datetime >= d.publish_datetime+(start_point+48).hours and d.forecast_datetime < d.publish_datetime+(start_point+72).hours
         unless tmp3.include? d.forecast_datetime
           fore_data_72 << [d.forecast_datetime, d.AQI]
           tmp3 << d.forecast_datetime
         end
-      elsif d.forecast_datetime >= d.publish_datetime+84.hours and d.forecast_datetime < d.publish_datetime+108.hours
+      elsif d.forecast_datetime >= d.publish_datetime+(start_point+72).hours and d.forecast_datetime < d.publish_datetime+(start_point+96).hours
         unless tmp4.include? d.forecast_datetime
           fore_data_96 << [d.forecast_datetime, d.AQI]
           tmp4 << d.forecast_datetime
