@@ -14,7 +14,7 @@ def model(model,stime,etime)
 		v.each do |l|
 			count += 1
 			hs[l['id']] = count
-      puts l['id'].to_s+' '+l['data_real_time'].to_s+'   '+count.to_s + ' '+l['zonghezhishu'].to_s
+			puts l['id'].to_s+' '+l['data_real_time'].to_s+'   '+count.to_s + ' '+l['zonghezhishu'].to_s
 		end
 		puts ' '
 	end
@@ -29,5 +29,5 @@ def model(model,stime,etime)
 	end
 end
 
-model(TempSfcitiesMonth,'20150101'.to_time.beginning_of_day,Time.now.beginning_of_day)
-model(TempSfcitiesYear,'20150101'.to_time.beginning_of_day,Time.now.beginning_of_day)
+# model(TempSfcitiesMonth,'20150101'.to_time.beginning_of_day,Time.now.beginning_of_day)
+# model(TempSfcitiesYear,'20150101'.to_time.beginning_of_day,Time.now.beginning_of_day)

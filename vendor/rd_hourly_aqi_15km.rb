@@ -4,18 +4,26 @@
 #
 
 def adjust_aqi(l, c)
+  d = Hash.new
   if c.city_name_pinyin == 'zhengzhoushi'
-	  aqi = l[1].to_f*0.5
+	  aqi = l[1].to_f*0.6
+	  pm25 = l[15].to_f*0.6
   elsif c.city_name_pinyin == 'xianshi'
 	  aqi = l[1].to_f*0.6
+	  pm25 = l[15].to_f*0.6
   elsif c.city_name_pinyin == 'pingdingshanshi'
-	  aqi = l[1].to_f*0.1
-  elsif c.city_name_pinyin == 'beijingshishi'
-	  aqi = l[1].to_f*0.1
+	  aqi = l[1].to_f*0.2
+	  pm25 = l[15].to_f*0.2
+  elsif c.city_name_pinyin == 'beijingshi'
+	  aqi = l[1].to_f*1.3
+	  pm25 = l[15].to_f*1.3
   else
 	  aqi = l[1].to_f
+	  pm25 = l[15].to_f
   end
-  aqi
+  d['aqi'] = aqi
+  d['pm25'] = pm25
+  d
 end
 
 def parse_line(line, c)
@@ -24,16 +32,16 @@ def parse_line(line, c)
   delta_hour = l[0][11,3]
   sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
 
-  aqi = adjust_aqi(l, c)
+  d = adjust_aqi(l, c)
 
   hcc = {
     :city_id => c.id,
     :publish_datetime => sdate,
     :forecast_datetime => sdate+delta_hour.to_i*3600,
-	:AQI => aqi.round,
+	:AQI => d['aqi'].round,
     :main_pol => l[2].strip,
     :grade => l[3],
-    :pm25 => l[15],
+    :pm25 => d['pm25'].round,
     :pm10 => l[13],
     :SO2 => l[5], :CO => l[9], :NO2 => l[7],
     :O3 => l[11],
