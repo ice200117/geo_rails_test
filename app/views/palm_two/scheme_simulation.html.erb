@@ -168,7 +168,7 @@
                         </tr>
                       </tfoot>
                     </table>
-                    <button onclick="" class="button-buttons button-glow button-rounded button-primary">查询</button>
+                    <button onclick="query_gou_xuan_en_data();" class="button-buttons button-glow button-rounded button-primary">查询</button>
                     <div class="row">
                     <label>减排百分比:</label>
                     <input type="text" value="" id="rangedisable" name="range" />
@@ -187,6 +187,22 @@
   <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min','js/iCheck/icheck.min' %>   
   <!-- 网格追踪 -->
   <script type="text/javascript">
+    function query_gou_xuan_en_data(){
+      var en_ids=[];
+      $(".bulk_action input[name='table_records']:checked").each(function(){
+        en_ids.push(this.value);
+      });
+      $.ajax({            
+          url: '/palm_two/query_gou_xuan_en_data_all',
+          data:{
+            'en_ids': JSON.stringify(en_ids)},
+          type: "get",
+          dataType : "json",            
+          success: function (r) { 
+            alert(r.chenggong);
+          }
+        });
+    }
     var center = new BMap.Point(<%= @longitude %>,<%= @latitude %>);
 // var marker = new BMap.Marker(center);// 创建标注
 // 创建Map实例

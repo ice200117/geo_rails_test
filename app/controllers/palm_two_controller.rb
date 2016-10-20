@@ -74,6 +74,14 @@ class PalmTwoController < ApplicationController
     end    
   end
 
+  def query_gou_xuan_en_data_all
+    respond_to do |format|
+        format.json {
+            render json: {chenggong:'chenggong'}
+        }
+    end
+  end
+
   def effect_evaluation
     params['cityname'].nil? ? cityname = 'langfangshi' : cityname = params['cityname']
     @evaluate = Adjoint.evaluate(cityname,Time.now.days_ago(5),Time.now.yesterday)
