@@ -243,14 +243,90 @@ class Adjoint
     end
     fdt
   end
-  def emission_by_enterpise(var_name,cityname,percent,option)
+
+  def self.emission_by_enterprise(var_name,cityname,percent,en_category='电力、燃气及水的生产和供应业',*arg)
     # 获取地图污染信息，减排aqi，时间
-    # 输入污染类型，城市，百分比，以及其他参数option={'date'=>时间类型变量,'type'=>'电子行业','level'=>预警级别}
+    # 输入污染类型:nox，城市，百分比，以及其他参数arg
     # 输出污染数据，格点坐标，时间，aqi,企业信息等
-    rncd = ready_nc(var_name,cityname)
+    rncd = ready_nc(var_name.upcase+'_120',cityname)
     ncd = rncd['data'].clone
     rncd.delete('data')
     grd = read_grid(cityname)
+    return nil if ncd.nil? or grd.nil?
+    var = var_name+'_discharge' 
+    where = var+' > -1 and en_category = \'' + en_category + '\''
+    gset = City.find_by_city_name_pinyin(cityname).enterprises.where(where).as_json
+    esum = 0.0
+    gset.each do |l|
+      esum += l[var]
+    end
+    gset.each{|x| x['proportion'] = x[var]/esum }
+    gset.sort{|x,y| y['proportion']<=>x['proportion']}
+    gset = gset.group_by{|x| x['en_category'] == en_category} #计算企业污染贡献率
+    sum = ncd.flatten.sum #污染物总值
+    city = [] #该市污染物数值
+    grds = [] #储存不含有格点下标的数
+    grd.map do |l| #获取城市数据
+      city << ncd[l[1]-1][l[0]-1]
+      l << ncd[l[1]-1][l[0]-1]
+      grds << {'xmin'=>l[2],'ymin'=>l[3],'xmax'=>l[2].to_f+0.1,'ymax'=>l[3].to_f+0.1}
+    end
+    sumc = city.sum
+    frd = ForecastRealDatum.new.air_quality_forecast(cityname)
+    aqi = frd[frd.keys.max]['AQI']
+    return {'map'=>ncd,'time'=>frd.keys.max,'aqi'=>aqi,'eset'=>gset}.merge(rncd) if percent == 0 or sum == 0 or sumc == 0
+    per_sum = sumc/sum.to_f #市内污染／总值
+
+    grds = Hash.new
+    eset = Array.new
+    eper = 0.0
+    if !gset[true].nil?
+      gset[true].each do |n|
+        gflag = false
+        grd.each do |l|
+          if (l[2]..l[2]+0.1) === n['latitude'] and (l[3]..l[3]+0.1) === n['longitude']
+            eset << n
+            eper += n['proportion']
+            grds[l[0].to_s+l[1].to_s] = l
+            gflag = true;break if eper >= per_sum*percent
+          end
+        end 
+        break if gflag
+      end
+    end
+
+    if !gset[false].nil?
+      gset[false].each do |n|
+        gflag = false
+        grd.each do |l|
+          if (l[2]..l[2]+0.1) === n['latitude'] and (l[3]..l[3]+0.1) === n['longitude']
+            eset << n
+            eper += n['proportion']
+            grds[l[0].to_s+l[1].to_s] = l
+            gflag = true;break if eper >= per_sum*percent
+          end
+        end 
+        break if gflag
+      end
+    end
+
+    aqi = (1 - per_sum*percent)*aqi
+    ncdt = ncd.map{|l| l = Array.new(l.size){|e| e = 0}}
+    grds = grds.values
+    grds.each_index do |i|
+      ncdt[grds[i][1]-1][grds[i][0]-1] = ncd[grds[i][1]-1][grds[i][0]-1]
+    end
+    {'map'=>ncd,'time'=>frd.keys.max,'aqi'=>aqi,'eset'=>eset}.merge(rncd)#map 网格数据；
+  end
+
+  def self.emission_v1(citypy,var_name,percent,*arg)
+    # 获取地图污染信息，减排aqi
+    # 输入污染类型:nox，城市，百分比，以及其他参数(arg[0]:污染物类型:'nox',arg[1]:行业)
+    # 输出污染数据，格点坐标，时间，aqi,企业信息等
+    rncd = ready_nc(var_name,citypy)
+    ncd = rncd['data'].clone
+    rncd.delete('data')
+    grd = read_grid(citypy)
     return nil if ncd.nil? or grd.nil?
     sum = ncd.flatten.sum #污染物总值
     city = [] #该市污染物数值
@@ -264,6 +340,18 @@ class Adjoint
     frd = ForecastRealDatum.new.air_quality_forecast(cityname)
     aqi = frd[frd.keys.max]['AQI']
     return {'map'=>ncd,'grid'=>grds,'time'=>frd.keys.max,'aqi'=>aqi}.merge(rncd) if percent == 0 or sum == 0 or sumc == 0
+
+    var = var_name+'_discharge' 
+    where = var+' > -1'
+    gset = City.find_by_city_name_pinyin(cityname).enterprises.where(where).as_json
+    esum = 0.0
+    gset.each do |l|
+      esum += l[var]
+    end
+    gset.each{|x| x['proportion'] = x[var]/esum }
+    gset.sort{|x,y| y['proportion']<=>x['proportion']}
+    gset = gset.group_by{|x| x['en_category'] == en_category} #计算企业污染贡献率
+
     per_sum = sumc/sum.to_f #市内污染／总值
     aqi = (1 - per_sum*percent)*aqi
     sumg = 0 #各个格点数值和
@@ -284,3 +372,4 @@ class Adjoint
     {'map'=>ncd,'grid'=>grdp,'time'=>frd.keys.max,'aqi'=>aqi}.merge(rncd)#map 网格数据；grid：企业坐标[{}];
   end
 end
+
