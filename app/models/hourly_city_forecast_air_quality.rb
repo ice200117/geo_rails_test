@@ -11,19 +11,19 @@ class HourlyCityForecastAirQuality < Partitioned::ByMonthlyTimeField
     partition.foreign_key :city_id
   end
 
-	def city_forecast_by_id(cityid)
+	def self.city_forecast_by_id(cityid)
 		c = City.find_by_cityid(cityid)
 		return nil unless c
-		city_forecast(c)
+		self.city_forecast(c)
 	end
 
-	def city_forecast_by_pinyin(pinyin)
+	def self.city_forecast_by_pinyin(pinyin)
 		c = City.find_by_city_name_pinyin(pinyin)
 		return nil unless c
 		city_forecast(c)
 	end
 
-	def city_forecast(c)
+	def self.city_forecast(c)
 		cf = Hash.new
 		hf = []
 		ac = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)

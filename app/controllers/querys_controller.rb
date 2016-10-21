@@ -113,15 +113,19 @@ class QuerysController < ApplicationController
 
 	def aqis_by_city
 		pinyin = params[:city]
-		chf = ForecastRealDatum.city_forecast_by_pinyin(pinyin)
+		is_real = params[:real]
+		if is_real=="0"
+			chf = HourlyCityForecastAirQuality.city_forecast_by_pinyin(pinyin)
+		else
+			chf = ForecastRealDatum.city_forecast_by_pinyin(pinyin)
+		end
 		render json: chf
 	end
 
 	#获取预报信息 参数：cityid
 	def aqis_by_cityid
 		cityid = params[:cityid]
-		h = HourlyCityForecastAirQuality.new
-		chf = h.city_forecast_by_id(cityid)
+		chf = ForecastRealDatum.city_forecast_by_id(cityid)
 		render json: chf
 	end
 
