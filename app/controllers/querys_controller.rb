@@ -73,8 +73,11 @@ class QuerysController < ApplicationController
       varnames = ["CO_120", "NOX_120", "SO2_120"]
     end
     citypy = params['citypy']
-    citypy.nil? ? path = '/mnt/share/Temp/BackupADJ_langfangshi/' : path = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
-    # citypy.nil? ? path = '/Users/baoxi/Workspace/temp/' : path = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
+    if Rails.env == 'development'
+      path = '/Users/baoxi/Workspace/temp/'
+    else
+      citypy.nil? ? path = '/mnt/share/Temp/BackupADJ_langfangshi/' : path = '/mnt/share/Temp/BackupADJ_'+citypy+'/'
+    end
     ncfile = Adjoint.latest_file(path)
     render 'palm_two/page_lost_city',layout: false if ncfile.nil?
     file = NetCDF.open(ncfile)

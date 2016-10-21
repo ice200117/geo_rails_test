@@ -153,10 +153,7 @@
                           <th>所属区县</th>
                         </tr>
                       </thead>
-
-
                       <tbody>
-                       
                       </tbody>
                       <tfoot>
                       <tr>
@@ -174,10 +171,8 @@
                     <input type="text" value="" id="rangedisable" name="range" />
                   </div>
                 </div>
-
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -628,9 +623,8 @@ var TableManageButtons = function() {
   };
 }();
 var loadEnterpriseData=function(gridPoint) {
-  var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint;
-  enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
-  });
+  var dataurl='/palm_two/scheme_simulation.json?citynamepy=<%= @citynamepy %>&gridPoint='+gridPoint;
+  enterpriseList.ajax.url(dataurl).load(function ( r_data ) { });
 }
 $(document).ready(function() {
   TableManageButtons.init();

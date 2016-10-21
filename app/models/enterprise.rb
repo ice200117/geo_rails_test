@@ -24,20 +24,20 @@ class Enterprise < ActiveRecord::Base
     # 输出:
     gset = Array.new
     esum = 0.0
-    arg[1] = 'nox_concentration' if arg[1].nil?
+    arg[1] = 'nox_discharge' if arg[1].nil?
     where = Hash.new
     where['en_category'] = arg[0] unless arg[0].nil?
     City.find_by_city_name_pinyin(citypy).enterprises.where(where).each do |l|
       next if l.send(arg[1]) == -1
       esum += l.send(arg[1]).to_f
-      next if gridPoint.size == 0
+      gset << l.as_json;next if gridPoint.size == 0
       gridPoint.each do |g|
         if (g['xmin'].to_f..g['xmax'].to_f) === l.longitude and (g['ymin'].to_f..g['ymax'].to_f) === l.latitude
           arg[0].nil? ? gset << l.as_json : (gset << l.as_json if l.en_category == arg[0])
         end
       end
     end
-    gset.map! do |l|
+    gset.map do |l|
       l['proportion'] = l[arg[1]].to_f/esum
     end
     gset
