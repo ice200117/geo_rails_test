@@ -12,6 +12,12 @@ class PalmTwoController < ApplicationController
             if c
               @latitude=c.latitude
               @longitude=c.longitude
+              @ccs=[]
+              @en_count=[]
+              c.counties.each do |cc|
+                @ccs<<cc.name
+                @en_count<<cc.enterprises.size
+              end
             end
             render 'page_lost_city',layout: false unless c
         }
@@ -37,6 +43,31 @@ class PalmTwoController < ApplicationController
 
   end
 
+
+  def get_checkboxtable_data
+    checkboxtable_data=Hash.new
+    result=[]
+    city=City.find_by_city_name_pinyin(params['citynamepy'])
+    r_data=city.enterprises
+    number=1
+    r_data.each do |enterprise|
+      tmp=Hash.new
+      tmp['id']=enterprise['id']
+      tmp['number']=number
+      tmp['en_name']=enterprise['en_name']
+      tmp['pollution_contribution_rate']=number
+      tmp['county_name']=enterprise['county_id'].nil? ? '' : County.find_by_id(enterprise['county_id']).name
+      result<<tmp
+      number+=1
+    end
+    checkboxtable_data['data']=result
+    respond_to do |format|
+      format.json {
+        render json: checkboxtable_data
+      }
+    end
+  end
+
   def get_all_data
     factor=params['factor']
     citynamepy=params['citynamepy']
@@ -47,6 +78,14 @@ class PalmTwoController < ApplicationController
             render json: all_data
         }
     end    
+  end
+
+  def query_gou_xuan_en_data_all
+    respond_to do |format|
+        format.json {
+            render json: {chenggong:'chenggong'}
+        }
+    end
   end
 
   def effect_evaluation

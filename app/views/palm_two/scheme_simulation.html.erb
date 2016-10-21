@@ -104,7 +104,7 @@
                 <tr>
                   <th>序号</th>
                   <th>企业名称</th>
-                  <th>NOX排放量占比</th>
+                  <th>污染贡献率</th>
                 </tr>
               </thead>
               <tbody>
@@ -120,14 +120,14 @@
               <div class="col-md-6 col-xs-12">
                 <label>预警级别:</label>
                 <div class="btn-group">
-                  <button class="btn btn-info" type="button">I</button>
-                  <button class="btn btn-info active" type="button">II</button>
-                  <button class="btn btn-info" type="button">III</button>
-                  <button class="btn btn-info" type="button">IV</button>
+                  <button class="btn btn-info btnforcastgroup" type="button">I</button>
+                  <button class="btn btn-info btnforcastgroup" type="button">II</button>
+                  <button class="btn btn-info btnforcastgroup" type="button">III</button>
+                  <button class="btn btn-info btnforcastgroup" type="button">IV</button>
                 </div>
               </div>
               <div class="col-md-6 col-xs-12">
-                <label>行业选择:</label>
+                <label>优先行业选择:</label>
                 <div class="btn-group">
                   <button class="btn btn-round btn-success" type="button">电力</button>
                   <button class="btn btn-round btn-success active" type="button">冶金</button>
@@ -149,33 +149,30 @@
                           <th><input type="checkbox" id="check-all" class="flat"></th>
                           <th>序号</th>
                           <th>企业名称</th>
-                          <th>NOX排放量占比</th>
+                          <th>污染贡献率</th>
+                          <th>所属区县</th>
                         </tr>
                       </thead>
 
 
                       <tbody>
-                        <tr>
-                          <td><input type="checkbox" class="flat" name="table_records"></td>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" class="flat" name="table_records"></td>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" class="flat" name="table_records"></td>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                        </tr>
+                       
                       </tbody>
+                      <tfoot>
+                      <tr>
+                      <th></th>
+                      <th>序号</th>
+                      <th>企业名称</th>
+                      <th>污染贡献率</th>
+                      <th>所属区县</th>
+                        </tr>
+                      </tfoot>
                     </table>
-                    <button onclick="" class="button-buttons button-glow button-rounded button-primary">查询</button>
+                    <button onclick="query_gou_xuan_en_data();" class="button-buttons button-glow button-rounded button-primary">查询</button>
+                    <div class="row">
+                    <label>减排百分比:</label>
+                    <input type="text" value="" id="rangedisable" name="range" />
+                  </div>
                 </div>
 
               </div>
@@ -188,8 +185,177 @@
   </div>
   </div>
   <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min','js/iCheck/icheck.min' %>   
-  <!-- 网格追踪 -->
   <script type="text/javascript">
+  // EnableSlider数据加载
+  function loadEnableSliderData(){
+            $.ajax({            
+          url: '/palm_two/get_all_data',
+          data:{
+            'factor':'<%= @factor %>',
+            'citynamepy':'<%= @citynamepy %>',
+            'percent':data_in.from/100},
+          type: "get",
+          dataType : "json",            
+          success: function (data) { 
+            changeGridData(data.xmin,data.ymin,data.map);
+            loadEnterpriseData(JSON.stringify(data.grid));
+            $("#aqimn").empty();
+            $('#aqimn').append("预计减排后AQI为: <strong>"+Math.round(data.aqi) +"</strong>");
+            if(data_in.from==0){
+              $("#map_title").empty();
+              $('#map_title').append("周边地区排放对我市的污染贡献分布");
+            }else{
+              $("#map_title").empty();
+              $('#map_title').append("需管控的网格分布");
+            }
+          }
+        });
+  }
+  // EnableSlider初始化并注册监听函数
+
+  var sliderEnableInit=function(){
+        $("#range").ionRangeSlider({
+      min: 0,
+      max: 100,
+      from: 0,
+      onStart: function (data) {
+      },
+      onChange: function (data) {
+        $('.btnforcastgroup').removeClass('active');
+      },
+      onFinish: function (data_in) {
+       loadEnableSliderData();
+      },
+      onUpdate: function (data_in) {
+        loadEnableSliderData();
+      }
+    });
+  }
+  // 预警级别按钮组初始化
+
+var btnforcastgroupInit=function(){
+
+  $('.btnforcastgroup').click(function(){
+    $('.btnforcastgroup').removeClass("active");
+    $(this).addClass("active");
+    var sliderEnable= $("#range").data("ionRangeSlider");
+    var forcastLevelHash = {  
+      Set : function(key,value){this[key] = value},  
+      Get : function(key){return this[key]}
+    } 
+    forcastLevelHash.Set('I',25);
+    forcastLevelHash.Set('II',50);
+    forcastLevelHash.Set('III',75);
+    forcastLevelHash.Set('IV',100);
+    sliderEnable.update({from: forcastLevelHash.Get($(this).text())});
+  });
+}
+ // 清单统计
+var bingtuInit=function(){
+var dom = document.getElementById("proportionOfIndustry");
+myChart = echarts.init(dom);
+option = {
+  title : {
+    text: '企业统计',
+    subtext: '行业分布',
+    x:'center'
+  },
+  tooltip : {
+    trigger: 'item',
+    formatter: "{a} <br/>{b} : {c} ({d}%)"
+  },
+  legend: {
+    orient: 'vertical',
+    left: 'left',
+    data: ['防水建筑材料制造','隔热和隔音材料制造','其他建筑材料制造','平板玻璃制造','其他玻璃制造']
+  },
+  series: [
+    {
+      name: '行业类别',
+      type: 'pie',
+      radius : '55%',
+      center: ['50%', '60%'],
+      data:[
+        {value:335, name:'防水建筑材料制造'},
+        {value:310, name:'隔热和隔音材料制造'},
+        {value:234, name:'其他建筑材料制造'},
+        {value:135, name:'平板玻璃制造'},
+        {value:1548, name:'其他玻璃制造'}
+      ],
+      itemStyle: {
+        emphasis: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      }
+    }
+  ]
+};
+}
+
+ // 区域内企业分布统计
+var tiaoxingtuInit=function (){
+var dom1 = document.getElementById("enterpriseDistributionStatistics");
+myChart1 = echarts.init(dom1);
+option1 = {
+  title: {
+    text: '区域内企业分布统计'
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
+  legend: {
+    data: ['企业数量']
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'value',
+    boundaryGap: [0, 0.01]
+  },
+  yAxis: {
+    type: 'category',
+    data: eval('('+'<%= @ccs %>'.replace(/&quot;/g,"\"")+')')//区县名称数组
+  },
+  series: [
+    {
+      name: '企业数量',
+      type: 'bar',
+      data: <%= @en_count %>//各区县对应的企业数量数组
+    }
+  ]
+};
+window.onresize = function(){
+    myChart.resize();
+    myChart1.resize();
+
+  };
+}
+
+    function query_gou_xuan_en_data(){
+      var en_ids=[];
+      $(".bulk_action input[name='table_records']:checked").each(function(){
+        en_ids.push(this.value);
+      });
+      $.ajax({            
+          url: '/palm_two/query_gou_xuan_en_data_all',
+          data:{
+            'en_ids': JSON.stringify(en_ids)},
+          type: "get",
+          dataType : "json",            
+          success: function (r) { 
+            alert(r.chenggong);
+          }
+        });
+    }
     var center = new BMap.Point(<%= @longitude %>,<%= @latitude %>);
 // var marker = new BMap.Marker(center);// 创建标注
 // 创建Map实例
@@ -305,107 +471,8 @@ function getColor(val){
     return "#330C02";
 }
 </script>    
-<!-- 清单统计 -->
-<script type="text/javascript">
-  var dom = document.getElementById("proportionOfIndustry");
-var myChart = echarts.init(dom);
-var app = {};
-option = null;
-option = {
-  title : {
-    text: '企业统计',
-    subtext: '行业分布',
-    x:'center'
-  },
-  tooltip : {
-    trigger: 'item',
-    formatter: "{a} <br/>{b} : {c} ({d}%)"
-  },
-  legend: {
-    orient: 'vertical',
-    left: 'left',
-    data: ['防水建筑材料制造','隔热和隔音材料制造','其他建筑材料制造','平板玻璃制造','其他玻璃制造']
-  },
-  series: [
-    {
-      name: '行业类别',
-      type: 'pie',
-      radius : '55%',
-      center: ['50%', '60%'],
-      data:[
-        {value:335, name:'防水建筑材料制造'},
-        {value:310, name:'隔热和隔音材料制造'},
-        {value:234, name:'其他建筑材料制造'},
-        {value:135, name:'平板玻璃制造'},
-        {value:1548, name:'其他玻璃制造'}
-      ],
-      itemStyle: {
-        emphasis: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
-        }
-      }
-    }
-  ]
-};
-if (option && typeof option === "object") {
-  myChart.setOption(option, true);
-  <%# window.onresize = myChart.resize; %>
-}
-</script>
-<!-- 区域内企业分布统计 -->
-<script>
-  var dom1 = document.getElementById("enterpriseDistributionStatistics");
-var myChart1 = echarts.init(dom1);
-var app1 = {};
-option1 = null;
-app1.title = '区域内企业分布统计 - 条形图';
 
-option1 = {
-  title: {
-    text: '区域内企业分布统计'
-  },
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'shadow'
-    }
-  },
-  legend: {
-    data: ['企业数量']
-  },
-  grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
-    containLabel: true
-  },
-  xAxis: {
-    type: 'value',
-    boundaryGap: [0, 0.01]
-  },
-  yAxis: {
-    type: 'category',
-    data: ['郑东新区','金水区','管城区','惠济区','中原区','高新区','二七区','经开区']
-  },
-  series: [
-    {
-      name: '企业数量',
-      type: 'bar',
-      data: [18203, 23489, 29034, 104970, 131744, 630230,19325, 23438]
-    }
-  ]
-};
-;
-if (option1 && typeof option1 === "object") {
-  myChart1.setOption(option1, true);
-  window.onresize = function(){
-    myChart.resize();
-    myChart1.resize();
-  };
-}
-</script>
+
 
 <!-- tableToExcel -->
 <script>
@@ -424,6 +491,60 @@ if (option1 && typeof option1 === "object") {
 <!-- 初始化表格 -->
 <script type="text/javascript">
 
+
+//checkbox的样式
+var checkboxStyleInit=function(){
+ $('.bulk_action input.flat').iCheck({
+          checkboxClass: 'icheckbox_flat-green'
+      });
+}
+//checkbox的监听
+
+var checkboxListenInit=function(){
+  
+  // table中的所有的checkbox的监听
+    // $('.bulk_action input').on('ifChecked', function () {
+
+    // });
+    // $('.bulk_action input').on('ifUnchecked', function () {
+
+    // });
+// thead中的全选checkbox的监听
+$('.bulk_action input#check-all').on('ifChecked', function () {
+    $(".bulk_action input[name='table_records']").iCheck('check');
+});
+$('.bulk_action input#check-all').on('ifUnchecked', function () {
+    $(".bulk_action input[name='table_records']").iCheck('uncheck');
+});
+// tbody中的checkbox的监听
+$(".bulk_action input[name='table_records']").on('ifChecked', function () {
+    if($(".bulk_action input[name='table_records']").length==$(".bulk_action input[name='table_records']:checked").length)
+    {
+      $('.bulk_action input#check-all').iCheck('check');
+    }
+    else
+    {
+      $('.bulk_action input#check-all').iCheck('indeterminate');
+    }
+    $(this).parent().parent().parent().addClass('selected');
+});
+$(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
+    if($(".bulk_action input[name='table_records']:checked").length==0)
+    {
+      $('.bulk_action input#check-all').iCheck('uncheck');
+      $('.bulk_action input#check-all').iCheck('determinate');
+    }
+    else
+    {
+      $('.bulk_action input#check-all').iCheck('indeterminate');
+    }
+    $(this).parent().parent().parent().removeClass('selected');
+});
+
+}
+
+
+// 企业勾选表格datatable的初始化函数
   var enterpriseCheckTableinit=function(){
         enterpriseCheckTable=$("#enterpriseCheckTable").DataTable({
       language: {
@@ -451,9 +572,61 @@ if (option1 && typeof option1 === "object") {
         },
       },
       "dom": '<lf<t>ip>',
-      "paging": flase
+      "scrollY": "500px",
+      // "scrollCollapse": "true",
+      "paging": false,
+       "order": [[ 1, 'asc' ]],
+      ajax: {
+          url: "/palm_two/get_checkboxtable_data.json?citynamepy="+"<%= @citynamepy %>",
+          type: "get"
+      },
+      columns: [{
+          data: null
+      },
+      {
+          data: "number"
+      },
+      {
+          data: "en_name"
+      },
+      {
+        data: "pollution_contribution_rate"
+      },
+      {
+        data: "county_name"
+      }],
+      'columnDefs': [{
+         'targets': 0,
+         'searchable': false,
+         'orderable': false,
+         'className': 'dt-body-center',
+         'render': function (data, type, row, meta){
+             return '<input type="checkbox" class="flat" name="table_records" value="' + row.id + '">';
+         }
+      }],
 
     });
+    enterpriseCheckTable.on('xhr.dt', function ( e, settings, json, xhr ) {
+       checkboxStyleInit();
+    } );
+    enterpriseCheckTable.on('draw.dt', function() {
+
+      if($(".bulk_action input[name='table_records']").length!=$(".bulk_action input[name='table_records']:checked").length && $(".bulk_action input[name='table_records']:checked").length!=0)
+      {
+        $('.bulk_action input#check-all').iCheck('indeterminate');
+      }
+      else if($(".bulk_action input[name='table_records']").length==$(".bulk_action input[name='table_records']:checked").length && $(".bulk_action input[name='table_records']").length!=0)
+      {
+        $('.bulk_action input#check-all').iCheck('check');
+      }
+      else
+      {
+        $('.bulk_action input#check-all').iCheck('uncheck');
+        $('.bulk_action input#check-all').iCheck('determinate');
+      }
+      checkboxListenInit();
+
+        });
   }
 
   var handleDataTableButtons = function() {
@@ -509,105 +682,48 @@ var TableManageButtons = function() {
   };
 }();
 var loadEnterpriseData=function(gridPoint) {
-  var dataurl='/palm_two/scheme_simulation.json?citypy=<%= @citynamepy %>&gridPoint='+gridPoint;
+  var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint;
   enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
   });
 }
 $(document).ready(function() {
   TableManageButtons.init();
+  bingtuInit();
+  tiaoxingtuInit();
+  myChart.setOption(option, true);
+  myChart1.setOption(option1, true);
+  enterpriseCheckTableinit();
+  checkboxStyleInit();
+  checkboxListenInit();
   loadEnterpriseData("");
+  btnforcastgroupInit();
+  sliderEnableInit();
 
 });
 </script>
 <!-- Slider -->
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#range").ionRangeSlider({
+
+
+
+    $("#rangedisable").ionRangeSlider({
       min: 0,
       max: 100,
       from: 0,
+      disable: true,
       onStart: function (data) {
       },
       onChange: function (data) {
       },
       onFinish: function (data_in) {
-        $.ajax({            
-          url: '/palm_two/get_all_data',
-          data:{
-            'factor':'<%= @factor %>',
-            'citynamepy':'<%= @citynamepy %>',
-            'percent':data_in.from/100},
-          type: "get",
-          dataType : "json",            
-          success: function (data) { 
-            changeGridData(data.xmin,data.ymin,data.map);
-            loadEnterpriseData(JSON.stringify(data.grid));
-            $("#aqimn").empty();
-            $('#aqimn').append("预计减排后AQI为: <strong>"+Math.round(data.aqi) +"</strong>");
-            if(data_in.from==0){
-              $("#map_title").empty();
-              $('#map_title').append("周边地区排放对我市的污染贡献分布");
-            }else{
-              $("#map_title").empty();
-              $('#map_title').append("需管控的网格分布");
-            }
-          }
-        });       
+     
       },
       onUpdate: function (data) {
       }
     });
+    
   });
 
 </script>
-<!-- 企业勾选 -->
- <script type="text/javascript">
-$(document).ready(function() {
-    if ($("input.flat")[0]) {
-        $(document).ready(function () {
-            $('input.flat').iCheck({
-                checkboxClass: 'icheckbox_flat-green',
-            });
-        });
-    }
-});
 
-// table中的所有的checkbox的监听
-    // $('.bulk_action input').on('ifChecked', function () {
-
-    // });
-    // $('.bulk_action input').on('ifUnchecked', function () {
-
-    // });
-// thead中的全选checkbox的监听
-$('.bulk_action input#check-all').on('ifChecked', function () {
-    $(".bulk_action input[name='table_records']").iCheck('check');
-});
-$('.bulk_action input#check-all').on('ifUnchecked', function () {
-    $(".bulk_action input[name='table_records']").iCheck('uncheck');
-});
-// tbody中的checkbox的监听
-$(".bulk_action input[name='table_records']").on('ifChecked', function () {
-    if($(".bulk_action input[name='table_records']").length==$(".bulk_action input[name='table_records']:checked").length)
-    {
-      $('.bulk_action input#check-all').iCheck('check');
-    }
-    else
-    {
-      $('.bulk_action input#check-all').iCheck('indeterminate');
-    }
-    $(this).parent().parent().parent().addClass('selected');
-});
-$(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
-    if($(".bulk_action input[name='table_records']:checked").length==0)
-    {
-      $('.bulk_action input#check-all').iCheck('uncheck');
-      $('.bulk_action input#check-all').iCheck('determinate');
-    }
-    else
-    {
-      $('.bulk_action input#check-all').iCheck('indeterminate');
-    }
-    $(this).parent().parent().parent().removeClass('selected');
-});
-  </script>   
