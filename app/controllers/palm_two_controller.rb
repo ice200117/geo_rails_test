@@ -9,14 +9,24 @@ class PalmTwoController < ApplicationController
             @citynamepy=params['cityname'] unless params['cityname'].nil?
             @factor='NOX_120'
             c = City.find_by city_name_pinyin: @citynamepy
+            @ccs=[]
+            @en_count=[]
+            @en_list=[]
             if c
               @latitude=c.latitude
               @longitude=c.longitude
-              @ccs=[]
-              @en_count=[]
               c.counties.each do |cc|
                 @ccs<<cc.name
                 @en_count<<cc.enterprises.size
+              end
+              number=1
+              c.enterprises.each do |enterprise|
+                tmp=[]
+                tmp<<number
+                tmp<<enterprise['en_name']
+                tmp<<''
+                @en_list<<tmp
+                number+=1                
               end
             end
             render 'page_lost_city',layout: false unless c

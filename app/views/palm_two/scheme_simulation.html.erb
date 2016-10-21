@@ -127,12 +127,11 @@
                 </div>
               </div>
               <div class="col-md-6 col-xs-12">
-                <label>优先行业选择:</label>
+                <label>优化方案:</label>
                 <div class="btn-group">
-                  <button class="btn btn-round btn-success" type="button">电力</button>
-                  <button class="btn btn-round btn-success active" type="button">冶金</button>
-                  <button class="btn btn-round btn-success" type="button">化工</button>
-                  <button class="btn btn-round btn-success" type="button">石油</button>
+                  <button class="btn btn-round btn-success btnPrioritySectorsSelect active" type="button">模型</button>
+                  <button class="btn btn-round btn-success " type="button">电力</button>
+                  <button class="btn btn-round btn-success" type="button">经验</button>
                 </div>
               </div>
             </div>
@@ -186,6 +185,8 @@
   </div>
   <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min','js/iCheck/icheck.min' %>   
   <script type="text/javascript">
+
+
   // EnableSlider数据加载
   function loadEnableSliderData(){
             $.ajax({            
@@ -292,6 +293,8 @@ option = {
     }
   ]
 };
+  myChart.setOption(option, true);
+
 }
 
  // 区域内企业分布统计
@@ -333,6 +336,7 @@ option1 = {
     }
   ]
 };
+myChart1.setOption(option1, true);
 window.onresize = function(){
     myChart.resize();
     myChart1.resize();
@@ -546,7 +550,7 @@ $(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
 
 // 企业勾选表格datatable的初始化函数
   var enterpriseCheckTableinit=function(){
-        enterpriseCheckTable=$("#enterpriseCheckTable").DataTable({
+    enterpriseCheckTableOption={
       language: {
         "sProcessing": "处理中...",
         "sLengthMenu": "显示 _MENU_ 行",
@@ -605,7 +609,8 @@ $(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
          }
       }],
 
-    });
+    };
+    enterpriseCheckTable=$("#enterpriseCheckTable").DataTable(enterpriseCheckTableOption);
     enterpriseCheckTable.on('xhr.dt', function ( e, settings, json, xhr ) {
        checkboxStyleInit();
     } );
@@ -630,7 +635,7 @@ $(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
   }
 
   var handleDataTableButtons = function() {
-    enterpriseList=$("#enterpriseList").DataTable({
+    enterpriseListOption={
       language: {
         "sProcessing": "处理中...",
         "sLengthMenu": "显示 _MENU_ 行",
@@ -663,7 +668,8 @@ $(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
       buttons: ['pageLength','excel'],
       // "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 0 ] }],            
       //"aaSorting": [[ 0, "asc" ]],
-      "paging": true
+      "paging": true,
+      "data": <%= @en_list.to_json.html_safe %>
       //responsive: true,
       //"scrollX": true,
       //  ajax: {
@@ -671,7 +677,8 @@ $(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
       // type:'GET',
       // dataType:"json"
       //  } 
-    });
+    };
+    enterpriseList=$("#enterpriseList").DataTable(enterpriseListOption);
   }
 var TableManageButtons = function() {
   "use strict";
@@ -681,17 +688,15 @@ var TableManageButtons = function() {
     }
   };
 }();
-var loadEnterpriseData=function(gridPoint) {
-  var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint;
-  enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
-  });
-}
+// var loadEnterpriseData=function(gridPoint) {
+//   var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint;
+//   enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
+//   });
+// }
 $(document).ready(function() {
   TableManageButtons.init();
   bingtuInit();
   tiaoxingtuInit();
-  myChart.setOption(option, true);
-  myChart1.setOption(option1, true);
   enterpriseCheckTableinit();
   checkboxStyleInit();
   checkboxListenInit();
