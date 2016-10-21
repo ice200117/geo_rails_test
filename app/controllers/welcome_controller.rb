@@ -69,7 +69,12 @@ class WelcomeController < ApplicationController
 			# Table 1: 全国城市当天监测与预报日均值差值
 			(id = City.find_by city_name_pinyin: 'langfangshi')
 			monitor_today_avg = ChinaCitiesHour.today_avg
-			forecast_today_avg = HourlyCityForecastAirQuality.today_avg
+			is_real = params[:real]
+			if is_real=="0"
+				forecast_today_avg = HourlyCityForecastAirQuality.today_avg
+			else
+				forecast_today_avg = ForecastRealDatum.today_avg
+			end
 			monitor_today_avg.each do |k,v|
 				next unless forecast_today_avg[k]
 				d = monitor_today_avg[k] - forecast_today_avg[k].values[0]

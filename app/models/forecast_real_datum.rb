@@ -7,6 +7,13 @@ class ForecastRealDatum < ActiveRecord::Base
     city_forecast(c)
   end
 
+
+  def self.city_forecast_by_id(cityid)
+  	c = City.find_by_cityid(cityid)
+  	return nil unless c
+  	self.city_forecast(c)
+  end
+
   def self.city_forecast(c)
     firstime = true
     cf = Hash.new

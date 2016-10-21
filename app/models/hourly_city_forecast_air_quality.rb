@@ -11,49 +11,49 @@ class HourlyCityForecastAirQuality < Partitioned::ByMonthlyTimeField
     partition.foreign_key :city_id
   end
 
-  def city_forecast_by_id(cityid)
-    c = City.find_by_cityid(cityid)
-    return nil unless c
-    city_forecast(c)
-  end
+	def self.city_forecast_by_id(cityid)
+		c = City.find_by_cityid(cityid)
+		return nil unless c
+		self.city_forecast(c)
+	end
 
-  def city_forecast_by_pinyin(pinyin)
-    c = City.find_by_city_name_pinyin(pinyin)
-    return nil unless c
-    city_forecast(c)
-  end
+	def self.city_forecast_by_pinyin(pinyin)
+		c = City.find_by_city_name_pinyin(pinyin)
+		return nil unless c
+		city_forecast(c)
+	end
 
-  def city_forecast(c)
-    cf = Hash.new
-    hf = []
-    ac = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
-    #puts ac.first
-    return nil unless ac.first
-    cf[:city_name] = c.city_name
-    cf[:publish_datetime] = ac.first.publish_datetime.strftime('%Y-%m-%d_%H')
-    #    cf[:update_time] = Time.now.strftime('%Y-%m-%d_%H')
-    ac.each do |ch|
-      #if ch.forecast_datetime > Time.now
-      #      ch.AQI = (ch.AQI**2 *0.0004 + 0.3314*ch.AQI - 32.231).round if pinyin=='taiyuanshi'
-      #      ch.AQI = ch.AQI*2.51 #if pinyin=='langfangshi'
-      hf << {forecast_datetime: ch.forecast_datetime.strftime('%Y-%m-%d_%H'), 
-             AQI: ch.AQI.round, 
-             main_pol: ch.main_pol, 
-             grade: ch.grade,
-             pm2_5: ch.pm25,
-             pm10: ch.pm10,
-             SO2: ch.SO2,
-             CO: ch.CO,
-             NO2: ch.NO2,
-             O3: ch.O3,
-             VIS: ch.VIS ,
-             press:   ch.ps.round,
-             rain:  ch.ttp.round,
-             pblh: ch.pbln.round,
-             t:  ch.t2m.round(1),
-             rh:  ch.q2m.round,
-             windDir:   ch.wd.round,
-             windSpeed:   ch.ws.round(1) }
+	def self.city_forecast(c)
+		cf = Hash.new
+		hf = []
+		ac = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
+		#puts ac.first
+		return nil unless ac.first
+		cf[:city_name] = c.city_name
+		cf[:publish_datetime] = ac.first.publish_datetime.strftime('%Y-%m-%d_%H')
+		#    cf[:update_time] = Time.now.strftime('%Y-%m-%d_%H')
+		ac.each do |ch|
+			#if ch.forecast_datetime > Time.now
+			#      ch.AQI = (ch.AQI**2 *0.0004 + 0.3314*ch.AQI - 32.231).round if pinyin=='taiyuanshi'
+			#      ch.AQI = ch.AQI*2.51 #if pinyin=='langfangshi'
+			hf << {forecast_datetime: ch.forecast_datetime.strftime('%Y-%m-%d_%H'), 
+		  AQI: ch.AQI.round, 
+		  main_pol: ch.main_pol, 
+		  grade: ch.grade,
+		  pm2_5: ch.pm25,
+		  pm10: ch.pm10,
+		  SO2: ch.SO2,
+		  CO: ch.CO,
+      NO2: ch.NO2,
+      O3: ch.O3,
+      VIS: ch.VIS ,
+      press:   ch.ps.round,
+      rain:  ch.ttp.round,
+      pblh: ch.pbln.round,
+      t:  ch.t2m.round(1),
+      rh:  ch.q2m.round,
+      windDir:   ch.wd.round,
+      windSpeed:   ch.ws.round(1) }
     end
     cf[:forecast_data] = hf
     return cf
