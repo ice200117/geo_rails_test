@@ -187,6 +187,51 @@
   <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min','js/iCheck/icheck.min' %>   
   <!-- 网格追踪 -->
   <script type="text/javascript">
+
+ // 清单统计
+var bingtuInit=function(){
+var dom = document.getElementById("proportionOfIndustry");
+myChart = echarts.init(dom);
+option = {
+  title : {
+    text: '企业统计',
+    subtext: '行业分布',
+    x:'center'
+  },
+  tooltip : {
+    trigger: 'item',
+    formatter: "{a} <br/>{b} : {c} ({d}%)"
+  },
+  legend: {
+    orient: 'vertical',
+    left: 'left',
+    data: ['防水建筑材料制造','隔热和隔音材料制造','其他建筑材料制造','平板玻璃制造','其他玻璃制造']
+  },
+  series: [
+    {
+      name: '行业类别',
+      type: 'pie',
+      radius : '55%',
+      center: ['50%', '60%'],
+      data:[
+        {value:335, name:'防水建筑材料制造'},
+        {value:310, name:'隔热和隔音材料制造'},
+        {value:234, name:'其他建筑材料制造'},
+        {value:135, name:'平板玻璃制造'},
+        {value:1548, name:'其他玻璃制造'}
+      ],
+      itemStyle: {
+        emphasis: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      }
+    }
+  ]
+};
+}
+
  // 区域内企业分布统计
 var tiaoxingtuInit=function (){
 var dom1 = document.getElementById("enterpriseDistributionStatistics");
@@ -227,7 +272,9 @@ option1 = {
   ]
 };
 window.onresize = function(){
+    myChart.resize();
     myChart1.resize();
+
   };
 }
 
@@ -362,57 +409,7 @@ function getColor(val){
     return "#330C02";
 }
 </script>    
-<!-- 清单统计 -->
-<script type="text/javascript">
-var dom = document.getElementById("proportionOfIndustry");
-var myChart = echarts.init(dom);
-var app = {};
-option = null;
-option = {
-  title : {
-    text: '企业统计',
-    subtext: '行业分布',
-    x:'center'
-  },
-  tooltip : {
-    trigger: 'item',
-    formatter: "{a} <br/>{b} : {c} ({d}%)"
-  },
-  legend: {
-    orient: 'vertical',
-    left: 'left',
-    data: ['防水建筑材料制造','隔热和隔音材料制造','其他建筑材料制造','平板玻璃制造','其他玻璃制造']
-  },
-  series: [
-    {
-      name: '行业类别',
-      type: 'pie',
-      radius : '55%',
-      center: ['50%', '60%'],
-      data:[
-        {value:335, name:'防水建筑材料制造'},
-        {value:310, name:'隔热和隔音材料制造'},
-        {value:234, name:'其他建筑材料制造'},
-        {value:135, name:'平板玻璃制造'},
-        {value:1548, name:'其他玻璃制造'}
-      ],
-      itemStyle: {
-        emphasis: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
-        }
-      }
-    }
-  ]
-};
-if (option && typeof option === "object") {
-  myChart.setOption(option, true);
-    window.onresize = function(){
-    myChart.resize();
-  };
-}
-</script>
+
 
 
 <!-- tableToExcel -->
@@ -629,6 +626,7 @@ var loadEnterpriseData=function(gridPoint) {
 }
 $(document).ready(function() {
   TableManageButtons.init();
+  bingtuInit();
   tiaoxingtuInit();
   myChart1.setOption(option1, true);
   enterpriseCheckTableinit();
