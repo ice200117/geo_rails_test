@@ -15,8 +15,8 @@ def adjust_aqi(l, c)
 	  aqi = l[1].to_f*0.2
 	  pm25 = l[15].to_f*0.2
   elsif c.city_name_pinyin == 'beijingshi'
-	  aqi = l[1].to_f*1.3
-	  pm25 = l[15].to_f*1.3
+	  aqi = l[1].to_f*1.0
+	  pm25 = l[15].to_f*1.0
   else
 	  aqi = l[1].to_f
 	  pm25 = l[15].to_f
@@ -130,7 +130,7 @@ cs.each do |c|
   puts c.city_name_pinyin
   py = c.city_name_pinyin.strip
   #next if hb_city.include?(py) #华北城市跳过
-  if c.city_name_pinyin == 'beijingshi' or c.city_name_pinyin == 'zhengzhoushi'
+  if c.city_name_pinyin == 'langfangshi'# or c.city_name_pinyin == 'zhengzhoushi'
 
   fn = "CN_ENVAQFC_#{py}_#{strtime}_00000-12000.TXT"
   fw = "CN_MET_#{py}_#{strtime}_00000-12000.TXT"
