@@ -1,39 +1,54 @@
 class PalmTwoController < ApplicationController
   layout 'palm_two'
   def scheme_simulation
-    respond_to do |format|
-      format.html {
-        # @citynamepy=params['cityname']
-        # @factor=params['factor']
-        params['cityname'] ||= 'zhengzhoushi'
-        @citynamepy = params['cityname']
-        # @citynamepy=params['cityname'] unless params['cityname'].nil?
-        @factor='NOX_120'
-        c = City.find_by(city_name_pinyin: @citynamepy)
-        if c
-          @latitude=c.latitude
-          @longitude=c.longitude
-        end
-        render 'page_lost_city',layout: false unless c
-      }
-      format.json {
-        enterprise_data=Hash.new
-        result = []
-        str = ""
-        str = JSON.parse(params['gridPoint']) unless params['gridPoint']==""
-        r_data=Enterprise.new.get_enterprise_data_v1(params['citynamepy'],str)
-        number=1
-        r_data.each do |enterprise|
-          tmp=[]
-          tmp<<number
-          tmp<<enterprise['en_name']
-          tmp<<(enterprise['proportion']*100).round(2).to_s+'%'
-          result<<tmp
-          number+=1
-        end
-        enterprise_data['data']=result
-        render json: enterprise_data
-      }
+  	respond_to do |format|
+        format.html {
+            # @citynamepy=params['cityname']
+            # @factor=params['factor']
+            @citynamepy='zhengzhoushi'
+            @citynamepy=params['cityname'] unless params['cityname'].nil?
+            @factor='NOX_120'
+            c = City.find_by city_name_pinyin: @citynamepy
+            @ccs=[]
+            @en_count=[]
+            @en_list=[]
+            if c
+              @latitude=c.latitude
+              @longitude=c.longitude
+              c.counties.each do |cc|
+                @ccs<<cc.name
+                @en_count<<cc.enterprises.size
+              end
+              number=1
+              c.enterprises.each do |enterprise|
+                tmp=[]
+                tmp<<number
+                tmp<<enterprise['en_name']
+                tmp<<''
+                @en_list<<tmp
+                number+=1                
+              end
+            end
+            render 'page_lost_city',layout: false unless c
+        }
+        format.json {
+        	enterprise_data=Hash.new
+        	result = []
+            str =""
+            str = JSON.parse(params['gridPoint']) unless params['gridPoint']==""
+            r_data=Enterprise.new.get_enterprise_data(citynamepy,str)
+            number=1
+            r_data.each do |enterprise|
+            	tmp=[]
+            	tmp<<number
+            	tmp<<enterprise['en_name']
+            	tmp<<''
+            	result<<tmp
+            	number+=1
+            end
+            enterprise_data['data']=result
+            render json: enterprise_data
+        }
     end
   end
 

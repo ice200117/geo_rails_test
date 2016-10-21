@@ -6,7 +6,7 @@
 def parse_line(line, c)
   
   #hc = HourlyCityForecastAirQuality.new
-  c.forecast_real_data.destroy_all
+  #c.forecast_real_data.destroy_all
   sd = line[0,10]
   delta_hour = line[11,3]
   sdate = Time.local(sd[0,4],sd[4,2],sd[6,2],sd[8,2])
