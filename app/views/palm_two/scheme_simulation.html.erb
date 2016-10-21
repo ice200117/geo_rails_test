@@ -120,14 +120,14 @@
               <div class="col-md-6 col-xs-12">
                 <label>预警级别:</label>
                 <div class="btn-group">
-                  <button class="btn btn-info" type="button">I</button>
-                  <button class="btn btn-info active" type="button">II</button>
-                  <button class="btn btn-info" type="button">III</button>
-                  <button class="btn btn-info" type="button">IV</button>
+                  <button class="btn btn-info btnforcastgroup" type="button">I</button>
+                  <button class="btn btn-info btnforcastgroup" type="button">II</button>
+                  <button class="btn btn-info btnforcastgroup" type="button">III</button>
+                  <button class="btn btn-info btnforcastgroup" type="button">IV</button>
                 </div>
               </div>
               <div class="col-md-6 col-xs-12">
-                <label>行业选择:</label>
+                <label>优先行业选择:</label>
                 <div class="btn-group">
                   <button class="btn btn-round btn-success" type="button">电力</button>
                   <button class="btn btn-round btn-success active" type="button">冶金</button>
@@ -185,9 +185,71 @@
   </div>
   </div>
   <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min','js/iCheck/icheck.min' %>   
-  <!-- 网格追踪 -->
   <script type="text/javascript">
+  // EnableSlider数据加载
+  function loadEnableSliderData(){
+            $.ajax({            
+          url: '/palm_two/get_all_data',
+          data:{
+            'factor':'<%= @factor %>',
+            'citynamepy':'<%= @citynamepy %>',
+            'percent':data_in.from/100},
+          type: "get",
+          dataType : "json",            
+          success: function (data) { 
+            changeGridData(data.xmin,data.ymin,data.map);
+            loadEnterpriseData(JSON.stringify(data.grid));
+            $("#aqimn").empty();
+            $('#aqimn').append("预计减排后AQI为: <strong>"+Math.round(data.aqi) +"</strong>");
+            if(data_in.from==0){
+              $("#map_title").empty();
+              $('#map_title').append("周边地区排放对我市的污染贡献分布");
+            }else{
+              $("#map_title").empty();
+              $('#map_title').append("需管控的网格分布");
+            }
+          }
+        });
+  }
+  // EnableSlider初始化并注册监听函数
 
+  var sliderEnableInit=function(){
+        $("#range").ionRangeSlider({
+      min: 0,
+      max: 100,
+      from: 0,
+      onStart: function (data) {
+      },
+      onChange: function (data) {
+        $('.btnforcastgroup').removeClass('active');
+      },
+      onFinish: function (data_in) {
+       loadEnableSliderData();
+      },
+      onUpdate: function (data_in) {
+        loadEnableSliderData();
+      }
+    });
+  }
+  // 预警级别按钮组初始化
+
+var btnforcastgroupInit=function(){
+
+  $('.btnforcastgroup').click(function(){
+    $('.btnforcastgroup').removeClass("active");
+    $(this).addClass("active");
+    var sliderEnable= $("#range").data("ionRangeSlider");
+    var forcastLevelHash = {  
+      Set : function(key,value){this[key] = value},  
+      Get : function(key){return this[key]}
+    } 
+    forcastLevelHash.Set('I',25);
+    forcastLevelHash.Set('II',50);
+    forcastLevelHash.Set('III',75);
+    forcastLevelHash.Set('IV',100);
+    sliderEnable.update({from: forcastLevelHash.Get($(this).text())});
+  });
+}
  // 清单统计
 var bingtuInit=function(){
 var dom = document.getElementById("proportionOfIndustry");
@@ -628,52 +690,21 @@ $(document).ready(function() {
   TableManageButtons.init();
   bingtuInit();
   tiaoxingtuInit();
+  myChart.setOption(option, true);
   myChart1.setOption(option1, true);
   enterpriseCheckTableinit();
   checkboxStyleInit();
   checkboxListenInit();
   loadEnterpriseData("");
+  btnforcastgroupInit();
+  sliderEnableInit();
 
 });
 </script>
 <!-- Slider -->
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#range").ionRangeSlider({
-      min: 0,
-      max: 100,
-      from: 0,
-      onStart: function (data) {
-      },
-      onChange: function (data) {
-      },
-      onFinish: function (data_in) {
-        $.ajax({            
-          url: '/palm_two/get_all_data',
-          data:{
-            'factor':'<%= @factor %>',
-            'citynamepy':'<%= @citynamepy %>',
-            'percent':data_in.from/100},
-          type: "get",
-          dataType : "json",            
-          success: function (data) { 
-            changeGridData(data.xmin,data.ymin,data.map);
-            loadEnterpriseData(JSON.stringify(data.grid));
-            $("#aqimn").empty();
-            $('#aqimn').append("预计减排后AQI为: <strong>"+Math.round(data.aqi) +"</strong>");
-            if(data_in.from==0){
-              $("#map_title").empty();
-              $('#map_title').append("周边地区排放对我市的污染贡献分布");
-            }else{
-              $("#map_title").empty();
-              $('#map_title').append("需管控的网格分布");
-            }
-          }
-        });       
-      },
-      onUpdate: function (data) {
-      }
-    });
+
 
 
     $("#rangedisable").ionRangeSlider({
