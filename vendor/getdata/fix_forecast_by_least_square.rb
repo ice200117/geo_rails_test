@@ -34,4 +34,3 @@ def fix_forecast_by_least_square
   end
   puts 'fix_forecast_by_least_square end'
 end
-fix_forecast_by_least_square()

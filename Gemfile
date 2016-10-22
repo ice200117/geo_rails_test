@@ -117,3 +117,6 @@ gem 'casein','~>5.1.1'
 
 # 提供分表功能
 gem 'partitioned', '~> 2.1'
+
+# 最小二乘
+gem 'least_squares'
