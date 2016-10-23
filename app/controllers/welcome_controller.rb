@@ -73,6 +73,7 @@ class WelcomeController < ApplicationController
 			if is_real=="0"
 				forecast_today_avg = HourlyCityForecastAirQuality.today_avg
 			else
+        byebug
 				forecast_today_avg = ForecastRealDatum.today_avg
 			end
 			monitor_today_avg.each do |k,v|
