@@ -52,7 +52,7 @@
               </ul>
               <div id="myTabContent" class="tab-content">
                 <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                  <div id="map_title" style="position:absolute;top:50px;left:30%;padding:4px;background:rgba(255,255,255,0.9);z-index:2000;">周边地区排放对我市的污染贡献分布</div>
+                  <div id="map_title" style="position:absolute;top:50px;left:30%;padding:4px;background:rgba(255,255,255,0.9);z-index:2000;"></div>
                   <div id="gridTracking" style="width:100%;height:692px;"></div>
                   <div style="position: absolute; top: 200px; right: 20px;"><%= image_tag("adj_so2_legend.png") %></div>
                 </div>
@@ -129,8 +129,8 @@
               <div class="col-md-6 col-xs-12">
                 <label>优化方案:</label>
                 <div class="btn-group">
-                  <button class="btn btn-round btn-success btnPrioritySectorsSelect active" type="button">模型</button>
-                  <button class="btn btn-round btn-success " type="button">电力</button>
+                  <button class="btn btn-round btn-success active" type="button">模型</button>
+                  <button class="btn btn-round btn-success" type="button">电力</button>
                   <button class="btn btn-round btn-success" type="button">经验</button>
                 </div>
               </div>
@@ -185,185 +185,13 @@
   </div>
   <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min','js/iCheck/icheck.min' %>   
   <script type="text/javascript">
-
-
-  // EnableSlider数据加载
-  function loadEnableSliderData(){
-            $.ajax({            
-          url: '/palm_two/get_all_data',
-          data:{
-            'factor':'<%= @factor %>',
-            'citynamepy':'<%= @citynamepy %>',
-            'percent':data_in.from/100},
-          type: "get",
-          dataType : "json",            
-          success: function (data) { 
-            changeGridData(data.xmin,data.ymin,data.map);
-            loadEnterpriseData(JSON.stringify(data.grid));
-            $("#aqimn").empty();
-            $('#aqimn').append("预计减排后AQI为: <strong>"+Math.round(data.aqi) +"</strong>");
-            if(data_in.from==0){
-              $("#map_title").empty();
-              $('#map_title').append("周边地区排放对我市的污染贡献分布");
-            }else{
-              $("#map_title").empty();
-              $('#map_title').append("需管控的网格分布");
-            }
-          }
-        });
-  }
-  // EnableSlider初始化并注册监听函数
-
-  var sliderEnableInit=function(){
-        $("#range").ionRangeSlider({
-      min: 0,
-      max: 100,
-      from: 0,
-      onStart: function (data) {
-      },
-      onChange: function (data) {
-        $('.btnforcastgroup').removeClass('active');
-      },
-      onFinish: function (data_in) {
-       loadEnableSliderData();
-      },
-      onUpdate: function (data_in) {
-        loadEnableSliderData();
-      }
-    });
-  }
-  // 预警级别按钮组初始化
-
-var btnforcastgroupInit=function(){
-
-  $('.btnforcastgroup').click(function(){
-    $('.btnforcastgroup').removeClass("active");
-    $(this).addClass("active");
-    var sliderEnable= $("#range").data("ionRangeSlider");
-    var forcastLevelHash = {  
-      Set : function(key,value){this[key] = value},  
-      Get : function(key){return this[key]}
-    } 
-    forcastLevelHash.Set('I',25);
-    forcastLevelHash.Set('II',50);
-    forcastLevelHash.Set('III',75);
-    forcastLevelHash.Set('IV',100);
-    sliderEnable.update({from: forcastLevelHash.Get($(this).text())});
-  });
-}
- // 清单统计
-var bingtuInit=function(){
-var dom = document.getElementById("proportionOfIndustry");
-myChart = echarts.init(dom);
-option = {
-  title : {
-    text: '企业统计',
-    subtext: '行业分布',
-    x:'center'
-  },
-  tooltip : {
-    trigger: 'item',
-    formatter: "{a} <br/>{b} : {c} ({d}%)"
-  },
-  legend: {
-    orient: 'vertical',
-    left: 'left',
-    data: ['防水建筑材料制造','隔热和隔音材料制造','其他建筑材料制造','平板玻璃制造','其他玻璃制造']
-  },
-  series: [
-    {
-      name: '行业类别',
-      type: 'pie',
-      radius : '55%',
-      center: ['50%', '60%'],
-      data:[
-        {value:335, name:'防水建筑材料制造'},
-        {value:310, name:'隔热和隔音材料制造'},
-        {value:234, name:'其他建筑材料制造'},
-        {value:135, name:'平板玻璃制造'},
-        {value:1548, name:'其他玻璃制造'}
-      ],
-      itemStyle: {
-        emphasis: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
-        }
-      }
-    }
-  ]
-};
-  myChart.setOption(option, true);
-
-}
-
- // 区域内企业分布统计
-var tiaoxingtuInit=function (){
-var dom1 = document.getElementById("enterpriseDistributionStatistics");
-myChart1 = echarts.init(dom1);
-option1 = {
-  title: {
-    text: '区域内企业分布统计'
-  },
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'shadow'
-    }
-  },
-  legend: {
-    data: ['企业数量']
-  },
-  grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
-    containLabel: true
-  },
-  xAxis: {
-    type: 'value',
-    boundaryGap: [0, 0.01]
-  },
-  yAxis: {
-    type: 'category',
-    data: eval('('+'<%= @ccs %>'.replace(/&quot;/g,"\"")+')')//区县名称数组
-  },
-  series: [
-    {
-      name: '企业数量',
-      type: 'bar',
-      data: <%= @en_count %>//各区县对应的企业数量数组
-    }
-  ]
-};
-myChart1.setOption(option1, true);
-window.onresize = function(){
-    myChart.resize();
-    myChart1.resize();
-
-  };
-}
-
-    function query_gou_xuan_en_data(){
-      var en_ids=[];
-      $(".bulk_action input[name='table_records']:checked").each(function(){
-        en_ids.push(this.value);
-      });
-      $.ajax({            
-          url: '/palm_two/query_gou_xuan_en_data_all',
-          data:{
-            'en_ids': JSON.stringify(en_ids)},
-          type: "get",
-          dataType : "json",            
-          success: function (r) { 
-            alert(r.chenggong);
-          }
-        });
-    }
-    var center = new BMap.Point(<%= @longitude %>,<%= @latitude %>);
+/*网格地图-start*/
+//初始化底图
+function mapInit(){
+var center = new BMap.Point(<%= @longitude %>,<%= @latitude %>);
 // var marker = new BMap.Marker(center);// 创建标注
 // 创建Map实例
-var map = new BMap.Map("gridTracking",{minZoom:8});
+map = new BMap.Map("gridTracking",{minZoom:8});
 map.centerAndZoom(center,8);
 map.disableDoubleClickZoom(true);
 map.enableScrollWheelZoom();
@@ -393,10 +221,13 @@ var mapStyle = [{
   }
 }];
 map.setMapStyle({styleJson:mapStyle});
-//网格线
+lineOption = {strokeColor:"black",strokeWeight:0.3,strokeOpacity:0.7,enableMassClear:false,enableClicking:false};
+rectangleOption = {strokeColor:"black",strokeWeight:0.3,strokeOpacity:0,fillColor:"red",fillOpacity:0.7};
+
+}
+//底图上绘制网格线
 function gridLines(xmin,ymin,xmax,ymax)
 {
-  var lineOption = {strokeColor:"black",strokeWeight:0.3,strokeOpacity:0.7,enableMassClear:false,enableClicking:false};
   for(var i = 0; i < 70; i++){
     map.addOverlay(new BMap.Polyline([new BMap.Point(xmin,(ymin + 0.1 * i)),new BMap.Point(xmax,(ymin + 0.1 * i))],lineOption));
   }
@@ -404,10 +235,9 @@ function gridLines(xmin,ymin,xmax,ymax)
     map.addOverlay(new BMap.Polyline([new BMap.Point((xmin + 0.1 * i),ymin),new BMap.Point((xmin + 0.1 * i),ymax)],lineOption));
   } 
 }
-//网格数据
+//加载网格数据
 function gridData(xmin,ymin,data)
 {
-  var rectangleOption = {strokeColor:"black",strokeWeight:0.3,strokeOpacity:0,fillColor:"red",fillOpacity:0.7};
   for(var i=0;i<70;i++){
     for(var j=0;j<120;j++){
       if(data[i][j]>0.05){
@@ -419,22 +249,7 @@ function gridData(xmin,ymin,data)
     }
   }
 }
-function initGridLinesAndGridData(type,citypy){
-  $.get('/querys/adj',{var:type,citypy:citypy},function(rdata){
-    var data = rdata[type];
-    var xmin = rdata['xmin'];
-    var ymin = rdata['ymin'];
-    var xmax = rdata['xmax'];
-    var ymax = rdata['ymax'];
-    gridLines(xmin,ymin,xmax,ymax);
-    gridData(xmin,ymin,data);
-  },'json');
-}
-function changeGridData(xmin,ymin,data){
-  map.clearOverlays();
-  gridData(xmin,ymin,data);
-}
-initGridLinesAndGridData('<%= @factor %>','<%= @citynamepy %>');
+//注册网格点击事件
 function click(e){
   var p = e.target;
   var xmin = p.getBounds().getSouthWest().lng;//西南
@@ -451,7 +266,13 @@ function click(e){
   gridPoint=JSON.stringify(gridPoint)
   loadEnterpriseData(gridPoint);
 }
-
+// 网格点击加载企业数据
+// var loadEnterpriseData=function(gridPoint) {
+//   var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint;
+//   enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
+//   });
+// }
+//加载网格数据的颜色获取工具函数
 function getColor(val){
   if(val <= 0.1)
     return "#79E6F0";
@@ -474,12 +295,57 @@ function getColor(val){
   else
     return "#330C02";
 }
-</script>    
+/*网格地图-end*/
+/*企业列表-start*/
+   function enterpriseListTableInit(tableid,tabledata){
+    var enterpriseListOption={
+      language: {
+        "sProcessing": "处理中...",
+        "sLengthMenu": "显示 _MENU_ 行",
+        "sZeroRecords": "没有匹配结果",
+        "sInfo": "显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项",
+        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+        "sInfoPostFix": "",
+        "sSearch": "搜索:",
+        "sUrl": "",
+        "sEmptyTable": "表中数据为空",
+        "sLoadingRecords": "载入中...",
+        "sInfoThousands": ",",
+        "oPaginate": {
+          "sFirst": "首页",
+          "sPrevious": "上页",
+          "sNext": "下页",
+          "sLast": "末页"
+        },
+        "oAria": {
+          "sSortAscending": ": 以升序排列此列",
+          "sSortDescending": ": 以降序排列此列"
+        },
+      },
+      "dom": '<lf<t>ip>',
+      lengthMenu: [
+        [ 10, 25, 50, -1 ],
+        [ '10', '25', '50', '所有']
+      ],   
+      buttons: ['pageLength','excel'],
+      // "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 0 ] }],            
+      //"aaSorting": [[ 0, "asc" ]],
+      "paging": true,
+      "data": tabledata
+      //responsive: true,
+      //"scrollX": true,
+      //  ajax: {
+      //     url:'/export/replace_coals_export.json?year='+$('#year').val()+'&month='+$('#month').val()+'&countyid='+$('#countyMonth').val(),
+      // type:'GET',
+      // dataType:"json"
+      //  } 
+    };
+    $("#"+tableid).DataTable(enterpriseListOption);
+  }
+/*企业列表-end*/
 
-
-
-<!-- tableToExcel -->
-<script>
+/*企业列表导出功能-start*/
   var tableToExcel = function() {
     var uri = 'data:application/vnd.ms-excel;base64,'
       , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="X-UA-Compatible" content="IE=11"/><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
@@ -491,20 +357,165 @@ function getColor(val){
       window.location.href = uri + base64(format(template, ctx))
     }
   }();
-</script>
-<!-- 初始化表格 -->
-<script type="text/javascript">
+/*企业列表导出功能-end*/
 
+/*预警级别按钮组初始化-start*/
+function btnforcastgroupInit(){
+
+  $('.btnforcastgroup').click(function(){
+    $('.btnforcastgroup').removeClass("active");
+    $(this).addClass("active");
+    var sliderEnable= $("#range").data("ionRangeSlider");
+    var forcastLevelHash = {  
+      Set : function(key,value){this[key] = value},  
+      Get : function(key){return this[key]}
+    } 
+    forcastLevelHash.Set('I',25);
+    forcastLevelHash.Set('II',50);
+    forcastLevelHash.Set('III',75);
+    forcastLevelHash.Set('IV',100);
+    sliderEnable.update({from: forcastLevelHash.Get($(this).text())});
+  });
+}
+/*预警级别按钮组初始化-end*/
+
+/*优化方案按钮组初始化-start*/
+
+//.....未完待续。
+
+/*优化方案按钮组初始化-end*/
+
+/*EnableSlider初始化并注册监听函数-start*/
+function sliderEnableInit(){
+   $("#range").ionRangeSlider({
+      min: 0,
+      max: 100,
+      from: 0,
+      onStart: function (data_in) {
+      },
+      onChange: function (data_in) {
+        $('.btnforcastgroup').removeClass('active');
+      },
+      onFinish: function (data_in) {
+        var enableSliderData_r=loadEnableSliderData(factor,citynamepy,false,data_in.from);
+        if(data_in.from==0){
+          $("#map_title").empty();
+          $('#map_title').append(enableSliderData_r.time['stime']+"到"+enableSliderData_r.time['etime']+"周边地区排放对我市的污染贡献分布");
+        }
+        else{
+          $("#map_title").empty();
+          $('#map_title').append("需管控的网格分布");
+        }
+      },
+      onUpdate: function (data_in) {
+        loadEnableSliderData(factor,citynamepy,false,data_in.from);
+        $("#map_title").empty();
+        $('#map_title').append("需管控的网格分布");
+      }
+    });
+  }
+/*EnableSlider初始化并注册监听函数-end*/
+
+/*行业占比饼图-start*/
+function bingtuInit(pieid,bingtudata){
+var dom = document.getElementById(pieid);
+var myChart = echarts.init(dom);
+var option = {
+  title : {
+    text: '企业统计',
+    subtext: '行业分布',
+    x:'center'
+  },
+  tooltip : {
+    trigger: 'item',
+    formatter: "{a} <br/>{b} : {c} ({d}%)"
+  },
+  legend: {
+    orient: 'vertical',
+    left: 'left',
+    data: bingtudata.en_category
+  },
+  series: [
+    {
+      name: '行业类别',
+      type: 'pie',
+      radius : '55%',
+      center: ['50%', '60%'],
+      data:bingtudata.piedata,
+      itemStyle: {
+        emphasis: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      }
+    }
+  ]
+};
+  myChart.setOption(option, true);
+  return myChart;
+}
+/*行业占比饼图-end*/
+
+
+/*区域内企业分布统计条形图-start*/
+function tiaoxingtuInit(barid,bardata,bingtu){
+var dom1 = document.getElementById(barid);
+var myChart1 = echarts.init(dom1);
+var option1 = {
+  title: {
+    text: '区域内企业分布统计'
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
+  legend: {
+    data: ['企业数量']
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'value',
+    boundaryGap: [0, 0.01]
+  },
+  yAxis: {
+    type: 'category',
+    data: bardata.county_name//区县名称数组
+  },
+  series: [
+    {
+      name: '企业数量',
+      type: 'bar',
+      data: bardata.en_count//各区县对应的企业数量数组
+    }
+  ]
+};
+myChart1.setOption(option1, true);
+window.onresize = function(){
+    bingtu.resize();
+    myChart1.resize();
+  };
+}
+/*区域内企业分布统计条形图-end*/
+
+
+/*企业勾选表格-start*/
 
 //checkbox的样式
-var checkboxStyleInit=function(){
+function checkboxStyleInit(){
  $('.bulk_action input.flat').iCheck({
           checkboxClass: 'icheckbox_flat-green'
       });
 }
 //checkbox的监听
-
-var checkboxListenInit=function(){
+function checkboxListenInit(){
   
   // table中的所有的checkbox的监听
     // $('.bulk_action input').on('ifChecked', function () {
@@ -546,10 +557,8 @@ $(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
 });
 
 }
-
-
 // 企业勾选表格datatable的初始化函数
-  var enterpriseCheckTableinit=function(){
+function enterpriseCheckTableInit(){
     enterpriseCheckTableOption={
       language: {
         "sProcessing": "处理中...",
@@ -633,85 +642,16 @@ $(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
 
         });
   }
-
-  var handleDataTableButtons = function() {
-    enterpriseListOption={
-      language: {
-        "sProcessing": "处理中...",
-        "sLengthMenu": "显示 _MENU_ 行",
-        "sZeroRecords": "没有匹配结果",
-        "sInfo": "显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项",
-        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-        "sInfoPostFix": "",
-        "sSearch": "搜索:",
-        "sUrl": "",
-        "sEmptyTable": "表中数据为空",
-        "sLoadingRecords": "载入中...",
-        "sInfoThousands": ",",
-        "oPaginate": {
-          "sFirst": "首页",
-          "sPrevious": "上页",
-          "sNext": "下页",
-          "sLast": "末页"
-        },
-        "oAria": {
-          "sSortAscending": ": 以升序排列此列",
-          "sSortDescending": ": 以降序排列此列"
-        },
-      },
-      "dom": '<lf<t>ip>',
-      lengthMenu: [
-        [ 10, 25, 50, -1 ],
-        [ '10', '25', '50', '所有']
-      ],   
-      buttons: ['pageLength','excel'],
-      // "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 0 ] }],            
-      //"aaSorting": [[ 0, "asc" ]],
-      "paging": true,
-      "data": <%= @en_list.to_json.html_safe %>
-      //responsive: true,
-      //"scrollX": true,
-      //  ajax: {
-      //     url:'/export/replace_coals_export.json?year='+$('#year').val()+'&month='+$('#month').val()+'&countyid='+$('#countyMonth').val(),
-      // type:'GET',
-      // dataType:"json"
-      //  } 
-    };
-    enterpriseList=$("#enterpriseList").DataTable(enterpriseListOption);
-  }
-var TableManageButtons = function() {
-  "use strict";
-  return {
-    init: function() {
-      handleDataTableButtons();
-    }
-  };
-}();
-// var loadEnterpriseData=function(gridPoint) {
-//   var dataurl='/palm_two/scheme_simulation.json?gridPoint='+gridPoint;
-//   enterpriseList.ajax.url(dataurl).load(function ( r_data ) {
-//   });
-// }
-$(document).ready(function() {
-  TableManageButtons.init();
-  bingtuInit();
-  tiaoxingtuInit();
-  enterpriseCheckTableinit();
+  // 企业勾选表格总初始化函数
+function enterpriseCheckTableInitAll(){
+  enterpriseCheckTableInit();
   checkboxStyleInit();
   checkboxListenInit();
-  loadEnterpriseData("");
-  btnforcastgroupInit();
-  sliderEnableInit();
+}
+/*企业勾选表格-end*/
 
-});
-</script>
-<!-- Slider -->
-<script type="text/javascript">
-  $(document).ready(function() {
-
-
-
+/*DisableSlider初始化-start*/
+function sliderDisableInit(){
     $("#rangedisable").ionRangeSlider({
       min: 0,
       max: 100,
@@ -727,8 +667,91 @@ $(document).ready(function() {
       onUpdate: function (data) {
       }
     });
-    
-  });
+  }
+/*DisableSlider初始化-end*/
 
+/*EnableSlider数据加载-start*/
+  function loadEnableSliderData(factor,citynamepy,init,from){
+          var enableSliderData_r;
+          $.ajax({            
+          url: '/palm_two/get_all_data',
+          data:{
+            'factor':factor,
+            'citynamepy':citynamepy,
+            'percent':from/100},
+          type: "get",
+          dataType : "json",            
+          success: function (enableSliderData) { 
+            /*加载地图数据-start*/
+            if(init)//初始化时地图加载数据
+            {
+              gridLines(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data['xmax'],enableSliderData.map_data['ymax']);
+              gridData(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data[type]);//type='<%= @factor %>'
+              $('#map_title').append(enableSliderData.time['stime']+"到"+enableSliderData.time['etime']+"周边地区排放对我市的污染贡献分布");
+            }
+            else//异步时地图加载数据
+            {
+              map.clearOverlays();
+              gridData(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data[type]);
+            }
+            /*加载地图数据-end*/
+
+
+            /*预计减排后AQI-start*/
+            $("#aqimn").empty();
+            $('#aqimn').append("预计减排后"+enableSliderData.time['etime']+"AQI为: <strong>"+enableSliderData.reduce_aqi+"</strong>");
+            /*预计减排后AQI-end*/
+
+            /*企业列表-start*/
+            enterpriseListTableInit("enterpriseList",enableSliderData.en_list);
+            /*企业列表-end*/
+
+            /*行业占比饼图-start*/
+            var bingtu=bingtuInit("proportionOfIndustry",enableSliderData.en_pie);
+            /*行业占比饼图-end*/
+
+            /*条形图-start*/
+            tiaoxingtuInit("enterpriseDistributionStatistics",enableSliderData.en_barchart,bingtu);
+            /*条形图-end*/
+
+            /*loadEnableSliderData函数返回值-start*/
+            enableSliderData_r=enableSliderData;
+            /*loadEnableSliderData函数返回值-end*/
+          }
+        });
+          return enableSliderData_r;
+  }
+  /*EnableSlider数据加载-end*/
+
+  /*企业勾选查询按钮-start*/
+    function query_gou_xuan_en_data(){
+      var en_ids=[];
+      $(".bulk_action input[name='table_records']:checked").each(function(){
+        en_ids.push(this.value);
+      });
+      $.ajax({            
+          url: '/palm_two/query_gou_xuan_en_data_all',
+          data:{
+            'en_ids': JSON.stringify(en_ids)},
+          type: "get",
+          dataType : "json",            
+          success: function (r) { 
+            alert(r.chenggong);
+          }
+        });
+    }
+  /*企业勾选查询按钮-end*/
+
+  /*页面初始化-start*/
+  $(document).ready(function() {
+    factor='<%= @factor %>'
+    citynamepy='<%= @citynamepy %>'
+    mapInit();
+    btnforcastgroupInit();
+    sliderEnableInit();
+    enterpriseCheckTableInitAll();
+    sliderDisableInit();
+    loadEnableSliderData(factor,citynamepy,true,0);
+});
+   /*页面初始化-end*/
 </script>
-

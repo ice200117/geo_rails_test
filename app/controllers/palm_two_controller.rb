@@ -7,7 +7,7 @@ class PalmTwoController < ApplicationController
             # @factor=params['factor']
             @citynamepy='zhengzhoushi'
             @citynamepy=params['cityname'] unless params['cityname'].nil?
-            @factor='NOX_120'
+            @factor='nox'
             c = City.find_by city_name_pinyin: @citynamepy
             @ccs=[]
             @en_count=[]
