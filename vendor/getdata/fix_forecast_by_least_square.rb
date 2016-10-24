@@ -6,30 +6,35 @@
 # Distributed under terms of the MIT license.
 #
 def fix_forecast_by_least_square
-  stime = Time.now.yesterday.beginning_of_hour
-  mtime = Time.now.beginning_of_hour
-  etime = mtime.end_of_day
-  City.all.each do |city|
-    cch = ChinaCitiesHour.where(data_real_time:(stime..mtime),city_id:city.id).to_a.group_by_hour(&:data_real_time)
-    next if cch.size == 0
-    frd1 = ForecastRealDatum.where(forecast_datetime:(stime..mtime),city_id:city.id).to_a.group_by_hour(&:forecast_datetime)
-    next if frd1.size == 0
-    frd2 = ForecastRealDatum.where(forecast_datetime:(mtime+3600..etime),city_id:city.id)
-    next if frd2.size == 0
-    aqix = Array.new
-    aqiy = Array.new
-    frd1.each do |k,v|
-      next if cch[k].nil? or v.size == 0 or cch[k].size == 0
-      aqix << v[0].AQI
-      aqiy << cch[k][0].AQI
+    stime = Time.now.yesterday.beginning_of_hour - 3600*3
+    mtime = Time.now.beginning_of_hour - 3600*3
+    etime = mtime.end_of_day
+    City.all.each do |city|
+        next if city.city_name_pinyin != 'beijingshi'
+        cch = ChinaCitiesHour.where(data_real_time:(stime..mtime),city_id:city.id).to_a.group_by_hour(&:data_real_time)
+        next if cch.size == 0
+        # frd1 = ForecastRealDatum.where(forecast_datetime:(stime..mtime),city_id:city.id).to_a.group_by_hour(&:forecast_datetime)
+        frd1 = HourlyCityForecastAirQuality.where(publish_datetime:(Time.now.yesterday..Time.now.yesterday.end_of_day),forecast_datetime:(stime..mtime),city_id:city.id).to_a.group_by(&:forecast_datetime)
+        next if frd1.size == 0
+        # frd2 = ForecastRealDatum.where(forecast_datetime:(mtime+3600..etime),city_id:city.id)
+        frd2 = HourlyCityForecastAirQuality.where(publish_datetime:(Time.now.yesterday..Time.now.yesterday.end_of_day),forecast_datetime:(mtime+3600..etime),city_id:city.id)
+        next if frd2.size == 0
+        aqix = Array.new
+        aqiy = Array.new
+        frd1.each do |k,v|
+            next if cch[k].nil? or v.size == 0 or cch[k].size == 0
+            puts v[0].forecast_datetime.hour.to_s + ' ' + v[0].AQI.to_s
+            aqix << v[0].AQI
+            aqiy << cch[k][0].AQI
+        end
+        next if aqix.size == 0 or aqiy.size == 0
+        puts city.city_name
+        lsqr = Math.least_squares(aqix,aqiy)
+        frd2.each do |l|
+            # l.update(AQI: lsqr.call(l.AQI))
+            puts l.forecast_datetime.hour.to_s+' '+lsqr.call(l.AQI).to_s
+        end
     end
-    next if aqix.size == 0 or aqiy.size == 0
-    puts city.city_name
-    lsqr = Math.least_squares(aqix,aqiy)
-    frd2.each do |l|
-      l.update(AQI: lsqr.call(l.AQI))
-      puts l.forecast_datetime.hour.to_s+' '+lsqr.call(l.AQI).to_s
-    end
-  end
-  puts 'fix_forecast_by_least_square end'
+    puts 'fix_forecast_by_least_square end'
 end
+fix_forecast_by_least_square()
