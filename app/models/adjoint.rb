@@ -356,9 +356,9 @@ class Adjoint
                 e['percent'] = e['percent'].to_f*temp #企业贡献率
             end
         end
+        gens = gens.values.flatten
         return {'map_data'=>{type=>ncd},'reduce_aqi'=>aqi,'en_list'=>gens} if percent == 0
         ens = Array.new
-        gens = gens.values.flatten
         if industry
             gens = gens.group_by{|x| x['en_category'] == industry}
             tsum = 0.0
