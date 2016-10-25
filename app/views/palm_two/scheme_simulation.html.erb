@@ -494,8 +494,9 @@ var option1 = {
 };
 myChart1.setOption(option1, true);
 $("#profile-tab").click(function(){
-setTimeout('bingtu.resize();myChart1.resize()', 300)
-})
+    bingtu.resize();
+    myChart1.resize();
+});
 window.onresize = function(){
     bingtu.resize();
     myChart1.resize();
