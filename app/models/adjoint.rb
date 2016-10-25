@@ -357,7 +357,7 @@ class Adjoint
             end
         end
         gens = gens.values.flatten
-        return {'map_data'=>{type=>ncd},'reduce_aqi'=>aqi,'en_list'=>gens} if percent == 0
+        return {'map_data'=>ncd,'reduce_aqi'=>aqi,'en_list'=>gens} if percent == 0
         ens = Array.new
         if industry
             gens = gens.group_by{|x| x['en_category'] == industry}
