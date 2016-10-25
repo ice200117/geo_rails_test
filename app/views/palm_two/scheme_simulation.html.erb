@@ -454,10 +454,6 @@ var option = {
 
 
 /*区域内企业分布统计条形图-start*/
-function resizetu(bingtu,myChart1){
-    bingtu.resize();
-    myChart1.resize();
-}
 function tiaoxingtuInit(barid,bardata,bingtu){
 var dom1 = document.getElementById(barid);
 var myChart1 = echarts.init(dom1);
@@ -497,11 +493,12 @@ var option1 = {
   ]
 };
 myChart1.setOption(option1, true);
-document.getElementById("tab_content2").addEventListener('click', function(e) {
-    e.preventDefault();
-  });
+// document.getElementById("tab_content2").addEventListener('click', function(e) {
+//     e.preventDefault();
+//   });
 $("#profile-tabli").click(function(){
-    setTimeout(resizetu(bingtu,myChart1),300);
+    bingtu.resize();
+    myChart1.resize();
 });
 window.onresize = function(){
     bingtu.resize();
