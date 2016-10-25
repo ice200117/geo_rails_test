@@ -497,8 +497,9 @@ var option1 = {
   ]
 };
 myChart1.setOption(option1, true);
-document.getElementById("profile-tabli").addEventListener("mousedown",function(){
-  resizetu(bingtu,myChart1);
+$("#profile-tabli").click(function(e){
+    e.preventDefault();
+    resizetu(bingtu,myChart1);
 });
 window.onresize = function(){
     bingtu.resize();
