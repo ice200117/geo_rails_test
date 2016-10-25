@@ -337,19 +337,6 @@ function getColor(val){
       // dataType:"json"
       //  } 
     };
-    if ( ! $.fn.DataTable.isDataTable( "#"+tableid ) ) {
-      var enterpriseListTable=$("#"+tableid).DataTable(enterpriseListOption);
-    }
-    else
-    {
-      $("#"+tableid).DataTable().destroy();
-      var enterpriseListTable=$("#"+tableid).DataTable(enterpriseListOption);
-    }
-    $("#profile-tab1li").click(function(){
-      setTimeout(function(){
-      enterpriseListTable.draw();
-    },300);
-    });
   }
 /*企业列表-end*/
 
@@ -573,7 +560,7 @@ $(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
 }
 // 企业勾选表格datatable的初始化函数
 function enterpriseCheckTableInit(){
-    enterpriseCheckTableOption={
+    var enterpriseCheckTableOption={
       language: {
         "sProcessing": "处理中...",
         "sLengthMenu": "显示 _MENU_ 行",
@@ -630,7 +617,7 @@ function enterpriseCheckTableInit(){
       }],
 
     };
-    enterpriseCheckTable=$("#enterpriseCheckTable").DataTable(enterpriseCheckTableOption);
+    var enterpriseCheckTable=$("#enterpriseCheckTable").DataTable(enterpriseCheckTableOption);
     enterpriseCheckTable.on('xhr.dt', function ( e, settings, json, xhr ) {
        checkboxStyleInit();
     } );
@@ -652,6 +639,11 @@ function enterpriseCheckTableInit(){
       checkboxListenInit();
 
         });
+      $("#profile-tab1li").click(function(){
+      setTimeout(function(){
+        enterpriseListTable.draw();
+      },300);
+      });
   }
   // 企业勾选表格总初始化函数
 function enterpriseCheckTableInitAll(){
