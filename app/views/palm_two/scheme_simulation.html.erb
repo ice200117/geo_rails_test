@@ -497,7 +497,7 @@ var option1 = {
   ]
 };
 myChart1.setOption(option1, true);
-$("#profile-tabli").click(function(){
+$("#profile-tabli").addEventListener('click',function(){
     setTimeout(resizetu(bingtu,myChart1), 300);
 });
 window.onresize = function(){
