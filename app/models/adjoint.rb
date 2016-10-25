@@ -387,11 +387,13 @@ class Adjoint
         th1 = Thread.new{ rncd = ready_nc(var.upcase+'_120',citypy)}
         th2 = Thread.new{ grd = read_grid(citypy)}
         th3 = Thread.new{ frd = ForecastRealDatum.new.air_quality_forecast(citypy)}
-        th4 = Thread.new{ gset = City.find_by_city_name_pinyin(citypy).enterprises.where(var+'_discharge'+'>-1').as_json}
+        # th4 = Thread.new{ gset = City.find_by_city_name_pinyin(citypy).enterprises.where(var+'_discharge'+'>-1').as_json}
+        gset = City.find_by_city_name_pinyin(citypy).enterprises.where(var+'_discharge'+'>-1').as_json
+
         th1.join
         th2.join
         th3.join
-        th4.join #获取需要的数据
+        # th4.join #获取需要的数据
         return nil if rncd.nil? or grd.nil? #没有数据返回nil
         aqi = frd[frd.keys.max]['AQI']
         result = deal_nc_grid_enterprise(rncd['data'].clone,grd,gset,var+'_discharge',percent,arg[0],aqi)
