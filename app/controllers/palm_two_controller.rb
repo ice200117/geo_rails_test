@@ -9,24 +9,20 @@ class PalmTwoController < ApplicationController
             @citynamepy=params['cityname'] unless params['cityname'].nil?
             @factor='nox'
             c = City.find_by city_name_pinyin: @citynamepy
-            @ccs=[]
-            @en_count=[]
-            @en_list=[]
+            @result_checkboxtable_data=[]
             if c
               @latitude=c.latitude
               @longitude=c.longitude
-              c.counties.each do |cc|
-                @ccs<<cc.name
-                @en_count<<cc.enterprises.size
-              end
               number=1
               c.enterprises.each do |enterprise|
-                tmp=[]
-                tmp<<number
-                tmp<<enterprise['en_name']
-                tmp<<''
-                @en_list<<tmp
-                number+=1                
+              tmp=Hash.new
+              tmp['id']=enterprise['id']
+              tmp['number']=number
+              tmp['en_name']=enterprise['en_name']
+              tmp['pollution_contribution_rate']=number
+              tmp['county_name']=enterprise['county_id'].nil? ? '' : County.find_by_id(enterprise['county_id']).name
+              @result_checkboxtable_data<<tmp
+              number+=1
               end
             end
             render 'page_lost_city',layout: false unless c
@@ -54,29 +50,6 @@ class PalmTwoController < ApplicationController
   end
 
 
-  def get_checkboxtable_data
-    checkboxtable_data=Hash.new
-    result=[]
-    city=City.find_by_city_name_pinyin(params['citynamepy'])
-    r_data=city.enterprises
-    number=1
-    r_data.each do |enterprise|
-      tmp=Hash.new
-      tmp['id']=enterprise['id']
-      tmp['number']=number
-      tmp['en_name']=enterprise['en_name']
-      tmp['pollution_contribution_rate']=number
-      tmp['county_name']=enterprise['county_id'].nil? ? '' : County.find_by_id(enterprise['county_id']).name
-      result<<tmp
-      number+=1
-    end
-    checkboxtable_data['data']=result
-    respond_to do |format|
-      format.json {
-        render json: checkboxtable_data
-      }
-    end
-  end
 
   def get_all_data
     factor=params['factor']

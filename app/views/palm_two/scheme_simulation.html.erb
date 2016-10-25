@@ -187,8 +187,8 @@
   <script type="text/javascript">
 /*网格地图-start*/
 //初始化底图
-function mapInit(){
-var center = new BMap.Point(<%= @longitude %>,<%= @latitude %>);
+function mapInit(longitude,latitude){
+var center = new BMap.Point(longitude,latitude);
 // var marker = new BMap.Marker(center);// 创建标注
 // 创建Map实例
 map = new BMap.Map("gridTracking",{minZoom:8});
@@ -263,8 +263,8 @@ function click(e){
     xmax: xmax,
     ymax: ymax
   });
-  gridPoint=JSON.stringify(gridPoint)
-  loadEnterpriseData(gridPoint);
+  // gridPoint=JSON.stringify(gridPoint)
+  // loadEnterpriseData(gridPoint);
 }
 // 网格点击加载企业数据
 // var loadEnterpriseData=function(gridPoint) {
@@ -386,7 +386,7 @@ function btnforcastgroupInit(){
 /*优化方案按钮组初始化-end*/
 
 /*EnableSlider初始化并注册监听函数-start*/
-function sliderEnableInit(){
+function sliderEnableInit(factor,citynamepy){
    $("#range").ionRangeSlider({
       min: 0,
       max: 100,
@@ -589,10 +589,7 @@ function enterpriseCheckTableInit(){
       // "scrollCollapse": "true",
       "paging": false,
        "order": [[ 1, 'asc' ]],
-      ajax: {
-          url: "/palm_two/get_checkboxtable_data.json?citynamepy="+"<%= @citynamepy %>",
-          type: "get"
-      },
+      "data": <%= @result_checkboxtable_data.to_json.html_safe %>,
       columns: [{
           data: null
       },
@@ -744,11 +741,13 @@ function sliderDisableInit(){
 
   /*页面初始化-start*/
   $(document).ready(function() {
-    factor='<%= @factor %>';
-    citynamepy='<%= @citynamepy %>';
-    mapInit();
+    var factor='<%= @factor %>';
+    var citynamepy='<%= @citynamepy %>';
+    var longitude=<%= @longitude %>;
+    var latitude=<%= @latitude %>;
+    mapInit(longitude,latitude);
     btnforcastgroupInit();
-    sliderEnableInit();
+    sliderEnableInit(factor,citynamepy);
     enterpriseCheckTableInitAll();
     sliderDisableInit();
     loadEnableSliderData(factor,citynamepy,true,0);
