@@ -497,8 +497,8 @@ var option1 = {
   ]
 };
 myChart1.setOption(option1, true);
-$("#profile-tabli").click(function(){
-    setTimeout(resizetu(bingtu,myChart1), 300);
+document.getElementById("#profile-tabli").addEventListener("mouseup",function(){
+  resizetu(bingtu,myChart1);
 });
 window.onresize = function(){
     bingtu.resize();
