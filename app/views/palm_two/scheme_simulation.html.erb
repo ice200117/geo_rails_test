@@ -291,6 +291,7 @@ function getColor(val){
     return "#330C02";
 }
 /*网格地图-end*/
+
 /*企业列表-start*/
    function enterpriseListTableInit(tableid,tabledata){
     var enterpriseListOption={
@@ -342,6 +343,7 @@ function getColor(val){
     else
     {
       $("#"+tableid).DataTable().destroy();
+      enterpriseListOption.data=tabledata;
       $("#"+tableid).DataTable(enterpriseListOption);
     }
     
