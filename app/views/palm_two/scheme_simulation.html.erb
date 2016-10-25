@@ -46,7 +46,7 @@
               <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">网格追踪</a>
                 </li>
-                <li id="profile-tabli" role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">企业统计</a>
+                <li role="presentation" class="" onclick="setTimeOut('myChart.resize();myChart1.resize();')"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">企业统计</a>
                 </li>
 
               </ul>
@@ -292,8 +292,8 @@ function getColor(val){
 }
 /*网格地图-end*/
 /*企业列表-start*/
-   function enterpriseListTableInit(tableid,tabledata){
-    var enterpriseListOption={
+   function enterpriseListTableInit(){
+    enterpriseListOption={
       language: {
         "sProcessing": "处理中...",
         "sLengthMenu": "显示 _MENU_ 行",
@@ -327,7 +327,7 @@ function getColor(val){
       // "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 0 ] }],            
       //"aaSorting": [[ 0, "asc" ]],
       "paging": true,
-      "data": tabledata
+      "data": [[]]
       //responsive: true,
       //"scrollX": true,
       //  ajax: {
@@ -336,7 +336,7 @@ function getColor(val){
       // dataType:"json"
       //  } 
     };
-    $("#"+tableid).DataTable(enterpriseListOption);
+    enterpriseListTable=$("#enterpriseList").DataTable(enterpriseListOption);
   }
 /*企业列表-end*/
 
@@ -412,10 +412,10 @@ function sliderEnableInit(factor,citynamepy){
 /*EnableSlider初始化并注册监听函数-end*/
 
 /*行业占比饼图-start*/
-function bingtuInit(pieid,bingtudata){
-var dom = document.getElementById(pieid);
-var myChart = echarts.init(dom);
-var option = {
+function bingtuInit(){
+var dom = document.getElementById("proportionOfIndustry");
+myChart = echarts.init(dom);
+option = {
   title : {
     text: '企业统计',
     subtext: '行业分布',
@@ -428,7 +428,7 @@ var option = {
   legend: {
     orient: 'vertical',
     left: 'left',
-    data: bingtudata.en_category
+    data: []
   },
   series: [
     {
@@ -436,7 +436,7 @@ var option = {
       type: 'pie',
       radius : '55%',
       center: ['50%', '60%'],
-      data:bingtudata.piedata,
+      data:[],
       itemStyle: {
         emphasis: {
           shadowBlur: 10,
@@ -447,17 +447,15 @@ var option = {
     }
   ]
 };
-  myChart.setOption(option, true);
-  return myChart;
 }
 /*行业占比饼图-end*/
 
 
 /*区域内企业分布统计条形图-start*/
-function tiaoxingtuInit(barid,bardata,bingtu){
-var dom1 = document.getElementById(barid);
-var myChart1 = echarts.init(dom1);
-var option1 = {
+function tiaoxingtuInit(){
+var dom1 = document.getElementById("enterpriseDistributionStatistics");
+myChart1 = echarts.init(dom1);
+option1 = {
   title: {
     text: '区域内企业分布统计'
   },
@@ -482,23 +480,18 @@ var option1 = {
   },
   yAxis: {
     type: 'category',
-    data: bardata.county_name//区县名称数组
+    data: []//区县名称数组
   },
   series: [
     {
       name: '企业数量',
       type: 'bar',
-      data: bardata.en_count//各区县对应的企业数量数组
+      data: []//各区县对应的企业数量数组
     }
   ]
 };
-myChart1.setOption(option1, true);
-document.getElementById("profile-tabli").addEventListener('click',function(){
-  bingtu.resize();
-    myChart1.resize();
-});
 window.onresize = function(){
-    bingtu.resize();
+    myChart.resize();
     myChart1.resize();
   };
 }
@@ -694,15 +687,19 @@ function sliderDisableInit(){
             /*预计减排后AQI-end*/
 
             /*企业列表-start*/
-            enterpriseListTableInit("enterpriseList",enableSliderData.en_list);
+            enterpriseListTable.settings().data=enableSliderData.en_list;
             /*企业列表-end*/
 
             /*行业占比饼图-start*/
-            var bingtu=bingtuInit("proportionOfIndustry",enableSliderData.en_pie);
+            option.legend.data=enableSliderData.en_pie.en_category; 
+            option.series[0].data=enableSliderData.en_pie.piedata;
+            myChart.setOption(option, true);
             /*行业占比饼图-end*/
 
             /*条形图-start*/
-            tiaoxingtuInit("enterpriseDistributionStatistics",enableSliderData.en_barchart,bingtu);
+            option1.yAxis.data=enableSliderData.en_barchart.county_name;
+            option1.series[0].data=enableSliderData.en_barchart.en_count;
+            myChart1.setOption(option1, true);
             /*条形图-end*/
 
             /*loadEnableSliderData函数返回值-start*/
@@ -740,8 +737,11 @@ function sliderDisableInit(){
     var longitude=<%= @longitude %>;
     var latitude=<%= @latitude %>;
     mapInit(longitude,latitude);
+    enterpriseListTableInit();
     btnforcastgroupInit();
     sliderEnableInit(factor,citynamepy);
+    bingtuInit();
+    tiaoxingtuInit();
     enterpriseCheckTableInitAll();
     sliderDisableInit();
     loadEnableSliderData(factor,citynamepy,true,0);
