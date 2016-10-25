@@ -93,7 +93,7 @@
               <ul id="myTab1" class="nav nav-tabs bar_tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab_content11" id="home-tab1" role="tab" data-toggle="tab" aria-expanded="true">模拟拖条</a>
                 </li>
-                <li id="profile-tab1li" role="presentation" class=""><a href="#tab_content21" role="tab" id="profile-tab1" data-toggle="tab" aria-expanded="false">企业勾选</a>
+                <li role="presentation" class=""><a href="#tab_content21" role="tab" id="profile-tab1" data-toggle="tab" aria-expanded="false">企业勾选</a>
                 </li>
 
               </ul>
@@ -144,17 +144,17 @@
                 <div role="tabpanel" class="tab-pane fade" id="tab_content21" aria-labelledby="profile-tab1">
                   <table id="enterpriseCheckTable" class="table table-striped jambo_table table-bordered bulk_action">
                       <thead style="background: #ffffff;color: #73879C;">
-                        <tr>
+                        <!-- <tr>
                           <th><input type="checkbox" id="check-all" class="flat"></th>
                           <th>序号</th>
                           <th>企业名称</th>
                           <th>污染贡献率</th>
                           <th>所属区县</th>
-                        </tr>
+                        </tr> -->
                       </thead>
                       <tbody>
                       </tbody>
-                      <tfoot>
+    <!--                   <tfoot>
                       <tr>
                       <th></th>
                       <th>序号</th>
@@ -162,7 +162,7 @@
                       <th>污染贡献率</th>
                       <th>所属区县</th>
                         </tr>
-                      </tfoot>
+                      </tfoot> -->
                     </table>
                     <button onclick="query_gou_xuan_en_data();" class="button-buttons button-glow button-rounded button-primary">查询</button>
                     <div class="row">
@@ -337,6 +337,15 @@ function getColor(val){
       // dataType:"json"
       //  } 
     };
+    if ( ! $.fn.DataTable.isDataTable( "#"+tableid ) ) {
+      $("#"+tableid).DataTable(enterpriseListOption);
+    }
+    else
+    {
+      $("#"+tableid).DataTable().destroy();
+      $("#"+tableid).DataTable(enterpriseListOption);
+    }
+    
   }
 /*企业列表-end*/
 
@@ -592,18 +601,23 @@ function enterpriseCheckTableInit(){
        "order": [[ 1, 'asc' ]],
       "data": <%= @result_checkboxtable_data.to_json.html_safe %>,
       columns: [{
+          title: "<input type='checkbox' id='check-all' class='flat'>",
           data: null
       },
       {
+          title: "序号",
           data: "number"
       },
       {
+          title:"企业名称",
           data: "en_name"
       },
       {
+        title:"污染贡献率",
         data: "pollution_contribution_rate"
       },
       {
+        title:"所属区县",
         data: "county_name"
       }],
       'columnDefs': [{
@@ -639,11 +653,6 @@ function enterpriseCheckTableInit(){
       checkboxListenInit();
 
         });
-      $("#profile-tab1li").click(function(){
-      setTimeout(function(){
-        enterpriseListTable.draw();
-      },300);
-      });
   }
   // 企业勾选表格总初始化函数
 function enterpriseCheckTableInitAll(){
