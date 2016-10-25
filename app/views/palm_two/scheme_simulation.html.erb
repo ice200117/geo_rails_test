@@ -693,13 +693,13 @@ function sliderDisableInit(){
             /*行业占比饼图-start*/
             option.legend.data=enableSliderData.en_pie.en_category; 
             option.series[0].data=enableSliderData.en_pie.piedata;
-            myChart.setOption(option, true);
+            myChart.setOption(option);
             /*行业占比饼图-end*/
 
             /*条形图-start*/
             option1.yAxis.data=enableSliderData.en_barchart.county_name;
             option1.series[0].data=enableSliderData.en_barchart.en_count;
-            myChart1.setOption(option1, true);
+            myChart1.setOption(option1);
             /*条形图-end*/
 
             /*loadEnableSliderData函数返回值-start*/
