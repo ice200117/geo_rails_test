@@ -93,7 +93,7 @@
               <ul id="myTab1" class="nav nav-tabs bar_tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab_content11" id="home-tab1" role="tab" data-toggle="tab" aria-expanded="true">模拟拖条</a>
                 </li>
-                <li role="presentation" class=""><a href="#tab_content21" role="tab" id="profile-tab1" data-toggle="tab" aria-expanded="false">企业勾选</a>
+                <li id="profile-tab1li" role="presentation" class=""><a href="#tab_content21" role="tab" id="profile-tab1" data-toggle="tab" aria-expanded="false">企业勾选</a>
                 </li>
 
               </ul>
@@ -338,14 +338,18 @@ function getColor(val){
       //  } 
     };
     if ( ! $.fn.DataTable.isDataTable( "#"+tableid ) ) {
-      $("#"+tableid).DataTable(enterpriseListOption);
+      var enterpriseListTable=$("#"+tableid).DataTable(enterpriseListOption);
     }
     else
     {
       $("#"+tableid).DataTable().destroy();
-      $("#"+tableid).DataTable(enterpriseListOption);
+      var enterpriseListTable=$("#"+tableid).DataTable(enterpriseListOption);
     }
-    
+    $("#profile-tab1li").click(function(){
+      setTimeout(function(){
+      enterpriseListTable.draw();
+    },300);
+    });
   }
 /*企业列表-end*/
 
