@@ -46,7 +46,7 @@
               <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">网格追踪</a>
                 </li>
-                <li id="profile-tabli" role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">企业统计</a>
+                <li role="presentation" class="" onclick="setTimeout('myChart.resize();myChart1.resize();', 300)"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">企业统计</a>
                 </li>
 
               </ul>
@@ -412,9 +412,12 @@ function sliderEnableInit(factor,citynamepy){
 /*EnableSlider初始化并注册监听函数-end*/
 
 /*行业占比饼图-start*/
-function bingtuInit(pieid,bingtudata){
+function bingtuInit(pieid,bingtudata,init){
+  if(init)
+  {
 var dom = document.getElementById(pieid);
-var myChart = echarts.init(dom);
+ myChart = echarts.init(dom);
+}
 var option = {
   title : {
     text: '企业统计',
@@ -448,19 +451,17 @@ var option = {
   ]
 };
   myChart.setOption(option, true);
-  return myChart;
 }
 /*行业占比饼图-end*/
 
 
 /*区域内企业分布统计条形图-start*/
-function resizetu(bingtu,myChart1){
-    bingtu.resize();
-    myChart1.resize();
-}
-function tiaoxingtuInit(barid,bardata,bingtu){
-var dom1 = document.getElementById(barid);
-var myChart1 = echarts.init(dom1);
+function tiaoxingtuInit(barid,bardata,bingtu,init){
+  if(init)
+  {
+    var dom1 = document.getElementById(barid);
+    myChart1 = echarts.init(dom1);
+  }
 var option1 = {
   title: {
     text: '区域内企业分布统计'
@@ -497,12 +498,8 @@ var option1 = {
   ]
 };
 myChart1.setOption(option1, true);
-$("#profile-tabli").click(function(e){
-    e.preventDefault();
-    resizetu(bingtu,myChart1);
-});
 window.onresize = function(){
-    bingtu.resize();
+    myChart.resize();
     myChart1.resize();
   };
 }
@@ -702,11 +699,11 @@ function sliderDisableInit(){
             /*企业列表-end*/
 
             /*行业占比饼图-start*/
-            var bingtu=bingtuInit("proportionOfIndustry",enableSliderData.en_pie);
+            bingtuInit("proportionOfIndustry",enableSliderData.en_pie,init);
             /*行业占比饼图-end*/
 
             /*条形图-start*/
-            tiaoxingtuInit("enterpriseDistributionStatistics",enableSliderData.en_barchart,bingtu);
+            tiaoxingtuInit("enterpriseDistributionStatistics",enableSliderData.en_barchart,bingtu,init);
             /*条形图-end*/
 
             /*loadEnableSliderData函数返回值-start*/
