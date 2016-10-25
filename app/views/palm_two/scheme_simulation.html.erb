@@ -691,15 +691,28 @@ function sliderDisableInit(){
             /*企业列表-end*/
 
             /*行业占比饼图-start*/
-            option.legend.data=enableSliderData.en_pie.en_category; 
-            option.series[0].data=enableSliderData.en_pie.piedata;
-            myChart.setOption(option);
+            myChart.setOption({
+              legend: {
+                data: enableSliderData.en_pie.en_category
+              },
+              series: [
+              {
+                data:enableSliderData.en_pie.piedata
+              }]
+            }
+              );
             /*行业占比饼图-end*/
 
             /*条形图-start*/
-            option1.yAxis.data=enableSliderData.en_barchart.county_name;
-            option1.series[0].data=enableSliderData.en_barchart.en_count;
-            myChart1.setOption(option1);
+            myChart1.setOption({
+              yAxis: {
+                data: enableSliderData.en_barchart.county_name//区县名称数组
+              },
+              series: [
+                {
+                  data: enableSliderData.en_barchart.en_count//各区县对应的企业数量数组
+                }]
+              });
             /*条形图-end*/
 
             /*loadEnableSliderData函数返回值-start*/
