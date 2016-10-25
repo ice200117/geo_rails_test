@@ -293,7 +293,7 @@ function getColor(val){
 /*网格地图-end*/
 /*企业列表-start*/
    function enterpriseListTableInit(){
-    enterpriseListOption={
+    enterpriseListOption={//settings()[0]
       language: {
         "sProcessing": "处理中...",
         "sLengthMenu": "显示 _MENU_ 行",
@@ -686,7 +686,7 @@ function sliderDisableInit(){
             /*预计减排后AQI-end*/
 
             /*企业列表-start*/
-            enterpriseListTable.settings().data=enableSliderData.en_list;
+            enterpriseListTable.settings()[0].data=enableSliderData.en_list;
             /*企业列表-end*/
 
             /*行业占比饼图-start*/
