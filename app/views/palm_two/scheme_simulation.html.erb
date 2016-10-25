@@ -414,7 +414,7 @@ function sliderEnableInit(factor,citynamepy){
 function bingtuInit(){
 var dom = document.getElementById("proportionOfIndustry");
 myChart = echarts.init(dom);
-option = {
+var option = {
   title : {
     text: '企业统计',
     subtext: '行业分布',
@@ -454,7 +454,7 @@ option = {
 function tiaoxingtuInit(){
 var dom1 = document.getElementById("enterpriseDistributionStatistics");
 myChart1 = echarts.init(dom1);
-option1 = {
+var option1 = {
   title: {
     text: '区域内企业分布统计'
   },
@@ -699,8 +699,7 @@ function sliderDisableInit(){
               {
                 data:enableSliderData.en_pie.piedata
               }]
-            }
-              );
+            });
             /*行业占比饼图-end*/
 
             /*条形图-start*/
