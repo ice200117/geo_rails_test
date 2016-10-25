@@ -336,7 +336,15 @@ function getColor(val){
       // dataType:"json"
       //  } 
     };
-    $("#"+tableid).DataTable(enterpriseListOption);
+    if ( ! $.fn.DataTable.isDataTable( "#"+tableid ) ) {
+      $("#"+tableid).DataTable(enterpriseListOption);
+    }
+    else
+    {
+      $("#"+tableid).DataTable().destroy();
+      $("#"+tableid).DataTable(enterpriseListOption);
+    }
+    
   }
 /*企业列表-end*/
 
@@ -494,7 +502,7 @@ var option1 = {
 };
 myChart1.setOption(option1, true);
 $("#profile-tabli").click(function(){
-    setTimeout(function(){
+    setTimeout(function(){//定义setInterval或者setTimeout的时候如果要调用外部的方法,要用引号将外部方法引起来 否则会直接执行的;起不到定时的作用。实现定时的方式：1、setTimeout("bingtu(bingtu,myChart1)",300)变量也许无法传递;2、setTimeout("bingtu.resize();myChart1.resize();",300)变量得是全局变量;3、setTimeout(function(){})采用匿名函数，已验证可以。
       bingtu.resize();
       myChart1.resize();
 },300);
