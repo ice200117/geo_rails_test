@@ -377,7 +377,7 @@ class Adjoint
         ens.each do |e|
             ncdn[e['x']][e['y']] = ncd[e['x']][e['y']]
         end
-        {'map_data'=>{type=>ncdn},'reduce_aqi'=>(1-pcity/psum)*percent*aqi,'en_list'=>gens}
+        {'map_data'=>ncdn,'reduce_aqi'=>(1-pcity/psum)*percent*aqi,'en_list'=>gens}
     end
     def self.emission_v1(citypy='langfangshi',var='nox',percent=0,*arg)
         # 获取地图污染信息，减排aqi
@@ -396,7 +396,8 @@ class Adjoint
         aqi = frd[frd.keys.max]['AQI']
         result = deal_nc_grid_enterprise(rncd['data'].clone,grd,gset,var+'_discharge',percent,arg[0],aqi)
         rncd.delete('data')
-        result['map_data'].merge(rncd)
+        result['map_data'] = {var => result['map_data']}
+        result['map_data'].merge!(rncd)
         result['time'] = Hash.new
         result['time']['stime'] = frd.keys.min.to_time.strftime('%m月%d日')
         result['time']['etime'] = frd.keys.max.to_time.strftime('%m月%d日')
