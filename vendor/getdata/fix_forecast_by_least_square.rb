@@ -6,11 +6,10 @@
 # Distributed under terms of the MIT license.
 #
 def fix_forecast_by_least_square
-    stime = Time.now.yesterday.beginning_of_hour - 3600*3
-    mtime = Time.now.beginning_of_hour - 3600*3
+    stime = Time.now.yesterday.beginning_of_hour
+    mtime = Time.now.beginning_of_hour
     etime = mtime.end_of_day
     City.all.each do |city|
-        next if city.city_name_pinyin != 'beijingshi'
         cch = ChinaCitiesHour.where(data_real_time:(stime..mtime),city_id:city.id).to_a.group_by_hour(&:data_real_time)
         next if cch.size == 0
         # frd1 = ForecastRealDatum.where(forecast_datetime:(stime..mtime),city_id:city.id).to_a.group_by_hour(&:forecast_datetime)
@@ -37,4 +36,3 @@ def fix_forecast_by_least_square
     end
     puts 'fix_forecast_by_least_square end'
 end
-fix_forecast_by_least_square()
