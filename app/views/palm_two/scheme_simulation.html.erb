@@ -46,7 +46,7 @@
               <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">网格追踪</a>
                 </li>
-                <li role="presentation" class="" onclick="setTimeout('myChart.resize();myChart1.resize()', 300)"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">企业统计</a>
+                <li id="profile-tabli" role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">企业统计</a>
                 </li>
 
               </ul>
@@ -93,7 +93,7 @@
               <ul id="myTab1" class="nav nav-tabs bar_tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab_content11" id="home-tab1" role="tab" data-toggle="tab" aria-expanded="true">模拟拖条</a>
                 </li>
-                <li role="presentation" class=""><a href="#tab_content21" role="tab" id="profile-tab1" data-toggle="tab" aria-expanded="false">企业勾选</a>
+                <li id="profile-tab1li" role="presentation" class=""><a href="#tab_content21" role="tab" id="profile-tab1" data-toggle="tab" aria-expanded="false">企业勾选</a>
                 </li>
 
               </ul>
@@ -291,6 +291,7 @@ function getColor(val){
     return "#330C02";
 }
 /*网格地图-end*/
+
 /*企业列表-start*/
    function enterpriseListTableInit(tableid,tabledata){
     var enterpriseListOption={
@@ -336,7 +337,15 @@ function getColor(val){
       // dataType:"json"
       //  } 
     };
-    $("#"+tableid).DataTable(enterpriseListOption);
+    if ( ! $.fn.DataTable.isDataTable( "#"+tableid ) ) {
+      $("#"+tableid).DataTable(enterpriseListOption);
+    }
+    else
+    {
+      $("#"+tableid).DataTable().destroy();
+      $("#"+tableid).DataTable(enterpriseListOption);
+    }
+    
   }
 /*企业列表-end*/
 
@@ -493,6 +502,12 @@ var option1 = {
   ]
 };
 myChart1.setOption(option1, true);
+$("#profile-tabli").click(function(){
+    setTimeout(function(){//定义setInterval或者setTimeout的时候如果要调用外部的方法,要用引号将外部方法引起来 否则会直接执行的;起不到定时的作用。实现定时的方式：1、setTimeout("bingtu(bingtu,myChart1)",300)变量也许无法传递;2、setTimeout("bingtu.resize();myChart1.resize();",300)变量得是全局变量;3、setTimeout(function(){})采用匿名函数，已验证可以。
+      bingtu.resize();
+      myChart1.resize();
+},300);
+});
 window.onresize = function(){
     bingtu.resize();
     myChart1.resize();
@@ -554,7 +569,7 @@ $(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
 }
 // 企业勾选表格datatable的初始化函数
 function enterpriseCheckTableInit(){
-    enterpriseCheckTableOption={
+    var enterpriseCheckTableOption={
       language: {
         "sProcessing": "处理中...",
         "sLengthMenu": "显示 _MENU_ 行",
@@ -611,7 +626,7 @@ function enterpriseCheckTableInit(){
       }],
 
     };
-    enterpriseCheckTable=$("#enterpriseCheckTable").DataTable(enterpriseCheckTableOption);
+    var enterpriseCheckTable=$("#enterpriseCheckTable").DataTable(enterpriseCheckTableOption);
     enterpriseCheckTable.on('xhr.dt', function ( e, settings, json, xhr ) {
        checkboxStyleInit();
     } );
@@ -633,6 +648,11 @@ function enterpriseCheckTableInit(){
       checkboxListenInit();
 
         });
+    $("#profile-tab1li").click(function(){
+      setTimeout(function(){
+        enterpriseCheckTable.draw();
+        },300);
+      });
   }
   // 企业勾选表格总初始化函数
 function enterpriseCheckTableInitAll(){
