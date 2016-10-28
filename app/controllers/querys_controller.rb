@@ -118,8 +118,6 @@ class QuerysController < ApplicationController
     render json: chf
   end
 
-
-
   def cities
     cs = City.pluck(:city_name, :city_name_pinyin)
     render json: cs
@@ -158,7 +156,6 @@ class QuerysController < ApplicationController
     end
   end
 
-
   def get_real_weahter(city_number)
     xmldoc = Nokogiri::XML(open('http://wthrcdn.etouch.cn/WeatherApi?citykey='+city_number.to_s))
 
@@ -170,7 +167,6 @@ class QuerysController < ApplicationController
     end
     weather
   end
-
 
   def parse_xml(doc, node)
     if node=='aqi'

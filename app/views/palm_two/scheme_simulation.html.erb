@@ -1,265 +1,265 @@
 <%= stylesheet_link_tag 'buttons','css/normalize-css/normalize','css/ion.rangeSlider/css/ion.rangeSlider','css/ion.rangeSlider/css/ion.rangeSlider.skinHTML5','css/iCheck/skins/flat/green' %>
 <div class="right_col" style="margin-top:0px; margin-bottom:1px; height:0px" role="main">
-  <!-- top tiles -->
-  <div class="row tile_count" style="margin:1px; padding:0px; height:0px">
-    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count" style="margin:0px; padding:0px; height:0px">
-      <!-- <span class="count_top"><i class="fa fa-user"></i> Total Users</span> -->
-      <!-- <span class="count_bottom"><i class="green">4% </i> From last Week</span> -->
-    </div>
-  </div>
-  <!-- /top tiles -->
-  <div class="">
-    <!--
-    <div class="page-title">
-      <div class="title_left">
-        <h3>方案模拟</h3>
-      </div>
-    </div>
-
-    <div class="clearfix"></div>
-    -->
-
-    <div class="row">
-      <div class="col-md-6 col-sm-6 col-xs-12">
-        <div class="x_panel">
-          <div class="x_title">
-            <h2>源追踪和企业统计</h2>
-            <!--    <ul class="nav navbar-right panel_toolbox">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-              </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Settings 1</a>
-                  </li>
-                  <li><a href="#">Settings 2</a>
-                  </li>
-                </ul>
-              </li>
-              <li><a class="close-link"><i class="fa fa-close"></i></a>
-              </li>
-            </ul> -->
-            <div class="clearfix"></div>
-          </div>
-          <div class="x_content">
-            <div class="" role="tabpanel" data-example-id="togglable-tabs">
-              <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">网格追踪</a>
-                </li>
-                <li id="profile-tabli" role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">企业统计</a>
-                </li>
-
-              </ul>
-              <div id="myTabContent" class="tab-content">
-                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                  <div id="map_title" style="position:absolute;top:50px;left:30%;padding:4px;background:rgba(255,255,255,0.9);z-index:2000;"></div>
-                  <div id="gridTracking" style="width:100%;height:692px;"></div>
-                  <div style="position: absolute; top: 200px; right: 20px;"><%= image_tag("adj_so2_legend.png") %></div>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                  <div id="proportionOfIndustry" style="width:100%;height:392px;"></div>
-                  <div id="enterpriseDistributionStatistics" style="width:100%;height:392px;"></div>
-                </div>
-
-              </div>
-            </div>
-          </div>
+    <!-- top tiles -->
+    <div class="row tile_count" style="margin:1px; padding:0px; height:0px">
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count" style="margin:0px; padding:0px; height:0px">
+            <!-- <span class="count_top"><i class="fa fa-user"></i> Total Users</span> -->
+            <!-- <span class="count_bottom"><i class="green">4% </i> From last Week</span> -->
         </div>
-      </div>
-
-      <div class="col-md-6 col-sm-6 col-xs-12">
-        <div class="x_panel">
-          <div class="x_title">
-            <div id='aqimn' class="count"> 预计减排后AQI </div>
-            <!--    <ul class="nav navbar-right panel_toolbox">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-              </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Settings 1</a>
-                  </li>
-                  <li><a href="#">Settings 2</a>
-                  </li>
-                </ul>
-              </li>
-              <li><a class="close-link"><i class="fa fa-close"></i></a>
-              </li>
-            </ul> -->
-            <div class="clearfix"></div>
-          </div>
-          <div class="x_content">
-            <div class="" role="tabpanel" data-example-id="togglable-tabs">
-              <ul id="myTab1" class="nav nav-tabs bar_tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#tab_content11" id="home-tab1" role="tab" data-toggle="tab" aria-expanded="true">模拟拖条</a>
-                </li>
-                <li id="profile-tab1li" role="presentation" class=""><a href="#tab_content21" role="tab" id="profile-tab1" data-toggle="tab" aria-expanded="false">企业勾选</a>
-                </li>
-
-              </ul>
-              <div id="myTab1Content" class="tab-content">
-                <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab1">
-             <table id="enterpriseList" class="table table-striped table-bordered" style="white-space: nowrap">
-              <thead>
-                <tr>
-                  <th>序号</th>
-                  <th>企业名称</th>
-                  <th>污染贡献率</th>
-                </tr>
-              </thead>
-              <tbody>
-
-              </tbody>
-            </table>
-            <button onclick="tableToExcel(&#39;enterpriseList&#39;, &#39;export table&#39;)" class="button-buttons button-glow button-rounded button-primary">
-              <img src="<%= image_url 'img/ico.png'%>">
-              导出
-            </button>
-            <div class="ln_solid"></div>
-            <div class="row">
-              <div class="col-md-6 col-xs-12">
-                <label>预警级别:</label>
-                <div class="btn-group">
-                  <button class="btn btn-info btnforcastgroup" type="button">I</button>
-                  <button class="btn btn-info btnforcastgroup" type="button">II</button>
-                  <button class="btn btn-info btnforcastgroup" type="button">III</button>
-                  <button class="btn btn-info btnforcastgroup" type="button">IV</button>
-                </div>
-              </div>
-              <div class="col-md-6 col-xs-12">
-                <label>优化方案:</label>
-                <div class="btn-group">
-                  <button class="btn btn-round btn-success active" type="button">模型</button>
-                  <button class="btn btn-round btn-success" type="button">电力</button>
-                  <button class="btn btn-round btn-success" type="button">经验</button>
-                </div>
-              </div>
-            </div>
-            <br>
-            <div class="row">
-              <label>减排百分比:</label>
-              <input type="text" value="" id="range" name="range" />
-            </div>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tab_content21" aria-labelledby="profile-tab1">
-                  <table id="enterpriseCheckTable" class="table table-striped jambo_table table-bordered bulk_action">
-                      <thead style="background: #ffffff;color: #73879C;">
-                        <tr>
-                          <th><input type="checkbox" id="check-all" class="flat"></th>
-                          <th>序号</th>
-                          <th>企业名称</th>
-                          <th>污染贡献率</th>
-                          <th>所属区县</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                      <tfoot>
-                      <tr>
-                      <th></th>
-                      <th>序号</th>
-                      <th>企业名称</th>
-                      <th>污染贡献率</th>
-                      <th>所属区县</th>
-                        </tr>
-                      </tfoot>
-                    </table>
-                    <button onclick="query_gou_xuan_en_data();" class="button-buttons button-glow button-rounded button-primary">查询</button>
-                    <div class="row">
-                    <label>减排百分比:</label>
-                    <input type="text" value="" id="rangedisable" name="range" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-  </div>
-  <%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min','js/iCheck/icheck.min' %>   
-  <script type="text/javascript">
-/*网格地图-start*/
-//初始化底图
-function mapInit(longitude,latitude){
-var center = new BMap.Point(longitude,latitude);
-// var marker = new BMap.Marker(center);// 创建标注
-// 创建Map实例
-map = new BMap.Map("gridTracking",{minZoom:8});
-map.centerAndZoom(center,8);
-map.disableDoubleClickZoom(true);
-map.enableScrollWheelZoom();
-var mapStyle = [{
-  "featureType":"road","elementType":"all","stylers":{
-    "lightness":20
-  }
-},{
-  "featureType":"highway","elementType":"all","stylers":{
-    "visibility":"on"
-  }
-},{
-  "featureType":"railway","elementType":"all","stylers":{
-    "visibility":"on"
-  }
-},{
-  "featureType":"local","elementType":"labels","stylers":{
-    "visibility":"on"
-  }
-},{
-  "featureType":"water","elementType":"all","stylers":{
-    "color":"#d1e5ff"
-  }
-},{
-  "featureType":"poi","elementType":"labels","stylers":{
-    "visibility":"on"
-  }
-}];
-map.setMapStyle({styleJson:mapStyle});
-lineOption = {strokeColor:"black",strokeWeight:0.3,strokeOpacity:0.7,enableMassClear:false,enableClicking:false};
-rectangleOption = {strokeColor:"black",strokeWeight:0.3,strokeOpacity:0,fillColor:"red",fillOpacity:0.7};
+    <!-- /top tiles -->
+    <div class="">
+        <!--
+        <div class="page-title">
+            <div class="title_left">
+                <h3>方案模拟</h3>
+            </div>
+        </div>
 
-}
+        <div class="clearfix"></div>
+        -->
+
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>源追踪和企业统计</h2>
+                        <!--    <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Settings 1</a>
+                                    </li>
+                                    <li><a href="#">Settings 2</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul> -->
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">网格追踪</a>
+                                </li>
+                                <li id="profile-tabli" role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">企业统计</a>
+                                </li>
+
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                                    <div id="map_title" style="position:absolute;top:50px;left:30%;padding:4px;background:rgba(255,255,255,0.9);z-index:2000;"></div>
+                                    <div id="gridTracking" style="width:100%;height:692px;"></div>
+                                    <div style="position: absolute; top: 200px; right: 20px;"><%= image_tag("adj_so2_legend.png") %></div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                                    <div id="proportionOfIndustry" style="width:100%;height:392px;"></div>
+                                    <div id="enterpriseDistributionStatistics" style="width:100%;height:392px;"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <div id='aqimn' class="count"> 预计减排后AQI </div>
+                        <!--    <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Settings 1</a>
+                                    </li>
+                                    <li><a href="#">Settings 2</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul> -->
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                            <ul id="myTab1" class="nav nav-tabs bar_tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#tab_content11" id="home-tab1" role="tab" data-toggle="tab" aria-expanded="true">模拟拖条</a>
+                                </li>
+                                <li id="profile-tab1li" role="presentation" class=""><a href="#tab_content21" role="tab" id="profile-tab1" data-toggle="tab" aria-expanded="false">企业勾选</a>
+                                </li>
+
+                            </ul>
+                            <div id="myTab1Content" class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab1">
+                                    <table id="enterpriseList" class="table table-striped table-bordered" style="white-space: nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>企业名称</th>
+                                                <th>污染贡献率</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                    <button onclick="tableToExcel(&#39;enterpriseList&#39;, &#39;export table&#39;)" class="button-buttons button-glow button-rounded button-primary">
+                                        <img src="<%= image_url 'img/ico.png'%>">
+                                        导出
+                                    </button>
+                                    <div class="ln_solid"></div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-xs-12">
+                                            <label>预警级别:</label>
+                                            <div class="btn-group">
+                                                <button class="btn btn-info btnforcastgroup" type="button">I</button>
+                                                <button class="btn btn-info btnforcastgroup" type="button">II</button>
+                                                <button class="btn btn-info btnforcastgroup" type="button">III</button>
+                                                <button class="btn btn-info btnforcastgroup" type="button">IV</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-xs-12">
+                                            <label>优化方案:</label>
+                                            <div class="btn-group">
+                                                <button class="btn btn-round btn-success active" type="button">模型</button>
+                                                <button class="btn btn-round btn-success" type="button">电力</button>
+                                                <button class="btn btn-round btn-success" type="button">经验</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <label>减排百分比:</label>
+                                        <input type="text" value="" id="range" name="range" />
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content21" aria-labelledby="profile-tab1">
+                                    <table id="enterpriseCheckTable" class="table table-striped jambo_table table-bordered bulk_action">
+                                        <thead style="background: #ffffff;color: #73879C;">
+                                            <tr>
+                                                <th><input type="checkbox" id="check-all" class="flat"></th>
+                                                <th>序号</th>
+                                                <th>企业名称</th>
+                                                <th>污染贡献率</th>
+                                                <th>所属区县</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th></th>
+                                                <th>序号</th>
+                                                <th>企业名称</th>
+                                                <th>污染贡献率</th>
+                                                <th>所属区县</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                    <button onclick="query_gou_xuan_en_data();" class="button-buttons button-glow button-rounded button-primary">查询</button>
+                                    <div class="row">
+                                        <label>减排百分比:</label>
+                                        <input type="text" value="" id="rangedisable" name="range" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%= javascript_include_tag 'js/ion.rangeSlider/js/ion.rangeSlider.min','js/iCheck/icheck.min' %>   
+<script type="text/javascript">
+    /*网格地图-start*/
+    //初始化底图
+    function mapInit(longitude,latitude){
+        var center = new BMap.Point(longitude,latitude);
+        // var marker = new BMap.Marker(center);// 创建标注
+        // 创建Map实例
+        map = new BMap.Map("gridTracking",{minZoom:8});
+        map.centerAndZoom(center,8);
+        map.disableDoubleClickZoom(true);
+        map.enableScrollWheelZoom();
+        var mapStyle = [{
+            "featureType":"road","elementType":"all","stylers":{
+                "lightness":20
+            }
+        },{
+            "featureType":"highway","elementType":"all","stylers":{
+                "visibility":"on"
+            }
+        },{
+            "featureType":"railway","elementType":"all","stylers":{
+                "visibility":"on"
+            }
+        },{
+            "featureType":"local","elementType":"labels","stylers":{
+                "visibility":"on"
+            }
+        },{
+            "featureType":"water","elementType":"all","stylers":{
+                "color":"#d1e5ff"
+            }
+        },{
+            "featureType":"poi","elementType":"labels","stylers":{
+                "visibility":"on"
+            }
+        }];
+        map.setMapStyle({styleJson:mapStyle});
+        lineOption = {strokeColor:"black",strokeWeight:0.3,strokeOpacity:0.7,enableMassClear:false,enableClicking:false};
+        rectangleOption = {strokeColor:"black",strokeWeight:0.3,strokeOpacity:0,fillColor:"red",fillOpacity:0.7};
+
+    }
 //底图上绘制网格线
 function gridLines(xmin,ymin,xmax,ymax)
 {
-  for(var i = 0; i < 70; i++){
-    map.addOverlay(new BMap.Polyline([new BMap.Point(xmin,(ymin + 0.1 * i)),new BMap.Point(xmax,(ymin + 0.1 * i))],lineOption));
-  }
-  for(var i = 0; i < 120; i++){
-    map.addOverlay(new BMap.Polyline([new BMap.Point((xmin + 0.1 * i),ymin),new BMap.Point((xmin + 0.1 * i),ymax)],lineOption));
-  } 
+    for(var i = 0; i < 70; i++){
+        map.addOverlay(new BMap.Polyline([new BMap.Point(xmin,(ymin + 0.1 * i)),new BMap.Point(xmax,(ymin + 0.1 * i))],lineOption));
+    }
+    for(var i = 0; i < 120; i++){
+        map.addOverlay(new BMap.Polyline([new BMap.Point((xmin + 0.1 * i),ymin),new BMap.Point((xmin + 0.1 * i),ymax)],lineOption));
+    } 
 }
 //加载网格数据
 function gridData(xmin,ymin,data)
 {
-  for(var i=0;i<70;i++){
-    for(var j=0;j<120;j++){
-      if(data[i][j]>0.05){
-        var rectangle = new BMap.Polygon([new BMap.Point(xmin+(0.1*j),ymin+(0.1*i)),new BMap.Point(xmin+0.1+(0.1*j),ymin+(0.1*i)),new BMap.Point(xmin+0.1+(0.1*j),ymin+0.1+(0.1*i)),new BMap.Point(xmin+(0.1*j),ymin+0.1+(0.1*i))
-        ],$.extend({},rectangleOption,{fillColor:getColor(data[i][j])}));
-        rectangle.addEventListener("click",click);
-        map.addOverlay(rectangle);
-      }
+    for(var i=0;i<70;i++){
+        for(var j=0;j<120;j++){
+            if(data[i][j]>0.05){
+                var rectangle = new BMap.Polygon([new BMap.Point(xmin+(0.1*j),ymin+(0.1*i)),new BMap.Point(xmin+0.1+(0.1*j),ymin+(0.1*i)),new BMap.Point(xmin+0.1+(0.1*j),ymin+0.1+(0.1*i)),new BMap.Point(xmin+(0.1*j),ymin+0.1+(0.1*i))
+                ],$.extend({},rectangleOption,{fillColor:getColor(data[i][j])}));
+                rectangle.addEventListener("click",click);
+                map.addOverlay(rectangle);
+            }
+        }
     }
-  }
 }
 //注册网格点击事件
 function click(e){
-  var p = e.target;
-  var xmin = p.getBounds().getSouthWest().lng;//西南
-  var ymin = p.getBounds().getSouthWest().lat;//西南
-  var xmax = xmin+0.1;
-  var ymax = ymin+0.1;
-  var gridPoint=[];
-  gridPoint.push({
-    xmin: xmin,
-    ymin: ymin,
-    xmax: xmax,
-    ymax: ymax
-  });
-  // gridPoint=JSON.stringify(gridPoint)
-  // loadEnterpriseData(gridPoint);
+    var p = e.target;
+    var xmin = p.getBounds().getSouthWest().lng;//西南
+    var ymin = p.getBounds().getSouthWest().lat;//西南
+    var xmax = xmin+0.1;
+    var ymax = ymin+0.1;
+    var gridPoint=[];
+    gridPoint.push({
+        xmin: xmin,
+        ymin: ymin,
+        xmax: xmax,
+        ymax: ymax
+    });
+    // gridPoint=JSON.stringify(gridPoint)
+    // loadEnterpriseData(gridPoint);
 }
 // 网格点击加载企业数据
 // var loadEnterpriseData=function(gridPoint) {
@@ -269,117 +269,117 @@ function click(e){
 // }
 //加载网格数据的颜色获取工具函数
 function getColor(val){
-  if(val <= 0.1)
-    return "#79E6F0";
-  else if(val <= 0.2)
-    return "#C8DC33";
-  else if(val <= 0.4)
-    return "#F0DC16";
-  else if(val <= 0.6)
-    return "#FFBE16";
-  else if(val <= 0.8)
-    return "#FF790C";
-  else if(val <= 1.0)
-    return "#FF5B0C";
-  else if(val <= 2.0)
-    return "#F02A02";
-  else if(val <= 4.0)
-    return "#B40C02";
-  else if(val <= 8.0)
-    return "#790C02";
-  else
-    return "#330C02";
+    if(val <= 0.1)
+        return "#79E6F0";
+    else if(val <= 0.2)
+        return "#C8DC33";
+    else if(val <= 0.4)
+        return "#F0DC16";
+    else if(val <= 0.6)
+        return "#FFBE16";
+    else if(val <= 0.8)
+        return "#FF790C";
+    else if(val <= 1.0)
+        return "#FF5B0C";
+    else if(val <= 2.0)
+        return "#F02A02";
+    else if(val <= 4.0)
+        return "#B40C02";
+    else if(val <= 8.0)
+        return "#790C02";
+    else
+        return "#330C02";
 }
 /*网格地图-end*/
 
 /*企业列表-start*/
-   function enterpriseListTableInit(tableid,tabledata){
+function enterpriseListTableInit(tableid,tabledata){
     var enterpriseListOption={
-      language: {
-        "sProcessing": "处理中...",
-        "sLengthMenu": "显示 _MENU_ 行",
-        "sZeroRecords": "没有匹配结果",
-        "sInfo": "显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项",
-        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-        "sInfoPostFix": "",
-        "sSearch": "搜索:",
-        "sUrl": "",
-        "sEmptyTable": "表中数据为空",
-        "sLoadingRecords": "载入中...",
-        "sInfoThousands": ",",
-        "oPaginate": {
-          "sFirst": "首页",
-          "sPrevious": "上页",
-          "sNext": "下页",
-          "sLast": "末页"
+        language: {
+            "sProcessing": "处理中...",
+            "sLengthMenu": "显示 _MENU_ 行",
+            "sZeroRecords": "没有匹配结果",
+            "sInfo": "显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项",
+            "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+            "sInfoPostFix": "",
+            "sSearch": "搜索:",
+            "sUrl": "",
+            "sEmptyTable": "表中数据为空",
+            "sLoadingRecords": "载入中...",
+            "sInfoThousands": ",",
+            "oPaginate": {
+                "sFirst": "首页",
+                "sPrevious": "上页",
+                "sNext": "下页",
+                "sLast": "末页"
+            },
+            "oAria": {
+                "sSortAscending": ": 以升序排列此列",
+                "sSortDescending": ": 以降序排列此列"
+            },
         },
-        "oAria": {
-          "sSortAscending": ": 以升序排列此列",
-          "sSortDescending": ": 以降序排列此列"
-        },
-      },
-      "dom": '<lf<t>ip>',
-      lengthMenu: [
-        [ 10, 25, 50, -1 ],
-        [ '10', '25', '50', '所有']
-      ],   
-      buttons: ['pageLength','excel'],
-      // "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 0 ] }],            
-      //"aaSorting": [[ 0, "asc" ]],
-      "paging": true,
-      "data": tabledata
-      //responsive: true,
-      //"scrollX": true,
-      //  ajax: {
-      //     url:'/export/replace_coals_export.json?year='+$('#year').val()+'&month='+$('#month').val()+'&countyid='+$('#countyMonth').val(),
-      // type:'GET',
-      // dataType:"json"
-      //  } 
+        "dom": '<lf<t>ip>',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10', '25', '50', '所有']
+        ],   
+        buttons: ['pageLength','excel'],
+        // "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 0 ] }],            
+        //"aaSorting": [[ 0, "asc" ]],
+        "paging": true,
+        "data": tabledata
+        //responsive: true,
+        //"scrollX": true,
+        //  ajax: {
+        //     url:'/export/replace_coals_export.json?year='+$('#year').val()+'&month='+$('#month').val()+'&countyid='+$('#countyMonth').val(),
+        // type:'GET',
+        // dataType:"json"
+        //  } 
     };
     if ( ! $.fn.DataTable.isDataTable( "#"+tableid ) ) {
-      $("#"+tableid).DataTable(enterpriseListOption);
+        $("#"+tableid).DataTable(enterpriseListOption);
     }
     else
     {
-      $("#"+tableid).DataTable().destroy();
-      $("#"+tableid).DataTable(enterpriseListOption);
+        $("#"+tableid).DataTable().destroy();
+        $("#"+tableid).DataTable(enterpriseListOption);
     }
-    
-  }
+
+}
 /*企业列表-end*/
 
 /*企业列表导出功能-start*/
-  var tableToExcel = function() {
+var tableToExcel = function() {
     var uri = 'data:application/vnd.ms-excel;base64,'
-      , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="X-UA-Compatible" content="IE=11"/><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-      , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
-      , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+        , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="X-UA-Compatible" content="IE=11"/><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+        , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+        , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
     return function(table, name) {
-      if (!table.nodeType) table = document.getElementById(table)
-      var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
-      window.location.href = uri + base64(format(template, ctx))
+        if (!table.nodeType) table = document.getElementById(table)
+        var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+        window.location.href = uri + base64(format(template, ctx))
     }
-  }();
+}();
 /*企业列表导出功能-end*/
 
 /*预警级别按钮组初始化-start*/
 function btnforcastgroupInit(){
 
-  $('.btnforcastgroup').click(function(){
-    $('.btnforcastgroup').removeClass("active");
-    $(this).addClass("active");
-    var sliderEnable= $("#range").data("ionRangeSlider");
-    var forcastLevelHash = {  
-      Set : function(key,value){this[key] = value},  
-      Get : function(key){return this[key]}
-    } 
-    forcastLevelHash.Set('I',25);
-    forcastLevelHash.Set('II',50);
-    forcastLevelHash.Set('III',75);
-    forcastLevelHash.Set('IV',100);
-    sliderEnable.update({from: forcastLevelHash.Get($(this).text())});
-  });
+    $('.btnforcastgroup').click(function(){
+        $('.btnforcastgroup').removeClass("active");
+        $(this).addClass("active");
+        var sliderEnable= $("#range").data("ionRangeSlider");
+        var forcastLevelHash = {  
+            Set : function(key,value){this[key] = value},  
+            Get : function(key){return this[key]}
+        } 
+        forcastLevelHash.Set('I',25);
+        forcastLevelHash.Set('II',50);
+        forcastLevelHash.Set('III',75);
+        forcastLevelHash.Set('IV',100);
+        sliderEnable.update({from: forcastLevelHash.Get($(this).text())});
+    });
 }
 /*预警级别按钮组初始化-end*/
 
@@ -391,127 +391,127 @@ function btnforcastgroupInit(){
 
 /*EnableSlider初始化并注册监听函数-start*/
 function sliderEnableInit(factor,citynamepy){
-   $("#range").ionRangeSlider({
-      min: 0,
-      max: 100,
-      from: 0,
-      onStart: function (data_in) {
-      },
-      onChange: function (data_in) {
-        $('.btnforcastgroup').removeClass('active');
-      },
-      onFinish: function (data_in) {
-        var enableSliderData_r=loadEnableSliderData(factor,citynamepy,false,data_in.from);
-        if(data_in.from==0){
-          $("#map_title").empty();
-          $('#map_title').append(enableSliderData_r.time['stime']+"到"+enableSliderData_r.time['etime']+"周边地区排放对我市的污染贡献分布");
+    $("#range").ionRangeSlider({
+        min: 0,
+        max: 100,
+        from: 0,
+        onStart: function (data_in) {
+        },
+        onChange: function (data_in) {
+            $('.btnforcastgroup').removeClass('active');
+        },
+        onFinish: function (data_in) {
+            var enableSliderData_r=loadEnableSliderData(factor,citynamepy,false,data_in.from);
+            if(data_in.from==0){
+                $("#map_title").empty();
+                $('#map_title').append(enableSliderData_r.time['stime']+"到"+enableSliderData_r.time['etime']+"周边地区排放对我市的污染贡献分布");
+            }
+            else{
+                $("#map_title").empty();
+                $('#map_title').append("需管控的网格分布");
+            }
+        },
+        onUpdate: function (data_in) {
+            loadEnableSliderData(factor,citynamepy,false,data_in.from);
+            $("#map_title").empty();
+            $('#map_title').append("需管控的网格分布");
         }
-        else{
-          $("#map_title").empty();
-          $('#map_title').append("需管控的网格分布");
-        }
-      },
-      onUpdate: function (data_in) {
-        loadEnableSliderData(factor,citynamepy,false,data_in.from);
-        $("#map_title").empty();
-        $('#map_title').append("需管控的网格分布");
-      }
     });
-  }
+}
 /*EnableSlider初始化并注册监听函数-end*/
 
 /*行业占比饼图-start*/
 function bingtuInit(pieid,bingtudata){
-var dom = document.getElementById(pieid);
-var myChart = echarts.init(dom);
-var option = {
-  title : {
-    text: '企业统计',
-    subtext: '行业分布',
-    x:'center'
-  },
-  tooltip : {
-    trigger: 'item',
-    formatter: "{a} <br/>{b} : {c} ({d}%)"
-  },
-  legend: {
-    orient: 'vertical',
-    left: 'left',
-    data: bingtudata.en_category
-  },
-  series: [
-    {
-      name: '行业类别',
-      type: 'pie',
-      radius : '55%',
-      center: ['50%', '60%'],
-      data:bingtudata.piedata,
-      itemStyle: {
-        emphasis: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
-        }
-      }
-    }
-  ]
-};
-  myChart.setOption(option, true);
-  return myChart;
+    var dom = document.getElementById(pieid);
+    var myChart = echarts.init(dom);
+    var option = {
+        title : {
+            text: '企业统计',
+            subtext: '行业分布',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: bingtudata.en_category
+        },
+        series: [
+            {
+                name: '行业类别',
+                type: 'pie',
+                radius : '55%',
+                center: ['50%', '60%'],
+                data:bingtudata.piedata,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    myChart.setOption(option, true);
+    return myChart;
 }
 /*行业占比饼图-end*/
 
 
 /*区域内企业分布统计条形图-start*/
 function tiaoxingtuInit(barid,bardata,bingtu){
-var dom1 = document.getElementById(barid);
-var myChart1 = echarts.init(dom1);
-var option1 = {
-  title: {
-    text: '区域内企业分布统计'
-  },
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'shadow'
-    }
-  },
-  legend: {
-    data: ['企业数量']
-  },
-  grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
-    containLabel: true
-  },
-  xAxis: {
-    type: 'value',
-    boundaryGap: [0, 0.01]
-  },
-  yAxis: {
-    type: 'category',
-    data: bardata.county_name//区县名称数组
-  },
-  series: [
-    {
-      name: '企业数量',
-      type: 'bar',
-      data: bardata.en_count//各区县对应的企业数量数组
-    }
-  ]
-};
-myChart1.setOption(option1, true);
-$("#profile-tabli").click(function(){
-    setTimeout(function(){//定义setInterval或者setTimeout的时候如果要调用外部的方法,要用引号将外部方法引起来 否则会直接执行的;起不到定时的作用。实现定时的方式：1、setTimeout("bingtu(bingtu,myChart1)",300)变量也许无法传递;2、setTimeout("bingtu.resize();myChart1.resize();",300)变量得是全局变量;3、setTimeout(function(){})采用匿名函数，已验证可以。
-      bingtu.resize();
-      myChart1.resize();
-},300);
-});
-window.onresize = function(){
-    bingtu.resize();
-    myChart1.resize();
-  };
+    var dom1 = document.getElementById(barid);
+    var myChart1 = echarts.init(dom1);
+    var option1 = {
+        title: {
+            text: '区域内企业分布统计'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: ['企业数量']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+            type: 'category',
+            data: bardata.county_name//区县名称数组
+        },
+        series: [
+            {
+                name: '企业数量',
+                type: 'bar',
+                data: bardata.en_count//各区县对应的企业数量数组
+            }
+        ]
+    };
+    myChart1.setOption(option1, true);
+    $("#profile-tabli").click(function(){
+        setTimeout(function(){//定义setInterval或者setTimeout的时候如果要调用外部的方法,要用引号将外部方法引起来 否则会直接执行的;起不到定时的作用。实现定时的方式：1、setTimeout("bingtu(bingtu,myChart1)",300)变量也许无法传递;2、setTimeout("bingtu.resize();myChart1.resize();",300)变量得是全局变量;3、setTimeout(function(){})采用匿名函数，已验证可以。
+            bingtu.resize();
+            myChart1.resize();
+        },300);
+    });
+    window.onresize = function(){
+        bingtu.resize();
+        myChart1.resize();
+    };
 }
 /*区域内企业分布统计条形图-end*/
 
@@ -520,186 +520,186 @@ window.onresize = function(){
 
 //checkbox的样式
 function checkboxStyleInit(){
- $('.bulk_action input.flat').iCheck({
-          checkboxClass: 'icheckbox_flat-green'
-      });
+    $('.bulk_action input.flat').iCheck({
+        checkboxClass: 'icheckbox_flat-green'
+    });
 }
 //checkbox的监听
 function checkboxListenInit(){
-  
-  // table中的所有的checkbox的监听
+
+    // table中的所有的checkbox的监听
     // $('.bulk_action input').on('ifChecked', function () {
 
     // });
     // $('.bulk_action input').on('ifUnchecked', function () {
 
     // });
-// thead中的全选checkbox的监听
-$('.bulk_action input#check-all').on('ifChecked', function () {
-    $(".bulk_action input[name='table_records']").iCheck('check');
-});
-$('.bulk_action input#check-all').on('ifUnchecked', function () {
-    $(".bulk_action input[name='table_records']").iCheck('uncheck');
-});
-// tbody中的checkbox的监听
-$(".bulk_action input[name='table_records']").on('ifChecked', function () {
-    if($(".bulk_action input[name='table_records']").length==$(".bulk_action input[name='table_records']:checked").length)
-    {
-      $('.bulk_action input#check-all').iCheck('check');
-    }
-    else
-    {
-      $('.bulk_action input#check-all').iCheck('indeterminate');
-    }
-    $(this).parent().parent().parent().addClass('selected');
-});
-$(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
-    if($(".bulk_action input[name='table_records']:checked").length==0)
-    {
-      $('.bulk_action input#check-all').iCheck('uncheck');
-      $('.bulk_action input#check-all').iCheck('determinate');
-    }
-    else
-    {
-      $('.bulk_action input#check-all').iCheck('indeterminate');
-    }
-    $(this).parent().parent().parent().removeClass('selected');
-});
+    // thead中的全选checkbox的监听
+    $('.bulk_action input#check-all').on('ifChecked', function () {
+        $(".bulk_action input[name='table_records']").iCheck('check');
+    });
+    $('.bulk_action input#check-all').on('ifUnchecked', function () {
+        $(".bulk_action input[name='table_records']").iCheck('uncheck');
+    });
+    // tbody中的checkbox的监听
+    $(".bulk_action input[name='table_records']").on('ifChecked', function () {
+        if($(".bulk_action input[name='table_records']").length==$(".bulk_action input[name='table_records']:checked").length)
+        {
+            $('.bulk_action input#check-all').iCheck('check');
+        }
+        else
+        {
+            $('.bulk_action input#check-all').iCheck('indeterminate');
+        }
+        $(this).parent().parent().parent().addClass('selected');
+    });
+    $(".bulk_action input[name='table_records']").on('ifUnchecked', function () {
+        if($(".bulk_action input[name='table_records']:checked").length==0)
+        {
+            $('.bulk_action input#check-all').iCheck('uncheck');
+            $('.bulk_action input#check-all').iCheck('determinate');
+        }
+        else
+        {
+            $('.bulk_action input#check-all').iCheck('indeterminate');
+        }
+        $(this).parent().parent().parent().removeClass('selected');
+    });
 
 }
 // 企业勾选表格datatable的初始化函数
 function enterpriseCheckTableInit(){
     var enterpriseCheckTableOption={
-      language: {
-        "sProcessing": "处理中...",
-        "sLengthMenu": "显示 _MENU_ 行",
-        "sZeroRecords": "没有匹配结果",
-        "sInfo": "显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项",
-        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-        "sInfoPostFix": "",
-        "sSearch": "搜索:",
-        "sUrl": "",
-        "sEmptyTable": "表中数据为空",
-        "sLoadingRecords": "载入中...",
-        "sInfoThousands": ",",
-        "oPaginate": {
-          "sFirst": "首页",
-          "sPrevious": "上页",
-          "sNext": "下页",
-          "sLast": "末页"
+        language: {
+            "sProcessing": "处理中...",
+            "sLengthMenu": "显示 _MENU_ 行",
+            "sZeroRecords": "没有匹配结果",
+            "sInfo": "显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项",
+            "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+            "sInfoPostFix": "",
+            "sSearch": "搜索:",
+            "sUrl": "",
+            "sEmptyTable": "表中数据为空",
+            "sLoadingRecords": "载入中...",
+            "sInfoThousands": ",",
+            "oPaginate": {
+                "sFirst": "首页",
+                "sPrevious": "上页",
+                "sNext": "下页",
+                "sLast": "末页"
+            },
+            "oAria": {
+                "sSortAscending": ": 以升序排列此列",
+                "sSortDescending": ": 以降序排列此列"
+            },
         },
-        "oAria": {
-          "sSortAscending": ": 以升序排列此列",
-          "sSortDescending": ": 以降序排列此列"
+        "dom": '<lf<t>ip>',
+        "scrollY": "500px",
+        // "scrollCollapse": "true",
+        "paging": false,
+        "order": [[ 1, 'asc' ]],
+        "data": <%= @result_checkboxtable_data.to_json.html_safe %>,
+        columns: [{
+            data: null
         },
-      },
-      "dom": '<lf<t>ip>',
-      "scrollY": "500px",
-      // "scrollCollapse": "true",
-      "paging": false,
-       "order": [[ 1, 'asc' ]],
-      "data": <%= @result_checkboxtable_data.to_json.html_safe %>,
-      columns: [{
-          data: null
-      },
-      {
-          data: "number"
-      },
-      {
-          data: "en_name"
-      },
-      {
-        data: "pollution_contribution_rate"
-      },
-      {
-        data: "county_name"
-      }],
-      'columnDefs': [{
-         'targets': 0,
-         'searchable': false,
-         'orderable': false,
-         'className': 'dt-body-center',
-         'render': function (data, type, row, meta){
-             return '<input type="checkbox" class="flat" name="table_records" value="' + row.id + '">';
-         }
-      }],
+            {
+                data: "number"
+            },
+            {
+                data: "en_name"
+            },
+            {
+                data: "pollution_contribution_rate"
+            },
+            {
+                data: "county_name"
+            }],
+        'columnDefs': [{
+            'targets': 0,
+            'searchable': false,
+            'orderable': false,
+            'className': 'dt-body-center',
+            'render': function (data, type, row, meta){
+                return '<input type="checkbox" class="flat" name="table_records" value="' + row.id + '">';
+            }
+        }],
 
     };
     var enterpriseCheckTable=$("#enterpriseCheckTable").DataTable(enterpriseCheckTableOption);
     enterpriseCheckTable.on('xhr.dt', function ( e, settings, json, xhr ) {
-       checkboxStyleInit();
+        checkboxStyleInit();
     } );
     enterpriseCheckTable.on('draw.dt', function() {
 
-      if($(".bulk_action input[name='table_records']").length!=$(".bulk_action input[name='table_records']:checked").length && $(".bulk_action input[name='table_records']:checked").length!=0)
-      {
-        $('.bulk_action input#check-all').iCheck('indeterminate');
-      }
-      else if($(".bulk_action input[name='table_records']").length==$(".bulk_action input[name='table_records']:checked").length && $(".bulk_action input[name='table_records']").length!=0)
-      {
-        $('.bulk_action input#check-all').iCheck('check');
-      }
-      else
-      {
-        $('.bulk_action input#check-all').iCheck('uncheck');
-        $('.bulk_action input#check-all').iCheck('determinate');
-      }
-      checkboxListenInit();
+        if($(".bulk_action input[name='table_records']").length!=$(".bulk_action input[name='table_records']:checked").length && $(".bulk_action input[name='table_records']:checked").length!=0)
+        {
+            $('.bulk_action input#check-all').iCheck('indeterminate');
+        }
+        else if($(".bulk_action input[name='table_records']").length==$(".bulk_action input[name='table_records']:checked").length && $(".bulk_action input[name='table_records']").length!=0)
+        {
+            $('.bulk_action input#check-all').iCheck('check');
+        }
+        else
+        {
+            $('.bulk_action input#check-all').iCheck('uncheck');
+            $('.bulk_action input#check-all').iCheck('determinate');
+        }
+        checkboxListenInit();
 
-        });
+    });
     $("#profile-tab1li").click(function(){
-      setTimeout(function(){
-        enterpriseCheckTable.draw();
+        setTimeout(function(){
+            enterpriseCheckTable.draw();
         },300);
-      });
-  }
-  // 企业勾选表格总初始化函数
+    });
+}
+// 企业勾选表格总初始化函数
 function enterpriseCheckTableInitAll(){
-  enterpriseCheckTableInit();
-  checkboxStyleInit();
-  checkboxListenInit();
+    enterpriseCheckTableInit();
+    checkboxStyleInit();
+    checkboxListenInit();
 }
 /*企业勾选表格-end*/
 
 /*DisableSlider初始化-start*/
 function sliderDisableInit(){
     $("#rangedisable").ionRangeSlider({
-      min: 0,
-      max: 100,
-      from: 0,
-      disable: true,
-      onStart: function (data) { },
-      onChange: function (data) { },
-      onFinish: function (data_in) { },
-      onUpdate: function (data) { }
+        min: 0,
+        max: 100,
+        from: 0,
+        disable: true,
+        onStart: function (data) { },
+        onChange: function (data) { },
+        onFinish: function (data_in) { },
+        onUpdate: function (data) { }
     });
-  }
+}
 /*DisableSlider初始化-end*/
 
 /*EnableSlider数据加载-start*/
-  function loadEnableSliderData(factor,citynamepy,init,from){
-          var enableSliderData_r;
-          $.ajax({            
-          url: '/palm_two/get_all_data',
-          data:{
+function loadEnableSliderData(factor,citynamepy,init,from){
+    var enableSliderData_r;
+    $.ajax({            
+        url: '/palm_two/get_all_data',
+        data:{
             'factor':factor,
             'citynamepy':citynamepy,
             'percent':from/100},
-          type: "get",
-          dataType : "json",            
-          success: function (enableSliderData) { 
+        type: "get",
+        dataType : "json",            
+        success: function (enableSliderData) { 
             /*加载地图数据-start*/
             if(init)//初始化时地图加载数据
             {
-              gridLines(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data['xmax'],enableSliderData.map_data['ymax']);
-              gridData(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data[factor]);//factor='<%= @factor %>'
-              $('#map_title').append(enableSliderData.time['stime']+"到"+enableSliderData.time['etime']+"周边地区排放对我市的污染贡献分布");
+                gridLines(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data['xmax'],enableSliderData.map_data['ymax']);
+                gridData(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data[factor]);//factor='<%= @factor %>'
+                $('#map_title').append(enableSliderData.time['stime']+"到"+enableSliderData.time['etime']+"周边地区排放对我市的污染贡献分布");
             }
             else//异步时地图加载数据
             {
-              map.clearOverlays();
-              gridData(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data[factor]);
+                map.clearOverlays();
+                gridData(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data[factor]);
             }
             /*加载地图数据-end*/
 
@@ -724,33 +724,33 @@ function sliderDisableInit(){
             /*loadEnableSliderData函数返回值-start*/
             enableSliderData_r=enableSliderData;
             /*loadEnableSliderData函数返回值-end*/
-          }
-        });
-          return enableSliderData_r;
-  }
-  /*EnableSlider数据加载-end*/
+        }
+    });
+    return enableSliderData_r;
+}
+/*EnableSlider数据加载-end*/
 
-  /*企业勾选查询按钮-start*/
-    function query_gou_xuan_en_data(){
-      var en_ids=[];
-      $(".bulk_action input[name='table_records']:checked").each(function(){
+/*企业勾选查询按钮-start*/
+function query_gou_xuan_en_data(){
+    var en_ids=[];
+    $(".bulk_action input[name='table_records']:checked").each(function(){
         en_ids.push(this.value);
-      });
-      $.ajax({            
-          url: '/palm_two/query_gou_xuan_en_data_all',
-          data:{
+    });
+    $.ajax({            
+        url: '/palm_two/query_gou_xuan_en_data_all',
+        data:{
             'en_ids': JSON.stringify(en_ids)},
-          type: "get",
-          dataType : "json",            
-          success: function (r) { 
+        type: "get",
+        dataType : "json",            
+        success: function (r) { 
             alert(r.chenggong);
-          }
-        });
-    }
-  /*企业勾选查询按钮-end*/
+        }
+    });
+}
+/*企业勾选查询按钮-end*/
 
-  /*页面初始化-start*/
-  $(document).ready(function() {
+/*页面初始化-start*/
+$(document).ready(function() {
     var factor='<%= @factor %>';
     var citynamepy='<%= @citynamepy %>';
     var longitude=<%= @longitude %>;
@@ -762,5 +762,5 @@ function sliderDisableInit(){
     sliderDisableInit();
     loadEnableSliderData(factor,citynamepy,true,0);
 });
-   /*页面初始化-end*/
+/*页面初始化-end*/
 </script>

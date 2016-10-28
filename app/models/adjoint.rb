@@ -244,81 +244,6 @@ class Adjoint
         fdt
     end
 
-    def self.emission_by_enterprise(var_name,cityname,percent,en_category='电力、燃气及水的生产和供应业',*arg)
-        # 获取地图污染信息，减排aqi，时间
-        # 输入污染类型:nox，城市，百分比，以及其他参数arg
-        # 输出污染数据，格点坐标，时间，aqi,企业信息等
-        rncd = ready_nc(var_name.upcase+'_120',cityname)
-        ncd = rncd['data'].clone
-        rncd.delete('data')
-        grd = read_grid(cityname)
-        return nil if ncd.nil? or grd.nil?
-        var = var_name+'_discharge' 
-        where = var+' > -1 and en_category = \'' + en_category + '\''
-        gset = City.find_by_city_name_pinyin(cityname).enterprises.where(where).as_json
-        esum = 0.0
-        gset.each do |l|
-            esum += l[var]
-        end
-        gset.each{|x| x['proportion'] = x[var]/esum }
-        gset.sort{|x,y| y['proportion']<=>x['proportion']}
-        gset = gset.group_by{|x| x['en_category'] == en_category} #计算企业污染贡献率
-        sum = ncd.flatten.sum #污染物总值
-        city = [] #该市污染物数值
-        grds = [] #储存不含有格点下标的数
-        grd.map do |l| #获取城市数据
-            city << ncd[l[1]-1][l[0]-1]
-            l << ncd[l[1]-1][l[0]-1]
-            grds << {'xmin'=>l[2],'ymin'=>l[3],'xmax'=>l[2].to_f+0.1,'ymax'=>l[3].to_f+0.1}
-        end
-        sumc = city.sum
-        frd = ForecastRealDatum.new.air_quality_forecast(cityname)
-        aqi = frd[frd.keys.max]['AQI']
-        return {'map'=>ncd,'time'=>frd.keys.max,'aqi'=>aqi,'eset'=>gset}.merge(rncd) if percent == 0 or sum == 0 or sumc == 0
-        per_sum = sumc/sum.to_f #市内污染／总值
-
-        grds = Hash.new
-        eset = Array.new
-        eper = 0.0
-        if !gset[true].nil?
-            gset[true].each do |n|
-                gflag = false
-                grd.each do |l|
-                    if (l[2]..l[2]+0.1) === n['latitude'] and (l[3]..l[3]+0.1) === n['longitude']
-                        eset << n
-                        eper += n['proportion']
-                        grds[l[0].to_s+l[1].to_s] = l
-                        gflag = true;break if eper >= per_sum*percent
-                    end
-                end 
-                break if gflag
-            end
-        end
-
-        if !gset[false].nil?
-            gset[false].each do |n|
-                gflag = false
-                grd.each do |l|
-                    if (l[2]..l[2]+0.1) === n['latitude'] and (l[3]..l[3]+0.1) === n['longitude']
-                        eset << n
-                        eper += n['proportion']
-                        grds[l[0].to_s+l[1].to_s] = l
-                        gflag = true;break if eper >= per_sum*percent
-                    end
-                end 
-                break if gflag
-            end
-        end
-
-        aqi = (1 - per_sum*percent)*aqi
-        ncdt = ncd.map{|l| l = Array.new(l.size){|e| e = 0}}
-        grds = grds.values
-        grds.each_index do |i|
-            ncdt[grds[i][1]-1][grds[i][0]-1] = ncd[grds[i][1]-1][grds[i][0]-1]
-        end
-        {'map'=>ncd,'time'=>frd.keys.max,'aqi'=>aqi,'eset'=>eset}.merge(rncd)#map 网格数据；
-    end
-
     def self.deal_nc_grid_enterprise(ncd,grid,elist,type,percent,industry,aqi)
         #处理nc，格点，企业数据,企业行业
         #返回网格数据，企业数据,城市所占aqi百分比
@@ -355,10 +280,10 @@ class Adjoint
             gens[l[0].to_s+l[1].to_s].each do |e|
                 # byebug if e['percent'] > 0.01
                 e['percent'] = e['percent'].to_f*temp #企业贡献率
-                puts e['percent'].to_s+' '+temp.to_s
+                # puts e['percent'].to_s+' '+temp.to_s
             end
         end
-        gens = gens.values.flatten.delete_if{|x| x['percent'].to_f < 0.00000001}
+        gens = gens.values.flatten.delete_if{|x| x['percent'].to_f < 0.00001}
         return {'map_data'=>ncd,'reduce_aqi'=>aqi.round(0),'en_list'=>gens} if percent == 0
         ens = Array.new
         if industry
@@ -415,7 +340,32 @@ class Adjoint
             result['en_pie']={'en_category'=>enlist.group_by{|x| x['en_category']}.keys,'piedata'=>enlist.group_by{|x| x['en_category']}.map{|k,v| {'value'=>v.size,'name'=>k}}}
         end
         index = 0
-        result['en_list'] = result['en_list'].map{|x| [index+=1,x['en_name'],x['percent']]}
+        result['en_list'] = result['en_list'].map{|x| [index+=1,x['en_name'],x['percent'].round(5)]}
         result
+    end
+
+    def self.emission_by_enterprise(citypy='langfangshi',var='nox',enterprises,aqi)
+        #通过企业贡献率获取减排率
+        #输入城市拼音、污染物类型、企业信息、aqi
+        #输出网格数据、减排aqi
+        rncd,grd,frd = nil
+        th1 = Thread.new{ rncd = ready_nc(var.upcase+'_120',citypy)}
+        th2 = Thread.new{ grd = read_grid(citypy)}
+        th3 = Thread.new{ frd = ForecastRealDatum.new.air_quality_forecast(citypy)}
+        th1.join
+        th2.join
+        th3.join
+        return nil if rncd.nil? or grd.nil? #没有数据返回nil
+        aqi = frd[frd.keys.max]['AQI']
+        psum = rncd['data'].flatten.sum
+        pcity = 0.0
+        llcity = Array.new
+        grd.each do |l|
+            z = grd[i]
+            x = z[1]
+            y = z[0]
+            pcity += ncd[x][y]
+            llcity << l if l[3]
+        end
     end
 end
