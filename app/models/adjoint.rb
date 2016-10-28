@@ -353,11 +353,12 @@ class Adjoint
             temp = l[4]/psum
             next if gens[l[0].to_s+l[1].to_s].nil?
             gens[l[0].to_s+l[1].to_s].each do |e|
+                # byebug if e['percent'] > 0.01
                 e['percent'] = e['percent'].to_f*temp #企业贡献率
+                puts e['percent'].to_s+' '+temp.to_s
             end
         end
-        gens = gens.values.flatten
-        index = 0
+        gens = gens.values.flatten.delete_if{|x| x['percent'].to_f < 0.00000001}
         return {'map_data'=>ncd,'reduce_aqi'=>aqi.round(0),'en_list'=>gens} if percent == 0
         ens = Array.new
         if industry
@@ -368,6 +369,7 @@ class Adjoint
         else
             tsum = 0.0
             gens.sort{|x,y| y['percent']<=>x['percent']}.each do |l|
+                next if l['percent'] < 0.1
                 ens << l
                 tsum += l['percent']
                 break if tsum >= city_pre
@@ -378,8 +380,7 @@ class Adjoint
         ens.each do |e|
             ncdn[e['x']][e['y']] = ncd[e['x']][e['y']]
         end
-        index = 0
-        {'map_data'=>ncdn,'reduce_aqi'=>((1-pcity/psum)*percent*aqi).round(0),'en_list'=>gens}
+        {'map_data'=>ncdn,'reduce_aqi'=>((1-pcity/psum)*percent*aqi).round(0),'en_list'=>ens}
     end
     def self.emission_v1(citypy='langfangshi',var='nox',percent=0,*arg)
         # 获取地图污染信息，减排aqi
