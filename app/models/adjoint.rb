@@ -254,8 +254,8 @@ class Adjoint
         gens = Hash.new
         grid.each_index do |i|
             z = grid[i]
-            x = z[1]
-            y = z[0]
+            x = z[1] - 1
+            y = z[0] - 1
             pcity += ncd[x][y]
             grid[i] << ncd[x][y]
             elist.each do |n| # 格点中的企业
@@ -344,7 +344,7 @@ class Adjoint
         result
     end
 
-    def self.emission_by_enterprise(citypy='langfangshi',var='nox',enterprises,aqi)
+    def self.emission_by_enterprise(citypy='langfangshi',var='nox',enterprises)
         #通过企业贡献率获取减排率
         #输入城市拼音、污染物类型、企业信息、aqi
         #输出网格数据、减排aqi
@@ -356,16 +356,33 @@ class Adjoint
         th2.join
         th3.join
         return nil if rncd.nil? or grd.nil? #没有数据返回nil
-        aqi = frd[frd.keys.max]['AQI']
-        psum = rncd['data'].flatten.sum
+        ncd = rncd['data'].clone
+        rncd.delete('data')
+        psum = ncd.flatten.sum
+        contribution = enterprises.inject(0.0){|r,x| r+=x['contribution']} 
+        aqi = frd[frd.keys.max]['AQI']*(1-contribution)
         pcity = 0.0
         llcity = Array.new
+        enlist = Enterpreise.where(id:enterprises.map{|x| x['id']})
         grd.each do |l|
             z = grd[i]
-            x = z[1]
-            y = z[0]
+            x = z[1]-1
+            y = z[0]-1
             pcity += ncd[x][y]
-            llcity << l if l[3]
+            templist = Array.new
+            enlist.each do |e|
+                if (l[2]..(l[2]+0.1)) === e.longitude and (l[3]..(l[3]+0.1)) === e.latitude
+                    llcity << l 
+                else
+                    templist << e
+                end
+            end
+            enlist = templist
         end
+        ncdt = ncd.map{|x| x = Array.new(x.size){|e| e = 0}}
+        llcity.each do |l|
+            ncdt[l[1]-1][l[0]-1] = ncd[l[1]-1][l[0]-1]
+        end
+        {"map_data"=>ncdt,'reduce_aqi'=>aqi}.merge(rncd)
     end
 end

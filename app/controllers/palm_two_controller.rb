@@ -63,6 +63,7 @@ class PalmTwoController < ApplicationController
     def query_gou_xuan_en_data_all
         respond_to do |format|
             format.json {
+                Adjoint.emission_by_enterprise(params['citypy'],'nox',params['enterprises'])
                 render json: {chenggong:'chenggong'}
             }
         end

@@ -391,31 +391,23 @@ function btnforcastgroupInit(){
 
 /*EnableSlider初始化并注册监听函数-start*/
 function sliderEnableInit(factor,citynamepy){
-    $("#range").ionRangeSlider({
-        min: 0,
-        max: 100,
-        from: 0,
-        onStart: function (data_in) {
-        },
-        onChange: function (data_in) {
-            $('.btnforcastgroup').removeClass('active');
-        },
-        onFinish: function (data_in) {
-            var enableSliderData_r=loadEnableSliderData(factor,citynamepy,false,data_in.from);
-            if(data_in.from==0){
-                $("#map_title").empty();
-                $('#map_title').append(enableSliderData_r.time['stime']+"到"+enableSliderData_r.time['etime']+"周边地区排放对我市的污染贡献分布");
-            }
-            else{
-                $("#map_title").empty();
-                $('#map_title').append("需管控的网格分布");
-            }
-        },
-        onUpdate: function (data_in) {
-            loadEnableSliderData(factor,citynamepy,false,data_in.from);
-            $("#map_title").empty();
-            $('#map_title').append("需管控的网格分布");
-        }
+   $("#range").ionRangeSlider({
+      min: 0,
+      max: 100,
+      from: 0,
+      onStart: function (data_in) {
+      },
+      onChange: function (data_in) {
+        $('.btnforcastgroup').removeClass('active');
+      },
+      onFinish: function (data_in) {
+        loadEnableSliderData(factor,citynamepy,false,data_in.from);
+      },
+      onUpdate: function (data_in) {
+        loadEnableSliderData(factor,citynamepy,false,data_in.from);
+        $("#map_title").empty();
+        $('#map_title').append("需管控的网格分布");
+      }
     });
 }
 /*EnableSlider初始化并注册监听函数-end*/
@@ -627,9 +619,6 @@ function enterpriseCheckTableInit(){
 
     };
     var enterpriseCheckTable=$("#enterpriseCheckTable").DataTable(enterpriseCheckTableOption);
-    enterpriseCheckTable.on('xhr.dt', function ( e, settings, json, xhr ) {
-        checkboxStyleInit();
-    } );
     enterpriseCheckTable.on('draw.dt', function() {
 
         if($(".bulk_action input[name='table_records']").length!=$(".bulk_action input[name='table_records']:checked").length && $(".bulk_action input[name='table_records']:checked").length!=0)
@@ -692,9 +681,8 @@ function loadEnableSliderData(factor,citynamepy,init,from){
             /*加载地图数据-start*/
             if(init)//初始化时地图加载数据
             {
-                gridLines(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data['xmax'],enableSliderData.map_data['ymax']);
-                gridData(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data[factor]);//factor='<%= @factor %>'
-                $('#map_title').append(enableSliderData.time['stime']+"到"+enableSliderData.time['etime']+"周边地区排放对我市的污染贡献分布");
+              gridLines(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data['xmax'],enableSliderData.map_data['ymax']);
+              gridData(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data[factor]);//factor='<%= @factor %>'
             }
             else//异步时地图加载数据
             {
@@ -702,6 +690,18 @@ function loadEnableSliderData(factor,citynamepy,init,from){
                 gridData(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data[factor]);
             }
             /*加载地图数据-end*/
+
+
+            /*地图title*/
+              if(from==0){
+                $("#map_title").empty();
+                $('#map_title').append(enableSliderData.time['stime']+"到"+enableSliderData.time['etime']+"周边地区排放对我市的污染贡献分布");
+              }
+              else{
+                $("#map_title").empty();
+                $('#map_title').append("需管控的网格分布");
+              }
+            /*地图title*/
 
 
             /*预计减排后AQI-start*/
@@ -722,18 +722,18 @@ function loadEnableSliderData(factor,citynamepy,init,from){
             /*条形图-end*/
 
             /*loadEnableSliderData函数返回值-start*/
-            enableSliderData_r=enableSliderData;
+            // enableSliderData_r=enableSliderData;
             /*loadEnableSliderData函数返回值-end*/
-        }
-    });
-    return enableSliderData_r;
-}
-/*EnableSlider数据加载-end*/
+          }
+        });
+          // return enableSliderData_r;先返回后ajax
+  }
+  /*EnableSlider数据加载-end*/
 
-/*企业勾选查询按钮-start*/
-function query_gou_xuan_en_data(){
-    var en_ids=[];
-    $(".bulk_action input[name='table_records']:checked").each(function(){
+  /*企业勾选查询按钮-start*/
+    function query_gou_xuan_en_data(){
+      var en_ids=[];
+      $(".bulk_action input[name='table_records']:checked").each(function(){
         en_ids.push(this.value);
     });
     $.ajax({            
