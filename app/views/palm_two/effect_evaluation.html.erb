@@ -1,18 +1,6 @@
-<%= javascript_include_tag 'js/html-docx/FileSaver','js/html-docx/html-docx' %>
-<style type="text/css">
-  body{
-    font-size:14px;
-  }
-  .btn-group-lg>.btn, .btn-lg {
-    font-size: 20px;
-    font-style:italic;
-  }
-  .btn_my{
-    padding:30px 15px;
-    width: 5%;
-    margin-right: 3%;
-  }
-</style>
+<%= stylesheet_link_tag "css/daterangepicker-bs3",'buttons' %>
+<%= javascript_include_tag 'js/html-docx/FileSaver','js/html-docx/html-docx','moment','daterangepicker','chart' %>
+
 <div class="right_col" style="margin-top:0px; margin-bottom:1px; height:0px" role="main">
   <!-- top tiles -->
   <div class="row tile_count" style="margin:1px; padding:0px; height:0px">
@@ -56,17 +44,29 @@
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
-            <button type="button" class="btn btn-info btn_my">1</button>
-            <button type="button" class="btn btn-info btn_my">2</button>
-            <button type="button" class="btn btn-info btn_my">3</button>
-            <button type="button" class="btn btn-info btn_my">4</button>
-            <button type="button" class="btn btn-info btn_my">5</button>
-            <button type="button" class="btn btn-info btn_my">6</button>
-            <button type="button" class="btn btn-info btn_my">7</button>
-            <button type="button" class="btn btn-info btn_my">8</button>
-            <button type="button" class="btn btn-info btn_my">+</button>
+            <button type="button" class="btn btn-info btn-lg">郑州市重污染天气一级响应措施的减排评估</button>
+            <button type="button" class="btn btn-info btn-lg">郑州市重污染天气二级响应措施的减排评估</button>
+            <button type="button" class="btn btn-info btn-lg">郑州市重污染天气三级响应措施的减排评估</button>
+            <button type="button" class="btn btn-info btn-lg">郑州市重污染天气四级响应措施的减排评估</button>
+            <div>重污染天气应急减排</div>
+            <div class="ln_solid"></div>
+                      <form id='zwrtqyjjp' class="form-horizontal form-label-left">
+                      <div class="form-group">
+                        <label style="float:left;">时间范围选择:</label>
+                        <div class="col-md-2 col-sm-9 col-xs-12">
+                          <input type="text" name="reservation" id="reservation" class="form-control"  readonly="readonly">
+                        </div>
+                        <button type="submit" class="button-buttons button-glow button-rounded button-primary">查询</button>
+                      </div>
 
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          
+                        </div>
+                      </div>
 
+                    </form>
             <table id='export_table' class="table table-bordered text-center">
               <thead>
                 <tr>
@@ -138,7 +138,11 @@
                 <% end %>
               </tbody>
             </table>
-            <button id="convert" type="button" class="btn btn-link btn-lg container">导出并打印</button>
+            <center>
+            <button id="convert" type="button" class="button-buttons button-glow button-rounded button-primary">
+              导出并打印-WORD
+            </button>
+            </center>
           </div>
         </div>
       </div>
@@ -147,6 +151,7 @@
 </div>
 
   <script>
+  /*wordExport-start*/
     document.getElementById('convert').addEventListener('click', function(e) {
       e.preventDefault();
       // var content = '<!DOCTYPE html><html><head><style type="text/css">.table-bordered {border: 1px solid #ddd;}.table {width: 100%;max-width: 100%;margin-bottom: 20px;}.text-center {text-align: center;}table {background-color: transparent;border-spacing: 0;border-collapse:collapse;display: table;}body {font-size: 14px;color: #73879C;background: #2A3F54;font-family: "Helvetica Neue",Roboto, Arial, "Droid Sans", sans-serif;font-weight: 400;line-height: 1.471;}</style></head><body>'+document.getElementById("export_table").outerHTML+'</body></html>';
@@ -154,4 +159,27 @@
       var converted = htmlDocx.asBlob(content, {orientation: 'portrait'});
       saveAs(converted, 'export.docx');
     });
+    /*wordExport-end*/
+
+    /*daterangepicker-start*/
+    var currentDate=new Date();
+    var millisecond=1000*60*60*24;  
+    var fiveDaysAgo=new Date(currentDate.getTime()-(5*millisecond));
+    var yesturday=new Date(currentDate.getTime()-(1*millisecond));
+    var startTime = fiveDaysAgo.pattern('yyyy-MM-dd');
+    var endTime = yesturday.pattern('yyyy-MM-dd');
+    $('#reservation').val(startTime + ' - ' + endTime);
+    $('#reservation').daterangepicker({ startTime: startTime, endTime: endTime});
+    $('#reservation').daterangepicker(
+    { 
+      showDropdowns: true,
+      format: 'YYYY-MM-DD'
+    },
+    function(start, end, label) {
+      //alert('A date range was chosen: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+      //getChartData(start.format('YYYY-MM-DD'),end.format('YYYY-MM-DD'));
+      startTime = start.format('YYYY-MM-DD');
+      endTime = end.format('YYYY-MM-DD');
+    });
+    /*daterangepicker-end*/
   </script>
