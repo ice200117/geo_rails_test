@@ -1,5 +1,8 @@
 class PalmTwoController < ApplicationController
     layout 'palm_two'
+
+    protect_from_forgery :except => [:query_gou_xuan_en_data_all]
+
     def scheme_simulation
         respond_to do |format|
             format.html {
@@ -9,21 +12,21 @@ class PalmTwoController < ApplicationController
                 @citynamepy=params['cityname'] unless params['cityname'].nil?
                 @factor='nox'
                 c = City.find_by city_name_pinyin: @citynamepy
-                @result_checkboxtable_data=[]
+                # @result_checkboxtable_data=Adjoint.emission_v1(@citynamepy,@factor,0)['en_list']
                 if c
                   @latitude=c.latitude
                   @longitude=c.longitude
-                  number=1
-                  c.enterprises.each do |enterprise|
-                  tmp=Hash.new
-                  tmp['id']=enterprise['id']
-                  tmp['number']=number
-                  tmp['en_name']=enterprise['en_name']
-                  tmp['pollution_contribution_rate']=number
-                  tmp['county_name']=enterprise['county_id'].nil? ? '' : County.find_by_id(enterprise['county_id']).name
-                  @result_checkboxtable_data<<tmp
-                  number+=1
-                  end
+                  # number=1
+                  # c.enterprises.each do |enterprise|
+                  # tmp=Hash.new
+                  # tmp['id']=enterprise['id']
+                  # tmp['number']=number
+                  # tmp['en_name']=enterprise['en_name']
+                  # tmp['pollution_contribution_rate']=number*0.001
+                  # tmp['county_name']=enterprise['county_id'].nil? ? '' : County.find_by_id(enterprise['county_id']).name
+                  # @result_checkboxtable_data<<tmp
+                  # number+=1
+                  # end
                 end
                 render 'page_lost_city',layout: false unless c
             }
@@ -63,8 +66,8 @@ class PalmTwoController < ApplicationController
     def query_gou_xuan_en_data_all
         respond_to do |format|
             format.json {
-                Adjoint.emission_by_enterprise(params['citypy'],'nox',params['enterprises'])
-                render json: {chenggong:'chenggong'}
+                data = Adjoint.emission_by_enterprise(params['citypy'],'nox',JSON.parse(params['en_ids']))
+                render json: data
             }
         end
     end
