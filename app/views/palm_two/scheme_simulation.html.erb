@@ -148,8 +148,8 @@
                                                 <th><input type="checkbox" id="check-all" class="flat"></th>
                                                 <th>序号</th>
                                                 <th>企业名称</th>
-                                                <th>污染贡献率</th>
-                                                <th>所属区县</th>
+                                                <th>污染贡献率(%)</th>
+                                                <%# <th>所属区县</th> %>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -159,12 +159,12 @@
                                                 <th></th>
                                                 <th>序号</th>
                                                 <th>企业名称</th>
-                                                <th>污染贡献率</th>
-                                                <th>所属区县</th>
+                                                <th>污染贡献率(%)</th>
+                                                <%# <th>所属区县</th> %>
                                             </tr>
                                         </tfoot>
                                     </table>
-                                    <button onclick="query_gou_xuan_en_data();" class="button-buttons button-glow button-rounded button-primary">查询</button>
+                                    <button onclick="query_gou_xuan_en_data('<%= @factor %>');" class="button-buttons button-glow button-rounded button-primary">查询</button>
                                     <div class="row">
                                         <label>减排百分比:</label>
                                         <input type="text" value="" id="rangedisable" name="range" />
@@ -328,7 +328,14 @@ function enterpriseListTableInit(tableid,tabledata){
         // "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 0 ] }],            
         //"aaSorting": [[ 0, "asc" ]],
         "paging": true,
-        "data": tabledata
+        "data": tabledata,
+        columns: [
+            //{ data: null },
+            { data: "number" },
+            { data: "en_name" },
+            { data: "contribution" }
+            // { data: "county_name" }
+        ]
         //responsive: true,
         //"scrollX": true,
         //  ajax: {
@@ -528,9 +535,13 @@ function checkboxListenInit(){
     // });
     // thead中的全选checkbox的监听
     $('.bulk_action input#check-all').on('ifChecked', function () {
+        <%# $('#enterpriseCheckTable tbody tr').addClass('selected') %>
+        <%# $('#enterpriseCheckTable tbody tr div').addClass('checked') %>
         $(".bulk_action input[name='table_records']").iCheck('check');
     });
     $('.bulk_action input#check-all').on('ifUnchecked', function () {
+        <%# $('#enterpriseCheckTable tbody tr').removeClass('selected') %>
+        <%# $('#enterpriseCheckTable tbody tr div').removeClass('checked') %>
         $(".bulk_action input[name='table_records']").iCheck('uncheck');
     });
     // tbody中的checkbox的监听
@@ -560,7 +571,7 @@ function checkboxListenInit(){
 
 }
 // 企业勾选表格datatable的初始化函数
-function enterpriseCheckTableInit(){
+function enterpriseCheckTableInit(data){
     var enterpriseCheckTableOption={
         language: {
             "sProcessing": "处理中...",
@@ -591,32 +602,27 @@ function enterpriseCheckTableInit(){
         // "scrollCollapse": "true",
         "paging": false,
         "order": [[ 1, 'asc' ]],
-        "data": <%= @result_checkboxtable_data.to_json.html_safe %>,
-        columns: [{
-            data: null
-        },
+        //"data": <%= @result_checkboxtable_data.to_json.html_safe %>,
+        "data": data,
+        columns: [
+            { data: null },
+            { data: "number" },
+            { data: "en_name" },
+            { data: "contribution" }
+           // { data: "county_name" }
+        ],
+        'columnDefs': [
             {
-                data: "number"
-            },
-            {
-                data: "en_name"
-            },
-            {
-                data: "pollution_contribution_rate"
-            },
-            {
-                data: "county_name"
-            }],
-        'columnDefs': [{
-            'targets': 0,
-            'searchable': false,
-            'orderable': false,
-            'className': 'dt-body-center',
-            'render': function (data, type, row, meta){
-                return '<input type="checkbox" class="flat" name="table_records" value="' + row.id + '">';
-            }
-        }],
-
+                'targets': 0,
+                'searchable': false,
+                'orderable': false,
+                'className': 'dt-body-center',
+                'render': function (data, type, row, meta){
+                    return '<input type="checkbox" class="flat" name="table_records" value="' + row.id + '">';
+                }
+            }, 
+            { 'className':'dt-body-center contribution',targets:3 }
+        ]
     };
     var enterpriseCheckTable=$("#enterpriseCheckTable").DataTable(enterpriseCheckTableOption);
     enterpriseCheckTable.on('draw.dt', function() {
@@ -644,15 +650,15 @@ function enterpriseCheckTableInit(){
     });
 }
 // 企业勾选表格总初始化函数
-function enterpriseCheckTableInitAll(){
-    enterpriseCheckTableInit();
+function enterpriseCheckTableInitAll(data){
+    enterpriseCheckTableInit(data);
     checkboxStyleInit();
     checkboxListenInit();
 }
 /*企业勾选表格-end*/
 
 /*DisableSlider初始化-start*/
-function sliderDisableInit(){
+function sliderDisableInit(data){
     $("#rangedisable").ionRangeSlider({
         min: 0,
         max: 100,
@@ -681,8 +687,9 @@ function loadEnableSliderData(factor,citynamepy,init,from){
             /*加载地图数据-start*/
             if(init)//初始化时地图加载数据
             {
-              gridLines(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data['xmax'],enableSliderData.map_data['ymax']);
-              gridData(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data[factor]);//factor='<%= @factor %>'
+                gridLines(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data['xmax'],enableSliderData.map_data['ymax']);
+                gridData(enableSliderData.map_data['xmin'],enableSliderData.map_data['ymin'],enableSliderData.map_data[factor]);//factor='<%= @factor %>'
+                enterpriseCheckTableInitAll(enableSliderData.en_list);
             }
             else//异步时地图加载数据
             {
@@ -726,24 +733,35 @@ function loadEnableSliderData(factor,citynamepy,init,from){
             /*loadEnableSliderData函数返回值-end*/
           }
         });
-          // return enableSliderData_r;先返回后ajax
+   // return enableSliderData_r;//先返回后ajax
   }
   /*EnableSlider数据加载-end*/
 
-  /*企业勾选查询按钮-start*/
-    function query_gou_xuan_en_data(){
-      var en_ids=[];
-      $(".bulk_action input[name='table_records']:checked").each(function(){
-        en_ids.push(this.value);
+/*企业勾选查询按钮-start*/
+function query_gou_xuan_en_data(factor){
+    var en_ids=[];
+    $(".bulk_action input[name='table_records']:checked").each(function(){
+        var tmp = {'id':this.value,'contribution':$(this).parents('td').siblings('td.contribution').text()} 
+        en_ids.push(tmp);
     });
     $.ajax({            
         url: '/palm_two/query_gou_xuan_en_data_all',
         data:{
-            'en_ids': JSON.stringify(en_ids)},
-        type: "get",
+            'en_ids': JSON.stringify(en_ids),
+            'citypy': '<%= @citynamepy %>'
+        },
+        type: "post",
         dataType : "json",            
-        success: function (r) { 
-            alert(r.chenggong);
+        success: function (data) { 
+            map.clearOverlays();
+            gridData(data.map_data['xmin'],data.map_data['ymin'],data.map_data[factor]);
+            var slider = $("#rangedisable").data('ionRangeSlider');
+            slider.update({from:data.percent});
+            /*预计减排后AQI-start*/
+            $("#aqimn strong").empty();
+            $('#aqimn strong').append(data.reduce_aqi);
+            /*预计减排后AQI-end*/
+                <%# alert(r.chenggong); %>
         }
     });
 }
@@ -758,8 +776,8 @@ $(document).ready(function() {
     mapInit(longitude,latitude);
     btnforcastgroupInit();
     sliderEnableInit(factor,citynamepy);
-    enterpriseCheckTableInitAll();
-    sliderDisableInit();
+    sliderDisableInit(0);
+    //enterpriseCheckTableInitAll();
     loadEnableSliderData(factor,citynamepy,true,0);
 });
 /*页面初始化-end*/

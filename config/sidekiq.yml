@@ -1,0 +1,11 @@
+# Options here can still be overridden by cmd line args.
+#   sidekiq -C sidekiq.yml
+---
+:pidfile: tmp/pids/sidekiq.pid
+:verbose: false
+:concurrency: 5
+:queues:
+  - default
+  # - [a, 2]
+  # - [b, 3]
+  # - [c, 4]
