@@ -305,6 +305,7 @@ class Adjoint
         ens.each do |e|
             ncdn[e['x']][e['y']] = ncd[e['x']][e['y']]
         end
+        percent = 0 if percent = 1
         {'map_data'=>ncdn,'reduce_aqi'=>(pcity/psum*(1-percent)*aqi).round(0),'en_list'=>ens}
     end
     def self.emission_v1(citypy='langfangshi',var='nox',percent=0,*arg)
@@ -383,6 +384,10 @@ class Adjoint
             ncdt[l[1]-1][l[0]-1] = ncd[l[1]-1][l[0]-1]
         end
         (pcity.nil? or pcity == 0) ? percent = 0 : percent = contribution*psum/pcity
-        {"map_data"=>{var=>ncdt}.merge(rncd),'reduce_aqi'=>aqi.round(0),'percent'=>percent}
+        {"map_data"=>{var=>ncdt}.merge(rncd),'reduce_aqi'=>aqi.round(0),'percent'=>percent*100}
+    end
+    def self.test
+        MyWorker.perform_async(9)
+        MyWorker.perform_async(4)
     end
 end
