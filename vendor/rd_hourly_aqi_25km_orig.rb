@@ -72,7 +72,7 @@ puts 'deal date = ', strtime
 #strtime = '2016010808'
 #puts strtime
 
-path = "/mnt/share/Temp/station/#{strtime[0,8]}/"
+path = "/mnt/share/Temp/station_orig/#{strtime[0,8]}/"
 
 # Read hua bei city, do not read data of these city.
 firstline = true
@@ -100,7 +100,7 @@ cs.each do |c|
   #next if hb_city.include?(py)
 
 
-  fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"
+  fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT_orig"
   f = nil
   f = File.open(path+fn) if File::exists?(path+fn) 
   next unless f
