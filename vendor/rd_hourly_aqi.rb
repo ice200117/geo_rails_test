@@ -97,7 +97,7 @@ cs.each do |c|
   next if c.city_name_pinyin.rstrip.eql?('baichengshi')
   py = c.city_name_pinyin.strip
 
-  next if hb_city.include?(py)
+  #next if hb_city.include?(py)
 
 
   fn = "XJ_ENVAQFC_#{py}_#{strtime}_00000-07200.TXT"

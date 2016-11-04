@@ -25,6 +25,26 @@ class ForecastRealDatum < ActiveRecord::Base
         firstime = false
       end
 
+	  if ch.ps.nil?
+      hf << {forecast_datetime: ch.forecast_datetime.strftime('%Y-%m-%d_%H'),
+             AQI: ch.AQI.round,
+             main_pol: ch.main_pol,
+             grade: ch.grade,
+             pm2_5: ch.pm25,
+             pm10: ch.pm10,
+             SO2: ch.SO2,
+             CO: ch.CO,
+             NO2: ch.NO2,
+             O3: ch.O3,
+             VIS: ch.VIS,
+             press:   -1,
+             rain:  -1,
+             pblh: -1,
+             t:  -1,
+             rh:  -1,
+             windDir:   -1,
+             windSpeed:   -1}
+	  else
       hf << {forecast_datetime: ch.forecast_datetime.strftime('%Y-%m-%d_%H'),
              AQI: ch.AQI.round,
              main_pol: ch.main_pol,
@@ -43,6 +63,7 @@ class ForecastRealDatum < ActiveRecord::Base
              rh:  ch.q2m.round,
              windDir:   ch.wd.round,
              windSpeed:   ch.ws.round(1) }
+	  end
     end
 
     cf[:forecast_data] = hf

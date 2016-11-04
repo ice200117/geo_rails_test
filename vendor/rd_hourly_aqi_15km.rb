@@ -139,7 +139,7 @@ cs.each do |c|
   c.hourly_city_forecast_air_qualities.where(publish_datetime: Time.zone.parse(strtime)).delete_all
 
   f1 = nil
-  f1 = File.open(path+fw) if File::exists?(path+fw)
+  f1 = File.open(path+fw) if File::exists?(path+fw) and File::size?(path+fw)
   tmp = Hash.new
   if f1
     f1.readlines[2..-1].each do |line|

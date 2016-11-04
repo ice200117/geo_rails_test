@@ -1,7 +1,6 @@
-
 class WelcomeController < ApplicationController
 
-  include WelcomeHelper
+	include WelcomeHelper
 
 	include NumRu
 	protect_from_forgery :except => [:get_forecast_baoding, :get_city_point]
@@ -14,27 +13,27 @@ class WelcomeController < ApplicationController
 		#system('ls')
 		#r = `rails r vendor/test.rb`
 		#puts r
-    params["var"]? var=params["var"] : var="SO2"
-    period = "120"
-    
-    #@cf = County.all.map {|c| c.to_geojson }
-    #@cs = City.all.map {|c| c.to_geojson }
+		params["var"]? var=params["var"] : var="SO2"
+		period = "120"
+
+		#@cf = County.all.map {|c| c.to_geojson }
+		#@cs = City.all.map {|c| c.to_geojson }
 
 		unless Custom::Redis.get('lf_adj_percent')
-      @geoJsonBlockSO2, @perc = Adjoint.to_geojson(var, period)
-      @perc = @perc.map {|k,v| [k , (v = v.round) ] }
+			@geoJsonBlockSO2, @perc = Adjoint.to_geojson(var, period)
+			@perc = @perc.map {|k,v| [k , (v = v.round) ] }
 			Custom::Redis.set('lf_adj_percent',[@geoJsonBlockSO2, @perc],3600*24)
 		else
-	   @geoJsonBlockSO2, @perc = Custom::Redis.get('lf_adj_percent')
+			@geoJsonBlockSO2, @perc = Custom::Redis.get('lf_adj_percent')
 		end
 
-    var = "BC"
-    #@geoJsonBlockBC = Adjoint.to_geojson(var, period)[1]
+		var = "BC"
+		#@geoJsonBlockBC = Adjoint.to_geojson(var, period)[1]
 
 		respond_to do |format|
-      format.html {
-        render layout: false
-      }
+			format.html {
+				render layout: false
+			}
 			format.js   {}
 			format.json {}
 		end
@@ -88,13 +87,13 @@ class WelcomeController < ApplicationController
 			sd = Time.local(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
 			ed = Time.local(params[:end_date][:year].to_i, params[:end_date][:month].to_i, params[:end_date][:day].to_i,23)
 			return 'error: start date can not later than end date!' if sd > ed
-			hss = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
+			hss = c.forecast_real_data.order(:publish_datetime).last(120)
 			hs = []
 			hss.each {|h| hs << h if h.forecast_datetime >= sd && h.forecast_datetime <= ed }
 		else
-			hs = c.hourly_city_forecast_air_qualities.order(:publish_datetime).last(120)
+			hs = c.forecast_real_data.order(:publish_datetime).last(120)
 		end 
-    md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day-2.days..Time.zone.now.end_of_day)
+		md = c.china_cities_hours.where(data_real_time: Time.zone.now.beginning_of_day-2.days..Time.zone.now.end_of_day)
 		@chart = [{name: c.city_name+"AQI", data: hs.map { |h| [ h.forecast_datetime,  h.AQI]} }]
 		@chart << {name: '监测值', data: md.map { |h| [ h.data_real_time,  h.AQI] } }
 		@chart << {name: c.city_name+"O3", data: hs.map { |h| [ h.forecast_datetime,  h.O3]} }
@@ -113,7 +112,7 @@ class WelcomeController < ApplicationController
 
 		# Table 4: 预报准确性月小时值评估
 		# 获取过去一个月的监测小时值
-    get_hour_data(c)
+		get_hour_data(c)
 
 		respond_to do |format|
 			format.html { }
@@ -124,92 +123,92 @@ class WelcomeController < ApplicationController
 		end
 	end
 
-#   # Not Use, since highchart can not display line with data nil
-#   def add_loss_hour_data(data)
-#     ret_data = []
-#     data.each_index do |i|
-#       ret_data << data[i]
-#       if i < data.length-1 and data[i+1][0] - data[i][0] > 1.hours
-#         st = data[i][0]+1.hours
-#         while st<data[i+1][0]
-#           ret_data << [st, nil]
-#           st = st + 1.hours
-#         end
-#       end
-#     end
-#     ret_data
-# =======
-  def get_hour_data(c)
-    #c = City.find 18
-    # Table 4: 预报准确性月小时值评估
-    # 获取过去一个月的监测小时值
-    num_day = 67
+	#   # Not Use, since highchart can not display line with data nil
+	#   def add_loss_hour_data(data)
+	#     ret_data = []
+	#     data.each_index do |i|
+	#       ret_data << data[i]
+	#       if i < data.length-1 and data[i+1][0] - data[i][0] > 1.hours
+	#         st = data[i][0]+1.hours
+	#         while st<data[i+1][0]
+	#           ret_data << [st, nil]
+	#           st = st + 1.hours
+	#         end
+	#       end
+	#     end
+	#     ret_data
+	# =======
+	def get_hour_data(c)
+		#c = City.find 18
+		# Table 4: 预报准确性月小时值评估
+		# 获取过去一个月的监测小时值
+		num_day = 67
 		monitor_data_hour = ChinaCitiesHour.history_data_hour(c, num_day.days.ago.beginning_of_day)
-    # 获取过去一个月的预报24,48,72,96小时值
-    forecast_data_hour = HourlyCityForecastAirQuality.history_data_hour(c, num_day.days.ago.beginning_of_day, 0)
-    forecast_data_hour_ann = AnnForecastData.history_data_hour(c, num_day.days.ago.beginning_of_day, 0)
-    @monitor_forecast_hour_month_diff = [ {name: c.city_name+'监测值', data: (monitor_data_hour),:discrete => true } ]
-    forecast_data_hour.each_index do |i|
-      @monitor_forecast_hour_month_diff << {name: (24*(i+1)).to_s+'小时预报', data: forecast_data_hour[i], :discrete => true }
-    end
-    forecast_data_hour_ann.each_index do |i|
-      @monitor_forecast_hour_month_diff << {name: (24*(i+1)).to_s+'小时预报ANN', data: forecast_data_hour_ann[i], :discrete => true }
-    end
+		# 获取过去一个月的预报24,48,72,96小时值
+		forecast_data_hour = HourlyCityForecastAirQuality.history_data_hour(c, num_day.days.ago.beginning_of_day, 0)
+		forecast_data_hour_ann = AnnForecastData.history_data_hour(c, num_day.days.ago.beginning_of_day, 0)
+		@monitor_forecast_hour_month_diff = [ {name: c.city_name+'监测值', data: (monitor_data_hour),:discrete => true } ]
+		forecast_data_hour.each_index do |i|
+			@monitor_forecast_hour_month_diff << {name: (24*(i+1)).to_s+'小时预报', data: forecast_data_hour[i], :discrete => true }
+		end
+		forecast_data_hour_ann.each_index do |i|
+			@monitor_forecast_hour_month_diff << {name: (24*(i+1)).to_s+'小时预报ANN', data: forecast_data_hour_ann[i], :discrete => true }
+		end
 
-    # 计算监测和预报的相关系数
-	@corr_data = []
-    @correlation = []
-	mld = add_loss_hour_data(monitor_data_hour)
-    forecast_data_hour.each_index do |i|
-      v = data_to_vector(mld,add_loss_hour_data(forecast_data_hour[i]))
-      #@correlation << r(Hash(*v[0].flatten).values, Hash(*v[1].flatten).values)
-      @correlation << r(v[0].map {|d| d[1]}, v[1].map {|d| d[1]})
-	  @corr_data << v
-    end
-    if forecast_data_hour_ann.first.length >0
-      forecast_data_hour_ann.each_index do |i|
-        v = data_to_vector(mld,add_loss_hour_data(forecast_data_hour_ann[i]))
-        @correlation << r(v[0].map {|d| d[1]}, v[1].map {|d| d[1]})
-      @corr_data << v
-        #@correlation << r(Hash(*v[0].flatten).values, Hash(*v[1].flatten).values)
-      end
-    end
-    mld
+		# 计算监测和预报的相关系数
+		@corr_data = []
+		@correlation = []
+		mld = add_loss_hour_data(monitor_data_hour)
+		forecast_data_hour.each_index do |i|
+			v = data_to_vector(mld,add_loss_hour_data(forecast_data_hour[i]))
+			#@correlation << r(Hash(*v[0].flatten).values, Hash(*v[1].flatten).values)
+			@correlation << r(v[0].map {|d| d[1]}, v[1].map {|d| d[1]})
+			@corr_data << v
+		end
+		if forecast_data_hour_ann.first.length >0
+			forecast_data_hour_ann.each_index do |i|
+				v = data_to_vector(mld,add_loss_hour_data(forecast_data_hour_ann[i]))
+				@correlation << r(v[0].map {|d| d[1]}, v[1].map {|d| d[1]})
+				@corr_data << v
+				#@correlation << r(Hash(*v[0].flatten).values, Hash(*v[1].flatten).values)
+			end
+		end
+		mld
 
-  end
+	end
 
-  def export_data_xls
-    c = City.find_by_city_name_pinyin(params[:city])
-    if c
-      get_hour_data(c) 
-    else
-      return 'can not find city'
-    end
-	  book = Spreadsheet::Workbook.new
-	  @corr_data.each_index do |tdi|
-		  sheet = book.create_worksheet :name => 'sheet'+(tdi+1).to_s
-		  sheet[0,0] = '监测时间'; sheet[0,1] = '监测AQI'
-		  sheet[0,2] = '预报时间'; sheet[0,3] = ((tdi+1)*24).to_s+'小时预报AQI' if tdi < 4
-		  sheet[0,2] = '预报时间'; sheet[0,3] = ((tdi-4+1)*24).to_s+'小时ANN预报AQI' if tdi >= 4
-		  @corr_data[tdi][0].each_index do |i| 
-			  sheet[i+1,0] = @corr_data[tdi][0][i][0]; sheet[i+1,1] = @corr_data[tdi][0][i][1] 
-		  end
-		  @corr_data[tdi][1].each_index do |i| 
-			  sheet[i+1,2] = @corr_data[tdi][1][i][0]; sheet[i+1,3] = @corr_data[tdi][1][i][1] 
-		  end
-	  end
-      file_path = "#{Rails.root}/public/#{c.city_name_pinyin}_data_#{Time.now.strftime("%Y%m%d")}.xls"
-	  `rm #{file_path}`
-	  book.write(file_path)
+	def export_data_xls
+		c = City.find_by_city_name_pinyin(params[:city])
+		if c
+			get_hour_data(c) 
+		else
+			return 'can not find city'
+		end
+		book = Spreadsheet::Workbook.new
+		@corr_data.each_index do |tdi|
+			sheet = book.create_worksheet :name => 'sheet'+(tdi+1).to_s
+			sheet[0,0] = '监测时间'; sheet[0,1] = '监测AQI'
+			sheet[0,2] = '预报时间'; sheet[0,3] = ((tdi+1)*24).to_s+'小时预报AQI' if tdi < 4
+			sheet[0,2] = '预报时间'; sheet[0,3] = ((tdi-4+1)*24).to_s+'小时ANN预报AQI' if tdi >= 4
+			@corr_data[tdi][0].each_index do |i| 
+				sheet[i+1,0] = @corr_data[tdi][0][i][0]; sheet[i+1,1] = @corr_data[tdi][0][i][1] 
+			end
+			@corr_data[tdi][1].each_index do |i| 
+				sheet[i+1,2] = @corr_data[tdi][1][i][0]; sheet[i+1,3] = @corr_data[tdi][1][i][1] 
+			end
+		end
+		file_path = "#{Rails.root}/public/#{c.city_name_pinyin}_data_#{Time.now.strftime("%Y%m%d")}.xls"
+		`rm #{file_path}`
+		book.write(file_path)
 
-    send_file file_path, :filename => "#{c.city_name_pinyin}_data_#{Time.now.strftime("%Y%m%d")}.xls"
-#	  respond_to do |format|
-#		  format.xls {
-#			  send_file file_path, :filename => 'data.xls'
-#		  #send_data  [ChinaCitiesHour.new(data_real_time: Time.now, AQI: 88),ChinaCitiesHour.new(data_real_time: Time.now, AQI: 77)].to_xls, :filename =>'city.xls'
-#		  }
-#	  end
-  end
+		send_file file_path, :filename => "#{c.city_name_pinyin}_data_#{Time.now.strftime("%Y%m%d")}.xls"
+		#	  respond_to do |format|
+		#		  format.xls {
+		#			  send_file file_path, :filename => 'data.xls'
+		#		  #send_data  [ChinaCitiesHour.new(data_real_time: Time.now, AQI: 88),ChinaCitiesHour.new(data_real_time: Time.now, AQI: 77)].to_xls, :filename =>'city.xls'
+		#		  }
+		#	  end
+	end
 
 	#显示分指数
 	def subindex
@@ -219,7 +218,7 @@ class WelcomeController < ApplicationController
 		if params[:c] 
 			(id =  params[:c][:city_id]) 
 		end
-		
+
 		# Table 1: 全国城市当天监测与预报日均值差值
 		monitor_today_avg = ChinaCitiesHour.today_avg
 		forecast_today_avg = HourlyCityForecastAirQuality.today_avg
@@ -289,7 +288,7 @@ class WelcomeController < ApplicationController
 			}
 		end
 	end
-	
+
 	def get_history_data
 		model = params[:model]
 		time = params[:time].to_time
