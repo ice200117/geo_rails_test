@@ -101,4 +101,5 @@ Rails.application.config.assets.precompile += %w(
 	js/html-docx/html-docx.js
 	css/iCheck/skins/flat/green.css
 	js/iCheck/icheck.min.js
+	img/microsoft_word.ico
 )

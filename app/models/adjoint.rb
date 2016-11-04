@@ -294,7 +294,7 @@ class Adjoint
         else
             tsum = 0.0
             gens.sort{|x,y| y['percent']<=>x['percent']}.each do |l|
-                next if l['percent'] < 0.1
+                next if l['percent'] < 0.000001
                 ens << l
                 tsum += l['percent']
                 break if tsum >= city_pre
@@ -305,7 +305,8 @@ class Adjoint
         ens.each do |e|
             ncdn[e['x']][e['y']] = ncd[e['x']][e['y']]
         end
-        {'map_data'=>ncdn,'reduce_aqi'=>((1-pcity/psum)*percent*aqi).round(0),'en_list'=>ens}
+        percent = 0 if percent = 1
+        {'map_data'=>ncdn,'reduce_aqi'=>(pcity/psum*(1-percent)*aqi).round(0),'en_list'=>ens}
     end
     def self.emission_v1(citypy='langfangshi',var='nox',percent=0,*arg)
         # 获取地图污染信息，减排aqi
@@ -340,7 +341,7 @@ class Adjoint
             result['en_pie']={'en_category'=>enlist.group_by{|x| x['en_category']}.keys,'piedata'=>enlist.group_by{|x| x['en_category']}.map{|k,v| {'value'=>v.size,'name'=>k}}}
         end
         index = 0
-        result['en_list'] = result['en_list'].map{|x| [index+=1,x['en_name'],x['percent'].round(5)]}
+        result['en_list'] = result['en_list'].map{|x| {'id'=>x['id'],'number'=>index+=1,'en_name'=>x['en_name'],'contribution'=>(x['percent']*100).round(5)}}
         result
     end
 
@@ -359,15 +360,14 @@ class Adjoint
         ncd = rncd['data'].clone
         rncd.delete('data')
         psum = ncd.flatten.sum
-        contribution = enterprises.inject(0.0){|r,x| r+=x['contribution']} 
+        contribution = enterprises.inject(0.0){|r,x| r+=x['contribution'].to_f/100} 
         aqi = frd[frd.keys.max]['AQI']*(1-contribution)
         pcity = 0.0
         llcity = Array.new
-        enlist = Enterpreise.where(id:enterprises.map{|x| x['id']})
+        enlist = Enterprise.where(id:enterprises.map{|x| x['id']})
         grd.each do |l|
-            z = grd[i]
-            x = z[1]-1
-            y = z[0]-1
+            x = l[1]-1
+            y = l[0]-1
             pcity += ncd[x][y]
             templist = Array.new
             enlist.each do |e|
@@ -383,6 +383,11 @@ class Adjoint
         llcity.each do |l|
             ncdt[l[1]-1][l[0]-1] = ncd[l[1]-1][l[0]-1]
         end
-        {"map_data"=>ncdt,'reduce_aqi'=>aqi}.merge(rncd)
+        (pcity.nil? or pcity == 0) ? percent = 0 : percent = contribution*psum/pcity
+        {"map_data"=>{var=>ncdt}.merge(rncd),'reduce_aqi'=>aqi.round(0),'percent'=>percent*100}
+    end
+    def self.test
+        MyWorker.perform_async(9)
+        MyWorker.perform_async(4)
     end
 end

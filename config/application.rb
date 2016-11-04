@@ -40,5 +40,6 @@ module GeoRailsTest
 
 	config.active_record.observers = :china_cities_hour_observer
 
+    # config.active_job.queue_adapter = :sidekiq
   end
 end
