@@ -197,11 +197,18 @@ class ForecastRealDatum < ActiveRecord::Base
 				aqi_sum = 0; i = 0
 				fs.each do |f|
 					if f.publish_datetime == latest_publish_datetime
-						aqi_sum += f.send(spe)
-						i += 1
+            a = f.send(spe)
+            unless a.nan?
+              aqi_sum += f.send(spe)
+              i += 1
+            end
 					end
 				end
-				city_avg[cl.city_name] = {latest_publish_datetime.strftime("%Y-%m-%d_%H") => (aqi_sum/i).round }
+        if i > 0
+          city_avg[cl.city_name] = {latest_publish_datetime.strftime("%Y-%m-%d_%H") => (aqi_sum/i).round }
+        else
+          city_avg[cl.city_name] = {latest_publish_datetime.strftime("%Y-%m-%d_%H") => aqi_sum }
+        end
 			end
 		end
 		city_avg
