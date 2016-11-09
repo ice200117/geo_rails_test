@@ -35,7 +35,8 @@ class TempLfHour < ActiveRecord::Base
             result << tmp
         end
         result.sort_by!{|x| x[0]}
-        path = '/Users/baoxi/Workspace/temp/'
+        # path = '/Users/baoxi/Workspace/temp/'
+        path = '/mnt'
         filename = stime.strftime("%Y-%m-%d_%H").to_s+'.txt'
         f = File.open(path+filename,'w')
         f.puts(result.map{|x| x.join(',')})
