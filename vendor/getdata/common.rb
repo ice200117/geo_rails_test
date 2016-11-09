@@ -32,7 +32,7 @@ def get_rank_json(flag,option)
 			#全国城市小时数据
 			response = HTTParty.post('http://www.izhenqi.cn/api/dataapi.php',:body => option)
 		end
-		if flag == 'all_city_by_hour' || flag == 'shishi_rank_74'
+		if flag == 'all_city_by_hour' or flag == 'shishi_rank_74'
 			data=JSON.parse(Base64.decode64(response.body))
 		else
 			data=JSON.parse(response.body)
@@ -42,6 +42,7 @@ def get_rank_json(flag,option)
 		end
 		puts data['time']
 		data['date'] != nil ? hs[:time] = data['date'] : hs[:time] = data['time']
+        puts data
 		hs[:cities] = column_name_modify(data['rows'])
 		hs[:total]=data['total']
 	rescue
@@ -239,6 +240,7 @@ def save_db_common(model,t,time)
 	day_city.CO=t['co'] if t['co'] != nil
 	day_city.O3 = t['o3'] if t['o3'] != nil
 	day_city.O3_8h = t['o3_8h'] if t['o3_8h'] != nil && day_city.respond_to?('O3_8h')
+    byebug
 	day_city.pm10=t['pm10'] if t['pm10'] != nil
 	day_city.pm25=t['pm2_5'] if t['pm2_5'] != nil
 	day_city.AQI = t['aqi'] if t['aqi'] != nil && day_city.respond_to?('AQI')

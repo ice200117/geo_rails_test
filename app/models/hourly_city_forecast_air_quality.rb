@@ -225,4 +225,94 @@ class HourlyCityForecastAirQuality < Partitioned::ByMonthlyTimeField
             fore_data
         end
     end
+    #指定五天城市预报
+    def forecast_24h(pinyin,stime,etime)
+        unless Custom::Redis.get(pinyin+stime.to_s+etime.to_s)
+            tmp = City.find_by_city_name_pinyin(pinyin).hourly_city_forecast_air_qualities.where(publish_datetime:(stime.to_time.yesterday.beginning_of_day..etime.to_time.yesterday.end_of_day)).to_a.group_by_day(&:publish_datetime)
+            return nil if tmp.size == 0
+            tmp.each do |k,v|
+                v.delete_if{|x| !((k.tomorrow.beginning_of_day.to_f..k.tomorrow.end_of_day.to_f) === x.forecast_datetime.to_f)}
+            end
+            tmp1 = {}
+            tmp.keys.each{|x| tmp1[x.to_date+1] = tmp[x];tmp.delete(x)}
+            tmp = tmp1
+            Custom::Redis.set(pinyin+stime.to_s+etime.to_s,tmp,3600)
+        else 
+            tmp=Custom::Redis.get(pinyin+stime.to_s+etime.to_s)
+        end
+        tmp.each do |k,v|
+            six = {'SO2'=>[],'NO2'=>[],'pm10'=>[],'pm25'=>[],'CO'=>[],'O3'=>[]}
+            v.each do |l|
+                six.keys.each{|x| six[x] << l[x].to_f}
+            end
+            six.each do |m,n|
+                if m == 'O3'
+                    j = []
+                    (0..16).each do |a|
+                        j << n[a..a+7].sum
+                    end
+                    six[m] = j.max/8
+                else
+                    (n.sum == 0 or n.size == 0) ? six[m] = 0 : six[m] = n.sum/n.size 
+                end
+            end
+            six['zhzs'] = six['SO2'].to_f.round(2)/60+six['NO2'].to_f.round(2)/40+six['pm10'].to_f.round(2)/70+six['pm25'].to_f.round(2)/35+six['CO'].to_f.round(2)/4+six['O3'].to_f.round(2)/160
+            six['AQI'] = get_aqi(six)['aqi']
+            tmp[k] = six
+        end
+        tmp
+    end
+
+    def get_aqi(data)
+        #data为hash值eg:data={'so2'=>1,'no2'=>1,'pm10'=>1,'pm25'=>1,'co'=>1,'o3_8h'=>1}
+        #返回值为aqi和首要污染物return {'aqi'=>1,'main_poll'=>O3}
+        init=Hash.new
+        init['iaqi']={0=>0,1=>50,2=>100,3=>150,4=>200,5=>300,6=>400,7=>500}
+        init['SO2']=[0,50,150,475,800,1600,2100,2620]
+        init['NO2']=[0,40,80,180,280,565,750,940]
+        init['pm10']=[0,50,150,250,350,420,500,600]
+        init['CO']=[0,2,4,14,24,36,48,60]
+        init['O3']=[0,100,160,215,265,800]
+        init['pm25']=[0,35,75,115,150,250,350,500]
+        init['subindex'] = []
+        data.each do |k,v|
+            next if init[k].nil? || v.nil?
+            # return false if init[k][-1] < v || v.nil? #超过最大值返回false
+            if init[k][-1] < v 
+                init['subindex'] << { 'iaqi' => init['iaqi'][init[k].size-1],'name'=>k} 
+                next
+            end
+            for i in (0..init[k].length-2)
+                if init[k][i] < v && v < init[k][i+1]
+                    bpL = init[k][i]
+                    bpH = init[k][i+1]
+                    iaqiL = init['iaqi'][i]
+                    iaqiH = init['iaqi'][i+1]
+                    iaqi = (iaqiH-iaqiL)/(bpH-bpL).to_f*(v-bpL)+iaqiL
+                    init['subindex'] << { 'iaqi'=>iaqi,'name'=>k}
+                    break
+                elsif init[k][i] == v
+                    init['subindex'] << { 'iaqi' => init['iaqi'][i],'name'=>k} 
+                    break
+                elsif init[k][i+1] == v
+                    init['subindex'] << { 'iaqi' => init['iaqi'][i+1],'name'=>k}
+                    break
+                end
+            end	
+        end
+        if init['subindex'].size == 0
+            aqi = nil
+            main_poll = nil
+        else
+            init['subindex'] = init['subindex'].group_by{|x| x['iaqi']} #由分指数进行分组
+            aqi=init['subindex'].keys.max #求出最大分指数分组
+            main_poll = ''
+            init['subindex'][aqi].each do |l|
+                l['name'] = 'PM2.5' if l['name'] == 'pm25'
+                main_poll = main_poll+l['name'].upcase+','
+            end
+            main_poll.chop!
+        end
+        {'aqi'=>aqi,'main_poll'=>main_poll}
+    end
 end

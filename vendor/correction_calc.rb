@@ -35,7 +35,7 @@ def calc(c)
 	md_ave/fd_ave
 end
 
-File.open("correction1.rb", "w+") do |aFile|
+File.open("vendor/correction1.rb", "w+") do |aFile|
 	aFile.syswrite("CORR={")
 	City.all.each do |c|
 		puts c.city_name_pinyin

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160927021150) do
+ActiveRecord::Schema.define(version: 20161029061309) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,7 +139,10 @@ ActiveRecord::Schema.define(version: 20160927021150) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.spatial  "boundary",   limit: {:srid=>3857, :type=>"multi_polygon"}
+    t.integer  "city_id"
   end
+
+  add_index "counties", ["city_id"], :name => "index_counties_on_city_id"
 
   create_table "day_cities", force: true do |t|
     t.integer  "city_id"
@@ -163,6 +166,38 @@ ActiveRecord::Schema.define(version: 20160927021150) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "enterprises", force: true do |t|
+    t.string   "en_name"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.float    "dust_concentration"
+    t.float    "dust_convert"
+    t.float    "dust_discharge"
+    t.float    "so2_concentration"
+    t.float    "so2_convert"
+    t.float    "so2_discharge"
+    t.float    "nox_concentration"
+    t.float    "nox_convert"
+    t.float    "nox_discharge"
+    t.float    "temperature"
+    t.float    "discharge_height"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "en_category"
+    t.float    "nmvoc"
+    t.float    "co"
+    t.float    "nh3"
+    t.float    "pm10"
+    t.float    "pm25"
+    t.float    "bc"
+    t.float    "oc"
+    t.integer  "city_id"
+    t.integer  "county_id"
+  end
+
+  add_index "enterprises", ["city_id"], :name => "index_enterprises_on_city_id"
+  add_index "enterprises", ["county_id"], :name => "index_enterprises_on_county_id"
 
   create_table "forecast_24s", force: true do |t|
     t.integer  "station_id"
@@ -1084,6 +1119,11 @@ ActiveRecord::Schema.define(version: 20160927021150) do
     t.datetime "sunrise"
     t.datetime "sunset"
     t.text     "zhishu"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "wethers", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end

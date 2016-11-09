@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>空气质量智能管控平台</title>
+    <%= stylesheet_link_tag 'css/bootstrap/dist/css/bootstrap.min','css/font-awesome/css/font-awesome.min','css/datatables.net-bs/css/dataTables.bootstrap.min','css/datatables.net-buttons-bs/css/buttons.bootstrap.min','css/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min','css/datatables.net-responsive-bs/css/responsive.bootstrap.min','css/datatables.net-scroller-bs/css/scroller.bootstrap.min','css/custom.min', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'js/jquery/dist/jquery.min','data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E0a435969655beb9524b572cc64d3a0f"></script>
+  </head>
+
+  <body class="login">
+    <div class="container body">
+      <div class="main_container">
+         <%= javascript_include_tag "js/bootstrap/dist/js/bootstrap.min","js/fastclick/lib/fastclick","js/datatables.net/js/jquery.dataTables.min","js/datatables.net-bs/js/dataTables.bootstrap.min","js/datatables.net-buttons/js/dataTables.buttons.min","js/datatables.net-buttons-bs/js/buttons.bootstrap","js/datatables.net-buttons/js/buttons.html5.min","js/datatables.net-buttons/js/buttons.print.min","js/datatables.net-fixedheader/js/dataTables.fixedHeader.min","js/datatables.net-keytable/js/dataTables.keyTable.min","js/datatables.net-responsive/js/dataTables.responsive.min","js/datatables.net-responsive-bs/js/responsive.bootstrap","js/datatables.net-scroller/js/dataTables.scroller.min","js/echarts/dist/echarts.min","js/custom" %>
+        <!-- page content -->
+        <%= yield %>
+        <!-- /page content -->
+
+        <!-- footer content -->
+       <!--  <footer>
+          <div class="pull-right">
+            © 2016 <a href="http://www.hh12369.com/index.html">廊坊市海宏环保科技有限公司</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer> -->
+        <!-- /footer content -->
+      </div>
+    </div>
+ 
+  </body>
+</html>

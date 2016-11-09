@@ -28,13 +28,10 @@ module AllSite
 			filePath = PATH+tmpTime[0..7]
 			Dir::mkdir(filePath) unless Dir.exists?(filePath)
 			f = File.open(filePath+'/'+tmpTime+'_station.csv','w')
-<<<<<<< HEAD
-			f.puts('station_name,Lon,Lat,AQI')
-=======
 			f.puts('station_name,Lon,Lat,AQI,pm2_5,pm10,so2,no2,o3,o3_8h,co,quality,main_pollutant,time,city')
->>>>>>> master
 
 			#遍历站点数据
+			count = 0
 			@data['rows'].each do |l|
 				city = City.find_by_city_name(l['city'])
 				city = City.find_by_city_name(l['city']+'市') unless city
@@ -49,19 +46,29 @@ module AllSite
 					next
 					puts l+' '+'is nil!'
 				end
-				l['monitor_point_id'] = mp.id
-				MonitorPointHour.new.save_with_arg(l)
-
-				#逐条写入cvs
+				l['id'] = mp.id
+				puts l
 <<<<<<< HEAD
-				f.puts(city.city_name_pinyin.to_s+','+mp.longitude.to_s+','+mp.latitude.to_s+','+l['aqi'].to_s)
+				Thread.new do 
+					MonitorPointHour.new.save_with_arg(l)
+				end
 =======
-				f.puts(l['pointname']+','+mp.longitude.to_s+','+mp.latitude.to_s+','+l['aqi'].to_s+','+l['pm2_5'].to_s+','+l['pm10'].to_s+','+l['so2'].to_s+','+l['no2'].to_s+','+l['o3'].to_s+','+l['o3_8h'].to_s+','+l['co'].to_s+','+l['quality'].to_s+','+l['main_pollutant'].to_s+','+l['time']+','+l['city'])
->>>>>>> master
+        Thread.new do
+          MonitorPointHour.new.save_with_arg(l)
+        end
+>>>>>>> 6675b10d0ccde3c267c6ff8157e6690e36286680
+				count = count + 1
+
+				# 剔除多余的邯郸错误数据，导致不能画图。
+				if count >= 1534 and l['city'] == '邯郸'
+				  puts l
+				  next 
+			    end
+
+				#逐条写入csv
+				f.puts(l['pointname']+','+mp.longitude.to_s+','+mp.latitude.to_s+','+l['aqi'].to_s+','+l['pm2_5'].to_s+','+l['pm10'].to_s+','+l['so2'].to_s+','+l['no2'].to_s+','+l['o3'].to_s+','+l['o3_8h'].to_s+','+l['co'].to_s+','+l['quality'].to_s+','+l['main_pollutant'].to_s.gsub(',','&')+','+l['time']+','+l['city'])
 			end
 			f.close #关闭
 		end
 	end
 end
-data = AllSite::Option.new
-data.save

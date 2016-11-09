@@ -92,6 +92,7 @@ GEM
       execjs
     coffee-script-source (1.10.0)
     concurrent-ruby (1.0.2)
+    connection_pool (2.2.0)
     cucumber (2.4.0)
       builder (>= 2.1.2)
       cucumber-core (~> 1.5.0)
@@ -205,8 +206,8 @@ GEM
     pry-rails (0.3.4)
       pry (>= 0.9.10)
     rack (1.5.5)
-    rack-cache (1.6.1)
-      rack (>= 0.4)
+    rack-protection (1.5.3)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.1.13)
@@ -240,11 +241,12 @@ GEM
     redis-activesupport (4.1.5)
       activesupport (>= 3, < 5)
       redis-store (~> 1.1.0)
+    redis-namespace (1.5.2)
+      redis (~> 3.0, >= 3.0.4)
+    redis-objects (1.2.1)
+      redis (>= 3.0.2)
     redis-rack (1.5.0)
       rack (~> 1.5)
-      redis-store (~> 1.1.0)
-    redis-rack-cache (1.2.4)
-      rack-cache (~> 1.2)
       redis-store (~> 1.1.0)
     redis-rails (4.0.0)
       redis-actionpack (~> 4)
@@ -304,6 +306,11 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    sidekiq (4.2.3)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (>= 1.5.0)
+      redis (~> 3.2, >= 3.2.1)
     simple_form (3.1.1)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
@@ -398,7 +405,8 @@ DEPENDENCIES
   rainbow
   rb-readline
   redis
-  redis-rack-cache
+  redis-namespace
+  redis-objects
   redis-rails
   rgeo-geojson
   rgeo-shapefile
@@ -407,6 +415,7 @@ DEPENDENCIES
   ruby-prof
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  sidekiq
   simple_form (~> 3.1.0)
   spreadsheet
   spring

@@ -21,3 +21,4 @@
 /public/images/*
 /.byebug_history
 /dump.rdb
+database.yml

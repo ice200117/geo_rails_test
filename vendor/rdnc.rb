@@ -75,8 +75,6 @@ var_list.each { |var_name|
   }
 }
 
-
-
 def read_daily ( ncfile, city_file )
   file = NetCDF.open(ncfile)
 
