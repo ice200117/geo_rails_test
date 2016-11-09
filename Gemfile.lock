@@ -158,6 +158,7 @@ GEM
     json (1.8.3)
     leaflet-rails (0.7.7)
     least_squares (1.0.1)
+    linefit (0.3.3)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
     mailfactory (1.4.0)
@@ -391,6 +392,7 @@ DEPENDENCIES
   jquery-turbolinks
   leaflet-rails
   least_squares
+  linefit
   mailfactory
   multipart-post (~> 2.0.0)
   nprogress-rails
@@ -427,6 +429,3 @@ DEPENDENCIES
   web-console (~> 2.0)
   whenever
   will_paginate (~> 3.0.6)
-
-BUNDLED WITH
-   1.13.2
