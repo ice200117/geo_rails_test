@@ -121,6 +121,7 @@ gem 'partitioned', '~> 2.1'
 
 # 最小二乘
 gem 'least_squares'
+gem 'linefit'
 
 # gem 'mina' #自动部署
 gem 'sidekiq' #异步

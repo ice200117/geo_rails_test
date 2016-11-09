@@ -1,10 +1,6 @@
 #!/usr/bin/env ruby
-#
-# fix_forecast_by_least_square.rb
-# Copyright (C) 2016 libaoxi <693879111@qq.com>
-#
-# Distributed under terms of the MIT license.
-#
+
+require 'linefit'
 def fix_forecast_by_least_square
     stime = Time.now.yesterday.beginning_of_hour
     mtime = Time.now.beginning_of_hour
@@ -27,15 +23,18 @@ def fix_forecast_by_least_square
             aqix << v[0].AQI
             aqiy << cch[k][0].AQI
         end
-        next if aqix.size == 0 or aqiy.size == 0
+        next if aqix.size < 5 or aqiy.size < 5
         puts city.city_name 
-        lsqr = Math.least_squares(aqix,aqiy)
+		linefit = LineFit.new
+        # lsqr = Math.least_squares(aqix,aqiy)
+		linefit.setData(aqix,aqiy,(0...aqix.size).to_a)
         frd2_f = frd2_f.to_a.group_by_hour(&:forecast_datetime)
         frd2_h.to_a.group_by_hour(&:forecast_datetime).each do |k,v|
             # l.update(AQI: lsqr.call(l.AQI))
             next if frd2_f[k].size == 0 or v.size == 0
-            frd2_f[k][0].update(AQI:lsqr.call(v[0].AQI))
-            puts v[0].forecast_datetime.hour.to_s+' '+lsqr.call(v[0].AQI).to_s
+            # frd2_f[k][0].update(AQI:lsqr.call(v[0].AQI))
+            frd2_f[k][0].update(AQI:linefit.forecast(v[0].AQI))
+            puts v[0].forecast_datetime.hour.to_s+' '+linefit.forecast(v[0].AQI).to_s
         end
     end
     puts 'fix_forecast_by_least_square end'
