@@ -161,3 +161,4 @@ cs.each do |c|
 end
 HourlyCityForecastAirQuality.create(hcs)
 ForecastRealDatum.create(adjust_hcs)
+
