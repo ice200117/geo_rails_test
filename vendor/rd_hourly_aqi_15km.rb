@@ -4,6 +4,7 @@
 #
 
 require_relative 'correction'
+require_relative 'replace_temp_table_from_hourly'
 
 def adjust_aqi(l, c, is_corr=true)
 #  CORR = {zhengzhoushi:0.6,
@@ -161,3 +162,4 @@ cs.each do |c|
 end
 HourlyCityForecastAirQuality.create(hcs)
 ForecastRealDatum.create(adjust_hcs)
+replace_eight_hours()
