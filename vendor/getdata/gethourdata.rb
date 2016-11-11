@@ -22,8 +22,10 @@ AllSite::Option.new.save
 # save_db(hs,TempBdHour) if hour_data_common(hs,TempBdHour)
 
 #廊坊实时数据
-# hs=ten_times_test(TempLfHour,'shishi_rank_data','LANGFANGRANK','HOUR',nil)
-# save_db(hs,TempLfHour) if hour_data_common(hs,TempLfHour)
+hs=ten_times_test(TempLfHour,'shishi_74',{secret:'LANGFANGRANK',type:'HOUR'})
+save_db(hs,TempLfHour)
+TempLfHour.new.atmospheric_volume_superscalar
+system('curl http://www.izhenqi.cn/crawler/aqi_forecast_city_jjj.php')
 #
 # 秦皇岛小时数据
 Qinhuangdao::Qinhuangdao.new.hour
