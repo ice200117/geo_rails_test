@@ -1,9 +1,5 @@
 # 预报数据修正，将预报数据出来当天前8个小时改为检测值
-def replace_eight_hours
-    stime = Time.now.beginning_of_day
-    # stime = '20161111'.to_time
-    etime = Time.now.beginning_of_hour
-    # etime = '2016111108'.to_time
+def replace_eight_hours(stime,etime)
     forecast_datetime = (stime..etime)
     publish_datetime = (stime.yesterday..stime-1)
     paramfrd = {publish_datetime:publish_datetime,forecast_datetime:forecast_datetime} 

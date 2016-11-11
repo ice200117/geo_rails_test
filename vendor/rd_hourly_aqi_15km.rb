@@ -162,4 +162,9 @@ cs.each do |c|
 end
 HourlyCityForecastAirQuality.create(hcs)
 ForecastRealDatum.create(adjust_hcs)
-replace_eight_hours()
+
+stime = Time.now.beginning_of_day
+# stime = '20161111'.to_time
+etime = Time.now.beginning_of_hour
+# etime = '2016111108'.to_time
+replace_eight_hours(stime,etime)
