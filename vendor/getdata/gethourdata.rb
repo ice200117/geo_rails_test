@@ -6,6 +6,8 @@ require_relative '../replace_temp_table_from_hourly.rb'
 #require_relative '../fore_fix/fore_fix_9km.rb'
 hs=Hash.new
 oneday=60*60*24
+stime = Time.now.beginning_of_hour
+etime = Time.now.end_of_hour
 
 #全国城市实时数据
 hs = Hash.new
@@ -45,8 +47,6 @@ save_db(hs,TempSfcitiesHour)
 
 fix_forecast_by_least_square()
 
-stime = Time.now.beginning_of_hour
-etime = Time.now.end_of_hour
 replace_eight_hours(stime,etime)
 
 system('curl http://www.izhenqi.cn/crawler/aqi_forecast_city_jjj.php')
