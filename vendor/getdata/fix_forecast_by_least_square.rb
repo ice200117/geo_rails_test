@@ -15,7 +15,6 @@ def fix_forecast_by_least_square
     frd2_h = HourlyCityForecastAirQuality.where(publish_datetime:maxtime,forecast_datetime:((mtime+3600)..etime)).to_a.group_by{|x| x.city_id}
     return nil if frd2_f.size == 0 or frd2_h.size == 0
 
-    threads = []
     frd2_f.keys.each do |cityid|
         aqix = Hash.new
         aqiy = Hash.new
