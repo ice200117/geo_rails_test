@@ -2,12 +2,12 @@ require_relative './common.rb'
 require_relative './get_qinhuangdao_data.rb'
 require_relative './all_sites.rb'
 require_relative './fix_forecast_by_least_square.rb'
-require_relative '../replace_temp_table_from_hourly.rb'
+require_relative '../replace_temp_table_from_hourly'
 #require_relative '../fore_fix/fore_fix_9km.rb'
 hs=Hash.new
 oneday=60*60*24
-stime = Time.now.beginning_of_hour
-etime = Time.now.end_of_hour
+stime = Time.now.beginning_of_hour - 3600
+etime = Time.now.end_of_hour - 3600
 
 #全国城市实时数据
 hs = Hash.new
@@ -47,9 +47,12 @@ save_db(hs,TempSfcitiesHour)
 
 fix_forecast_by_least_square()
 
+puts 'a'
 replace_eight_hours(stime,etime)
-
+puts 'b'
 system('curl http://www.izhenqi.cn/crawler/aqi_forecast_city_jjj.php')
+puts 'c'
+
 #获取当前全国城市后，调用修正算法
 # response = HTTParty.get("http://60.10.135.153:3000/bar.json")
 # data = JSON.parse(response.body)
