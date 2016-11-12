@@ -1,7 +1,7 @@
 # 预报数据修正，将预报数据出来当天前8个小时改为检测值
 def replace_eight_hours(stime,etime)
     forecast_datetime = (stime..etime)
-    publish_datetime = (stime.yesterday..stime-1)
+    publish_datetime = (stime.beginning_of_day.yesterday..stime.beginning_of_day-1)
     paramfrd = {publish_datetime:publish_datetime,forecast_datetime:forecast_datetime} 
     paramcch = {data_real_time:forecast_datetime}
     frd = ForecastRealDatum.where(paramfrd).to_a.group_by{|x| x.forecast_datetime.hour.to_s+'_'+x.city_id.to_s}
